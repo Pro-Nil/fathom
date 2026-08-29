@@ -33,7 +33,7 @@
     "@pentest-harness/dsh-client-web": "workspace:^",
     "@pentest-harness/dsh-cmdline": "workspace:^",
     "@pentest-harness/dsh-pwsh-local": "workspace:^",
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.1.2",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "@vitejs/plugin-react": "^4.0.0",
