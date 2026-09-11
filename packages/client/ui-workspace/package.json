@@ -68,9 +68,9 @@
     "@pentest-harness/dsh-client-ui-sidebar": "workspace:^",
     "@pentest-harness/dsh-client-ui-slots": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
-    "@types/react": "~18.3.1",
+    "@types/react": "~19.2.18",
     "@pentest-harness/cordis": "workspace:^",
-    "react": "^18.2.0"
+    "react": "^19.2.8"
   },
   "files": [
     "lib/index.js",

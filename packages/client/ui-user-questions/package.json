@@ -63,10 +63,10 @@
     "@pentest-harness/dsh-system-prompt": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
     "@pentest-harness/dsh-user-questions": "workspace:^",
-    "@types/react": "~18.3.1",
+    "@types/react": "~19.2.18",
     "@pentest-harness/dsh-client-ui-primitives": "workspace:^",
     "@pentest-harness/dsh-client-ui-slots": "workspace:^",
-    "react": "^18.2.0",
+    "react": "^19.2.8",
     "@pentest-harness/dsh-client-runtime": "workspace:^",
     "@pentest-harness/dsh-client-ui-conversation": "workspace:^",
     "@pentest-harness/dsh-client-connection": "workspace:^"

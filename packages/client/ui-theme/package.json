@@ -67,8 +67,8 @@
     "@pentest-harness/dsh-host-webserver": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-settings": "workspace:^",
-    "@types/react": "~18.3.1",
-    "react": "^18.2.0"
+    "@types/react": "~19.2.18",
+    "react": "^19.2.8"
   },
   "files": [
     "lib/index.js",

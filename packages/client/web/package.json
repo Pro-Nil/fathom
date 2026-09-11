@@ -33,10 +33,10 @@
     "@pentest-harness/dsh-client-ui-primitives": "workspace:^",
     "@pentest-harness/dsh-client-ui-slots": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
-    "@types/react": "~18.3.1",
+    "@types/react": "~19.2.18",
     "@types/react-dom": "~18.3.0",
     "@pentest-harness/cordis": "workspace:^",
-    "react": "^18.2.0",
+    "react": "^19.2.8",
     "react-dom": "^18.2.0",
     "typescript": "^6.0.3"
   },
