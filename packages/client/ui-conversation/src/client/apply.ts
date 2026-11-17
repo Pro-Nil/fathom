@@ -88,16 +88,8 @@ const CHAT_NODE_INJECT: ChatNodeTurnDataInjected = {
   },
 }
 
-/** Model-facing continuation prompt sent by the turn-tail Resume button. */
-function resumePrompt(reason: string): string {
-  const why = reason === 'error' ? 'the model request failed'
-    : reason === 'aborted' ? 'it was stopped'
-      : reason === 'max-tokens' ? 'it hit the output-token limit'
-        : reason === 'interrupted' ? 'the harness restarted mid-turn'
-          : `it ended early (${reason})`
-  return `Resume. The previous turn did not finish because ${why}. `
-    + 'Continue the task from the last step that completed; do not redo work that already succeeded.'
-}
+/** Prompt sent by the turn-tail Resume button; kept to one word so resuming costs almost no tokens. */
+const RESUME_PROMPT = 'Resume'
 
 /** Resolve the session-scoped conversation face (scope-addressed send/cancel), failing loud. */
 function scopedConversation(sessions: ISessions, id: SessionId): IConversation {
@@ -434,8 +426,8 @@ export function apply(ctx: Context): void {
               // Fork or child-rename failure keeps the source view untouched.
             })
         },
-        resume: (reason) => {
-          scoped.send(resumePrompt(reason)).catch(() => {
+        resume: () => {
+          scoped.send(RESUME_PROMPT).catch(() => {
             // The failure is already on the session snapshot's promptError.
           })
         },
