@@ -143,6 +143,7 @@ function tailData(context: ConversationNodeContext<TurnTailState>): TurnTailChat
     time: end.event.time,
     closing,
     branchUnavailable: closing === null || latestTranscriptSeq !== closing.finalNode.seq,
+    endReason: end.event.data.reason.kind,
     ...metrics?.ttftMs === undefined ? {} : { ttftMs: metrics.ttftMs },
     ...metrics?.tokensPerSecond === undefined ? {} : { tokensPerSecond: metrics.tokensPerSecond },
   }

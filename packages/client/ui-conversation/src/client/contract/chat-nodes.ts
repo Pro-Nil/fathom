@@ -59,6 +59,8 @@ export interface TurnTailChatData {
   readonly closing: FinalAssistantChatData | null
   /** Whether non-rendered later evidence makes the closing seq non-tail. */
   readonly branchUnavailable: boolean
+  /** The `turn/end` reason kind (`completed`, `error`, `aborted`, `max-tokens`, `interrupted`, …). */
+  readonly endReason: string
   readonly ttftMs?: number
   readonly tokensPerSecond?: number
 }

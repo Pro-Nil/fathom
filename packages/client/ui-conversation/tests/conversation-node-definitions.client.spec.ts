@@ -451,6 +451,21 @@ describe('built-in conversation node Definitions', () => {
     const tail = node(snapshot(value), 'turn-tail')?.data as TurnTailChatData
     expect(tail.closing?.finalNode.seq).toBe(3)
     expect(tail.branchUnavailable).toBe(true)
+    expect(tail.endReason).toBe('completed')
+  })
+
+  it('records the turn-end reason so the tail can offer Resume after a failure', () => {
+    const value = assembler([
+      at(1, 'turn/start', { turn: 1 }),
+      at(2, 'user/message', textMessage('failing-user', 'go'), { surfaceOp: 'append' }),
+      at(3, 'step/start', { turn: 1, step: 1 }),
+      at(4, 'step/end', { turn: 1, step: 1 }),
+      at(5, 'turn/end', { turn: 1, reason: { kind: 'error', error: { message: 'upstream 503', code: 'UNKNOWN' } } }),
+    ])
+
+    const tail = node(snapshot(value), 'turn-tail')?.data as TurnTailChatData
+    expect(tail.endReason).toBe('error')
+    expect(tail.closing).toBeNull()
   })
 
   it('replays inbox predecessors after prepend and reclassifies the dependent message as steering', () => {
