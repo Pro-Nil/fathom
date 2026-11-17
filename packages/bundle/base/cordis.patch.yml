@@ -346,10 +346,12 @@
     - id: spill-local
       name: '@pentest-harness/dsh-spill-local'
 
+    # Results over ~3K tokens go to a session file the model can grep/read by
+    # range, instead of being re-sent with every later request.
     - id: spill-policy
       name: '@pentest-harness/dsh-spill-policy'
       config:
-        maxInlineBytes: 50000
+        maxInlineBytes: 12000
 
     # Durability checkpoints before each model request and top-level dispatch.
     - id: session-checkpoint-policy
@@ -360,9 +362,9 @@
     - id: tool-result-pruner
       name: '@pentest-harness/dsh-compaction-tool-result-pruner'
       config:
-        thresholdChars: 8192
-        headChars: 4096
-        tailChars: 1024
+        thresholdChars: 3000
+        headChars: 1500
+        tailChars: 500
 
     - id: tool-todo
       name: '@pentest-harness/dsh-tool-todo'
@@ -386,12 +388,14 @@
       config:
         maxOutputChars: 16000
 
-    # Consecutive-repeat reminders on the tool chain.
+    # Consecutive-repeat reminders on the tool chain, plus failure-loop
+    # reminders when calls keep failing with varied arguments.
     - id: repeat-tool-reminder
       name: '@pentest-harness/dsh-repeat-tool-reminder'
       config:
         thresholds: [3, 5, 8]
         argumentsPreviewChars: 500
+        failureThresholds: [4, 7]
 
     # Every mode enables the stable model-facing web_search tool. DeepSeek search
     # resolves the same DEEPSEEK_API_KEY credential the Models page manages for
