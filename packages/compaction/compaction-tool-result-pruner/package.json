@@ -37,7 +37,8 @@
     "@pentest-harness/dsh-llm": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-token-meter": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   },
   "dependencies": {
     "@pentest-harness/schemastery": "workspace:^"
@@ -50,6 +51,7 @@
     "@pentest-harness/dsh-llm": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-token-meter": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   }
 }

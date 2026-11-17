@@ -45,7 +45,8 @@
     "@pentest-harness/dsh-system-prompt": "workspace:^",
     "@pentest-harness/dsh-timeout": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-session-folders": "workspace:^"
   },
   "devDependencies": {
     "@pentest-harness/dsh-agent": "workspace:^",
@@ -59,6 +60,7 @@
     "@pentest-harness/dsh-system-prompt": "workspace:^",
     "@pentest-harness/dsh-timeout": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-session-folders": "workspace:^"
   }
 }

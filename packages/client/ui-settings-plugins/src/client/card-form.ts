@@ -307,7 +307,8 @@ export class CardForm<T> {
 
   private async store(field: string, value: unknown): Promise<boolean> {
     await this.scope.set(field, value)
-    return this.userLayer()?.[field] === value
+    // Structural, so a list value (loop-guard thresholds) reads back as landed.
+    return JSON.stringify(this.userLayer()?.[field]) === JSON.stringify(value)
   }
 
   private stage(field: string, edit: StagedEdit): void {

@@ -52,6 +52,7 @@ import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
 import type { SessionId } from '@pentest-harness/dsh-session'
 import type { CallId } from '@pentest-harness/dsh-llm'
 import type { PostToolDecision, ToolExecution } from '@pentest-harness/dsh-tools'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 import type { SpillPolicyExec } from './types.ts'
 
 export type { SpillPolicyExec } from './types.ts'
@@ -64,6 +65,14 @@ export interface Config {
    * this is spilled and replaced with a preview derived from this same budget.
    */
   maxInlineBytes?: number
+  /** Register the `spill-policy` settings namespace so the settings page can change the cap. */
+  settings?: boolean
+}
+
+/** The user-editable part of the configuration. */
+export interface SpillPolicySettings {
+  /** See {@link Config.maxInlineBytes}. */
+  maxInlineBytes: number
 }
 
 /** Cordis plugin name used by loader diagnostics. */
@@ -74,7 +83,27 @@ export const inject = ['tools']
 
 export const Config: z<Config> = z.object({
   maxInlineBytes: z.number(),
+  settings: z.boolean().default(false),
 })
+
+/** Settings namespace the Plugins settings page edits. */
+export const SPILL_POLICY_SETTINGS_NAMESPACE = settingsNamespace('spill-policy')
+
+/** Schema of the settings namespace. */
+export const SPILL_POLICY_SETTINGS_SCHEMA: z<SpillPolicySettings> = z.object({
+  maxInlineBytes: z.number().step(1).min(0).required(),
+})
+
+/**
+ * Reject a cap TextRetainer could not honour. Checked at load and on every
+ * settings write, so a bad value fails the configuration rather than a tool call.
+ * @param maxInlineBytes - the candidate cap.
+ */
+function validateCap(maxInlineBytes: number): void {
+  if (!Number.isInteger(maxInlineBytes) || maxInlineBytes < 0) {
+    throw new Error(`spill-policy: maxInlineBytes must be a non-negative integer (got ${maxInlineBytes})`)
+  }
+}
 
 /** All-text content flattened to one UTF-8 string, or `undefined` if any block is non-text. */
 function flattenPlainText(content: ContentBlock[]): string | undefined {
@@ -114,11 +143,19 @@ export function apply(ctx: Context, config: Config): void {
   // Validate at LOAD, not per call: a negative/fractional cap would reach
   // TextRetainer's assertBudget and throw, turning every oversized-result call
   // into an isError. A bad config must fail the deployment, not the tool.
-  if (!Number.isInteger(maxInlineBytes) || maxInlineBytes < 0) {
-    throw new Error(`spill-policy: maxInlineBytes must be a non-negative integer (got ${maxInlineBytes})`)
+  validateCap(maxInlineBytes)
+  // The settings page can change the cap while the harness runs; each call
+  // reads the value in force when it starts and uses that one value throughout.
+  const entry: SpillPolicySettings = { maxInlineBytes }
+  let source = (): SpillPolicySettings => entry
+  if (config.settings === true) {
+    installSettingsSection(ctx, SPILL_POLICY_SETTINGS_NAMESPACE, SPILL_POLICY_SETTINGS_SCHEMA, entry, {
+      validate: (value) => { validateCap(value.maxInlineBytes) },
+      setSource: (current) => { source = current },
+      onChange: () => {},
+    })
   }
-  // Narrowed once for the nested arms (closure narrowing does not survive awaits).
-  const cap: number = maxInlineBytes
+  const currentCap = (): number => source().maxInlineBytes
 
   /**
    * Spill `text` and build the bounded replacement (preview + notice), or
@@ -134,6 +171,7 @@ export function apply(ctx: Context, config: Config): void {
     toolName: string,
     callId: CallId,
     label: 'result' | 'dispatch',
+    cap: number,
   ): Promise<string | undefined> {
     if (sessionId === undefined) {
       ctx.logger.warn(`spill-policy: no session owner for ${toolName} ${label}; keeping the inline content`)
@@ -202,9 +240,10 @@ export function apply(ctx: Context, config: Config): void {
     const text = flattenPlainText(content)
     if (text === undefined) return decision
     const totalBytes = Buffer.byteLength(text, 'utf8')
-    if (totalBytes <= maxInlineBytes) return decision
+    const cap = currentCap()
+    if (totalBytes <= cap) return decision
 
-    const replacedText = await spillReplacement(text, totalBytes, ownerSessionId(exec), exec.name, exec.callId, 'result')
+    const replacedText = await spillReplacement(text, totalBytes, ownerSessionId(exec), exec.name, exec.callId, 'result', cap)
     if (replacedText === undefined) return decision
     const replaced: ContentBlock[] = [{ type: 'text', text: replacedText }]
     return { kind: 'accept', content: replaced, ...decision.additionalContexts ? { additionalContexts: decision.additionalContexts } : {} }
@@ -224,10 +263,11 @@ export function apply(ctx: Context, config: Config): void {
     const text = flattenPlainText(content)
     if (text === undefined) return content
     const totalBytes = Buffer.byteLength(text, 'utf8')
-    if (totalBytes <= maxInlineBytes) return content
+    const cap = currentCap()
+    if (totalBytes <= cap) return content
 
     const replacedText = await spillReplacement(
-      text, totalBytes, ownerSessionId(dispatch.exec), dispatch.name, dispatch.subCallId, 'dispatch')
+      text, totalBytes, ownerSessionId(dispatch.exec), dispatch.name, dispatch.subCallId, 'dispatch', cap)
     if (replacedText === undefined) return content
     return [{ type: 'text', text: replacedText }]
   }, { prepend: true })

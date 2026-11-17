@@ -34,7 +34,8 @@
   "peerDependencies": {
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-system-prompt": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   },
   "dependencies": {
     "@pentest-harness/schemastery": "workspace:^"
@@ -43,6 +44,7 @@
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-scope": "workspace:^",
     "@pentest-harness/dsh-system-prompt": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   }
 }

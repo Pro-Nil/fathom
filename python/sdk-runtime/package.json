@@ -75,6 +75,7 @@
     "@pentest-harness/dsh-session-query-sqlite": "workspace:^",
     "@pentest-harness/dsh-session-reference": "workspace:^",
     "@pentest-harness/dsh-session-title": "workspace:^",
+    "@pentest-harness/dsh-session-folders": "workspace:^",
     "@pentest-harness/dsh-settings": "workspace:^",
     "@pentest-harness/dsh-skill": "workspace:^",
     "@pentest-harness/dsh-skill-filesystem": "workspace:^",

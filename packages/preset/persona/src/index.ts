@@ -16,6 +16,7 @@
 import type { Context } from '@pentest-harness/cordis'
 import z from '@pentest-harness/schemastery'
 import type {} from '@pentest-harness/dsh-system-prompt'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 
 // Imported rather than restated: the registry declares the slot this row
 // replaces, and two hardcoded copies would drift into a preset whose persona
@@ -42,6 +43,11 @@ export interface Config {
   complete?: boolean
   /** Suppress dynamic runtime-context snapshots for this persona's agent scope. */
   includeRuntimeContext?: boolean
+  /**
+   * Register the `persona` settings namespace so the settings page can replace
+   * the text. Only one mounted row may set this: a namespace registers once.
+   */
+  settings?: boolean
 }
 
 /** Runtime schema for the persona row. */
@@ -49,6 +55,21 @@ export const Config: z<Config> = z.object({
   text: z.string().required(),
   complete: z.boolean().default(false),
   includeRuntimeContext: z.boolean().default(true),
+  settings: z.boolean().default(false),
+})
+
+/** The user-editable part of the configuration. */
+export interface PersonaSettings {
+  /** See {@link Config.text}. */
+  text: string
+}
+
+/** Settings namespace the Plugins settings page edits. */
+export const PERSONA_SETTINGS_NAMESPACE = settingsNamespace('persona')
+
+/** Schema of the settings namespace. */
+export const PERSONA_SETTINGS_SCHEMA: z<PersonaSettings> = z.object({
+  text: z.string().required(),
 })
 
 /**
@@ -58,10 +79,20 @@ export const Config: z<Config> = z.object({
  * @param config - the persona text and complete-prompt policy.
  */
 export function apply(ctx: Context, config: Config): void {
+  // The section text is read at each prompt assembly, so a saved edit reaches
+  // the very next request of every session using this persona.
+  const entry: PersonaSettings = { text: config.text }
+  let source = (): PersonaSettings => entry
+  if (config.settings === true) {
+    installSettingsSection(ctx, PERSONA_SETTINGS_NAMESPACE, PERSONA_SETTINGS_SCHEMA, entry, {
+      setSource: (current) => { source = current },
+      onChange: () => {},
+    })
+  }
   ctx.effect(() => ctx.systemPrompt.section({
     name: PERSONA_SECTION,
     order: PERSONA_ORDER,
-    text: config.text,
+    text: () => source().text,
     ...(config.complete ? { complete: true } : {}),
   }), 'persona.section()')
   if (!(config.includeRuntimeContext ?? true)) ctx.systemPrompt.suppressRuntimeContext()

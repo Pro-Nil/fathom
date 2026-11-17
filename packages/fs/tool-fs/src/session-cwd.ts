@@ -8,8 +8,11 @@
  * @module @pentest-harness/dsh-tool-fs/session-cwd
  */
 
+import { isAbsolute } from 'node:path'
+import type { Context } from '@pentest-harness/cordis'
 import type { ToolExecution } from '@pentest-harness/dsh-tools'
 import { canonicalPath } from '@pentest-harness/dsh-sandbox'
+import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
 
 const PARENT_PATH_SEGMENT = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -27,18 +30,23 @@ export function sessionCwd(exec: ToolExecution, requestedPath: string): string |
 }
 
 /**
- * Resolution options shared by all model-facing filesystem tools.
+ * Resolution options shared by all model-facing filesystem tools. Relative
+ * paths resolve in the session's own folder when one is assigned inside the
+ * root, so the file tools and the shell agree on where `./loot/` is.
+ * @param ctx - the tool plugin's context; the session-folders service is optional.
  * @param exec - the tool-execution context supplying session cwd and cancellation.
  * @param requestedPath - the path the provider will resolve.
  * @param policyWorkspaceRoot - resolved per-call root, when a mutation carries sandbox policy.
  * @returns provider resolution options for the current tool call.
  */
-export function sessionResolveOptions(
+export async function sessionResolveOptions(
+  ctx: Context,
   exec: ToolExecution,
   requestedPath: string,
   policyWorkspaceRoot?: string,
-): { cwd?: string; signal?: AbortSignal } {
-  const cwd = policyWorkspaceRoot ?? sessionCwd(exec, requestedPath)
+): Promise<{ cwd?: string; signal?: AbortSignal }> {
+  const root = policyWorkspaceRoot ?? sessionCwd(exec, requestedPath)
+  const cwd = isAbsolute(requestedPath) ? root : await toolWorkdir(ctx, exec.agent, root)
   return {
     ...cwd !== undefined ? { cwd } : {},
     signal: exec.signal,

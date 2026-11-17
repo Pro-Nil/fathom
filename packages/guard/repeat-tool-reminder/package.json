@@ -38,7 +38,8 @@
     "@pentest-harness/dsh-agent": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   },
   "devDependencies": {
     "@pentest-harness/dsh-agent": "workspace:^",
@@ -48,6 +49,7 @@
     "@pentest-harness/dsh-llm": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-settings": "workspace:^"
   }
 }

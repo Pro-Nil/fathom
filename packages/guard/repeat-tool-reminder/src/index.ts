@@ -13,6 +13,7 @@ import { createUserMessage } from '@pentest-harness/dsh-llm'
 import type { MessageSource } from '@pentest-harness/dsh-llm'
 import type { UserMessage } from '@pentest-harness/dsh-session'
 import type { PostToolDecision, ToolExecution, ToolExecutionResult } from '@pentest-harness/dsh-tools'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 
 export const name = 'repeat-tool-reminder'
 
@@ -49,6 +50,8 @@ export interface Config {
    * retry" loop that identical-argument detection misses.
    */
   failureThresholds?: number[]
+  /** Register the `repeat-tool-reminder` settings namespace so the settings page can edit both threshold lists. */
+  settings?: boolean
 }
 
 export const Config: z<Config> = z.object({
@@ -56,6 +59,24 @@ export const Config: z<Config> = z.object({
   include: z.array(z.string()).default([]),
   exclude: z.array(z.string()).default([]),
   argumentsPreviewChars: z.number().default(500),
+  failureThresholds: z.array(z.number()).default([]),
+  settings: z.boolean().default(false),
+})
+
+/** The user-editable part of the configuration. */
+export interface RepeatToolReminderSettings {
+  /** See {@link Config.thresholds}. */
+  thresholds: number[]
+  /** See {@link Config.failureThresholds}. */
+  failureThresholds: number[]
+}
+
+/** Settings namespace the Plugins settings page edits. */
+export const REPEAT_TOOL_REMINDER_SETTINGS_NAMESPACE = settingsNamespace('repeat-tool-reminder')
+
+/** Schema of the settings namespace. */
+export const REPEAT_TOOL_REMINDER_SETTINGS_SCHEMA: z<RepeatToolReminderSettings> = z.object({
+  thresholds: z.array(z.number()).default([3, 5, 8]),
   failureThresholds: z.array(z.number()).default([]),
 })
 
@@ -170,6 +191,23 @@ function validateThresholds(values: number[], key = 'thresholds', allowEmpty = f
   return [...values].sort((a, b) => a - b)
 }
 
+/** The threshold lists in force, validated and indexed for lookup. */
+interface Limits {
+  thresholds: number[]
+  thresholdSet: ReadonlySet<number>
+  failureThresholdSet: ReadonlySet<number>
+}
+
+/** Validate both lists fail-loud and index them. */
+function resolveLimits(value: RepeatToolReminderSettings): Limits {
+  const thresholds = validateThresholds(value.thresholds)
+  return {
+    thresholds,
+    thresholdSet: new Set(thresholds),
+    failureThresholdSet: new Set(validateThresholds(value.failureThresholds, 'failureThresholds', true)),
+  }
+}
+
 /**
  * Prepend the guard's reminder while preserving every downstream context's
  * source and metadata.
@@ -191,17 +229,27 @@ interface Chain {
  */
 export function apply(ctx: Context, config: Config): void {
   // schemastery's .default() guarantees the fields are set after validation.
-  const thresholds = validateThresholds(config.thresholds as number[])
-  const thresholdSet = new Set(thresholds)
+  const entry: RepeatToolReminderSettings = {
+    thresholds: config.thresholds as number[],
+    failureThresholds: config.failureThresholds as number[],
+  }
+  // The settings page can change both lists while the harness runs; each call
+  // reads the lists in force when it is observed.
+  let limits = resolveLimits(entry)
+  let source = (): RepeatToolReminderSettings => entry
+  if (config.settings === true) {
+    installSettingsSection(ctx, REPEAT_TOOL_REMINDER_SETTINGS_NAMESPACE, REPEAT_TOOL_REMINDER_SETTINGS_SCHEMA, entry, {
+      validate: (value) => { resolveLimits(value) },
+      setSource: (current) => { source = current },
+      onChange: () => { limits = resolveLimits(source()) },
+    })
+  }
   const includePatterns = (config.include as string[]).map(wildcardToRegExp)
   const excludePatterns = (config.exclude as string[]).map(wildcardToRegExp)
   const argumentsPreviewChars = config.argumentsPreviewChars as number
   if (!Number.isInteger(argumentsPreviewChars) || argumentsPreviewChars < 1) {
     throw new Error(`repeat-tool-reminder: invalid argumentsPreviewChars ${argumentsPreviewChars} — must be an integer >= 1`)
   }
-
-  const failureThresholds = validateThresholds(config.failureThresholds as number[], 'failureThresholds', true)
-  const failureThresholdSet = new Set(failureThresholds)
 
   const chains = new WeakMap<Agent, Chain>()
   const failureChains = new WeakMap<Agent, string[]>()
@@ -212,7 +260,8 @@ export function apply(ctx: Context, config: Config): void {
    * Arguments are ignored: only consecutive failure matters.
    */
   function observeFailure(exec: ToolExecution, result: Readonly<ToolExecutionResult>): UserMessage | undefined {
-    if (failureThresholds.length === 0 || !exec.agent || !tracked(exec.name)) return undefined
+    const { failureThresholdSet } = limits
+    if (failureThresholdSet.size === 0 || !exec.agent || !tracked(exec.name)) return undefined
     if (!failed(result)) {
       failureChains.delete(exec.agent)
       return undefined
@@ -250,6 +299,7 @@ export function apply(ctx: Context, config: Config): void {
     const chain = chains.get(exec.agent)
     const count = chain !== undefined && chain.key === key ? chain.count + 1 : 1
     chains.set(exec.agent, { key, count })
+    const { thresholds, thresholdSet } = limits
     if (!thresholdSet.has(count)) return undefined
     const text = count === thresholds[0]
       ? GENTLE_REMINDER
