@@ -14,7 +14,10 @@ An advisory loop-breaker, not a model-facing tool: it never appears in the tool 
     include: []                  # tool-name patterns to track; empty ⇒ all tools
     exclude: [todo_write]        # tool-name patterns transparent to the chain
     argumentsPreviewChars: 500   # default; cap on arguments quoted in the detailed reminder
+    failureThresholds: []        # default (off); consecutive FAILED calls that trigger a failure-loop reminder
 ```
+
+`failureThresholds` adds a second, argument-independent chain: every tracked call that failed (`isError`, or a shell result carrying a non-zero `[exit code: N]` marker) extends it, and any successful tracked call or user message resets it. At each configured length the agent gets a failure-loop reminder telling it to stop retrying variations and change approach. This catches the "tweak the payload and retry" loop that identical-argument detection misses. When both chains trip on the same call, only the identical-call reminder is sent. Validation matches `thresholds`, except an empty list is allowed (and disables the chain).
 
 `thresholds` fails loud at plugin load: an empty list, a non-integer, a value below 2, or a duplicate throws, never a silent fall-back to defaults; `argumentsPreviewChars` equally rejects anything but an integer >= 1. The list is normalized to ascending order; the FIRST threshold delivers a short generic nudge, every later threshold delivers the detailed form naming the tool, the run length, and the canonical arguments — head-truncated at `argumentsPreviewChars` with an omitted-count marker, so a looping `write`/`edit` payload cannot ride into the next request unbounded (the chain key always compares the FULL canonical string; the cap bounds the reminder, never the detection).
 

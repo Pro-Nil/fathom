@@ -401,3 +401,63 @@ describe('config validation fails loud', () => {
     await expect(ctx2.plugin(RepeatToolGuard, { argumentsPreviewChars: 12.5 })).rejects.toThrow(/argumentsPreviewChars/)
   })
 })
+
+describe('failure-loop detection (failureThresholds)', () => {
+  /** Guard plus a throwing tool, an exit-marker tool, and the stock `probe`. */
+  async function failHarness(config: Config): Promise<Context> {
+    const ctx = await harness(config)
+    ctx.tools.register(defineContentToolFixture({ name: 'boom', description: 'b', parameters: {}, async execute() { throw new Error('nope') } }))
+    ctx.tools.register(defineContentToolFixture({ name: 'sh', description: 's', parameters: {}, async execute() { return [{ type: 'text', text: 'curl: (7) refused\n[exit code: 7]' }] } }))
+    ctx.tools.register(defineContentToolFixture({ name: 'sh_ok', description: 's', parameters: {}, async execute() { return [{ type: 'text', text: 'fine\n[exit code: 0]' }] } }))
+    return ctx
+  }
+
+  async function run(ctx: Context, calls: [string, unknown][]): Promise<Agent> {
+    const adapter = new MockAdapter([
+      ...calls.map(([tool, args], i) => toolCallResponse(`c${i}`, tool, args)),
+      textResponse('done'),
+    ])
+    ctx.llm.registerAdapter(['mock'], adapter)
+    const agent = ctx.agentLoop.create(SessionId('a1'), { provider: 'mock', model: 'mock' })
+    agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'user' } }))
+    await waitForIdle(ctx, agent)
+    return agent
+  }
+
+  it('is disabled by default', async () => {
+    const ctx = await failHarness({})
+    const agent = await run(ctx, Array.from({ length: 6 }, (_, i) => ['boom', { payload: i }] as [string, unknown]))
+    expect(reminders(agent)).toHaveLength(0)
+  })
+
+  it('fires on consecutive failures even when the arguments differ', async () => {
+    const ctx = await failHarness({ failureThresholds: [3] })
+    const agent = await run(ctx, [['boom', { p: 1 }], ['boom', { p: 2 }], ['sh', { cmd: 'x' }]])
+    const found = reminders(agent)
+    expect(found).toHaveLength(1)
+    expect(found[0]!.text).toContain('consecutive_failed_calls: 3')
+    expect(found[0]!.text).toContain('- tools: boom, sh')
+    expect(found[0]!.source).toEqual({ kind: 'plugin', plugin: 'repeat-tool-reminder', form: 'notice', summary: '3 failed calls in a row' })
+  })
+
+  it('a successful call (including exit code 0) resets the failure chain', async () => {
+    const ctx = await failHarness({ failureThresholds: [3] })
+    const agent = await run(ctx, [['boom', { p: 1 }], ['boom', { p: 2 }], ['sh_ok', {}], ['boom', { p: 3 }], ['boom', { p: 4 }]])
+    expect(reminders(agent)).toHaveLength(0)
+  })
+
+  it('sends one reminder when both chains trip on the same call', async () => {
+    const ctx = await failHarness({ thresholds: [3], failureThresholds: [3] })
+    const agent = await run(ctx, [['boom', {}], ['boom', {}], ['boom', {}]])
+    const found = reminders(agent)
+    expect(found).toHaveLength(1)
+    expect(found[0]!.text).toContain('repeating the exact same tool call')
+  })
+
+  it('rejects invalid failureThresholds', async () => {
+    const ctx = new Context()
+    await mountAgentLoopTestDependencies(ctx)
+    await ctx.plugin(AgentLoop, { agents: [] })
+    await expect(ctx.plugin(RepeatToolGuard, { failureThresholds: [1] })).rejects.toThrow(/failureThresholds/)
+  })
+})

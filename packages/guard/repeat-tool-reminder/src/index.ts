@@ -12,7 +12,7 @@ import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
 import { createUserMessage } from '@pentest-harness/dsh-llm'
 import type { MessageSource } from '@pentest-harness/dsh-llm'
 import type { UserMessage } from '@pentest-harness/dsh-session'
-import type { PostToolDecision, ToolExecution } from '@pentest-harness/dsh-tools'
+import type { PostToolDecision, ToolExecution, ToolExecutionResult } from '@pentest-harness/dsh-tools'
 
 export const name = 'repeat-tool-reminder'
 
@@ -40,6 +40,15 @@ export interface Config {
    * always compares the FULL canonical string).
    */
   argumentsPreviewChars?: number
+  /**
+   * Consecutive-FAILURE counts that trigger a failure-loop reminder (default
+   * `[]`, disabled). Unlike `thresholds`, the arguments may differ between
+   * calls: a run of tracked calls that each failed (`isError`, or a shell
+   * result carrying a non-zero `[exit code: N]` marker) counts, and any
+   * successful tracked call resets it. This catches the "tweak the payload and
+   * retry" loop that identical-argument detection misses.
+   */
+  failureThresholds?: number[]
 }
 
 export const Config: z<Config> = z.object({
@@ -47,6 +56,7 @@ export const Config: z<Config> = z.object({
   include: z.array(z.string()).default([]),
   exclude: z.array(z.string()).default([]),
   argumentsPreviewChars: z.number().default(500),
+  failureThresholds: z.array(z.number()).default([]),
 })
 
 /**
@@ -76,6 +86,26 @@ function detailedReminder(toolName: string, count: number, canonicalArguments: s
     + 'these exact arguments again. Inspect the latest result and choose a '
     + 'different action, different arguments, or finish the task if enough '
     + 'evidence has been gathered.'
+}
+
+/** The failure-loop reminder: the last N tracked calls all failed, whatever their arguments. */
+function failureReminder(count: number, tools: string[]): string {
+  return 'Failure loop detected:\n'
+    + `- consecutive_failed_calls: ${count}\n`
+    + `- tools: ${[...new Set(tools)].join(', ')}\n`
+    + 'Your last attempts all failed. Stop retrying variations of the same idea. '
+    + 'Re-read the latest error, state in one sentence why the approach is failing, '
+    + 'then either switch to a materially different approach, gather the missing '
+    + 'information first, or record the result as negative and move on.'
+}
+
+/** Matches a non-zero shell exit marker (`[exit code: 1]`, `[exit code: -1]`), never `[exit code: 0]`. */
+const NONZERO_EXIT = /\[exit code: (?!0\])-?\d+\]/
+
+/** Whether a settled tool result counts as a failure for the failure-loop chain. */
+function failed(result: Readonly<ToolExecutionResult>): boolean {
+  if (result.isError) return true
+  return result.content.some(block => block.type === 'text' && NONZERO_EXIT.test(block.text))
 }
 
 /**
@@ -125,17 +155,17 @@ function previewArguments(canonical: string, cap: number): string {
  * ascending (the escalation rule reads `thresholds[0]` as the gentle tier, so
  * order is normalized here, once).
  */
-function validateThresholds(values: number[]): number[] {
-  if (values.length === 0) {
-    throw new Error('repeat-tool-reminder: `thresholds` must not be empty')
+function validateThresholds(values: number[], key = 'thresholds', allowEmpty = false): number[] {
+  if (values.length === 0 && !allowEmpty) {
+    throw new Error(`repeat-tool-reminder: \`${key}\` must not be empty`)
   }
   for (const value of values) {
     if (!Number.isInteger(value) || value < 2) {
-      throw new Error(`repeat-tool-reminder: invalid threshold ${value} — every threshold must be an integer >= 2`)
+      throw new Error(`repeat-tool-reminder: invalid ${key} entry ${value} — every threshold must be an integer >= 2`)
     }
   }
   if (new Set(values).size !== values.length) {
-    throw new Error('repeat-tool-reminder: `thresholds` must not contain duplicates')
+    throw new Error(`repeat-tool-reminder: \`${key}\` must not contain duplicates`)
   }
   return [...values].sort((a, b) => a - b)
 }
@@ -170,7 +200,31 @@ export function apply(ctx: Context, config: Config): void {
     throw new Error(`repeat-tool-reminder: invalid argumentsPreviewChars ${argumentsPreviewChars} — must be an integer >= 1`)
   }
 
+  const failureThresholds = validateThresholds(config.failureThresholds as number[], 'failureThresholds', true)
+  const failureThresholdSet = new Set(failureThresholds)
+
   const chains = new WeakMap<Agent, Chain>()
+  const failureChains = new WeakMap<Agent, string[]>()
+
+  /**
+   * Advance the calling agent's failure chain and return the failure-loop
+   * reminder when its length hits a configured `failureThresholds` entry.
+   * Arguments are ignored: only consecutive failure matters.
+   */
+  function observeFailure(exec: ToolExecution, result: Readonly<ToolExecutionResult>): UserMessage | undefined {
+    if (failureThresholds.length === 0 || !exec.agent || !tracked(exec.name)) return undefined
+    if (!failed(result)) {
+      failureChains.delete(exec.agent)
+      return undefined
+    }
+    const tools = [...failureChains.get(exec.agent) ?? [], exec.name]
+    failureChains.set(exec.agent, tools)
+    if (!failureThresholdSet.has(tools.length)) return undefined
+    return createUserMessage({
+      content: [{ type: 'text', text: failureReminder(tools.length, tools) }],
+      source: { ...PLUGIN_SOURCE, form: 'notice', summary: `${tools.length} failed calls in a row` },
+    })
+  }
 
   /** Whether a tool participates in the chain (untracked calls are transparent: they neither count nor reset). */
   function tracked(toolName: string): boolean {
@@ -210,8 +264,13 @@ export function apply(ctx: Context, config: Config): void {
   // the downstream outcome), DELEGATE so a later listener can still block or
   // replace, then fold the reminder onto whatever came back — additionalContexts
   // rides both decision variants, so a blocked call still gets the nudge.
-  ctx.on('tools/post-execute', async (exec, _result, next): Promise<PostToolDecision> => {
-    const reminder = observe(exec)
+  ctx.on('tools/post-execute', async (exec, result, next): Promise<PostToolDecision> => {
+    // An identical-call reminder already tells the model to stop; send at most
+    // one reminder per call so a loop never pays for two.
+    // Both chains always advance; the identical-call reminder wins a tie.
+    const repeatReminder = observe(exec)
+    const failureLoopReminder = observeFailure(exec, result)
+    const reminder = repeatReminder ?? failureLoopReminder
     const downstream = await next()
     if (!reminder) return downstream
     if (downstream.kind === 'block') {
@@ -227,7 +286,10 @@ export function apply(ctx: Context, config: Config): void {
   // loop. Pure reset hook: always delegates (attaching nothing, vetoing
   // nothing).
   ctx.on('agent/pre-step', ({ agent, messages }, next): Promise<PreStepDecision> => {
-    if (messages.some(message => message.source.kind === 'user')) chains.delete(agent)
+    if (messages.some(message => message.source.kind === 'user')) {
+      chains.delete(agent)
+      failureChains.delete(agent)
+    }
     return next()
   })
 }
