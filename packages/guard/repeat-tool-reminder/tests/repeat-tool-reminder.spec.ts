@@ -412,7 +412,7 @@ describe('failure-loop detection (failureThresholds)', () => {
     return ctx
   }
 
-  async function run(ctx: Context, calls: [string, unknown][]): Promise<Agent> {
+  async function run(ctx: Context, calls: [string, object][]): Promise<Agent> {
     const adapter = new MockAdapter([
       ...calls.map(([tool, args], i) => toolCallResponse(`c${i}`, tool, args)),
       textResponse('done'),
@@ -426,7 +426,7 @@ describe('failure-loop detection (failureThresholds)', () => {
 
   it('is disabled by default', async () => {
     const ctx = await failHarness({})
-    const agent = await run(ctx, Array.from({ length: 6 }, (_, i) => ['boom', { payload: i }] as [string, unknown]))
+    const agent = await run(ctx, Array.from({ length: 6 }, (_, i) => ['boom', { payload: i }] as [string, object]))
     expect(reminders(agent)).toHaveLength(0)
   })
 
