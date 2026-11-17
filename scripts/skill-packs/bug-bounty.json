@@ -1,0 +1,182 @@
+{
+  "description": "Curated web/API bug-bounty skills from S1N6H/Bug-Bounty-Skills, pinned by commit and content hash. Each skill stays under its original author's license; see the author repository for terms.",
+  "repository": "S1N6H/Bug-Bounty-Skills",
+  "commit": "6e42ad60cbbd29dd8f0808dbff663d401c505eaa",
+  "path": "skills",
+  "skills": [
+    {
+      "name": "hunt-dispatch",
+      "file": "0x002132-skills-bugbounty-hunt-dispatch.md",
+      "sha256": "51167616e354bc6602ea2c61fbd3a59bf984e98e6096c4483f8630cf8af36821",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "web2-recon",
+      "file": "0x002132-skills-bugbounty-web2-recon.md",
+      "sha256": "18e6fcabe44930f6d91a94e50f42a1e05b058648dfd6df9ac1904a4b6f017cb2",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-subdomain",
+      "file": "0x002132-skills-bugbounty-hunt-subdomain.md",
+      "sha256": "ad6e2afab3b23131197c3e2145f9c67e988deb363f2ce2108efdd74e30d286f6",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-idor",
+      "file": "0x002132-skills-bugbounty-hunt-idor.md",
+      "sha256": "53ca8e7680cf0d7e654765489e38d5be84fa6a807644e0372fe07a6b351be9f9",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-xss",
+      "file": "0x002132-skills-bugbounty-hunt-xss.md",
+      "sha256": "2b8a98d7560bf32e1759d0464fe7599c9f6fbf0b1dcfb8d01712b054f93dd358",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-ssrf",
+      "file": "0x002132-skills-bugbounty-hunt-ssrf.md",
+      "sha256": "868522323df975e4e486a598f309ef2e1a7397682167619eac3c2feb4faa3d1b",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-sqli",
+      "file": "0x002132-skills-bugbounty-hunt-sqli.md",
+      "sha256": "f84efe4275789b8ba5f8be150710cbc0fcac61d1028fb57ea56d7dfe18cc6eb0",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-ssti",
+      "file": "0x002132-skills-bugbounty-hunt-ssti.md",
+      "sha256": "30e314db34f5324c2ee0f2d9a20d02f0bd9b0076e8c46a348125be539b392766",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-auth-bypass",
+      "file": "0x002132-skills-bugbounty-hunt-auth-bypass.md",
+      "sha256": "8c52dae432985b2f00984d579b91671afd17ed5a8b253161dfe19b795916034d",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-ato",
+      "file": "0x002132-skills-bugbounty-hunt-ato.md",
+      "sha256": "729acb269d65b398efaa60faf6fa4bcaee0045799f935e0350785655943da0ac",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-mfa-bypass",
+      "file": "0x002132-skills-bugbounty-hunt-mfa-bypass.md",
+      "sha256": "4af980aa272a9d3d2b9f0562df5f4170f1ee6980a3260bcee521645efa2d0662",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-oauth",
+      "file": "0x002132-skills-bugbounty-hunt-oauth.md",
+      "sha256": "68ccb80f7bfd8b3d80380685f5672d138c0856fec942fb33901a866c83a163df",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-saml",
+      "file": "0x002132-skills-bugbounty-hunt-saml.md",
+      "sha256": "93a92589e9b7a5e5fbcf7ad23c216d7c136d793d0ed34fe8e473fb7b5555e33a",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-csrf",
+      "file": "0x002132-skills-bugbounty-hunt-csrf.md",
+      "sha256": "8cc59fc4f701053404c6d9756efc3e255dd7e1b7959cb3d3df1c8dcc1edc6b60",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-business-logic",
+      "file": "0x002132-skills-bugbounty-hunt-business-logic.md",
+      "sha256": "2a8022e84ffb7f6581ab2723db798aea29d4aea4004c4ee2387e81cb504c6e56",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-race-condition",
+      "file": "0x002132-skills-bugbounty-hunt-race-condition.md",
+      "sha256": "04979160cb49d8f089af0c072d4909954fc82d598e664e1b2eb6c8932eb32299",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-file-upload",
+      "file": "0x002132-skills-bugbounty-hunt-file-upload.md",
+      "sha256": "fbf6057321153d8fc8228ee2555ec988e6b709b4c717a85bc2a7a199f2cdec61",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-graphql",
+      "file": "0x002132-skills-bugbounty-hunt-graphql.md",
+      "sha256": "83575fa4e2dedf91a27a2aa5773de9d6ada86cbe779174d45f3f203903a8efc7",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-api-misconfig",
+      "file": "0x002132-skills-bugbounty-hunt-api-misconfig.md",
+      "sha256": "cfdcdfcbbfd4543efb523b78036b890f28f2d956144ab4d7e4a3b0e5b8dfe1ec",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-cache-poison",
+      "file": "0x002132-skills-bugbounty-hunt-cache-poison.md",
+      "sha256": "f9f0e5e74332fc098fd133a61c3630c6656a1ac7ce15d19fede18328067f427b",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-http-smuggling",
+      "file": "0x002132-skills-bugbounty-hunt-http-smuggling.md",
+      "sha256": "9b2bac1800746f1e987fcebd3790709401a25c68e9249fa6eeaeafbe1219e674",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-cloud-misconfig",
+      "file": "0x002132-skills-bugbounty-hunt-cloud-misconfig.md",
+      "sha256": "0c75884e153d1fa0bcd960aa3b90e20f41061024c4790de52efdc4ead2825f40",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "hunt-misc",
+      "file": "0x002132-skills-bugbounty-hunt-misc.md",
+      "sha256": "69cdecd2105620e2fdc7a06e5ded72b462599fbd8e23456b68661fe3af26f170",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "triage-validation",
+      "file": "0x002132-skills-bugbounty-triage-validation.md",
+      "sha256": "a90b2e9d8c4e025619ff5153b852ccb7c411a95ac4dfeaf96549e1b1eb8f125a",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "evidence-hygiene",
+      "file": "0x002132-skills-bugbounty-evidence-hygiene.md",
+      "sha256": "03beb1e888f8571a2e2ef8b3ebc4dc521ed1af305abbcbcf775eb4a9d5584c6f",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "report-writing",
+      "file": "0x002132-skills-bugbounty-report-writing.md",
+      "sha256": "fde49b05d74fa839e2728e1baa4776a0d2599d814b4855cf257bacbe71c81027",
+      "author": "0x002132/skills-bugbounty"
+    },
+    {
+      "name": "false-positive-killer",
+      "file": "Aetherdz-huntpack-skills-validation-false-positive-killer.md",
+      "sha256": "bfecb39374a11f7919b65d171f4cc70edb11f8ab91ecf3ca5187ea7284b78d55",
+      "author": "Aetherdz/huntpack"
+    },
+    {
+      "name": "application-model-builder",
+      "file": "Aetherdz-huntpack-skills-understand-application-model-builder.md",
+      "sha256": "aaf00305536b9e161ce26f95851d2a4d036515cb28cad2a4e3b60245ac27103d",
+      "author": "Aetherdz/huntpack"
+    },
+    {
+      "name": "domain-scoped-hunting",
+      "file": "Aetherdz-huntpack-skills-discipline-domain-scoped-hunting.md",
+      "sha256": "c891cea92dad9cf28e2a703c644d100b55849e7b509adef158c247df49ce6c65",
+      "author": "Aetherdz/huntpack"
+    }
+  ]
+}
