@@ -248,6 +248,7 @@ export function chatSnapshotFixture(input: {
       seq: endSeq,
       time: turn.end?.time ?? 0,
       closing,
+      endReason: 'completed',
       branchUnavailable: closing === null
         || preceding?.kind !== 'assistant-step'
         || (preceding.data as ReturnType<typeof assistantData>).finalNode.seq !== closing.finalNode.seq,
