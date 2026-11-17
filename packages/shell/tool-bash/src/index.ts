@@ -21,6 +21,7 @@ import type {} from '@pentest-harness/dsh-user-approval'
 import type {} from '@pentest-harness/dsh-shell-env'
 import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
 import { ESCALATION_TARGETS, approveEscalation, canonicalPath, validateEscalationArgs } from '@pentest-harness/dsh-sandbox'
+import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
 import type { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
 import { DSH_ENV_PREFIX } from '@pentest-harness/dsh-shell'
 import type { ShellRunResult } from '@pentest-harness/dsh-shell'
@@ -144,18 +145,20 @@ function presentBashResult(args: unknown, result: ToolResult): ToolResultView | 
 }
 
 /**
- * Resolve an explicit workdir first, making a relative one session-workspace-relative;
- * otherwise use the filesystem identity of the session cwd and leave executor
- * defaulting as the fallback. A resolved sandbox-policy root wins so workdir
- * and confinement use the exact same per-call identity.
+ * The root a call's workdir resolves under: the filesystem identity of the
+ * session cwd, or the resolved sandbox-policy root, which wins so workdir and
+ * confinement use the exact same per-call identity.
  */
+function sessionRoot(exec: { agent?: Agent }, policyWorkspaceRoot?: string): string | undefined {
+  const headerCwd = exec.agent?.session.header.cwd
+  return policyWorkspaceRoot ?? (headerCwd === undefined ? undefined : canonicalPath(headerCwd))
+}
+
+/** Resolve the model's workdir against `sessionCwd` (the session folder or workspace root). */
 function resolveWorkdir(
   modelWorkdir: string | undefined,
-  exec: { agent?: Agent },
-  policyWorkspaceRoot?: string,
+  sessionCwd: string | undefined,
 ): string | undefined {
-  const headerCwd = exec.agent?.session.header.cwd
-  const sessionCwd = policyWorkspaceRoot ?? (headerCwd === undefined ? undefined : canonicalPath(headerCwd))
   if (modelWorkdir === undefined) return sessionCwd
   if (sessionCwd !== undefined && !isAbsolute(modelWorkdir)) {
     return resolvePath(sessionCwd, modelWorkdir)
@@ -345,7 +348,9 @@ export function apply(ctx: Context, config: Config = {}): void {
       const policy = approvedMode === undefined
         ? standingPolicy
         : { ...(standingPolicy as SandboxExecutionPolicy), mode: approvedMode }
-      const workdir = resolveWorkdir(args.workdir, exec, standingPolicy?.workspaceRoot)
+      // The session folder when one is assigned inside the root, else the root itself.
+      const base = await toolWorkdir(ctx, exec.agent, sessionRoot(exec, standingPolicy?.workspaceRoot))
+      const workdir = resolveWorkdir(args.workdir, base)
       const dshEnv = ctx.shellEnv.collect(exec)
       const request = {
         command: args.command,

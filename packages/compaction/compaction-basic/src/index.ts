@@ -14,6 +14,7 @@ import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@pentest-harness/dsh-
 import type { LlmCallConfig } from '@pentest-harness/dsh-llm'
 import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
 import type { CommandId } from '@pentest-harness/dsh-commands/brand'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 // Type-only: makes the optional sibling service available to `ctx.get()`.
 import type {} from '@pentest-harness/dsh-compaction-tool-result-pruner'
 import {
@@ -92,6 +93,36 @@ const modelPolicy: z<ModelCompactPolicyConfig> = z.object({
   maxOverflowRetries: maxOverflowRetriesSchema,
 })
 
+/** The compaction values the settings page edits. */
+export interface CompactionSettings {
+  /** Fraction of the context window at which automatic compaction runs. */
+  thresholdRatio: number
+  /** Fraction of the window kept verbatim after compaction (replaces a row's `retainTokens`). */
+  retainRatio?: number
+  /** Output-token budget for the summary request. */
+  maxTokens: number
+}
+
+/** Settings namespace the Plugins settings page edits. */
+export const COMPACTION_SETTINGS_NAMESPACE = settingsNamespace('compaction')
+
+/** Schema of the settings namespace. */
+export const COMPACTION_SETTINGS_SCHEMA: z<CompactionSettings> = z.object({
+  thresholdRatio: z.number().min(0).max(1).required(),
+  retainRatio: z.number().min(0).max(1),
+  maxTokens: z.number().step(1).min(1).required(),
+})
+
+/** Lay the settings page's values over the plugin row's configuration. */
+function withSettings(row: BasicCompactionConfig, value: CompactionSettings): BasicCompactionConfig {
+  const merged: BasicCompactionConfig = { ...row, thresholdRatio: value.thresholdRatio, maxTokens: value.maxTokens }
+  if (value.retainRatio !== undefined) {
+    delete (merged as { retainTokens?: number }).retainTokens
+    ;(merged as { retainRatio?: number }).retainRatio = value.retainRatio
+  }
+  return merged
+}
+
 /**
  * Dependency-light compaction backend using `ctx.tokenMeter` for pressure,
  * retention, cited source events, and summary-convergence pricing.
@@ -103,7 +134,7 @@ const modelPolicy: z<ModelCompactPolicyConfig> = z.object({
 export class BasicCompactionEngine extends CompactionEngine {
   static inject = ['llm', 'tokenMeter', 'sessions']
 
-  static Config: z<BasicCompactionConfig> = z.object({
+  static Config: z<BasicCompactionConfig & { settings?: boolean }> = z.object({
     thresholdRatio: thresholdRatioSchema,
     retainRatio: retainRatioSchema,
     retainTokens: retainTokensSchema,
@@ -114,19 +145,42 @@ export class BasicCompactionEngine extends CompactionEngine {
     maxOverflowRetries: maxOverflowRetriesSchema,
     modelPolicies: z.array(modelPolicy),
     auto: z.boolean(),
+    settings: z.boolean(),
   })
 
-  /** Resolved and validated compaction configuration. */
-  readonly config: ResolvedConfig
+
+  private resolved: ResolvedConfig
+
+  /**
+   * Resolved and validated compaction configuration: the plugin row, with the
+   * settings page's values over it when the row opts in with `settings: true`.
+   */
+  get config(): ResolvedConfig {
+    return this.resolved
+  }
 
   private readonly warnedPressureConfigTargets = new Set<string>()
   private readonly overflowRetries = new WeakMap<Agent, number>()
   private readonly overflowAgents = new WeakMap<Session, Agent>()
 
-  constructor(ctx: Context, config: BasicCompactionConfig = {}) {
+  constructor(ctx: Context, config: BasicCompactionConfig & { settings?: boolean } = {}) {
     super(ctx)
-    this.config = resolveConfig(config)
-    if (this.config.auto) this._registerAutomaticCompaction()
+    const { settings, ...row } = config
+    this.resolved = resolveConfig(row)
+    if (settings === true) {
+      const entry: CompactionSettings = {
+        thresholdRatio: this.resolved.thresholdRatio,
+        ...this.resolved.retainRatio === undefined ? {} : { retainRatio: this.resolved.retainRatio },
+        maxTokens: this.resolved.maxTokens,
+      }
+      let source = (): CompactionSettings => entry
+      installSettingsSection(ctx, COMPACTION_SETTINGS_NAMESPACE, COMPACTION_SETTINGS_SCHEMA, entry, {
+        validate: (value) => { resolveConfig(withSettings(row, value)) },
+        setSource: (current) => { source = current },
+        onChange: () => { this.resolved = resolveConfig(withSettings(row, source())) },
+      })
+    }
+    if (this.resolved.auto) this._registerAutomaticCompaction()
   }
 
   /**

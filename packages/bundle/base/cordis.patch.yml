@@ -52,6 +52,15 @@
         maxOutputTokens: 64
         timeoutMs: 60000
 
+    # Each session gets its own folder inside the workspace, named after its
+    # title (`<workspace>/sessions/<title>/`); the shell and file tools start
+    # there. Editable under Settings → Plugins.
+    - id: session-folders
+      name: '@pentest-harness/dsh-session-folders'
+      config:
+        folder: sessions
+        settings: true
+
     - id: user-questions
       name: '@pentest-harness/dsh-user-questions'
 
@@ -352,6 +361,7 @@
       name: '@pentest-harness/dsh-spill-policy'
       config:
         maxInlineBytes: 12000
+        settings: true
 
     # Durability checkpoints before each model request and top-level dispatch.
     - id: session-checkpoint-policy
@@ -396,6 +406,7 @@
         thresholds: [3, 5, 8]
         argumentsPreviewChars: 500
         failureThresholds: [4, 7]
+        settings: true
 
     # Every mode enables the stable model-facing web_search tool. DeepSeek search
     # resolves the same DEEPSEEK_API_KEY credential the Models page manages for

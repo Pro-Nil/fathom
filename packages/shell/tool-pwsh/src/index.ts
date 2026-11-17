@@ -25,13 +25,13 @@ import z from '@pentest-harness/schemastery'
 import { defineTool, TOOL_ABORTED } from '@pentest-harness/dsh-tools'
 import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@pentest-harness/dsh-tools'
 import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { Agent } from '@pentest-harness/dsh-agent'
 import type {} from '@pentest-harness/dsh-system-prompt'
 import type {} from '@pentest-harness/dsh-jobs'
 import type {} from '@pentest-harness/dsh-shell-env'
 import type {} from '@pentest-harness/dsh-user-approval'
 import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
 import { ESCALATION_TARGETS, approveEscalation, validateEscalationArgs } from '@pentest-harness/dsh-sandbox'
+import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
 import type { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
 import type { ShellRunResult } from '@pentest-harness/dsh-shell'
 import { parseExitStatus } from '@pentest-harness/dsh-shell'
@@ -148,11 +148,10 @@ function pwshDescription(backgroundEnabled: boolean, escalationModes: readonly S
  * Resolve an explicit workdir first, making a relative one session-workspace-relative;
  * otherwise use the session header cwd and leave executor defaulting as the fallback.
  */
-function resolveWorkdir(modelWorkdir: string | undefined, exec: { agent?: Agent }): string | undefined {
-  const headerCwd = exec.agent?.session.header.cwd
-  if (modelWorkdir === undefined) return headerCwd
-  if (headerCwd !== undefined && !isAbsolute(modelWorkdir)) {
-    return resolvePath(headerCwd, modelWorkdir)
+function resolveWorkdir(modelWorkdir: string | undefined, base: string | undefined): string | undefined {
+  if (modelWorkdir === undefined) return base
+  if (base !== undefined && !isAbsolute(modelWorkdir)) {
+    return resolvePath(base, modelWorkdir)
   }
   return modelWorkdir
 }
@@ -355,7 +354,9 @@ export function apply(ctx: Context, config: Config = {}): void {
       const policy = approvedMode === undefined
         ? standingPolicy
         : { ...(standingPolicy as SandboxExecutionPolicy), mode: approvedMode }
-      const workdir = resolveWorkdir(args.workdir, exec)
+      // The session folder when one is assigned, else the session workspace.
+      const base = await toolWorkdir(ctx, exec.agent, exec.agent?.session.header.cwd)
+      const workdir = resolveWorkdir(args.workdir, base)
       const request = {
         command: args.command,
         ...workdir !== undefined ? { workdir } : {},

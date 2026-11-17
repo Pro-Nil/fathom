@@ -43,7 +43,8 @@
     "@pentest-harness/dsh-jobs": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
     "@pentest-harness/dsh-user-approval": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-session-folders": "workspace:^"
   },
   "dependencies": {
     "@pentest-harness/schemastery": "workspace:^"
@@ -68,6 +69,7 @@
     "@pentest-harness/dsh-tool-jobs": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
     "@pentest-harness/dsh-user-approval": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/cordis": "workspace:^",
+    "@pentest-harness/dsh-session-folders": "workspace:^"
   }
 }

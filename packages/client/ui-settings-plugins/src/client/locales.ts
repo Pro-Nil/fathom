@@ -11,6 +11,17 @@ export type PluginsSettingsLocaleKey =
   | 'webSearchTitle' | 'webSearchDescription'
   | 'webSearchApiKey' | 'webSearchApiKeyHint' | 'webSearchApiKeySet' | 'webSearchApiKeyUnset'
   | 'webSearchBaseUrl' | 'webSearchBaseUrlHint' | 'webSearchMaxUses' | 'webSearchMaxUsesHint'
+  | 'invalidNumberList'
+  | 'compactionTitle' | 'compactionDescription' | 'compactionThreshold' | 'compactionThresholdHint'
+  | 'compactionRetain' | 'compactionRetainHint' | 'compactionMaxTokens' | 'compactionMaxTokensHint'
+  | 'spillTitle' | 'spillDescription' | 'spillMaxInlineBytes' | 'spillMaxInlineBytesHint'
+  | 'prunerTitle' | 'prunerDescription' | 'prunerThreshold' | 'prunerThresholdHint'
+  | 'prunerHead' | 'prunerHeadHint' | 'prunerTail' | 'prunerTailHint'
+  | 'loopGuardTitle' | 'loopGuardDescription' | 'loopGuardRepeat' | 'loopGuardRepeatHint'
+  | 'loopGuardFailure' | 'loopGuardFailureHint'
+  | 'sessionFoldersTitle' | 'sessionFoldersDescription' | 'sessionFoldersEnabled' | 'sessionFoldersEnabledHint'
+  | 'sessionFoldersFolder' | 'sessionFoldersFolderHint'
+  | 'personaTitle' | 'personaDescription' | 'personaText' | 'personaTextHint'
 
 /** English copy. */
 export const en: Record<PluginsSettingsLocaleKey, string> = {
@@ -51,6 +62,43 @@ export const en: Record<PluginsSettingsLocaleKey, string> = {
   webSearchBaseUrlHint: 'Leave blank to use the provider default.',
   webSearchMaxUses: 'Max searches per request',
   webSearchMaxUsesHint: 'How many times one request may search before it must answer.',
+  invalidNumberList: 'Enter whole numbers separated by commas, "off", or leave blank to use the default.',
+  compactionTitle: 'Context compaction',
+  compactionDescription: 'When the conversation is summarized to free up the context window.',
+  compactionThreshold: 'Compact at (fraction of window)',
+  compactionThresholdHint: 'For example 0.5 compacts when the context is half full. Lower saves tokens; higher keeps more exact detail.',
+  compactionRetain: 'Keep verbatim (fraction of window)',
+  compactionRetainHint: 'How much of the most recent conversation survives compaction word for word, e.g. 0.05.',
+  compactionMaxTokens: 'Summary length (tokens)',
+  compactionMaxTokensHint: 'Output-token budget for the summary that replaces older history.',
+  spillTitle: 'Large tool output',
+  spillDescription: 'When a tool result is saved to a file instead of being sent to the model.',
+  spillMaxInlineBytes: 'Inline limit (bytes)',
+  spillMaxInlineBytesHint: 'Results larger than this become a short preview plus a file path the agent can read or grep.',
+  prunerTitle: 'Old tool results',
+  prunerDescription: 'How older tool results are trimmed before full compaction runs.',
+  prunerThreshold: 'Trim results longer than (characters)',
+  prunerThresholdHint: 'Older results above this length are cut down to their head and tail.',
+  prunerHead: 'Keep from the start (characters)',
+  prunerHeadHint: 'Head + tail must fit under the trim length.',
+  prunerTail: 'Keep from the end (characters)',
+  prunerTailHint: 'Head + tail must fit under the trim length.',
+  loopGuardTitle: 'Loop guards',
+  loopGuardDescription: 'Reminders sent when the agent keeps repeating itself or failing.',
+  loopGuardRepeat: 'Identical-call reminders at',
+  loopGuardRepeatHint: 'After this many identical calls in a row, e.g. 3, 5, 8. Each number must be 2 or more.',
+  loopGuardFailure: 'Failure-loop reminders at',
+  loopGuardFailureHint: 'After this many failed calls in a row, e.g. 4, 7. Type "off" to disable.',
+  sessionFoldersTitle: 'Session folders',
+  sessionFoldersDescription: 'Give each session its own folder inside the workspace.',
+  sessionFoldersEnabled: 'Use a folder per session',
+  sessionFoldersEnabledHint: 'New sessions get a folder named after their title; the shell and file tools start there. Sessions that already have a folder keep it.',
+  sessionFoldersFolder: 'Parent folder',
+  sessionFoldersFolderHint: 'Relative to the workspace, e.g. sessions → <workspace>/sessions/<title>/.',
+  personaTitle: 'Persona',
+  personaDescription: 'The agent\'s system prompt for this preset.',
+  personaText: 'Persona text',
+  personaTextHint: 'Takes effect on the next request. {{model}} and {{cwd}} are filled in automatically. Reset restores the built-in text.',
 }
 
 /** Simplified Chinese copy. */
@@ -92,4 +140,41 @@ export const zh: Record<PluginsSettingsLocaleKey, string> = {
   webSearchBaseUrlHint: '留空则使用提供方默认地址。',
   webSearchMaxUses: '单次请求最多搜索次数',
   webSearchMaxUsesHint: '一次请求在必须作答前最多可以搜索多少次。',
+  invalidNumberList: '请填以逗号分隔的整数，或填 "off"；留空表示使用默认值。',
+  compactionTitle: '上下文压缩',
+  compactionDescription: '何时把对话总结压缩以腾出上下文窗口。',
+  compactionThreshold: '压缩触发点（占窗口比例）',
+  compactionThresholdHint: '例如 0.5 表示上下文用到一半时压缩。越低越省 token，越高保留的原文越多。',
+  compactionRetain: '原文保留（占窗口比例）',
+  compactionRetainHint: '压缩后逐字保留的最近对话量，例如 0.05。',
+  compactionMaxTokens: '摘要长度（token）',
+  compactionMaxTokensHint: '替换旧历史的摘要可用的输出 token 数。',
+  spillTitle: '大型工具输出',
+  spillDescription: '工具结果何时改存为文件，而不是直接发给模型。',
+  spillMaxInlineBytes: '内联上限（字节）',
+  spillMaxInlineBytesHint: '超过此大小的结果会变成简短预览加一个文件路径，agent 可以读取或 grep。',
+  prunerTitle: '旧工具结果',
+  prunerDescription: '完整压缩之前如何裁剪较早的工具结果。',
+  prunerThreshold: '裁剪长度超过（字符）的结果',
+  prunerThresholdHint: '超过此长度的旧结果只保留开头和结尾。',
+  prunerHead: '保留开头（字符）',
+  prunerHeadHint: '开头加结尾必须小于裁剪长度。',
+  prunerTail: '保留结尾（字符）',
+  prunerTailHint: '开头加结尾必须小于裁剪长度。',
+  loopGuardTitle: '循环防护',
+  loopGuardDescription: 'agent 反复重复或连续失败时发送的提醒。',
+  loopGuardRepeat: '相同调用提醒次数',
+  loopGuardRepeatHint: '连续相同调用达到这些次数时提醒，例如 3, 5, 8。每个数字至少为 2。',
+  loopGuardFailure: '连续失败提醒次数',
+  loopGuardFailureHint: '连续失败达到这些次数时提醒，例如 4, 7。填 "off" 关闭。',
+  sessionFoldersTitle: '会话文件夹',
+  sessionFoldersDescription: '在工作区内为每个会话分配独立文件夹。',
+  sessionFoldersEnabled: '每个会话使用独立文件夹',
+  sessionFoldersEnabledHint: '新会话会得到一个以标题命名的文件夹，终端和文件工具从那里开始。已有文件夹的会话保持不变。',
+  sessionFoldersFolder: '上级文件夹',
+  sessionFoldersFolderHint: '相对于工作区，例如 sessions → <工作区>/sessions/<标题>/。',
+  personaTitle: '人设',
+  personaDescription: '此预设的 agent 系统提示词。',
+  personaText: '人设文本',
+  personaTextHint: '下一次请求起生效。{{model}} 和 {{cwd}} 会自动填入。恢复默认即回到内置文本。',
 }

@@ -13,6 +13,7 @@ import type { Session, SessionEvent, ToolResultMessage } from '@pentest-harness/
 import type {} from '@pentest-harness/dsh-compaction'
 // Type-only: the `ctx.tokenMeter` Context merge for the declared injection.
 import type {} from '@pentest-harness/dsh-token-meter'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 import { codePointLength, DEFAULTS, PRUNE_MARKER, resolveConfig } from './config.ts'
 import type {
   PrunedEntry,
@@ -35,6 +36,16 @@ declare module '@pentest-harness/cordis' {
   }
 }
 
+/** Settings namespace the Plugins settings page edits. */
+export const PRUNER_SETTINGS_NAMESPACE = settingsNamespace('tool-result-pruner')
+
+/** Schema of the settings namespace: the three character budgets. */
+export const PRUNER_SETTINGS_SCHEMA: z<ResolvedConfig> = z.object({
+  thresholdChars: z.number().step(1).min(1).default(DEFAULTS.thresholdChars),
+  headChars: z.number().step(1).min(0).default(DEFAULTS.headChars),
+  tailChars: z.number().step(1).min(0).default(DEFAULTS.tailChars),
+})
+
 interface SnapshotCandidate {
   readonly seq: number
   readonly event: SessionEvent<'tool/result'>
@@ -46,18 +57,37 @@ export class ToolResultPruner extends Service {
   // event, so pruning genuinely requires the pricing capability.
   static inject = ['tokenMeter']
 
-  static Config: z<ToolResultPruneConfig> = z.object({
+  static Config: z<ToolResultPruneConfig & { settings?: boolean }> = z.object({
     thresholdChars: z.number().step(1).min(1).default(DEFAULTS.thresholdChars),
     headChars: z.number().step(1).min(0).default(DEFAULTS.headChars),
     tailChars: z.number().step(1).min(0).default(DEFAULTS.tailChars),
+    settings: z.boolean(),
   })
 
-  /** Resolved and immutable character budgets. */
-  readonly config: ResolvedConfig
+  private resolved: ResolvedConfig
 
-  constructor(ctx: Context, config: ToolResultPruneConfig = {}) {
+  /**
+   * Resolved and immutable character budgets: the plugin row, with the
+   * settings page's values over it when the row opts in with `settings: true`.
+   */
+  get config(): ResolvedConfig {
+    return this.resolved
+  }
+
+  constructor(ctx: Context, config: ToolResultPruneConfig & { settings?: boolean } = {}) {
     super(ctx, 'toolResultPruner')
-    this.config = resolveConfig(config)
+    const { settings, ...row } = config
+    this.resolved = resolveConfig(row)
+    if (settings === true) {
+      const entry: ResolvedConfig = this.resolved
+      let source = (): ResolvedConfig => entry
+      installSettingsSection(ctx, PRUNER_SETTINGS_NAMESPACE, PRUNER_SETTINGS_SCHEMA, { ...entry }, {
+        // Shared with load: head + marker + tail must still fit under the threshold.
+        validate: (value) => { resolveConfig({ ...value }) },
+        setSource: (current) => { source = current },
+        onChange: () => { this.resolved = resolveConfig({ ...source() }) },
+      })
+    }
   }
 
   /**

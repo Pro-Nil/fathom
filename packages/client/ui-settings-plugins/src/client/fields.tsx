@@ -48,7 +48,36 @@ export function ValueField(props: FieldProps & {
   numeric?: boolean
   /** Placeholder shown while the draft is empty. */
   placeholder?: string
+  /** Render a resizable multi-line text area instead of a single-line input. */
+  multiline?: boolean
 }) {
+  const control = props.multiline === true
+    ? (
+      <textarea
+        id={props.id}
+        className={props.invalid ? css.textareaInvalid : css.textarea}
+        rows={12}
+        spellCheck={false}
+        {...props.invalid ? { 'aria-invalid': true } : {}}
+        value={props.text}
+        placeholder={props.placeholder ?? ''}
+        disabled={props.disabled}
+        onChange={(event) => { props.onEdit(event.target.value) }}
+      />
+    )
+    : (
+      <input
+        id={props.id}
+        className={props.invalid ? css.inputInvalid : css.input}
+        type="text"
+        {...props.numeric === true ? { inputMode: 'numeric' as const } : {}}
+        {...props.invalid ? { 'aria-invalid': true } : {}}
+        value={props.text}
+        placeholder={props.placeholder ?? ''}
+        disabled={props.disabled}
+        onChange={(event) => { props.onEdit(event.target.value) }}
+      />
+    )
   return (
     <div className={css.field}>
       <div className={css.head}>
@@ -69,20 +98,51 @@ export function ValueField(props: FieldProps & {
           )
           : null}
       </div>
-      <input
-        id={props.id}
-        className={props.invalid ? css.inputInvalid : css.input}
-        type="text"
-        {...props.numeric === true ? { inputMode: 'numeric' as const } : {}}
-        {...props.invalid ? { 'aria-invalid': true } : {}}
-        value={props.text}
-        placeholder={props.placeholder ?? ''}
-        disabled={props.disabled}
-        onChange={(event) => { props.onEdit(event.target.value) }}
-      />
+      {control}
       <p className={props.invalid ? css.invalid : css.hint}>
         {props.invalid ? props.invalidLabel : props.hint}
       </p>
+    </div>
+  )
+}
+
+/**
+ * A staged on/off field. The draft is `'true'` or `'false'`; ticking the box
+ * stages the new value, and saving writes it.
+ * @param props - the field's copy, its staged text, and the edit actions.
+ * @returns the labelled checkbox.
+ */
+export function ToggleField(props: FieldProps) {
+  return (
+    <div className={css.field}>
+      <div className={css.head}>
+        <label className={css.toggle} htmlFor={props.id}>
+          <input
+            id={props.id}
+            type="checkbox"
+            checked={props.text === 'true'}
+            disabled={props.disabled}
+            onChange={(event) => { props.onEdit(event.target.checked ? 'true' : 'false') }}
+          />
+          <span>{props.label}</span>
+        </label>
+        {props.overridden
+          ? (
+            <span className={css.badges}>
+              <span className={css.badge}>{props.overriddenLabel}</span>
+              <button
+                type="button"
+                className={css.reset}
+                disabled={props.disabled}
+                onClick={props.onReset}
+              >
+                {props.resetLabel}
+              </button>
+            </span>
+          )
+          : null}
+      </div>
+      <p className={css.hint}>{props.hint}</p>
     </div>
   )
 }

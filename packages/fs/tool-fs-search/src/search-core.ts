@@ -26,6 +26,7 @@ import { HarnessError } from '@pentest-harness/dsh-llm'
 import { ItemRetainer, TextRetainer } from '@pentest-harness/dsh-output-retention'
 import type { RetainedItems } from '@pentest-harness/dsh-output-retention'
 import type { SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
+import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
 import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
 import type { ToolExecution } from '@pentest-harness/dsh-tools'
 
@@ -180,8 +181,8 @@ export function resolveRgPath(): Promise<string> {
 /**
  * Run the packaged ripgrep binary with a plain argv vector and return its
  * complete raw stdout. The working directory is the calling agent's session
- * cwd (`exec.agent.session.header.cwd`) when available, else
- * `process.cwd()`. `exec.signal` is forwarded so the cooperative tool timeout
+ * folder (see `@pentest-harness/dsh-session-folders`) or session cwd
+ * (`exec.agent.session.header.cwd`) when available, else `process.cwd()`. `exec.signal` is forwarded so the cooperative tool timeout
  * (`@pentest-harness/dsh-tool-call-timeout-policy`) and caller cancellation terminate the
  * process tree.
  *
@@ -224,7 +225,8 @@ export async function runRipgrep(
   if (exec.signal.aborted) {
     throw new SearchError(`${toolName} was aborted before completion (tool timeout or caller cancellation)`, 'SEARCH_ABORTED')
   }
-  const cwd = exec.agent?.session.header.cwd
+  // The session folder when one is assigned, so relative search paths match the shell's.
+  const cwd = await toolWorkdir(ctx, exec.agent, exec.agent?.session.header.cwd)
   const workdir = cwd ?? process.cwd()
   let handle: SubprocessHandle
   try {
