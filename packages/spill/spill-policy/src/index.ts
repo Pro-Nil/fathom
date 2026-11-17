@@ -192,9 +192,11 @@ export function apply(ctx: Context, config: Config): void {
     // we bound whatever it accepted. A block passes through — spill only shapes
     // accepted plain-text results, never corrective feedback.
     const decision = await next()
-    // Skip `read` to avoid a read → spill → read again loop.
+    // Skip `read` to avoid a read → spill → read again loop, and `skill`: a
+    // loaded skill is instructions the model asked for, so a preview plus a
+    // file path would only force the same loop.
     if (decision.kind !== 'accept' || Object.hasOwn(decision, 'value')
-      || exec.parent !== undefined || exec.name === 'read') return decision
+      || exec.parent !== undefined || exec.name === 'read' || exec.name === 'skill') return decision
 
     const content = decision.content ?? result.content
     const text = flattenPlainText(content)

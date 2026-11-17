@@ -232,6 +232,14 @@ describe('read skip', () => {
     expect(textOf(result.content)).toBe('x'.repeat(1000))
     expect(spill?.saves).toHaveLength(0)
   })
+
+  it('never spills a loaded skill body', async () => {
+    const { ctx, spill } = await setup({ maxInlineBytes: 10 })
+    ctx.tools.register(textTool('skill', 'y'.repeat(1000)))
+    const result = await ctx.tools.execute(exec('skill'))
+    expect(textOf(result.content)).toBe('y'.repeat(1000))
+    expect(spill?.saves).toHaveLength(0)
+  })
 })
 
 describe('the durable dispatch-log arm', () => {
