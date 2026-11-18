@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-供智能体和用户共用的一个浏览器。默认导出的 `BrowserRuntime` 服务注册 `ctx.browser`，其 `shared` 成员是一个通过 Playwright 驱动的持久化 Chromium 系会话（默认 Microsoft Edge）。浏览器在首次使用时启动，而不是随启动加载；配置文件保存在磁盘上，登录状态和 Cookie 在重启后仍然保留。
+供智能体和用户共用的一个浏览器。默认导出的 `BrowserRuntime` 服务注册 `ctx.browser`，其 `shared` 成员是一个通过 Playwright 驱动的持久化 Chromium 会话。默认使用框架自带的 Chromium（Playwright 固定版本，约 180 MB），在浏览器首次启动时下载到 Playwright 的浏览器缓存中，因此不依赖已安装的浏览器。浏览器在首次使用时启动，而不是随启动加载；配置文件保存在磁盘上，登录状态和 Cookie 在重启后仍然保留。
 
 智能体通过 [`dsh-tool-browser`](../tool-browser/README.zh.md) 驱动它。挂载了 `ctx.webServer` 时，该服务还提供实时视图：
 
@@ -11,18 +11,23 @@
 
 Web 客户端的 [`dsh-client-ui-browser`](../../client/ui-browser/README.zh.md) 面板嵌入这个页面。两个路由只接受回环地址的 `Host`，拒绝 `Sec-Fetch-Site: cross-site`，并要求任何 `Origin` 与 Host 一致，因此其他网站（或经 DNS 重绑定的页面）无法操控已登录的浏览器。
 
+地址栏和 `browser_navigate` 的输入按浏览器地址栏的方式解析：URL、裸主机名、IP 地址和 `host:port` 直接打开，其他文本则进行搜索（`searchUrl`，默认 Google）。页面打开文件选择器时，实时视图会请用户选择文件并交给页面，因此上传可以正常工作。
+
+实时视图的 ⋮ 菜单可从密码导出 CSV 文件导入已保存的密码（Chrome、Brave、Edge、Firefox 和多数密码管理器都能导出），可一次选择多个文件。每一行都用本浏览器自己的存储密钥加密，并在浏览器短暂关闭期间写入其密码存储，与 Chromium 保存密码的方式相同；同一站点和用户名的已有条目会保留。不会读取其他浏览器的加密存储：新版 Chrome、Brave 和 Edge 用应用绑定加密保护它们。导入只能通过实时视图操作，没有任何工具把它暴露给模型。
+
 会话为每个标签页保留最近 300 条控制台消息（包括未捕获错误和对话框）和最近 400 个网络请求。原生对话框会被自动处理：alert 被确认，confirm、prompt 和 beforeunload 被取消；两种结果都记入控制台缓冲。
 
 ## 配置
 
 | 键 | 默认值 | 含义 |
 | --- | --- | --- |
-| `channel` | `msedge` | 已安装浏览器的 Playwright 渠道（`msedge`、`chrome`、`chromium`）。 |
+| `channel` | `chromium` | `chromium` 为框架自带版本，首次使用时下载；`msedge` 或 `chrome` 使用已安装的浏览器。 |
 | `executablePath` | 无 | 显式指定浏览器可执行文件；优先于 `channel`。 |
 | `headless` | `true` | 不显示原生窗口运行，实时视图仍会显示页面。 |
 | `profileDir` | `~/.dsh/browser/profile` | 持久化配置目录。 |
 | `width` / `height` | `1280` / `800` | 初始视口（CSS 像素）。实时视图会调整它以适配面板。 |
 | `liveView` | `true` | 挂载 Web 服务器时提供 `/browser/view` 和 `/browser/ws`。 |
+| `searchUrl` | `https://www.google.com/search?q=%s` | 地址栏中非地址文本的搜索地址；`%s` 为编码后的查询。 |
 
 ## 模型体验
 
@@ -36,4 +41,5 @@ Web 客户端的 [`dsh-client-ui-browser`](../../client/ui-browser/README.zh.md)
 
 - **单一共享会话** —— 所有智能体和查看者操作同一组标签页，并发的智能体可能互相干扰页面状态。
 - **实时视图输入较粗糙** —— 鼠标移动限制为每秒 25 次，不转发输入法组合输入和文件拖放。
-- **不处理下载和文件上传** —— 下载和文件选择器沿用 Playwright 默认行为。
+- **不处理下载** —— 下载沿用 Playwright 默认行为。
+- **密码导入仅支持 Windows 且基于 CSV** —— 它用 Windows DPAPI 解锁本浏览器自己的密钥，无法直接读取其他浏览器的存储，因此用户需先从各浏览器导出。不导入 Cookie 和登录状态；在面板中登录一次，配置文件会保留它们。

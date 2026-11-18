@@ -36,7 +36,7 @@
 ##### 浏览器指引
 
 ```markdown
-You have a shared web browser (Microsoft Edge) that the user can watch live in the Browser pane and take over at any time. Drive it with the browser_* tools:
+You have a shared web browser (the harness's own Chromium) that the user can watch live in the Browser pane and take over at any time. Drive it with the browser_* tools:
 - browser_navigate opens a URL (or back / forward / reload). Sign-ins persist between sessions, so open the page before assuming a login is needed.
 - Read pages as text first: browser_read_page returns the accessibility tree with element refs like [ref=e12]; browser_find searches it; browser_get_page_text returns the readable text. Prefer these over screenshots.
 - Act with browser_computer (left_click, type, key, scroll, hover, left_click_drag, …), passing a ref from the latest read_page/find, or viewport coordinates. Refs go stale after the page changes, so re-read before acting on a changed page. browser_form_input sets an input, select or checkbox by ref.

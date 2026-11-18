@@ -1,13 +1,18 @@
 /**
- * The shared browser: one persistent Chromium-family context (Edge by default)
+ * The shared browser: one persistent Chromium-family context (the harness's own Chromium by default)
  * driven through Playwright. The agent's tools and the user's live view act on
  * the same tabs, so either side can see and continue the other's work.
  * @module @pentest-harness/dsh-browser/src/runtime
  */
 
+import { spawn } from 'node:child_process'
 import { mkdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { dirname, join } from 'node:path'
 import { chromium } from 'playwright-core'
-import type { BrowserContext, CDPSession, Page } from 'playwright-core'
+import type { BrowserContext, CDPSession, FileChooser, Page } from 'playwright-core'
+import { parsePasswordCsv, writeLogins } from './passwords.ts'
+import type { ImportedLogin, PasswordImportResult } from './passwords.ts'
 
 /** Resolved launch options for the shared browser. */
 export interface BrowserLaunchOptions {
@@ -23,7 +28,15 @@ export interface BrowserLaunchOptions {
   readonly width: number
   /** Initial viewport height in CSS pixels. */
   readonly height: number
+  /** Search URL for address-bar text that is not an address; `%s` is replaced by the encoded query. */
+  readonly searchUrl: string
 }
+
+/** Default address-bar search (the same engine Claude Code's browser uses). */
+export const DEFAULT_SEARCH_URL = 'https://www.google.com/search?q=%s'
+
+/** The Playwright channel that means "the harness's own Chromium build". */
+export const BUNDLED_CHANNEL = 'chromium'
 
 /** One open tab as both the model and the live view see it. */
 export interface BrowserTab {
@@ -102,11 +115,35 @@ export function toPlaywrightChord(chord: string): string {
  * @returns an absolute URL string.
  */
 export function normalizeUrl(input: string): string {
+  return resolveAddress(input, DEFAULT_SEARCH_URL)
+}
+
+/**
+ * Resolve address-bar input the way a browser omnibox does: a URL or bare host
+ * opens directly, anything else is searched. Bare hosts get `https://`,
+ * loopback hosts `http://`; text with spaces, or a single word that is not
+ * `localhost` and has no dot or port, becomes a search.
+ * @param input - the raw address-bar text.
+ * @param searchUrl - search template; `%s` is replaced by the encoded query.
+ * @returns an absolute URL string.
+ */
+export function resolveAddress(input: string, searchUrl: string): string {
   const trimmed = input.trim()
-  if (/^(localhost|127\.|\[::1\])/iu.test(trimmed)) return `http://${trimmed}`
+  if (trimmed.length === 0) return 'about:blank'
+  if (/^(localhost|127\.|\[::1\])/iu.test(trimmed) && !/\s/u.test(trimmed)) return `http://${trimmed}`
   // A scheme, but not a `host:port` pair such as `example.com:8080`.
-  if (/^[a-z][a-z0-9+.-]*:(?!\d)/iu.test(trimmed)) return trimmed
-  return `https://${trimmed}`
+  if (/^[a-z][a-z0-9+.-]*:(?!\d)/iu.test(trimmed) && !/\s/u.test(trimmed)) return trimmed
+  const looksLikeHost = !/\s/u.test(trimmed) && /^[^/?#]+\.[^/?#.]{2,}|^[^/?#.]+:\d+|^\d{1,3}(?:\.\d{1,3}){3}(?:[:/?#]|$)/u.test(trimmed)
+  if (looksLikeHost) return `https://${trimmed}`
+  return searchUrl.replace('%s', encodeURIComponent(trimmed))
+}
+
+/** One file the live view hands to a page's file chooser. */
+export interface ViewerFile {
+  readonly name: string
+  readonly mimeType: string
+  /** Base64 contents. */
+  readonly data: string
 }
 
 /** The shared browser session. */
@@ -120,6 +157,10 @@ export class SharedBrowser {
   private screencast: { page: Page; cdp: CDPSession } | undefined
   private screencastSwitch: Promise<void> = Promise.resolve()
   private disposed = false
+  private pendingChooser: FileChooser | undefined
+  private installing: Promise<void> | undefined
+  /** Set while the closed profile is being written; launches wait for it. */
+  private maintenance: Promise<unknown> | undefined
 
   constructor(private readonly options: BrowserLaunchOptions) {}
 
@@ -131,12 +172,57 @@ export class SharedBrowser {
   /** Launch on first use; concurrent callers share one launch. */
   private async ensureContext(): Promise<BrowserContext> {
     if (this.disposed) throw new Error('the browser has shut down')
+    while (this.maintenance !== undefined) await this.maintenance.catch(() => {})
     if (this.context !== undefined) return this.context
     this.launching ??= this.launch().finally(() => { this.launching = undefined })
     return this.launching
   }
 
+  /** Resolve address-bar or tool input with this browser's search engine. */
+  address(input: string): string {
+    return resolveAddress(input, this.options.searchUrl)
+  }
+
   private async launch(): Promise<BrowserContext> {
+    try {
+      return await this.launchOnce()
+    } catch (error) {
+      // The harness's own Chromium is downloaded on first use rather than
+      // shipped in the repository; any other launch failure is final.
+      const missing = error instanceof Error && /Executable doesn't exist|playwright install/iu.test(error.message)
+      if (!missing || this.options.executablePath !== undefined || this.options.channel !== BUNDLED_CHANNEL) throw error
+      await this.installBundledBrowser()
+      return this.launchOnce()
+    }
+  }
+
+  /**
+   * Download the pinned Chromium build into Playwright's browser cache
+   * (`%LOCALAPPDATA%\\ms-playwright` on Windows) with Playwright's own installer.
+   */
+  installBundledBrowser(): Promise<void> {
+    this.installing ??= new Promise<void>((resolve, reject) => {
+      this.broadcast({ type: 'status', message: 'Downloading the harness browser (Chromium, about 180 MB). This happens once.' })
+      const cli = join(dirname(createRequire(import.meta.url).resolve('playwright-core/package.json')), 'cli.js')
+      const child = spawn(process.execPath, [cli, 'install', BUNDLED_CHANNEL], { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true })
+      let tail = ''
+      const keep = (chunk: Buffer): void => { tail = (tail + chunk.toString('utf8')).slice(-2000) }
+      child.stdout.on('data', keep)
+      child.stderr.on('data', keep)
+      child.on('error', reject)
+      child.on('close', (code) => {
+        if (code === 0) {
+          this.broadcast({ type: 'status', message: '' })
+          resolve()
+        } else {
+          reject(new Error(`installing the harness browser failed (exit ${String(code)}): ${tail.trim().split('\n').at(-1) ?? ''}`))
+        }
+      })
+    }).finally(() => { this.installing = undefined })
+    return this.installing
+  }
+
+  private async launchOnce(): Promise<BrowserContext> {
     mkdirSync(this.options.profileDir, { recursive: true })
     const context = await chromium.launchPersistentContext(this.options.profileDir, {
       ...this.options.executablePath !== undefined
@@ -199,6 +285,12 @@ export class SharedBrowser {
     page.on('dialog', (dialog) => {
       push(state.console, { level: 'dialog', text: `${dialog.type()}: ${dialog.message()}`, time: Date.now() }, CONSOLE_LIMIT)
       void (dialog.type() === 'alert' ? dialog.accept() : dialog.dismiss()).catch(() => {})
+    })
+    // A page asked for files: hand the picker to the live view so the user
+    // chooses them on their own machine (uploads, password CSV import, …).
+    page.on('filechooser', (chooser) => {
+      this.pendingChooser = chooser
+      this.broadcast({ type: 'filechooser', multiple: chooser.isMultiple() })
     })
     const refreshTitle = (): void => {
       void page.title().then((title) => {
@@ -273,7 +365,7 @@ export class SharedBrowser {
     this.track(page, true)
     this.activePage = page
     this.refreshScreencast()
-    if (url !== undefined && url.trim().length > 0) await page.goto(normalizeUrl(url), { waitUntil: 'domcontentloaded' })
+    if (url !== undefined && url.trim().length > 0) await page.goto(this.address(url), { waitUntil: 'domcontentloaded' })
     this.publishTabs()
     return this.stateFor().id
   }
@@ -307,7 +399,7 @@ export class SharedBrowser {
     if (target === 'back') await page.goBack(options)
     else if (target === 'forward') await page.goForward(options)
     else if (target === 'reload') await page.reload(options)
-    else await page.goto(normalizeUrl(target), options)
+    else await page.goto(this.address(target), options)
     this.publishTabs()
   }
 
@@ -446,6 +538,32 @@ export class SharedBrowser {
           await page.keyboard.insertText(text('text'))
           break
         }
+        case 'files': {
+          const chooser = this.pendingChooser
+          this.pendingChooser = undefined
+          if (chooser === undefined) break
+          // The message is untrusted JSON: keep only well-formed file entries.
+          const raw: unknown[] = Array.isArray(message.files) ? message.files : []
+          const files = raw.filter((file): file is ViewerFile => typeof file === 'object' && file !== null
+            && typeof (file as ViewerFile).name === 'string' && typeof (file as ViewerFile).data === 'string')
+          await chooser.setFiles(files.map(file => ({
+            name: file.name,
+            mimeType: typeof file.mimeType === 'string' && file.mimeType.length > 0 ? file.mimeType : 'application/octet-stream',
+            buffer: Buffer.from(file.data, 'base64'),
+          })))
+          break
+        }
+        case 'importPasswords': {
+          const raw: unknown[] = Array.isArray(message.files) ? message.files : []
+          const files = raw.filter((file): file is ViewerFile => typeof file === 'object' && file !== null
+            && typeof (file as ViewerFile).name === 'string' && typeof (file as ViewerFile).data === 'string')
+          const result = await this.importPasswords(files)
+          const parts = [`Imported ${result.imported} password${result.imported === 1 ? '' : 's'}`]
+          if (result.duplicates > 0) parts.push(`${result.duplicates} already saved`)
+          if (result.skipped > 0) parts.push(`${result.skipped} rows skipped (no web address or password)`)
+          this.broadcast({ type: 'notice', message: `${parts.join(', ')}. Delete the exported CSV files now; they hold your passwords in plain text.` })
+          break
+        }
         case 'navigate':
           await this.navigate(text('url'))
           break
@@ -475,6 +593,43 @@ export class SharedBrowser {
       }
     } catch (error) {
       this.broadcast({ type: 'error', message: error instanceof Error ? error.message.split('\n')[0] : String(error) })
+    }
+  }
+
+  /**
+   * Import saved passwords from password-export CSV files into this browser's
+   * own password manager. The browser closes for a moment while its store is
+   * written, then reopens; open tabs are not restored.
+   * @param files - CSV files exported from other browsers or password managers.
+   * @returns counts of imported, duplicate and skipped rows.
+   */
+  async importPasswords(files: readonly ViewerFile[]): Promise<PasswordImportResult> {
+    const logins: ImportedLogin[] = []
+    let skipped = 0
+    for (const file of files) {
+      const parsed = parsePasswordCsv(Buffer.from(file.data, 'base64').toString('utf8'))
+      logins.push(...parsed.logins)
+      skipped += parsed.skipped
+    }
+    if (logins.length === 0) return { imported: 0, duplicates: 0, skipped }
+    // The profile (and its password key) exists once the browser has run.
+    const context = await this.ensureContext()
+    this.broadcast({ type: 'status', message: `Importing ${logins.length} saved passwords…` })
+    const work = (async () => {
+      // Closing runs the context's close handler, which clears tabs and the
+      // screencast; launches wait on `maintenance` until the store is written.
+      await context.close()
+      return writeLogins(this.options.profileDir, logins)
+    })()
+    this.maintenance = work
+    try {
+      const written = await work
+      return { ...written, skipped }
+    } finally {
+      this.maintenance = undefined
+      this.broadcast({ type: 'status', message: '' })
+      // Reopen for the viewers and the agent whatever the outcome.
+      if (this.viewers.size > 0) void this.ensureContext().then(() => { this.refreshScreencast() }, () => {})
     }
   }
 

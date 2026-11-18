@@ -54,6 +54,31 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
     padding: 7px 12px; border-radius: 8px; background: #3a1d1d; color: #ffd7d7; font-size: 12px;
     opacity: 0; transition: opacity .2s; pointer-events: none; }
   .toast.show { opacity: 1; }
+  .toast.notice { background: #17301f; color: #d6f5df; }
+  .menu { position: absolute; top: 42px; right: 8px; z-index: 5; min-width: 260px; padding: 4px;
+    border-radius: 10px; border: 1px solid var(--line); background: var(--tab-active);
+    box-shadow: 0 12px 32px rgba(0,0,0,.35); display: none; }
+  .menu.open { display: block; }
+  .menu button { all: unset; display: block; box-sizing: border-box; width: 100%; padding: 8px 10px;
+    border-radius: 7px; cursor: pointer; color: var(--text); }
+  .menu button:hover { background: var(--line); }
+  .menu small { display: block; color: var(--muted); margin-top: 2px; }
+  .sheet { position: absolute; inset: 0; z-index: 6; display: none; place-items: center;
+    background: rgba(0,0,0,.45); }
+  .sheet.open { display: grid; }
+  .card { width: min(440px, calc(100% - 32px)); padding: 18px; border-radius: 12px;
+    background: var(--tab-active); border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+  .card h2 { margin: 0 0 6px; font-size: 15px; }
+  .card p { margin: 0 0 14px; color: var(--muted); line-height: 1.45; }
+  .card ol { margin: 0 0 14px; padding-left: 18px; color: var(--muted); line-height: 1.5; }
+  .card .row { display: flex; gap: 8px; justify-content: flex-end; }
+  .card button { all: unset; padding: 7px 14px; border-radius: 8px; cursor: pointer;
+    background: var(--field); color: var(--text); }
+  .card button.primary { background: var(--accent); color: #fff; }
+  .status { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); max-width: 90%;
+    padding: 7px 12px; border-radius: 8px; background: var(--tab-active); color: var(--text);
+    border: 1px solid var(--line); font-size: 12px; display: none; z-index: 4; }
+  .status.show { display: block; }
 </style>
 </head>
 <body>
@@ -64,11 +89,47 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
   <button id="reload" title="Reload"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
   <input class="url" id="url" spellcheck="false" autocomplete="off" placeholder="Enter a URL">
   <button id="newtab" title="New tab"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button id="more" title="More"><svg viewBox="0 0 24 24"><path d="M12 6h.01M12 12h.01M12 18h.01"/></svg></button>
+</div>
+<div class="menu" id="menu">
+  <button id="import-passwords">Import saved passwords…<small>From Chrome, Brave, Edge or any browser's password export (CSV)</small></button>
+  <button id="open-passwords">Open the password manager<small>See, edit or delete what this browser has saved</small></button>
 </div>
 <div class="stage" id="stage">
   <canvas id="screen" tabindex="0"></canvas>
   <div class="note" id="note">Starting the browser…</div>
   <div class="toast" id="toast"></div>
+  <div class="status" id="status"></div>
+  <div class="sheet" id="chooser">
+    <div class="card">
+      <h2>The page wants a file</h2>
+      <p id="chooser-text">Choose the file to give to the page. It goes only to this browser.</p>
+      <input type="file" id="chooser-input" hidden>
+      <div class="row">
+        <button id="chooser-cancel">Cancel</button>
+        <button class="primary" id="chooser-pick">Choose file…</button>
+      </div>
+    </div>
+  </div>
+  <div class="sheet" id="import">
+    <div class="card">
+      <h2>Import saved passwords</h2>
+      <ol>
+        <li>In each browser you want to bring passwords from, export them to a CSV file:
+          <b>Chrome</b> or <b>Brave</b>: Settings → Passwords (Password Manager) → Settings → Export passwords.
+          <b>Edge</b>: Settings → Passwords → ⋯ → Export passwords.
+          <b>Firefox</b>: Passwords → ⋯ → Export passwords.</li>
+        <li>Choose all the exported files here at once. Sites you already saved here are kept.</li>
+        <li>Delete the exported files afterwards; they hold your passwords in plain text.</li>
+      </ol>
+      <p>The browser closes and reopens while the passwords are saved; open tabs are not kept.</p>
+      <input type="file" id="import-input" accept=".csv,text/csv" multiple hidden>
+      <div class="row">
+        <button id="import-cancel">Cancel</button>
+        <button class="primary" id="import-go">Choose CSV files…</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 (() => {
@@ -84,7 +145,12 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
   let ws, view = { width: 0, height: 0 }, tabs = [], urlFocused = false, toastTimer, retry = 0
 
   function send(message) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(message)) }
+  function showNotice(text) {
+    toast.textContent = text; toast.classList.add('show', 'notice')
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show', 'notice'), 9000)
+  }
   function showError(text) {
+    toast.classList.remove('notice')
     toast.textContent = text; toast.classList.add('show')
     clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 4000)
   }
@@ -126,6 +192,17 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
         view = { width: message.width, height: message.height }
       } else if (message.type === 'tabs') {
         tabs = message.tabs; renderTabs()
+      } else if (message.type === 'filechooser') {
+        chooserInput.multiple = message.multiple === true
+        document.getElementById('chooser-text').textContent = message.multiple
+          ? 'Choose the files to give to the page. They go only to this browser.'
+          : 'Choose the file to give to the page. It goes only to this browser.'
+        chooserSheet.classList.add('open')
+      } else if (message.type === 'notice') {
+        showNotice(message.message)
+      } else if (message.type === 'status') {
+        statusEl.textContent = message.message
+        statusEl.classList.toggle('show', Boolean(message.message))
       } else if (message.type === 'error') {
         showError(message.message)
         if (note.style.display !== 'none') note.textContent = message.message
@@ -177,6 +254,44 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
     }, 250)
   }
   new ResizeObserver(fit).observe(stage)
+  // ── menu, password import, file chooser ──────────────────────────────
+  const statusEl = document.getElementById('status')
+  const menu = document.getElementById('menu')
+  const chooserSheet = document.getElementById('chooser')
+  const chooserInput = document.getElementById('chooser-input')
+  const importSheet = document.getElementById('import')
+  document.getElementById('more').onclick = (e) => { e.stopPropagation(); menu.classList.toggle('open') }
+  document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.remove('open') })
+  document.getElementById('import-passwords').onclick = () => { menu.classList.remove('open'); importSheet.classList.add('open') }
+  document.getElementById('open-passwords').onclick = () => { menu.classList.remove('open'); send({ type: 'newTab', url: 'chrome://password-manager/passwords' }) }
+  document.getElementById('import-cancel').onclick = () => importSheet.classList.remove('open')
+  const importInput = document.getElementById('import-input')
+  document.getElementById('import-go').onclick = () => importInput.click()
+  importInput.addEventListener('change', async () => {
+    const files = await readFiles([...importInput.files])
+    importInput.value = ''
+    importSheet.classList.remove('open')
+    if (files.length > 0) send({ type: 'importPasswords', files })
+  })
+  function closeChooser(files) {
+    chooserSheet.classList.remove('open')
+    send({ type: 'files', files })
+    chooserInput.value = ''
+  }
+  document.getElementById('chooser-cancel').onclick = () => closeChooser([])
+  document.getElementById('chooser-pick').onclick = () => chooserInput.click()
+  function readFiles(picked) {
+    return Promise.all(picked.map(file => new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve({ name: file.name, mimeType: file.type, data: String(reader.result).split(',')[1] || '' })
+      reader.onerror = () => reject(reader.error)
+      reader.readAsDataURL(file)
+    })))
+  }
+  chooserInput.addEventListener('change', async () => {
+    closeChooser(await readFiles([...chooserInput.files]))
+  })
+
   connect()
 })()
 </script>

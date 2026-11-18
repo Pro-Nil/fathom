@@ -2461,7 +2461,7 @@ Source: [`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-
 
 ### `browser_navigate`
 
-Open a URL in the shared browser, or go "back" / "forward" / "reload". Bare hosts get https://. Returns the resulting page title and URL.
+Open a URL in the shared browser, or go "back" / "forward" / "reload". Bare hosts get https://; text that is not an address is searched on the web. Returns the resulting page title and URL.
 
 ```json
 {

@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { SharedBrowser, isTrustedViewerRequest, normalizeUrl, toPlaywrightChord } from '@pentest-harness/dsh-browser'
+import { DEFAULT_SEARCH_URL, SharedBrowser, isTrustedViewerRequest, normalizeUrl, resolveAddress, toPlaywrightChord } from '@pentest-harness/dsh-browser'
 
 describe('normalizeUrl', () => {
   it('adds https to bare hosts and http to loopback', () => {
@@ -12,6 +12,24 @@ describe('normalizeUrl', () => {
     expect(normalizeUrl(' https://a.test ')).toBe('https://a.test')
     expect(normalizeUrl('about:blank')).toBe('about:blank')
     expect(normalizeUrl('example.com:8080')).toBe('https://example.com:8080')
+  })
+})
+
+describe('resolveAddress', () => {
+  const search = (q: string) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
+  it('searches text that is not an address, like a browser omnibox', () => {
+    expect(resolveAddress('hh', DEFAULT_SEARCH_URL)).toBe(search('hh'))
+    expect(resolveAddress('owasp top 10', DEFAULT_SEARCH_URL)).toBe(search('owasp top 10'))
+    expect(resolveAddress('what is example.com', DEFAULT_SEARCH_URL)).toBe(search('what is example.com'))
+    expect(resolveAddress('hh', 'https://duckduckgo.com/?q=%s')).toBe('https://duckduckgo.com/?q=hh')
+  })
+  it('opens hosts, IPs, ports and schemes directly', () => {
+    expect(resolveAddress('example.com', DEFAULT_SEARCH_URL)).toBe('https://example.com')
+    expect(resolveAddress('10.0.0.1', DEFAULT_SEARCH_URL)).toBe('https://10.0.0.1')
+    expect(resolveAddress('intranet:8080/x', DEFAULT_SEARCH_URL)).toBe('https://intranet:8080/x')
+    expect(resolveAddress('localhost', DEFAULT_SEARCH_URL)).toBe('http://localhost')
+    expect(resolveAddress('chrome://version', DEFAULT_SEARCH_URL)).toBe('chrome://version')
+    expect(resolveAddress('   ', DEFAULT_SEARCH_URL)).toBe('about:blank')
   })
 })
 
@@ -41,10 +59,10 @@ describe('isTrustedViewerRequest', () => {
   })
 })
 
-// Real browser: launches the installed Edge headless on a throwaway profile.
-describe('SharedBrowser (real Edge)', () => {
+// Real browser: launches the harness's own Chromium headless on a throwaway profile.
+describe('SharedBrowser (real Chromium)', () => {
   const profileDir = mkdtempSync(join(tmpdir(), 'dsh-browser-test-'))
-  const browser = new SharedBrowser({ channel: 'msedge', headless: true, profileDir, width: 800, height: 600 })
+  const browser = new SharedBrowser({ channel: 'chromium', headless: true, profileDir, width: 800, height: 600, searchUrl: DEFAULT_SEARCH_URL })
   afterAll(async () => {
     await browser.dispose()
     rmSync(profileDir, { recursive: true, force: true })
@@ -74,6 +92,34 @@ describe('SharedBrowser (real Edge)', () => {
     expect(tabs).toHaveLength(2)
     expect(tabs.find(tab => tab.active)?.id).toBe(tabs[1]?.id)
   }, 60_000)
+
+  it('hands a page file chooser to the viewer and fills it with the picked file', async () => {
+    const html = '<input type="file" id="f"><script>f.onchange=()=>{f.files[0].text().then(t=>{document.title=f.files[0].name+":"+t})}</script>'
+    await browser.navigate(`data:text/html,${encodeURIComponent(html)}`)
+    const messages: string[] = []
+    const detach = browser.attachViewer({ send: (message) => { messages.push(message) } })
+    const page = await browser.page()
+    await page.locator('#f').click()
+    const deadline = Date.now() + 5000
+    while (!messages.some(m => m.startsWith('{"type":"filechooser"')) && Date.now() < deadline) await new Promise(r => setTimeout(r, 50))
+    expect(messages.some(m => m.startsWith('{"type":"filechooser"'))).toBe(true)
+    await browser.handleViewerMessage(JSON.stringify({ type: 'files', files: [{ name: 'a.txt', mimeType: 'text/plain', data: Buffer.from('hello').toString('base64') }, { bogus: true }] }))
+    await page.waitForFunction(() => document.title.startsWith('a.txt'))
+    expect(await page.title()).toBe('a.txt:hello')
+    detach()
+  }, 30_000)
+
+  it('searches address-bar text that is not an address', async () => {
+    const page = await browser.page()
+    let requested = ''
+    await page.route('https://www.google.com/**', async (route) => {
+      requested = route.request().url()
+      await route.fulfill({ body: '<title>search</title>', contentType: 'text/html' })
+    })
+    await browser.handleViewerMessage(JSON.stringify({ type: 'navigate', url: 'hh' }))
+    expect(requested).toBe('https://www.google.com/search?q=hh')
+    await page.unrouteAll()
+  })
 
   it('rejects malformed refs before touching the page', async () => {
     await expect(browser.locate('e1"] , css=body')).rejects.toThrow(/not an element ref/u)

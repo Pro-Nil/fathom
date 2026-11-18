@@ -1,7 +1,7 @@
 /**
  * `@pentest-harness/dsh-browser`: one shared browser for the agent and the
- * user. Provides `ctx.browser`, a persistent Chromium-family session (Microsoft
- * Edge by default) driven through Playwright. When the web server is mounted it
+ * user. Provides `ctx.browser`, a persistent Chromium session (the harness's
+ * own Chromium build by default, downloaded on first use) driven through Playwright. When the web server is mounted it
  * also serves a live view at `/browser/view` (WebSocket `/browser/ws`) that
  * streams the active tab and forwards the user's pointer and keyboard input,
  * so the user can watch the agent and take over.
@@ -14,11 +14,11 @@ import z from '@pentest-harness/schemastery'
 import type {} from '@pentest-harness/dsh-host-webserver'
 import { dshHomePath } from '@pentest-harness/dsh-home-paths'
 import { WebSocketServer } from 'ws'
-import { SharedBrowser } from './runtime.ts'
+import { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser } from './runtime.ts'
 import { VIEWER_PAGE } from './viewer-page.ts'
 
-export { SharedBrowser, normalizeUrl, toPlaywrightChord } from './runtime.ts'
-export type { BrowserLaunchOptions, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry } from './runtime.ts'
+export { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser, normalizeUrl, resolveAddress, toPlaywrightChord } from './runtime.ts'
+export type { BrowserLaunchOptions, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
 
 declare module '@pentest-harness/cordis' {
   interface Context {
@@ -33,7 +33,10 @@ export const BROWSER_SOCKET_PATH = '/browser/ws'
 
 /** Plugin config. */
 export interface BrowserRuntimeConfig {
-  /** Playwright channel of an installed browser: `msedge` (default), `chrome`, `chromium`. */
+  /**
+   * Browser build: `chromium` (default) is the harness's own Chromium, downloaded
+   * once on first use; `msedge` or `chrome` use an installed browser instead.
+   */
   channel?: string
   /** Explicit browser executable; overrides `channel`. */
   executablePath?: string
@@ -47,6 +50,8 @@ export interface BrowserRuntimeConfig {
   height?: number
   /** Serve the live view on the web server when one is mounted. Defaults to true. */
   liveView?: boolean
+  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to Google. */
+  searchUrl?: string
 }
 
 /**
@@ -80,13 +85,14 @@ export function isTrustedViewerRequest(req: Pick<IncomingMessage, 'headers'>): b
 /** The shared-browser service, registered as `ctx.browser`. */
 export default class BrowserRuntime extends Service {
   static Config: z<BrowserRuntimeConfig> = z.object({
-    channel: z.string().default('msedge'),
+    channel: z.string().default(BUNDLED_CHANNEL),
     executablePath: z.string(),
     headless: z.boolean().default(true),
     profileDir: z.string(),
     width: z.natural().default(1280),
     height: z.natural().default(800),
     liveView: z.boolean().default(true),
+    searchUrl: z.string().default(DEFAULT_SEARCH_URL),
   })
 
   /** The live browser session shared by tools and the live view. */
@@ -95,12 +101,13 @@ export default class BrowserRuntime extends Service {
   constructor(ctx: Context, config: BrowserRuntimeConfig = {}) {
     super(ctx, 'browser')
     this.shared = new SharedBrowser({
-      channel: config.channel ?? 'msedge',
+      channel: config.channel ?? BUNDLED_CHANNEL,
       ...config.executablePath !== undefined && config.executablePath.length > 0 ? { executablePath: config.executablePath } : {},
       headless: config.headless ?? true,
       profileDir: config.profileDir ?? dshHomePath('browser', 'profile'),
       width: config.width ?? 1280,
       height: config.height ?? 800,
+      searchUrl: config.searchUrl ?? DEFAULT_SEARCH_URL,
     })
     ctx.effect(() => () => { void this.shared.dispose() }, 'browser: shut down the shared browser')
     if (config.liveView ?? true) {
@@ -133,7 +140,7 @@ function mountLiveView(ctx: Context, shared: SharedBrowser): void {
     },
   }), 'browser: live-view page')
 
-  const server = new WebSocketServer({ noServer: true, maxPayload: 1 << 20 })
+  const server = new WebSocketServer({ noServer: true, maxPayload: 64 << 20 })
   ctx.effect(() => () => {
     for (const client of server.clients) client.terminate()
     server.close()

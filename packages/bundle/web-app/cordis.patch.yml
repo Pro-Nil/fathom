@@ -125,13 +125,14 @@
         host: !!js ctx.webStartup.host ?? '127.0.0.1'
         port: !!js ctx.webStartup.port ?? 2323
 
-    # One shared browser (Edge through Playwright, persistent profile) for the
-    # agent's browser tools and the user's Browser pane, which streams it from
-    # /browser/view. It launches on first use, not at startup.
+    # One shared browser (the harness's own Chromium through Playwright,
+    # persistent profile) for the agent's browser tools and the user's Browser
+    # pane, which streams it from /browser/view. It launches on first use, not
+    # at startup, and downloads its Chromium build the first time.
     - id: browser
       name: '@pentest-harness/dsh-browser'
       config:
-        channel: msedge
+        channel: chromium
         headless: true
 
     # Web glue owned by this bundle: resolves the built frontend dist (an
