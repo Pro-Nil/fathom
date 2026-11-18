@@ -1898,6 +1898,9 @@ importers:
       '@pentest-harness/dsh-client-runtime':
         specifier: workspace:^
         version: link:../runtime
+      '@pentest-harness/dsh-client-ui-conversation':
+        specifier: workspace:^
+        version: link:../ui-conversation
       '@pentest-harness/dsh-client-ui-layout':
         specifier: workspace:^
         version: link:../ui-layout
