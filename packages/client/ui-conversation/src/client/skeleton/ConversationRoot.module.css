@@ -343,6 +343,8 @@
   aspect-ratio: 1051 / 468;
   transform: translate(-50%, 50%);
   pointer-events: none;
+  /* A faint wash, not a spotlight. */
+  opacity: 0.28;
 }
 
 .heroWorkspaceRow {

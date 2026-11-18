@@ -66,16 +66,17 @@ describe('official browser-brand plugin', () => {
   })
 
   it('renders the official name independently from both requested mark sizes', () => {
+    // The name is set type, not artwork: no image, and the full product name.
     const name = render(<OfficialBrandName />)
-    const nameSvg = name.container.querySelector('svg')
-    expect(nameSvg?.getAttribute('viewBox')).toBe('0 0 522 159')
-    expect(nameSvg?.getAttribute('width')).toBe('131')
-    expect(nameSvg?.getAttribute('height')).toBe('40')
+    expect(name.container.querySelector('svg')).toBeNull()
+    expect(name.container.textContent).toBe('PentestHarness')
     name.unmount()
 
+    // The mark is the line-drawn glyph in the surrounding ink, never the raster logo.
     const mark = render(<OfficialBrandMark size={34} className="hero-mark" />)
     expect(mark.container.querySelector('svg')?.getAttribute('width')).toBe('34')
     expect(mark.container.querySelector('svg')?.getAttribute('class')).toBe('hero-mark')
+    expect(mark.container.querySelector('image')).toBeNull()
     mark.rerender(<OfficialBrandMark size={24} />)
     expect(mark.container.querySelector('svg')?.getAttribute('width')).toBe('24')
   })

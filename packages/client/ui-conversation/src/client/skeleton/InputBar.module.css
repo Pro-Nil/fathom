@@ -368,9 +368,9 @@
   cursor: default;
 }
 
-/* Primary send (figma IconButton 34:10465): 34px circle, #3964FE light /
-   #679EFE dark — the info-fill pair (500→400), NOT button-primary (ink);
-   white glyph; empty text = 0.4 opacity. */
+/* Primary send: 34px circle in the ink pair (near-white in dark mode,
+   near-black in light mode) with the arrow in the opposite ink, so the
+   composer carries no extra accent; empty text = 0.4 opacity. */
 .primary {
   display: grid;
   place-items: center;
@@ -379,10 +379,9 @@
   height: 34px;
   border: none;
   border-radius: 999px;
-  background: var(--dsw-alias-button-info-fill);
-  /* Static white, not the foreground token: the arrow stays white on the blue
-     fill in both themes (design 34:10465). */
-  color: #fff;
+  background: var(--dsw-alias-button-primary-fill);
+  color: var(--dsw-alias-label-primary-foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
   cursor: pointer;
   transition: background-color 100ms ease;
   /* Opts out of the row's 2px downward shift (.row top pad): the send circle
@@ -392,7 +391,7 @@
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--dsw-alias-button-info-hover);
+  background: var(--dsw-alias-button-primary-hover);
 }
 
 .primary:disabled {
