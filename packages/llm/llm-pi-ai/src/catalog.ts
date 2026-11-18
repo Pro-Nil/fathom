@@ -131,6 +131,19 @@ const CACHE_CONTROL_FORMAT_GATE: Record<PiAiCacheControlFormat, true> = {
   anthropic: true,
 }
 
+/** The session-affinity header conventions pi-ai accepts. */
+export type PiAiSessionAffinityFormat = NonNullable<OpenAICompletionsCompat['sessionAffinityFormat']>
+
+/** Drift gate over {@link PiAiSessionAffinityFormat}; a new upstream convention fails compilation until named. */
+const SESSION_AFFINITY_FORMAT_GATE: Record<PiAiSessionAffinityFormat, true> = {
+  'openai': true,
+  'openai-nosession': true,
+  'openrouter': true,
+}
+
+/** The session-affinity header conventions a profile may name. */
+export const SESSION_AFFINITY_FORMATS = Object.keys(SESSION_AFFINITY_FORMAT_GATE) as readonly PiAiSessionAffinityFormat[]
+
 /** The prompt-cache marker conventions a profile may name. */
 export const CACHE_CONTROL_FORMATS = Object.keys(CACHE_CONTROL_FORMAT_GATE) as readonly PiAiCacheControlFormat[]
 
@@ -231,9 +244,9 @@ const COMPLETIONS_COMPAT_GATE = {
   vercelGatewayRouting: 'withhold',
   zaiToolStream: 'withhold',
   supportsOpenAIGrammarTools: 'withhold',
-  sendSessionAffinityHeaders: 'withhold',
+  sendSessionAffinityHeaders: 'offer',
   deferredToolsMode: 'withhold',
-  sessionAffinityFormat: 'withhold',
+  sessionAffinityFormat: 'offer',
 } as const satisfies Record<keyof OpenAICompletionsCompat, CompatDisposition>
 
 /** Disposition of every `OpenAIResponsesCompat` field; a drift gate like the one above. */
@@ -241,7 +254,7 @@ const RESPONSES_COMPAT_GATE = {
   supportsDeveloperRole: 'offer',
   supportsStrictMode: 'offer',
   supportsLongCacheRetention: 'offer',
-  sessionAffinityFormat: 'withhold',
+  sessionAffinityFormat: 'offer',
   supportsOpenAIGrammarTools: 'withhold',
   supportsToolSearch: 'withhold',
   supportsExplicitPromptCacheMode: 'withhold',
@@ -256,7 +269,7 @@ const ANTHROPIC_COMPAT_GATE = {
   forceAdaptiveThinking: 'offer',
   allowEmptySignature: 'offer',
   supportsStrictTools: 'offer',
-  sendSessionAffinityHeaders: 'withhold',
+  sendSessionAffinityHeaders: 'offer',
   supportsToolReferences: 'withhold',
 } as const satisfies Record<keyof AnthropicMessagesCompat, CompatDisposition>
 
@@ -376,6 +389,18 @@ export interface PiAiCompatProfile {
    * `openai-completions`, the three Responses protocols, `anthropic-messages`.
    */
   supportsLongCacheRetention?: boolean
+  /**
+   * Whether to send the session id as session-affinity headers, so a gateway
+   * that load-balances replicas keeps one conversation on the replica holding
+   * its prompt cache; `openai-completions`, `anthropic-messages`.
+   */
+  sendSessionAffinityHeaders?: boolean
+  /**
+   * Which affinity headers to send: `openai` (`session_id`, `x-client-request-id`,
+   * `x-session-affinity`), `openai-nosession` (without `session_id`) or
+   * `openrouter` (`x-session-id`); `openai-completions` and the three Responses protocols.
+   */
+  sessionAffinityFormat?: PiAiSessionAffinityFormat
   /** Whether the endpoint accepts per-tool `eager_input_streaming`; `anthropic-messages`. */
   supportsEagerToolInputStreaming?: boolean
   /** Whether the endpoint accepts `cache_control` on tool definitions; `anthropic-messages`. */

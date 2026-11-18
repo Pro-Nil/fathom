@@ -847,6 +847,25 @@ describe('compat switches', () => {
     })
   })
 
+  it('carries session-affinity switches onto a load-balanced gateway route', () => {
+    // A gateway spreading requests over replicas loses the prompt cache unless
+    // one conversation sticks to one replica; pi-ai withholds the headers for
+    // an unrecognized URL, so the route must be able to ask for them.
+    const models = modelsOf({
+      'acme-gateway': {
+        api: 'openai-completions',
+        baseURL: 'https://acme.test',
+        compat: { sendSessionAffinityHeaders: true, sessionAffinityFormat: 'openai' },
+        models: [{ id: 'acme-chat' }],
+      },
+    }, 'acme-gateway')
+
+    expect(models.get('acme-chat')?.compat).toEqual({
+      sendSessionAffinityHeaders: true,
+      sessionAffinityFormat: 'openai',
+    })
+  })
+
   it('carries a switch both OpenAI protocols declare onto an openai-responses route', () => {
     const models = modelsOf({
       'acme-responses': {

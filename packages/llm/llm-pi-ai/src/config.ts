@@ -23,6 +23,7 @@ import { resolveRetryPolicy, RetryPolicySchema } from '@pentest-harness/dsh-llm'
 import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@pentest-harness/dsh-llm'
 import {
   CACHE_CONTROL_FORMATS,
+  SESSION_AFFINITY_FORMATS,
   CHAT_TEMPLATE_VARS,
   MAX_TOKENS_FIELDS,
   MODALITIES,
@@ -266,6 +267,8 @@ const compatProfile: z<PiAiCompatProfile> = z.object({
   supportsStrictMode: z.boolean(),
   cacheControlFormat: z.union(CACHE_CONTROL_FORMATS),
   supportsLongCacheRetention: z.boolean(),
+  sendSessionAffinityHeaders: z.boolean(),
+  sessionAffinityFormat: z.union(SESSION_AFFINITY_FORMATS),
   supportsEagerToolInputStreaming: z.boolean(),
   supportsCacheControlOnTools: z.boolean(),
   supportsTemperature: z.boolean(),
