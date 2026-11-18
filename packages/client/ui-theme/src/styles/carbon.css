@@ -1,0 +1,42 @@
+/* Carbon fibre skin (dark theme only).
+ *
+ * A 2x2 twill weave drawn with gradients: each 10px tow alternates between a
+ * lit and a shadowed face, offset diagonally the way twill steps. All weave
+ * layers are `fixed`, so the frame, sidebar and conversation column read as
+ * one continuous sheet instead of restarting the pattern per panel.
+ *
+ * Surfaces opt in with `background: var(--dsh-carbon-*, <their old token>)`;
+ * the light theme never defines these, so it keeps its flat fills. */
+body[data-ds-dark-theme] {
+  --dsh-carbon-weave:
+    linear-gradient(27deg, #121215 5px, transparent 5px) 0 5px / 20px 20px fixed,
+    linear-gradient(207deg, #121215 5px, transparent 5px) 10px 0 / 20px 20px fixed,
+    linear-gradient(27deg, #1f1f24 5px, transparent 5px) 0 10px / 20px 20px fixed,
+    linear-gradient(207deg, #1f1f24 5px, transparent 5px) 10px 5px / 20px 20px fixed,
+    linear-gradient(90deg, #18181c 10px, transparent 10px) 0 0 / 20px 20px fixed,
+    linear-gradient(#1a1a1e 25%, #16161a 25%, #16161a 50%, transparent 50%,
+      transparent 75%, #222227 75%, #222227) 0 0 / 20px 20px fixed;
+
+  /* Resin: a dark clear-coat that knocks the weave back so text stays
+     readable, plus one soft overhead highlight like light on lacquer. */
+  --dsh-carbon-resin:
+    radial-gradient(140% 90% at 35% -20%, rgba(255, 255, 255, 0.07), transparent 55%) fixed,
+    linear-gradient(rgba(9, 9, 11, 0.48), rgba(9, 9, 11, 0.48)) fixed;
+
+  --dsh-carbon: var(--dsh-carbon-resin), var(--dsh-carbon-weave), #0b0b0d;
+
+  /* Sidebar: same sheet under a touch more resin, so the column edge reads
+     without a colour change. */
+  --dsh-carbon-sidebar:
+    linear-gradient(rgba(6, 6, 8, 0.28), rgba(6, 6, 8, 0.28)) fixed,
+    var(--dsh-carbon);
+
+  /* Composer card: a raised, glossier panel — thinner resin and a sharper
+     top-edge sheen that scrolls with the card, not the page. */
+  --dsh-carbon-card:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 38%),
+    linear-gradient(rgba(22, 22, 26, 0.32), rgba(22, 22, 26, 0.32)) fixed,
+    var(--dsh-carbon-weave), #19191d;
+
+  background: var(--dsh-carbon);
+}

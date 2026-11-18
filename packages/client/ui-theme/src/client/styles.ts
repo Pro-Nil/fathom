@@ -4,6 +4,7 @@ import designPlatform from '../styles/design-platform.css?inline'
 import scrollbar from '../styles/scrollbar.css?inline'
 import gradientShadowText from '../styles/gradient-shadow-text.css?inline'
 import shiki from '../styles/shiki.css?inline'
+import carbon from '../styles/carbon.css?inline'
 
 const PLUGIN_ID = '@pentest-harness/dsh-client-ui-theme'
 
@@ -13,6 +14,7 @@ const STYLES = [
   ['scrollbar.css', scrollbar],
   ['gradient-shadow-text.css', gradientShadowText],
   ['shiki.css', shiki],
+  ['carbon.css', carbon],
 ] as const
 
 /**
