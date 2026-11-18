@@ -45,6 +45,7 @@ type LayoutActions = {
   setAside: (draft: LayoutState, px: number) => void
   openAside: (draft: LayoutState, px: number) => void
   closeAside: (draft: LayoutState) => void
+  toggleAside: (draft: LayoutState, px: number) => void
   toggleAsideMaximized: (draft: LayoutState, maxPx: number) => void
 }
 
@@ -87,6 +88,10 @@ export function createLayoutStore(): EngineStoreHandle<LayoutState, LayoutAction
       openAside: (d, px: number) => { if (d.aside === 0) d.aside = clampWidth(px, ASIDE_MIN, ASIDE_MAX) },
       closeAside: (d) => {
         d.aside = 0
+        d.asideRestore = 0
+      },
+      toggleAside: (d, px: number) => {
+        d.aside = d.aside === 0 ? clampWidth(px, ASIDE_MIN, ASIDE_MAX) : 0
         d.asideRestore = 0
       },
       toggleAsideMaximized: (d, maxPx: number) => {

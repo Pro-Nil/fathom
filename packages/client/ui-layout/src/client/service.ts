@@ -31,6 +31,8 @@ export interface ILayout {
   openAside(px: number): void
   /** Close the aside column. */
   closeAside(): void
+  /** Open the aside column at `px` wide when closed, close it when open. */
+  toggleAside(px: number): void
 }
 
 /** Cross-plugin panel-action face (ctx.layout). */
@@ -69,6 +71,10 @@ export class LayoutController implements ILayout {
 
   closeAside(): void {
     this.#require().closeAside()
+  }
+
+  toggleAside(px: number): void {
+    this.#require().toggleAside(px)
   }
 
   #require(): PanelActions {

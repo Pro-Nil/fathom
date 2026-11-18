@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
 import type { AsideOwnerProps, OverlayOwnerProps } from '@pentest-harness/dsh-client-ui-layout/client'
 import type { PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
 import css from './BrowserPanel.module.css'
@@ -67,14 +68,41 @@ export function BrowserPanel(props: PropsRuntime<'aside'> & AsideOwnerProps) {
   )
 }
 
+/** Inject face of the header button: one callback over ctx.layout. */
+export interface BrowserHeaderInjected {
+  /** Open the Browser column when closed, close it when open. */
+  toggleBrowser: () => void
+}
+
 /**
- * The overlay toggle that opens the Browser column; hidden while it is open
- * (the panel header has its own close button).
- * @param props - overlay owner share from the layout.
- * @returns the toggle, or nothing while the column is open.
+ * The Browser button among the session header's utilities, beside Session log.
+ * @param props - header owner share plus the inject face.
+ * @returns the button.
+ */
+export function BrowserHeaderButton(
+  props: PropsRuntime<'conversation.session.header.utilities'> & BrowserHeaderInjected,
+) {
+  return (
+    <button type="button" className={css.headerButton} onClick={props.toggleBrowser} title="Show or hide the browser the agent uses">
+      <Icon d={ICONS.globe} />
+      <span>Browser</span>
+    </button>
+  )
+}
+
+/**
+ * The floating Browser toggle for the new-session screen, which has no
+ * conversation header. Hidden while a Session is open (the header carries the
+ * button there) and while the column is open (its header has close).
+ * @param props - overlay owner share from the layout plus the root runtime share.
+ * @returns the toggle, or nothing.
  */
 export function BrowserToggle(props: PropsRuntime<'shell.overlay'> & OverlayOwnerProps) {
-  if (props.asideWidth > 0) return null
+  const inSession = props.useSessions((state) => {
+    const current = state.current
+    return current !== undefined && state.byId[current]?.blank === false
+  })
+  if (props.asideWidth > 0 || inSession) return null
   return (
     <button type="button" className={css.toggle} onClick={props.openAside} title="Show the browser the agent uses">
       <Icon d={ICONS.globe} />
