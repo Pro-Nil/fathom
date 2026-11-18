@@ -27,9 +27,10 @@ Requirements: Windows 10 1809+ with the Edge WebView2 Runtime (preinstalled on W
 | --- | --- |
 | `%LOCALAPPDATA%\PentestHarness\settings.json` | `repo` (checkout path), `port`, `node`, `startupTimeoutSeconds`, `notifyWhenFocused`, window bounds |
 | `%LOCALAPPDATA%\PentestHarness\logs\harness.log` | Output of the server the app started (rotated at 5 MB) |
+| `%LOCALAPPDATA%\PentestHarness\logs\desktop.log` | The app's own events: server start, stop, detach, reconnect |
 | `%LOCALAPPDATA%\PentestHarness\WebView2` | The embedded browser profile |
 
-Command-line: `--tray` starts hidden (used by Start with Windows), `--test-notification` and `--quit` act on the running instance, and any other second launch brings the window forward.
+Command-line: `--tray` starts hidden (used by Start with Windows), `--test-notification` and `--quit` act on the running instance, `--quit --keep-harness` closes only the app (for updates; the next launch takes the harness back), and any other second launch brings the window forward.
 
 ## How input-needed is detected
 

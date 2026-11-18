@@ -88,7 +88,9 @@
   // The window is frameless; this bar replaces the Windows caption. Its empty
   // space is a native drag region (app-region: drag), so dragging, double-click
   // to maximize, snapping and the system menu all behave like a real title bar.
-  const BAR = 38
+  const BAR = 40
+  // Breathing room between the bar and the page's own header.
+  const GAP = 6
   const icon = (d, extra) => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + d + '</svg>'
   const ICONS = {
     mark: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.5 19 5v6c0 4.9-2.8 8.6-7 10.5C7.8 19.6 5 15.9 5 11V5l7-2.5Z"/><circle cx="12" cy="11" r="3.4"/><circle cx="12" cy="11" r="1.1" fill="#3b82f6" stroke="none"/></svg>',
@@ -104,7 +106,7 @@
     #ph-titlebar { position: fixed; top: 0; left: 0; right: 0; height: ${BAR}px; z-index: 2147483000;
       display: flex; align-items: center; gap: 10px; padding-left: 14px; box-sizing: border-box;
       font: 12.5px/1 var(--dsw-font-family, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif);
-      color: var(--dsw-alias-label-secondary, #9a9aa4); background: transparent; app-region: drag; -webkit-app-region: drag;
+      color: var(--dsw-alias-label-secondary, #9a9aa4); background: rgba(0, 0, 0, .035); app-region: drag; -webkit-app-region: drag;
       border-bottom: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.07)); user-select: none; }
     #ph-titlebar svg { display: block; flex: none; width: 16px !important; height: 16px !important; }
     #ph-titlebar .ph-win svg { width: 10px !important; height: 10px !important; }
@@ -131,7 +133,13 @@
     #ph-titlebar .ph-win button { width: 46px; }
     #ph-titlebar .ph-win button:hover { background: var(--dsw-alias-interactive-bg-hover, rgba(128,128,128,.15)); color: var(--dsw-alias-label-primary, #ececf0); }
     #ph-titlebar .ph-win .ph-close:hover { background: #c42b1c; color: #fff; }
-    #root { height: calc(100% - ${BAR}px) !important; margin-top: ${BAR}px !important; }
+    body[data-ds-dark-theme] #ph-titlebar { background: rgba(0, 0, 0, .34); border-bottom-color: rgba(255, 255, 255, .06); }
+    /* Reserve the bar's space with padding, not a margin on #root: a margin
+       collapses through <body>, makes the document taller than the window, and
+       lets the page scroll up under the bar. The page never scrolls as a whole. */
+    html, body { overflow: hidden !important; }
+    body { padding-top: ${BAR + GAP}px !important; box-sizing: border-box !important; }
+    #root { height: 100% !important; margin-top: 0 !important; }
   `
   const chrome = { state: 'starting', port: 0, waiting: 0, maximized: false }
 
@@ -164,12 +172,9 @@
       if (button) post({ kind: 'window', action: button.dataset.action })
     })
     renderChrome()
-    let queued = false
-    new MutationObserver(() => {
-      if (queued) return
-      queued = true
-      requestAnimationFrame(() => { queued = false; renderTitle() })
-    }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['aria-selected'] })
+    // The harness keeps document.title as "<session> — Pentest Harness"; the
+    // bar mirrors it (and never writes it back).
+    new MutationObserver(renderTitle).observe(document.head, { subtree: true, childList: true, characterData: true })
     renderTitle()
     post({ kind: 'window', action: 'ready' })
   }
@@ -177,13 +182,11 @@
   function renderTitle() {
     const bar = document.getElementById('ph-titlebar')
     if (!bar) return
-    const selected = document.querySelector('[aria-label="Sessions"] [aria-selected="true"]')
-    const title = selected ? (selected.querySelector('[class*="_title"]') || selected).textContent.trim() : ''
     const isApp = !!document.getElementById('root')
-    const text = isApp ? (title || 'New session') : 'Starting'
+    const session = document.title.replace(/\s*[—·-]\s*Pentest Harness\s*$/, '').trim()
+    const text = !isApp ? 'Starting' : session.length > 0 && session !== 'Pentest Harness' ? session : 'New session'
     const node = bar.querySelector('.ph-session')
     if (node.textContent !== text) node.textContent = text
-    if (document.title !== (isApp ? text + ' · Pentest Harness' : 'Pentest Harness')) document.title = isApp ? text + ' · Pentest Harness' : 'Pentest Harness'
   }
 
   function renderChrome() {

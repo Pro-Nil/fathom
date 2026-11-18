@@ -105,6 +105,12 @@ internal sealed class MainForm : Form
         core.Settings.IsNonClientRegionSupportEnabled = true;
         await core.AddScriptToExecuteOnDocumentCreatedAsync(ReadText("bridge.js"));
         core.WebMessageReceived += OnWebMessage;
+        // Taskbar / Alt-Tab title follows the page ("<session> — Pentest Harness").
+        core.DocumentTitleChanged += (_, _) =>
+        {
+            var title = core.DocumentTitle;
+            Text = string.IsNullOrWhiteSpace(title) || title.StartsWith("data:", StringComparison.Ordinal) ? "Pentest Harness" : title;
+        };
         core.NewWindowRequested += (_, args) =>
         {
             // Links that open a new window go to the default browser.
@@ -480,16 +486,21 @@ internal sealed class MainForm : Form
         }
     }
 
-    /// <summary>Quit as the tray menu does (used by `--quit`).</summary>
-    public void QuitApp() => Quit();
+    /// <summary>
+    /// Quit as the tray menu does (used by `--quit`). With
+    /// <paramref name="keepHarness"/> (`--quit --keep-harness`, for updating the
+    /// app) the harness keeps running and the next launch takes it back.
+    /// </summary>
+    public void QuitApp(bool keepHarness = false) => Quit(keepHarness);
 
-    private void Quit()
+    private void Quit(bool keepHarness = false)
     {
         quitting = true;
         lifetime.Cancel();
         SaveBounds();
         tray.Dispose();
-        server.Stop();
+        if (keepHarness) server.Detach();
+        else server.Stop();
         Application.Exit();
     }
 
