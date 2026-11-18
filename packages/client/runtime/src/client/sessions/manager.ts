@@ -527,6 +527,21 @@ export class SessionManager {
   }
 
   /**
+   * Stop one background job of a session (contract session.killJob). The
+   * job list updates through the ordinary `session/jobs` frame.
+   * @param sessionId - owning session.
+   * @param jobId - job to stop.
+   * @returns the Host result or a folded transport error.
+   */
+  async killJob(sessionId: SessionId, jobId: string): Promise<RpcResult<{ result: 'requested' | 'already-finished' }>> {
+    try {
+      return (await this.api.sessions.killJob({ sessionId, jobId })).result
+    } catch (error: unknown) {
+      return transportError(error)
+    }
+  }
+
+  /**
    * Contract session.create; on success merge into summaries immediately (no
    * wait for the next refresh). A created session is blank by definition
    * (entity birth precedes the first message).

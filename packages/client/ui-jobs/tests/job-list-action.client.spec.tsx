@@ -237,3 +237,39 @@ describe('JobListAction wire tolerance', () => {
     expect(rowCells().map(cells => cells[1])).toEqual(['later', 'earlier'])
   })
 })
+
+describe('JobListAction stop control', () => {
+  function open(stopJob?: JobListActionProps['stopJob'], jobs: readonly JobView[] = [job()]): void {
+    render(<JobListAction {...props(jobs)} {...stopJob === undefined ? {} : { stopJob }} />)
+    fireEvent.click(screen.getByRole('button', { name: '1 个后台任务运行中' }))
+  }
+
+  it('offers Stop only on running jobs, and only when the host can stop them', () => {
+    open(undefined)
+    expect(screen.queryByRole('button', { name: /停止后台任务/u })).toBeNull()
+    cleanup()
+    open(vi.fn(), [job(), job({ id: 'bash-2' as JobView['id'], label: 'done', status: 'completed', finishedAt: START + 1_000 })])
+    expect(screen.getAllByRole('button', { name: /停止后台任务/u })).toHaveLength(1)
+  })
+
+  it('asks the host to stop that job and disables the button while it waits', async () => {
+    let settle: (value: string | null) => void = () => {}
+    const stopJob = vi.fn(() => new Promise<string | null>((resolve) => { settle = resolve }))
+    open(stopJob)
+    const stop = screen.getByRole('button', { name: '停止后台任务 pnpm run build' })
+    fireEvent.click(stop)
+    expect(stopJob).toHaveBeenCalledWith(SESSION, 'bash-1')
+    expect((stop as HTMLButtonElement).disabled).toBe(true)
+    await act(async () => { settle(null) })
+    expect((stop as HTMLButtonElement).disabled).toBe(false)
+    expect(stop.hasAttribute('data-failed')).toBe(false)
+  })
+
+  it('keeps the failure on the button when the host refuses', async () => {
+    open(vi.fn(() => Promise.resolve('unknown job')))
+    const stop = screen.getByRole('button', { name: '停止后台任务 pnpm run build' })
+    await act(async () => { fireEvent.click(stop) })
+    expect(stop.hasAttribute('data-failed')).toBe(true)
+    expect(stop.getAttribute('title')).toBe('无法停止：unknown job')
+  })
+})

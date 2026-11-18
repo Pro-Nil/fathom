@@ -185,7 +185,7 @@ export class TestSessions implements ISessions {
   /** Calls observed on the service-level face, newest last. */
   readonly calls: {
     method: 'open' | 'openSubagent' | 'setSubagentCatalogOpen' | 'refreshSubagents'
-      | 'clear' | 'search' | 'fork'
+      | 'clear' | 'search' | 'fork' | 'killJob'
     args: unknown[]
   }[] = []
 
@@ -473,6 +473,11 @@ export class TestSessions implements ISessions {
    * @param signal - cancellation for a superseded search (recorded and forwarded).
    * @returns the stubbed or empty result page.
    */
+  killJob(sessionId: SessionId, jobId: string): ReturnType<ISessions['killJob']> {
+    this.calls.push({ method: 'killJob', args: [sessionId, jobId] })
+    return Promise.resolve({ ok: true, value: { result: 'requested' as const } })
+  }
+
   search(query: string, signal: AbortSignal): ReturnType<ISessions['search']> {
     this.calls.push({ method: 'search', args: [query, signal] })
     return Promise.resolve({ ok: true, value: this.searchStub?.(query, signal) ?? { items: [], hasMore: false } })

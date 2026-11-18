@@ -61,6 +61,7 @@ function scriptedApi(overrides: {
       }),
       updateQueue: r => ok(r, { accepted: true as const }),
       cancel: r => ok(r, { accepted: true as const }),
+      killJob: r => ok(r, { result: 'requested' as const }),
       ...overrides.sessions,
     },
     subagents: {
@@ -259,6 +260,25 @@ describe('unary round trip', () => {
     })
     const response = await client(api).sessions.cancel({ sessionId: sid('sx') })
     expect(response.result).toEqual({ ok: false, error: { code: 'session-not-found', message: 'nope', details: { sessionId: 'sx' } } })
+  })
+
+  it('carries session.killJob and its job-not-found error over the wire', async () => {
+    const seen: unknown[] = []
+    const api = scriptedApi({
+      sessions: {
+        killJob: (r) => {
+          seen.push(r.payload)
+          return r.payload.jobId === 'pwsh-4'
+            ? ok(r, { result: 'requested' as const })
+            : Promise.resolve({ rpcId: r.rpcId, result: { ok: false, error: { code: 'job-not-found', message: 'unknown job', details: { sessionId: r.payload.sessionId, jobId: r.payload.jobId } } } })
+        },
+      },
+    })
+    const stopped = await client(api).sessions.killJob({ sessionId: sid('s1'), jobId: 'pwsh-4' })
+    expect(stopped.result).toEqual({ ok: true, value: { result: 'requested' } })
+    const missing = await client(api).sessions.killJob({ sessionId: sid('s1'), jobId: 'pwsh-9' })
+    expect(missing.result).toEqual({ ok: false, error: { code: 'job-not-found', message: 'unknown job', details: { sessionId: 's1', jobId: 'pwsh-9' } } })
+    expect(seen).toEqual([{ sessionId: 's1', jobId: 'pwsh-4' }, { sessionId: 's1', jobId: 'pwsh-9' }])
   })
 
   it('throws on rpcId echo mismatch', async () => {

@@ -6,9 +6,15 @@ import { NS } from './locales.ts'
 import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
 import css from './JobListAction.module.css'
 
+/** Outcome of a stop request: `null` when accepted, otherwise the reason it failed. */
+export type StopJobResult = string | null
+
 /** Full props for the session-header background-job action. */
 export type JobListActionProps =
-  PropsRuntime<'conversation.session.header.actions'> & PropsLocale<typeof NS>
+  PropsRuntime<'conversation.session.header.actions'> & PropsLocale<typeof NS> & {
+    /** Ask the host to stop one running job; absent hides the Stop control. */
+    stopJob?: (sessionId: JobListActionProps['sessionId'], jobId: string) => Promise<StopJobResult>
+  }
 
 /** Stable empty list so a session with no jobs keeps one array identity. */
 const NO_TASKS: readonly JobView[] = []
@@ -91,10 +97,14 @@ function ordered(jobs: readonly JobView[]): JobView[] {
  * @param props - runtime slot currency plus the namespace translator.
  * @returns the trigger and its popover list, or null when there is nothing to show.
  */
-export function JobListAction({ sessionId, useSessions, t }: JobListActionProps) {
+export function JobListAction({ sessionId, useSessions, t, stopJob }: JobListActionProps) {
   const jobs = useSessions(state => state.jobsBySession[sessionId]) ?? NO_TASKS
   const [open, setOpen] = useState(false)
   const [now, setNow] = useState(() => Date.now())
+  // Per-job stop state: pending while the request is in flight, or the
+  // failure text. A successful stop needs none: the job row itself turns
+  // `stopping`, then `killed`, through the ordinary job frames.
+  const [stops, setStops] = useState<Readonly<Record<string, 'pending' | { error: string }>>>({})
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
 
@@ -166,6 +176,33 @@ export function JobListAction({ sessionId, useSessions, t }: JobListActionProps)
                   <span className={css.kind}>{job.kind}</span>
                   <span className={css.label} title={job.label}>{job.label}</span>
                   <span className={css.status} title={job.detail ?? status}>{job.detail ?? status}</span>
+                  {stopJob !== undefined && job.status === 'running'
+                    ? (
+                      <button
+                        type="button"
+                        className={css.stop}
+                        disabled={stops[job.id] === 'pending'}
+                        aria-label={t('action.stop.aria', { label: job.label })}
+                        title={typeof stops[job.id] === 'object'
+                          ? t('action.stop.failed', { message: (stops[job.id] as { error: string }).error })
+                          : t('action.stop.aria', { label: job.label })}
+                        data-failed={typeof stops[job.id] === 'object' ? '' : undefined}
+                        onClick={() => {
+                          setStops(current => ({ ...current, [job.id]: 'pending' }))
+                          void stopJob(sessionId, job.id)
+                            .catch((error: unknown) => (error instanceof Error ? error.message : String(error)))
+                            .then((failure) => {
+                              setStops((current) => {
+                                const { [job.id]: _done, ...rest } = current
+                                return failure === null ? rest : { ...rest, [job.id]: { error: failure } }
+                              })
+                            })
+                        }}
+                      >
+                        {t('action.stop')}
+                      </button>
+                    )
+                    : null}
                   <span
                     className={css.duration}
                     title={t(live ? 'duration.title.live' : 'duration.title.done', { duration })}

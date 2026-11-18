@@ -374,4 +374,13 @@ export interface SessionsApi {
    */
   cancel(request: RpcRequest<{ sessionId: SessionId }>): Promise<RpcResponse<{ accepted: true }>>
 
+  /**
+   * Stops one of the session's background jobs on the user's behalf (the
+   * same cancellation `job_kill` requests). Stopping the turn does not stop
+   * jobs, so this is the user's only way to end one the agent left running.
+   * `already-finished` when it settled first; `job-not-found` for an id the
+   * session does not own.
+   */
+  killJob(request: RpcRequest<{ sessionId: SessionId; jobId: string }>): Promise<RpcResponse<{ result: 'requested' | 'already-finished' }>>
+
 }

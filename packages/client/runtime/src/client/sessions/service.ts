@@ -446,6 +446,16 @@ export class SessionRuntime implements ISessions {
   }
 
   /**
+   * Stop one of a session's background jobs on the user's behalf.
+   * @param sessionId - owning session.
+   * @param jobId - job to stop.
+   * @returns the Host result.
+   */
+  killJob(sessionId: SessionId, jobId: string): Promise<RpcResult<{ result: 'requested' | 'already-finished' }>> {
+    return this.manager.killJob(sessionId, jobId)
+  }
+
+  /**
    * Route a mux stream envelope into the Session object layer.
    * @param envelope - validated mux stream envelope.
    */

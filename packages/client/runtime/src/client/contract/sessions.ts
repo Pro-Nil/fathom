@@ -85,6 +85,14 @@ export interface ISessions {
     signal: AbortSignal,
   ): Promise<RpcResult<{ items: SessionSearchResultItem[]; hasMore: boolean }>>
   /**
+   * Stop one of a session's background jobs on the user's behalf. The job
+   * list updates through the ordinary job frames.
+   * @param sessionId - owning session.
+   * @param jobId - job to stop.
+   * @returns `requested`, `already-finished`, or a business/transport error.
+   */
+  killJob(sessionId: SessionId, jobId: string): Promise<RpcResult<{ result: 'requested' | 'already-finished' }>>
+  /**
    * Fork a session from a completed-turn prefix of the source; on resolution
    * the child is in the list store and `open()` can target it.
    * @param opts - source session id, the optional event seq anchoring the

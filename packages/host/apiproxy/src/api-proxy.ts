@@ -63,6 +63,7 @@ import type {} from '@pentest-harness/dsh-session-projection'
 // Type-only: resolves `ctx.get('tasks')` to the background job registry.
 import type {} from '@pentest-harness/dsh-jobs'
 import type { JobSnapshot } from '@pentest-harness/dsh-jobs'
+import type { JobId } from '@pentest-harness/dsh-jobs/brand'
 // Type-only: resolves `ctx.get('sessionProjectionCache')` (the cold listing column).
 import type {} from '@pentest-harness/dsh-session-projection-cache'
 // GoalError narrows domain rejections to their stable codes at the wire boundary.
@@ -2530,6 +2531,32 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         }
         agent.cancel({ kind: 'user' }, { keepInbox: true })
         return Promise.resolve(ok(request, { accepted: true as const }))
+      },
+
+      killJob(request) {
+        const { sessionId, jobId } = request.payload
+        const agent = ctx.agents.get(sessionId)
+        if (agent === undefined) {
+          return Promise.resolve(err(request, {
+            code: 'session-not-found',
+            message: `session "${sessionId}" not found (not attached)`,
+            details: { sessionId },
+          }))
+        }
+        const jobs = ctx.get('jobs')
+        // Ownership is checked by the registry: the session's own agent is the
+        // caller, so a job id from another session is refused, not killed.
+        try {
+          if (jobs === undefined) throw new Error('background jobs are not available in this host')
+          const result = jobs.kill(jobId as JobId, agent, 'stopped by the user')
+          return Promise.resolve(ok(request, { result }))
+        } catch (error: unknown) {
+          return Promise.resolve(err(request, {
+            code: 'job-not-found',
+            message: error instanceof Error ? error.message : String(error),
+            details: { sessionId, jobId },
+          }))
+        }
       },
     },
 

@@ -123,3 +123,30 @@
 .duration {
   font-variant-numeric: tabular-nums;
 }
+
+.stop {
+  flex: none;
+  padding: 1px 8px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.stop:hover,
+.stop:focus-visible {
+  border-color: var(--dsw-alias-state-error, #e5484d);
+  color: var(--dsw-alias-state-error, #e5484d);
+}
+
+.stop:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.stop[data-failed] {
+  border-color: var(--dsw-alias-state-error, #e5484d);
+}

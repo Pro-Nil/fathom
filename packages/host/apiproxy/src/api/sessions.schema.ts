@@ -348,6 +348,17 @@ export const sessionCancelRequestSchema = z.object({
   sessionId: sessionIdSchema,
 }) satisfies z.ZodType<Wire<RequestPayload<'session.cancel'>>>
 
+/** session.killJob request payload. */
+export const sessionKillJobRequestSchema = z.object({
+  sessionId: sessionIdSchema,
+  jobId: z.string().min(1),
+}) satisfies z.ZodType<Wire<RequestPayload<'session.killJob'>>>
+
+/** session.killJob response value. */
+export const sessionKillJobValueSchema = z.object({
+  result: z.union([z.literal('requested'), z.literal('already-finished')]),
+}) satisfies z.ZodType<Wire<ResponseValue<'session.killJob'>>>
+
 /** session.cancel response value. */
 export const sessionCancelValueSchema = z.object({
   accepted: z.literal(true),
