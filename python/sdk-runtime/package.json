@@ -117,6 +117,7 @@
     "@pentest-harness/dsh-web": "workspace:^",
     "@pentest-harness/dsh-web-fetch-http": "workspace:^",
     "@pentest-harness/dsh-web-search-deepseek": "workspace:^",
+    "@pentest-harness/dsh-web-search-duckduckgo": "workspace:^",
     "@pentest-harness/dsh-web-search-exa": "workspace:^",
     "@pentest-harness/dsh-web-search-perplexity": "workspace:^",
     "@pentest-harness/dsh-workflow": "workspace:^",

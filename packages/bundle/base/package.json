@@ -116,7 +116,8 @@
     "@pentest-harness/dsh-web-search-deepseek": "workspace:^",
     "@pentest-harness/dsh-workflow-worker-thread": "workspace:^",
     "@pentest-harness/dsh-agent-instructions": "workspace:^",
-    "@pentest-harness/dsh-session-folders": "workspace:^"
+    "@pentest-harness/dsh-session-folders": "workspace:^",
+    "@pentest-harness/dsh-web-search-duckduckgo": "workspace:^"
   },
   "peerDependencies": {
     "@pentest-harness/dsh-invariants": "workspace:^",

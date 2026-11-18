@@ -1234,6 +1234,9 @@ importers:
       '@pentest-harness/dsh-web-search-deepseek':
         specifier: workspace:^
         version: link:../../web/web-search-deepseek
+      '@pentest-harness/dsh-web-search-duckduckgo':
+        specifier: workspace:^
+        version: link:../../web/web-search-duckduckgo
       '@pentest-harness/dsh-workflow-worker-thread':
         specifier: workspace:^
         version: link:../../workflow/workflow-worker-thread
@@ -8535,6 +8538,22 @@ importers:
         specifier: workspace:^
         version: link:../web
 
+  packages/web/web-search-duckduckgo:
+    dependencies:
+      '@pentest-harness/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@pentest-harness/dsh-web':
+        specifier: workspace:^
+        version: link:../web
+
   packages/web/web-search-exa:
     dependencies:
       '@pentest-harness/schemastery':
@@ -9132,6 +9151,9 @@ importers:
       '@pentest-harness/dsh-web-search-deepseek':
         specifier: workspace:^
         version: link:../../packages/web/web-search-deepseek
+      '@pentest-harness/dsh-web-search-duckduckgo':
+        specifier: workspace:^
+        version: link:../../packages/web/web-search-duckduckgo
       '@pentest-harness/dsh-web-search-exa':
         specifier: workspace:^
         version: link:../../packages/web/web-search-exa

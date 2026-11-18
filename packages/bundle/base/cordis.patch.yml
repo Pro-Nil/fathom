@@ -416,10 +416,16 @@
     # protection and the model would choose the request target. Search is a full
     # auxiliary model request with server-side retrieval, so this shipped DeepSeek
     # route gets 60s while the provider-neutral tool default remains 30s.
+    # Search defaults to DuckDuckGo's keyless HTML results: no account, key or
+    # payment. The DeepSeek provider below stays registered; set
+    # `searchProvider: deepseek-official` here to use it with a DeepSeek key.
     - id: web
       name: '@pentest-harness/dsh-web'
       config:
-        searchProvider: deepseek-official
+        searchProvider: duckduckgo
+
+    - id: web-search-duckduckgo
+      name: '@pentest-harness/dsh-web-search-duckduckgo'
 
     - id: web-search-deepseek
       name: '@pentest-harness/dsh-web-search-deepseek'
