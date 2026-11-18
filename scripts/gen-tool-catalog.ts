@@ -65,6 +65,7 @@ import * as ToolSubagent from '@pentest-harness/dsh-tool-subagent'
 import * as ToolWeb from '@pentest-harness/dsh-tool-web'
 import BrowserRuntime from '@pentest-harness/dsh-browser'
 import * as ToolBrowser from '@pentest-harness/dsh-tool-browser'
+import * as PentestToolkit from '@pentest-harness/dsh-pentest-toolkit'
 import VmWorkflowEngine from '@pentest-harness/dsh-workflow-worker-thread'
 import * as ToolRalph from '@pentest-harness/dsh-tool-ralph'
 import * as ToolWorkflow from '@pentest-harness/dsh-tool-workflow'
@@ -622,6 +623,19 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     note:
       'The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane.',
+  },
+  {
+    pkg: '@pentest-harness/dsh-pentest-toolkit',
+    dir: 'pentest-toolkit',
+    source: 'packages/pentest/pentest-toolkit/src/index.ts',
+    requires: ['ctx.tools', 'ctx.systemPrompt'],
+    writes: ['tool/call', 'tool/result'],
+    async mount(ctx) {
+      // Registration only probes PATH in the background; nothing is installed.
+      await ctx.plugin(PentestToolkit)
+    },
+    note:
+      'pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows.',
   },
 ]
 

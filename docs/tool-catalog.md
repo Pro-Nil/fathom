@@ -42,6 +42,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@pentest-harness/dsh-tool-workflow` | `workflow` | `ctx.tools`, `ctx.workflowEngine`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents the script children)` | `tool/call`, `tool/result` | - | - |
 | `@pentest-harness/dsh-tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
 | `@pentest-harness/dsh-tool-browser` | `browser_computer`, `browser_console`, `browser_find`, `browser_form_input`, `browser_get_page_text`, `browser_javascript`, `browser_navigate`, `browser_network`, `browser_read_page`, `browser_resize`, `browser_tabs` | `ctx.tools`, `ctx.browser`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane. |
+| `@pentest-harness/dsh-pentest-toolkit` | `pentest_tools` | `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows. |
 
 <a id="pentest-harnessdsh-tool-ask-user"></a>
 
@@ -2603,3 +2604,48 @@ Manage tabs: "list" shows every tab with its id, title and URL; "create" opens a
 Source: [`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
 
 The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane.
+
+<a id="pentest-harnessdsh-pentest-toolkit"></a>
+
+## `@pentest-harness/dsh-pentest-toolkit`
+
+### `pentest_tools`
+
+Report which pentest tools are available, or install the missing ones. action "status" lists them; action "install" installs every missing tool (or only those in tools[]). The first install asks the user how to install; later installs reuse that choice. Installing takes several minutes.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "status",
+        "install"
+      ]
+    },
+    "tools": {
+      "type": "array",
+      "description": "Install only these commands (default: all missing).",
+      "items": {
+        "type": "string"
+      }
+    },
+    "method": {
+      "type": "string",
+      "description": "Only when the user explicitly asked for a different installation type than the saved one.",
+      "enum": [
+        "wsl",
+        "windows"
+      ]
+    }
+  },
+  "required": [
+    "action"
+  ]
+}
+```
+
+Source: [`packages/pentest/pentest-toolkit/src/index.ts`](../packages/pentest/pentest-toolkit/src/index.ts)
+
+pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows.

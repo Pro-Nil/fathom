@@ -204,6 +204,9 @@ importers:
       '@pentest-harness/dsh-mcp-client':
         specifier: workspace:^
         version: link:../../packages/mcp/mcp-client
+      '@pentest-harness/dsh-pentest-toolkit':
+        specifier: workspace:^
+        version: link:../../packages/pentest/pentest-toolkit
       '@pentest-harness/dsh-persona':
         specifier: workspace:^
         version: link:../../packages/preset/persona
@@ -5977,6 +5980,34 @@ importers:
       '@pentest-harness/dsh-tools':
         specifier: workspace:^
         version: link:../../core/tools
+
+  packages/pentest/pentest-toolkit:
+    dependencies:
+      '@pentest-harness/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-agent':
+        specifier: workspace:^
+        version: link:../../core/agent
+      '@pentest-harness/dsh-home-paths':
+        specifier: workspace:^
+        version: link:../../util/home-paths
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@pentest-harness/dsh-system-prompt':
+        specifier: workspace:^
+        version: link:../../core/system-prompt
+      '@pentest-harness/dsh-tools':
+        specifier: workspace:^
+        version: link:../../core/tools
+      '@pentest-harness/dsh-user-questions':
+        specifier: workspace:^
+        version: link:../../interaction/user-questions
 
   packages/plan/plan-mode:
     dependencies:
