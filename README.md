@@ -11,7 +11,7 @@ research, security labs, and CTF engagements. Built on a plugin architecture whe
 layer — model adapters, tools, sessions, settings, and credentials — is replaceable from
 configuration.
 
-**Works with any AI model API.** Bring your own key from OpenAI, Anthropic, DeepSeek,
+**Works with any AI model API.** Bring your own key from OpenAI, Anthropic,
 Google, Mistral, Groq, OpenRouter, Azure OpenAI, or any OpenAI-compatible gateway — one
 click auto-discovers your models and you're running.
 
@@ -29,7 +29,7 @@ click auto-discovers your models and you're running.
 
 ## Features
 
-- **Multi-provider LLM engine** — OpenAI Chat Completions & Responses, Anthropic Messages, DeepSeek, and any custom OpenAI-compatible gateway with one-click model auto-discovery
+- **Multi-provider LLM engine** — OpenAI Chat Completions & Responses, Anthropic Messages, and any custom OpenAI-compatible gateway with one-click model auto-discovery
 - **Full agent toolset** — shell, filesystem, web research, skills, goals, subagents, background jobs, and workflow control
 - **Pentest Mode** — a professional offensive-security operating standard for authorized engagements
 - **Provider cards** — live connection testing, enabled/disabled toggles, per-model context badges
@@ -68,6 +68,10 @@ The Web UI opens at **http://127.0.0.1:2323** in your browser.
 
 - **Node.js 20+** (Node 22 recommended)
 - **pnpm** (`npm i -g pnpm`)
+
+### Updating
+
+Already installed? See **[docs/UPDATING.md](docs/UPDATING.md)** for updating the code, restarting, the desktop app, and upgrade notes.
 
 ### Run on another port
 
