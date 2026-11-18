@@ -32,8 +32,11 @@ export interface BrowserLaunchOptions {
   readonly searchUrl: string
 }
 
-/** Default address-bar search (the same engine Claude Code's browser uses). */
-export const DEFAULT_SEARCH_URL = 'https://www.google.com/search?q=%s'
+/**
+ * Default address-bar search. DuckDuckGo, like the harness's web_search: Google
+ * answers this automated browser with an "unusual traffic" challenge page.
+ */
+export const DEFAULT_SEARCH_URL = 'https://duckduckgo.com/?q=%s'
 
 /** The Playwright channel that means "the harness's own Chromium build". */
 export const BUNDLED_CHANNEL = 'chromium'

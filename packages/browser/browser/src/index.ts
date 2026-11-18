@@ -50,7 +50,7 @@ export interface BrowserRuntimeConfig {
   height?: number
   /** Serve the live view on the web server when one is mounted. Defaults to true. */
   liveView?: boolean
-  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to Google. */
+  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to DuckDuckGo. */
   searchUrl?: string
 }
 

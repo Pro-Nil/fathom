@@ -16,12 +16,12 @@ describe('normalizeUrl', () => {
 })
 
 describe('resolveAddress', () => {
-  const search = (q: string) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
+  const search = (q: string) => `https://duckduckgo.com/?q=${encodeURIComponent(q)}`
   it('searches text that is not an address, like a browser omnibox', () => {
     expect(resolveAddress('hh', DEFAULT_SEARCH_URL)).toBe(search('hh'))
     expect(resolveAddress('owasp top 10', DEFAULT_SEARCH_URL)).toBe(search('owasp top 10'))
     expect(resolveAddress('what is example.com', DEFAULT_SEARCH_URL)).toBe(search('what is example.com'))
-    expect(resolveAddress('hh', 'https://duckduckgo.com/?q=%s')).toBe('https://duckduckgo.com/?q=hh')
+    expect(resolveAddress('hh', 'https://www.google.com/search?q=%s')).toBe('https://www.google.com/search?q=hh')
   })
   it('opens hosts, IPs, ports and schemes directly', () => {
     expect(resolveAddress('example.com', DEFAULT_SEARCH_URL)).toBe('https://example.com')
@@ -112,12 +112,12 @@ describe('SharedBrowser (real Chromium)', () => {
   it('searches address-bar text that is not an address', async () => {
     const page = await browser.page()
     let requested = ''
-    await page.route('https://www.google.com/**', async (route) => {
+    await page.route('https://duckduckgo.com/**', async (route) => {
       requested = route.request().url()
       await route.fulfill({ body: '<title>search</title>', contentType: 'text/html' })
     })
     await browser.handleViewerMessage(JSON.stringify({ type: 'navigate', url: 'hh' }))
-    expect(requested).toBe('https://www.google.com/search?q=hh')
+    expect(requested).toBe('https://duckduckgo.com/?q=hh')
     await page.unrouteAll()
   })
 

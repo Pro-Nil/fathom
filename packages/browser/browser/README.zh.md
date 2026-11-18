@@ -11,7 +11,7 @@
 
 Web 客户端的 [`dsh-client-ui-browser`](../../client/ui-browser/README.zh.md) 面板嵌入这个页面。两个路由只接受回环地址的 `Host`，拒绝 `Sec-Fetch-Site: cross-site`，并要求任何 `Origin` 与 Host 一致，因此其他网站（或经 DNS 重绑定的页面）无法操控已登录的浏览器。
 
-地址栏和 `browser_navigate` 的输入按浏览器地址栏的方式解析：URL、裸主机名、IP 地址和 `host:port` 直接打开，其他文本则进行搜索（`searchUrl`，默认 Google）。页面打开文件选择器时，实时视图会请用户选择文件并交给页面，因此上传可以正常工作。
+地址栏和 `browser_navigate` 的输入按浏览器地址栏的方式解析：URL、裸主机名、IP 地址和 `host:port` 直接打开，其他文本则进行搜索（`searchUrl`，默认 DuckDuckGo；Google 会对这个自动化浏览器返回“异常流量”验证页）。页面打开文件选择器时，实时视图会请用户选择文件并交给页面，因此上传可以正常工作。
 
 实时视图的 ⋮ 菜单可从密码导出 CSV 文件导入已保存的密码（Chrome、Brave、Edge、Firefox 和多数密码管理器都能导出），可一次选择多个文件。每一行都用本浏览器自己的存储密钥加密，并在浏览器短暂关闭期间写入其密码存储，与 Chromium 保存密码的方式相同；同一站点和用户名的已有条目会保留。不会读取其他浏览器的加密存储：新版 Chrome、Brave 和 Edge 用应用绑定加密保护它们。导入只能通过实时视图操作，没有任何工具把它暴露给模型。
 
@@ -27,7 +27,7 @@ Web 客户端的 [`dsh-client-ui-browser`](../../client/ui-browser/README.zh.md)
 | `profileDir` | `~/.dsh/browser/profile` | 持久化配置目录。 |
 | `width` / `height` | `1280` / `800` | 初始视口（CSS 像素）。实时视图会调整它以适配面板。 |
 | `liveView` | `true` | 挂载 Web 服务器时提供 `/browser/view` 和 `/browser/ws`。 |
-| `searchUrl` | `https://www.google.com/search?q=%s` | 地址栏中非地址文本的搜索地址；`%s` 为编码后的查询。 |
+| `searchUrl` | `https://duckduckgo.com/?q=%s` | 地址栏中非地址文本的搜索地址；`%s` 为编码后的查询。 |
 
 ## 模型体验
 
