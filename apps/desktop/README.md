@@ -7,6 +7,8 @@ A small native window around the harness web UI: WinForms + Edge WebView2 on .NE
 - **Quit (tray menu) really closes it.** The server the app started runs inside a Windows Job Object, so Quit, or the app crashing, ends node and every process it spawned. A server the app only attached to is left running. *Restart harness* offers to replace it with one the app owns.
 - **Notifications when a session needs you.** When the agent asks a question, wants a tool approval or has a plan to review, the app plays its own chime and shows a Windows toast with a short summary. Clicking the toast opens the window. While the window is focused it only plays the chime; set `notifyWhenFocused` to also show the toast. If Windows *Do not disturb* is on, Windows keeps the toast in the notification centre without a banner.
 
+- **Its own title bar.** The window is frameless. A 38 px bar drawn into the page replaces the Windows caption. It shows the current session, a waiting-for-you count, the server state (Running / Attached / Starting / Stopped with the port), reload, open in browser, a ⋯ menu with the tray actions, and the window controls. Its empty space is a native drag region, so dragging, double-click to maximize, snapping and resizing work as usual. Note: when the app started the harness, quitting or restarting the app also restarts the harness.
+
 Tray menu: Open, Restart harness, Open log, Open in browser, Send test notification, Start with Windows, Quit.
 
 ## Build and install

@@ -30,6 +30,7 @@ internal sealed class MainForm : Form
     private bool quitting;
     private bool uiLoaded;
     private int waiting;
+    private string serverState = "starting";
     private DateTime lastChime = DateTime.MinValue;
 
     public MainForm(AppSettings settings, bool startHidden)
@@ -74,6 +75,9 @@ internal sealed class MainForm : Form
     {
         base.OnHandleCreated(e);
         UseDarkTitleBar(Handle);
+        // Recompute the frame now that WM_NCCALCSIZE drops the caption.
+        SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0, 0x0020 | 0x0002 | 0x0001 | 0x0004 /* FRAMECHANGED|NOMOVE|NOSIZE|NOZORDER */);
+        UpdateResizeStrip();
         await StartAsync();
     }
 
@@ -96,6 +100,9 @@ internal sealed class MainForm : Form
         core.Settings.AreDevToolsEnabled = true;
         core.Settings.IsGeneralAutofillEnabled = false;
         core.Settings.IsPasswordAutosaveEnabled = false;
+        // The page's title bar marks its empty space app-region: drag, which
+        // WebView2 turns into a real caption (drag, double-click, snap, system menu).
+        core.Settings.IsNonClientRegionSupportEnabled = true;
         await core.AddScriptToExecuteOnDocumentCreatedAsync(ReadText("bridge.js"));
         core.WebMessageReceived += OnWebMessage;
         core.NewWindowRequested += (_, args) =>
@@ -130,6 +137,8 @@ internal sealed class MainForm : Form
         {
             await server.StartAsync(text => SetSplash(text, false, ""), lifetime.Token);
             uiLoaded = true;
+            serverState = server.Owned ? "running" : "attached";
+            PushChrome();
             web.CoreWebView2.Navigate(server.Url.ToString());
             tray.SetTip(server.Owned ? "Pentest Harness" : "Pentest Harness (attached to a running server)");
             UpdateMenu();
@@ -139,7 +148,7 @@ internal sealed class MainForm : Form
         }
         catch (Exception ex)
         {
-            SetSplash(ex.Message, true, "Use the tray menu to retry or open the log.");
+            SetSplash(ex.Message, true, "Use the ⋯ menu above (or the tray menu) to retry or open the log.");
             if (!Visible) ShowFromTray();
         }
     }
@@ -147,6 +156,8 @@ internal sealed class MainForm : Form
     private void OnServerExited(int code)
     {
         if (quitting) return;
+        serverState = "stopped";
+        PushChrome();
         UpdateMenu();
         Notify("Pentest Harness stopped", $"The harness exited (code {code}). Use Restart harness in the tray menu.", "stopped", urgent: false);
         PlayChime();
@@ -168,6 +179,11 @@ internal sealed class MainForm : Form
             ApplyTheme(notice.Dark == true, notice.Background);
             return;
         }
+        if (notice.Kind == "window")
+        {
+            HandleWindowAction(notice.Action);
+            return;
+        }
         HandleNotice(notice, test: false);
     }
 
@@ -177,12 +193,14 @@ internal sealed class MainForm : Form
         {
             waiting = Math.Max(0, waiting - 1);
             tray.SetTip(waiting == 0 ? "Pentest Harness" : $"Pentest Harness — {waiting} waiting for you");
+            PushChrome();
             return;
         }
         if (!test)
         {
             waiting++;
             tray.SetTip($"Pentest Harness — {waiting} waiting for you");
+            PushChrome();
         }
         PlayChime();
         var focused = Visible && WindowState != FormWindowState.Minimized && GetForegroundWindow() == Handle;
@@ -211,7 +229,111 @@ internal sealed class MainForm : Form
         try { chime.Play(); } catch (InvalidOperationException) { }
     }
 
-    private sealed record Notice(string? Kind, string? Title, string? Body, string? SessionId, bool? Dark = null, string? Background = null);
+    private sealed record Notice(string? Kind, string? Title, string? Body, string? SessionId, bool? Dark = null, string? Background = null, string? Action = null);
+
+    // ── custom title bar ────────────────────────────────────────────────
+
+    /// <summary>Buttons in the page's title bar.</summary>
+    private void HandleWindowAction(string? action)
+    {
+        switch (action)
+        {
+            case "ready": PushChrome(); break;
+            case "minimize": WindowState = FormWindowState.Minimized; break;
+            case "maximize": WindowState = WindowState == FormWindowState.Maximized ? FormWindowState.Normal : FormWindowState.Maximized; break;
+            case "close": Close(); break;
+            case "reload": if (uiLoaded) web.Reload(); break;
+            case "external": OpenExternal(server.Url.ToString()); break;
+            case "menu":
+                UpdateMenu();
+                startupItem.Checked = StartsWithWindows();
+                menu.Show(Cursor.Position, ToolStripDropDownDirection.BelowLeft);
+                break;
+        }
+    }
+
+    /// <summary>Send the bar what it shows: server state, port, waiting count, maximized.</summary>
+    private void PushChrome()
+    {
+        if (web.CoreWebView2 is null) return;
+        var state = JsonSerializer.Serialize(new
+        {
+            type = "chrome",
+            state = serverState,
+            port = settings.Port,
+            waiting,
+            maximized = WindowState == FormWindowState.Maximized,
+        });
+        try { web.CoreWebView2.PostWebMessageAsJson(state); } catch (InvalidOperationException) { }
+    }
+
+    private FormWindowState lastState = FormWindowState.Normal;
+
+    protected override void OnResize(EventArgs e)
+    {
+        base.OnResize(e);
+        UpdateResizeStrip();
+        if (WindowState != lastState)
+        {
+            lastState = WindowState;
+            PushChrome();
+        }
+    }
+
+    /// <summary>A thin top strip outside the web view keeps the top edge resizable.</summary>
+    private void UpdateResizeStrip()
+    {
+        var top = WindowState == FormWindowState.Normal ? 3 : 0;
+        if (Padding.Top != top) Padding = new Padding(0, top, 0, 0);
+    }
+
+    protected override void WndProc(ref Message m)
+    {
+        const int WM_NCCALCSIZE = 0x0083, WM_NCHITTEST = 0x0084;
+        if (m.Msg == WM_NCCALCSIZE && m.WParam != IntPtr.Zero)
+        {
+            // Let Windows size the side and bottom borders, then put the top
+            // back where it was: the caption disappears, the frame (resize
+            // borders, shadow, rounded corners, snap) stays.
+            var before = Marshal.PtrToStructure<RECT>(m.LParam);
+            base.WndProc(ref m);
+            var after = Marshal.PtrToStructure<RECT>(m.LParam);
+            after.Top = before.Top + (IsZoomed(Handle) ? FrameInset() : 0);
+            Marshal.StructureToPtr(after, m.LParam, false);
+            m.Result = IntPtr.Zero;
+            return;
+        }
+        if (m.Msg == WM_NCHITTEST)
+        {
+            base.WndProc(ref m);
+            if (m.Result == (IntPtr)1 /* HTCLIENT */ && WindowState == FormWindowState.Normal)
+            {
+                var lp = m.LParam.ToInt64();
+                var point = PointToClient(new Point((short)(lp & 0xFFFF), (short)((lp >> 16) & 0xFFFF)));
+                if (point.Y < Math.Max(Padding.Top, 3))
+                {
+                    m.Result = point.X < 10 ? (IntPtr)13 /* HTTOPLEFT */ : point.X > ClientSize.Width - 10 ? (IntPtr)14 /* HTTOPRIGHT */ : (IntPtr)12 /* HTTOP */;
+                }
+            }
+            return;
+        }
+        base.WndProc(ref m);
+    }
+
+    private int FrameInset()
+    {
+        var dpi = GetDpiForWindow(Handle);
+        return GetSystemMetricsForDpi(33 /* SM_CYFRAME */, dpi) + GetSystemMetricsForDpi(92 /* SM_CXPADDEDBORDER */, dpi);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT { public int Left, Top, Right, Bottom; }
+
+    [DllImport("user32.dll")] private static extern bool IsZoomed(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern int GetSystemMetricsForDpi(int index, uint dpi);
+    [DllImport("user32.dll")] private static extern bool SetWindowPos(IntPtr hwnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
+
 
     /// <summary>Match the native title bar and window background to the page palette.</summary>
     private void ApplyTheme(bool dark, string? background)
