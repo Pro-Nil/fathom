@@ -19,6 +19,8 @@ export type PluginsSettingsLocaleKey =
   | 'sessionFoldersTitle' | 'sessionFoldersDescription' | 'sessionFoldersEnabled' | 'sessionFoldersEnabledHint'
   | 'sessionFoldersFolder' | 'sessionFoldersFolderHint'
   | 'personaTitle' | 'personaDescription' | 'personaText' | 'personaTextHint'
+  | 'webSearchTitle' | 'webSearchDescription' | 'webSearchProvider' | 'webSearchProviderHint'
+  | 'webSearchFallback' | 'webSearchFallbackHint'
 
 /** English copy. */
 export const en: Record<PluginsSettingsLocaleKey, string> = {
@@ -86,6 +88,12 @@ export const en: Record<PluginsSettingsLocaleKey, string> = {
   personaDescription: 'The agent\'s system prompt for this preset.',
   personaText: 'Persona text',
   personaTextHint: 'Takes effect on the next request. {{model}} and {{cwd}} are filled in automatically. Reset restores the built-in text.',
+  webSearchTitle: 'Web search',
+  webSearchDescription: 'Which engine the web_search tool uses.',
+  webSearchProvider: 'Search engine',
+  webSearchProviderHint: 'Google needs no key: it searches in a hidden page of the built-in browser. Applies to the next search.',
+  webSearchFallback: 'Fall back to other engines',
+  webSearchFallbackHint: 'When the chosen engine is rate-limited, blocked or unavailable, try the others (Google, Google API, DuckDuckGo, Exa, Perplexity).',
 }
 
 /** Simplified Chinese copy. */
@@ -154,4 +162,10 @@ export const zh: Record<PluginsSettingsLocaleKey, string> = {
   personaDescription: '此预设的 agent 系统提示词。',
   personaText: '人设文本',
   personaTextHint: '下一次请求起生效。{{model}} 和 {{cwd}} 会自动填入。恢复默认即回到内置文本。',
+  webSearchTitle: 'Web search',
+  webSearchDescription: 'Which engine the web_search tool uses.',
+  webSearchProvider: 'Search engine',
+  webSearchProviderHint: 'Google needs no key: it searches in a hidden page of the built-in browser. Applies to the next search.',
+  webSearchFallback: 'Fall back to other engines',
+  webSearchFallbackHint: 'When the chosen engine is rate-limited, blocked or unavailable, try the others (Google, Google API, DuckDuckGo, Exa, Perplexity).',
 }

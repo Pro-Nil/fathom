@@ -52,6 +52,7 @@ export function FieldsCard(props: FieldsCardProps) {
               {...common}
               numeric={field.kind === 'number'}
               multiline={field.kind === 'multiline'}
+              {...field.options === undefined ? {} : { options: field.options }}
             />
           )
       })}

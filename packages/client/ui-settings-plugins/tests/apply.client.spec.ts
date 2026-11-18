@@ -128,7 +128,7 @@ describe('ui-settings-plugins apply', () => {
     expect(slots.entries('settings.plugin.item').map(entry => entry.options.key))
       .toEqual([
         'shell', 'agent-loop',
-        'compaction', 'spill-policy', 'tool-result-pruner', 'repeat-tool-reminder', 'session-folders', 'persona',
+        'compaction', 'spill-policy', 'tool-result-pruner', 'repeat-tool-reminder', 'session-folders', 'web-search', 'persona',
       ])
   })
 
@@ -188,7 +188,7 @@ describe('ui-settings-plugins apply', () => {
     declareRoot(slots)
     const fiber = ctx.plugin({ inject: [...inject], apply })
     await fiber.await()
-    expect(slots.entries('settings.plugin.item')).toHaveLength(8)
+    expect(slots.entries('settings.plugin.item')).toHaveLength(9)
 
     await fiber.dispose()
 

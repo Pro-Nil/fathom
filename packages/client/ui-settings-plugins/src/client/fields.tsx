@@ -50,34 +50,52 @@ export function ValueField(props: FieldProps & {
   placeholder?: string
   /** Render a resizable multi-line text area instead of a single-line input. */
   multiline?: boolean
+  /** Render a dropdown of these choices instead of free text. */
+  options?: readonly { value: string; label: string }[]
 }) {
-  const control = props.multiline === true
+  const options = props.options
+  const control = options !== undefined
     ? (
-      <textarea
-        id={props.id}
-        className={props.invalid ? css.textareaInvalid : css.textarea}
-        rows={12}
-        spellCheck={false}
-        {...props.invalid ? { 'aria-invalid': true } : {}}
-        value={props.text}
-        placeholder={props.placeholder ?? ''}
-        disabled={props.disabled}
-        onChange={(event) => { props.onEdit(event.target.value) }}
-      />
-    )
-    : (
-      <input
+      <select
         id={props.id}
         className={props.invalid ? css.inputInvalid : css.input}
-        type="text"
-        {...props.numeric === true ? { inputMode: 'numeric' as const } : {}}
-        {...props.invalid ? { 'aria-invalid': true } : {}}
         value={props.text}
-        placeholder={props.placeholder ?? ''}
         disabled={props.disabled}
         onChange={(event) => { props.onEdit(event.target.value) }}
-      />
+      >
+        {options.some(option => option.value === props.text)
+          ? null
+          : <option value={props.text}>{props.text}</option>}
+        {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+      </select>
     )
+    : props.multiline === true
+      ? (
+        <textarea
+          id={props.id}
+          className={props.invalid ? css.textareaInvalid : css.textarea}
+          rows={12}
+          spellCheck={false}
+          {...props.invalid ? { 'aria-invalid': true } : {}}
+          value={props.text}
+          placeholder={props.placeholder ?? ''}
+          disabled={props.disabled}
+          onChange={(event) => { props.onEdit(event.target.value) }}
+        />
+      )
+      : (
+        <input
+          id={props.id}
+          className={props.invalid ? css.inputInvalid : css.input}
+          type="text"
+          {...props.numeric === true ? { inputMode: 'numeric' as const } : {}}
+          {...props.invalid ? { 'aria-invalid': true } : {}}
+          value={props.text}
+          placeholder={props.placeholder ?? ''}
+          disabled={props.disabled}
+          onChange={(event) => { props.onEdit(event.target.value) }}
+        />
+      )
   return (
     <div className={css.field}>
       <div className={css.head}>

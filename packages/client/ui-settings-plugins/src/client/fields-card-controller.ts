@@ -13,7 +13,7 @@ import {
 import type { PluginsSettingsLocaleKey } from './locales.ts'
 
 /** How a field's value is edited. */
-export type FieldKind = 'number' | 'text' | 'multiline' | 'boolean' | 'numberList'
+export type FieldKind = 'number' | 'text' | 'multiline' | 'boolean' | 'numberList' | 'select'
 
 /** One field of a descriptor card. */
 export interface FieldDescriptor {
@@ -25,6 +25,8 @@ export interface FieldDescriptor {
   labelKey: PluginsSettingsLocaleKey
   /** Locale key of the hint under the control. */
   hintKey: PluginsSettingsLocaleKey
+  /** Choices of a `select` field; the empty value means "use the default". */
+  options?: readonly { value: string; label: string }[]
 }
 
 /** One descriptor card. */
@@ -98,6 +100,7 @@ function specFor(descriptor: FieldDescriptor): CardFieldSpec {
   switch (descriptor.kind) {
     case 'number': return numberField(descriptor.field)
     case 'text': return textField(descriptor.field)
+    case 'select': return textField(descriptor.field)
     case 'multiline': return multilineField(descriptor.field)
     case 'boolean': return booleanField(descriptor.field)
     case 'numberList': return numberListField(descriptor.field)
@@ -197,6 +200,28 @@ export const FIELD_CARDS: CardDescriptor[] = [
     fields: [
       { field: 'enabled', kind: 'boolean', labelKey: 'sessionFoldersEnabled', hintKey: 'sessionFoldersEnabledHint' },
       { field: 'folder', kind: 'text', labelKey: 'sessionFoldersFolder', hintKey: 'sessionFoldersFolderHint' },
+    ],
+  },
+  {
+    namespace: 'web-search',
+    titleKey: 'webSearchTitle',
+    descriptionKey: 'webSearchDescription',
+    fields: [
+      {
+        field: 'searchProvider',
+        kind: 'select',
+        labelKey: 'webSearchProvider',
+        hintKey: 'webSearchProviderHint',
+        options: [
+          { value: '', label: 'Automatic' },
+          { value: 'google', label: 'Google (no key, uses the built-in browser)' },
+          { value: 'google-api', label: 'Google API (GOOGLE_API_KEY + GOOGLE_CSE_ID)' },
+          { value: 'duckduckgo', label: 'DuckDuckGo (no key)' },
+          { value: 'exa', label: 'Exa (EXA_API_KEY)' },
+          { value: 'perplexity', label: 'Perplexity (PERPLEXITY_API_KEY)' },
+        ],
+      },
+      { field: 'searchFallback', kind: 'boolean', labelKey: 'webSearchFallback', hintKey: 'webSearchFallbackHint' },
     ],
   },
   {
