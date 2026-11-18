@@ -497,6 +497,21 @@ export class SharedBrowser {
   }
 
   /**
+   * Restart the active tab's screencast so viewers get a frame at the current
+   * size right away. Chromium sends frames only when the page repaints, and a
+   * static page (about:blank, a finished load) may not repaint after a
+   * viewport change, which would leave the old-sized frame letterboxed.
+   * @param page - the page whose stream to restart; ignored unless it is streaming.
+   */
+  private async restartScreencast(page: Page): Promise<void> {
+    await this.screencastSwitch
+    const current = this.screencast
+    if (current?.page !== page) return
+    await current.cdp.send('Page.stopScreencast').catch(() => {})
+    await current.cdp.send('Page.startScreencast', { format: 'jpeg', quality: 70, everyNthFrame: 1 }).catch(() => {})
+  }
+
+  /**
    * Apply one input or control message from a live viewer. Coordinates are CSS
    * pixels in the page viewport.
    * @param raw - the JSON message text.
@@ -588,7 +603,10 @@ export class SharedBrowser {
           const page = await this.page()
           const width = Math.round(number('width'))
           const height = Math.round(number('height'))
-          if (width >= 200 && height >= 200 && width <= 4000 && height <= 4000) await page.setViewportSize({ width, height })
+          if (width >= 200 && height >= 200 && width <= 4000 && height <= 4000) {
+            await page.setViewportSize({ width, height })
+            await this.restartScreencast(page)
+          }
           break
         }
         default:

@@ -121,6 +121,28 @@ describe('SharedBrowser (real Chromium)', () => {
     await page.unrouteAll()
   })
 
+  it('sends a frame at the new size after a resize, even on a page that does not repaint', async () => {
+    await browser.navigate('about:blank')
+    const frames: { width: number; height: number }[] = []
+    const detach = browser.attachViewer({
+      send: (message) => {
+        if (message.startsWith('{"type":"frame"')) {
+          const frame = JSON.parse(message) as { width: number; height: number }
+          frames.push({ width: frame.width, height: frame.height })
+        }
+      },
+    })
+    const waitFor = async (match: (f: { width: number; height: number }) => boolean): Promise<boolean> => {
+      const deadline = Date.now() + 8000
+      while (!frames.some(match) && Date.now() < deadline) await new Promise(r => setTimeout(r, 50))
+      return frames.some(match)
+    }
+    expect(await waitFor(() => true)).toBe(true)
+    await browser.handleViewerMessage(JSON.stringify({ type: 'resize', width: 517, height: 733 }))
+    expect(await waitFor(f => f.width === 517 && f.height === 733)).toBe(true)
+    detach()
+  }, 30_000)
+
   it('rejects malformed refs before touching the page', async () => {
     await expect(browser.locate('e1"] , css=body')).rejects.toThrow(/not an element ref/u)
   })
