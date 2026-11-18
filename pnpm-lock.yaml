@@ -1475,6 +1475,9 @@ importers:
       '@pentest-harness/dsh-client-ui-user-questions':
         specifier: workspace:^
         version: link:../../client/ui-user-questions
+      '@pentest-harness/dsh-client-ui-workflow':
+        specifier: workspace:^
+        version: link:../../client/ui-workflow
       '@pentest-harness/dsh-client-ui-workflow-run':
         specifier: workspace:^
         version: link:../../client/ui-workflow-run
