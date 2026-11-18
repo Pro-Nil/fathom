@@ -1,11 +1,10 @@
 /**
  * Appearance preference row registered into the General section item slot
- * (figma 501:30012 'Frame 2117131228'): title + preference cubes. The product
- * is dark-only, so the row shows the Dark theme as the single, always-selected
- * option; Light and System were removed with the light palette.
+ * (figma 501:30012 'Frame 2117131228'): title + preference cubes for Light,
+ * Dark and System (follow the OS color scheme).
  */
 import clsx from 'clsx'
-import { IconDarkOutline16 } from '@pentest-harness/dsh-client-ui-primitives'
+import { IconDarkOutline16, IconFollowsystemOutline16, IconLightOutline16 } from '@pentest-harness/dsh-client-ui-primitives'
 import type { PropsLocale, PropsRuntime, PropsStore } from '@pentest-harness/dsh-client-ui-slots'
 import type { ThemePreference } from '../theme-settings.ts'
 import type { ThemeKey } from './locales.ts'
@@ -24,9 +23,11 @@ export type AppearanceRowComponentProps =
   PropsRuntime<'settings.general.item'> & PropsStore<ReturnType<typeof createAppearanceRowStore>>
   & PropsLocale<'settings.theme'> & AppearanceRowInjected
 
-/** The single dark-only preference (figma 501:30016: Dark). */
+/** The three built-in preferences (figma 501:30016). */
 const CUBES: readonly { id: ThemePreference; labelKey: ThemeKey; Icon: typeof IconDarkOutline16 }[] = [
+  { id: 'light', labelKey: 'appearance.light', Icon: IconLightOutline16 },
   { id: 'dark', labelKey: 'appearance.dark', Icon: IconDarkOutline16 },
+  { id: 'system', labelKey: 'appearance.system', Icon: IconFollowsystemOutline16 },
 ]
 
 /**
@@ -34,7 +35,7 @@ const CUBES: readonly { id: ThemePreference; labelKey: ThemeKey; Icon: typeof Ic
  * @param props - composed slot props.
  * @returns the row element tree.
  */
-export function AppearanceRow({ t, useStore }: AppearanceRowComponentProps) {
+export function AppearanceRow({ t, useStore, setTheme }: AppearanceRowComponentProps) {
   const preference = useStore(s => s.preference)
   return (
     <div className={css.group}>
@@ -46,6 +47,7 @@ export function AppearanceRow({ t, useStore }: AppearanceRowComponentProps) {
             type="button"
             className={clsx(css.themeCube, preference === id && css.selected)}
             aria-pressed={preference === id}
+            onClick={() => { setTheme(id) }}
           >
             <Icon />
             {t(labelKey)}
