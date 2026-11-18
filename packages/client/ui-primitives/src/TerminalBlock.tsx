@@ -52,7 +52,16 @@ export interface TerminalBlockLabels {
   expandAria: (hidden: number) => string
   /** Expand-toggle text while capped, given the hidden line count. */
   expand: (hidden: number) => string
+  /** Toggle text that reveals a long command in full. */
+  showCommand: string
+  /** Toggle text that folds a revealed command back to clipped rows. */
+  hideCommand: string
 }
+
+/** A command is folded when it has more rows than this… */
+const COMMAND_FOLD_LINES = 3
+/** …or any row longer than this many characters. */
+const COMMAND_FOLD_CHARS = 80
 
 const DEFAULT_LABELS: TerminalBlockLabels = {
   signal: signal => `信号 ${signal}`,
@@ -67,6 +76,8 @@ const DEFAULT_LABELS: TerminalBlockLabels = {
   collapse: '收起',
   expandAria: hidden => `展开其余 ${hidden} 行输出`,
   expand: hidden => `… 其余 ${hidden} 行`,
+  showCommand: 'Show full command',
+  hideCommand: 'Hide full command',
 }
 
 export interface TerminalBlockProps {
@@ -208,6 +219,8 @@ export function TerminalBlock({
   const { copied, onCopy } = useCopyFeedback(text)
 
   const onToggle = useCallback(() => { setExpanded(value => !value) }, [])
+  const [commandOpen, setCommandOpen] = useState(false)
+  const onToggleCommand = useCallback(() => { setCommandOpen(value => !value) }, [])
 
   const status = statusText(exitCode, signal, copy)
   const state = runState(running, exitCode, signal, copy)
@@ -218,6 +231,13 @@ export function TerminalBlock({
     const body = command.endsWith('\n') ? command.slice(0, -1) : command
     return body.split('\n')
   }, [command])
+  // A long command shows at most three clipped rows until the user opens it;
+  // open, every row wraps so the whole command reads.
+  const commandFoldable = commandLines.length > COMMAND_FOLD_LINES
+    || commandLines.some(line => line.length > COMMAND_FOLD_CHARS)
+  const shownCommandLines = commandFoldable && !commandOpen
+    ? commandLines.slice(0, COMMAND_FOLD_LINES)
+    : commandLines
   // Read from the parsed lines the card actually renders, not from the raw text:
   // output that is only escapes or control bytes (a lone reset, an OSC title, an
   // erase) survives `text.trim()` yet parses to nothing visible. Judging it on
@@ -231,7 +251,7 @@ export function TerminalBlock({
       <div className={css.header}>
         <div className={css.prompt}>
           <span className={css.runStateLabel}>{state.label}</span>
-          {commandLines.map((line, index) => (
+          {shownCommandLines.map((line, index) => (
             <div key={index} className={css.promptLine}>
               {/* One dot for the card, on the first row: the exit status the
                   view carries is the whole call's, and bash reports no
@@ -247,9 +267,24 @@ export function TerminalBlock({
               <span className={css.cwd}>
                 {index > 0 || cwd === undefined ? '$' : promptLabel(cwd, home)}
               </span>
-              <span className={css.command}>{line}</span>
+              <span className={commandOpen ? css.commandWrapped : css.command}>{line}</span>
             </div>
           ))}
+          {commandFoldable && (
+            <button
+              type="button"
+              className={css.commandToggle}
+              aria-expanded={commandOpen}
+              title={commandOpen ? undefined : command}
+              onClick={onToggleCommand}
+            >
+              {commandOpen
+                ? copy.hideCommand
+                : commandLines.length > COMMAND_FOLD_LINES
+                  ? `${copy.showCommand} (+${commandLines.length - COMMAND_FOLD_LINES} lines)`
+                  : copy.showCommand}
+            </button>
+          )}
         </div>
         {status !== undefined && <Pill className={css.status}>{status}</Pill>}
         {!running && !empty && (

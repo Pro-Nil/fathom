@@ -127,6 +127,34 @@
   white-space: pre;
 }
 
+/* An opened long command: every row wraps, keeping its spacing, so the whole
+   command is readable without horizontal scrolling. */
+.commandWrapped {
+  min-width: 0;
+  color: var(--dsw-alias-label-primary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* The fold toggle sits under the prompt rows. */
+.commandToggle {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dsw-alias-label-tertiary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.commandToggle:hover,
+.commandToggle:focus-visible {
+  color: var(--dsw-alias-label-secondary);
+  text-decoration: underline;
+}
+
 /* Capped to the prompt's line height (Pill's own 24px height would exceed a
    smaller-font prompt row and stretch the banner). Sticky against the
    banner's own scroll so the pill and the copy control stay in reach while a
