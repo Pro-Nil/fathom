@@ -21,6 +21,18 @@ const HOOKS_DIRECTORY = 'dsh-hooks'
 const OWNERSHIP_MARKER = '.dsh-lefthook-owned'
 const OWNERSHIP_MARKER_VERSION = 1
 const OWNERSHIP_MARKER_OWNER = 'pentest-harness worktree-local lefthook hooks'
+
+/**
+ * Whether a marker's owner names this repository's hooks. Clones made before
+ * the project was renamed carry the same marker under the old project name,
+ * so any `<name>-harness worktree-local lefthook hooks` owner is accepted and
+ * rewritten with the current name on the next install.
+ * @param owner - the parsed marker owner.
+ * @returns true for this repository's own hooks directory.
+ */
+function isOwnershipMarkerOwner(owner) {
+  return typeof owner === 'string' && /^[a-z0-9-]+-harness worktree-local lefthook hooks$/u.test(owner)
+}
 const INSTALL_LOCK = 'dsh-lefthook-install.lock'
 const INSTALL_LOCK_TIMEOUT_MS = 30_000
 const INSTALL_LOCK_INITIALIZATION_TIMEOUT_MS = 5_000
@@ -475,7 +487,7 @@ function parseOwnershipMarker(content) {
     typeof parsed !== 'object'
     || parsed === null
     || parsed.version !== OWNERSHIP_MARKER_VERSION
-    || parsed.owner !== OWNERSHIP_MARKER_OWNER
+    || !isOwnershipMarkerOwner(parsed.owner)
     || typeof parsed.hooksPath !== 'string'
     || !isAbsolute(parsed.hooksPath)
   ) {

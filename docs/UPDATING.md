@@ -68,6 +68,15 @@ The window opens on the web UI. Closing it hides it to the tray; **tray icon →
 3. Read the [upgrade notes](#upgrade-notes) below for anything you must change in `~/.dsh` first.
 4. Start it again: `pnpm dsh web`.
 
+If `git pull` stops with **"Your local changes to the following files would be overwritten by merge"** (usually `pnpm-lock.yaml` or a `package.json` that an older `pnpm install` rewrote), nothing was updated. Set those changes aside and pull again:
+
+```sh
+git stash
+git pull
+```
+
+Then continue with `pnpm install` and `pnpm build`. Run `git stash drop` later if you don't need the stashed edits.
+
 Run all three update commands every time. A plugin that a mode uses but that was not built makes every session of that mode fail to start. If you have local changes, commit or stash them before `git pull`.
 
 ## D. Add the desktop app to a web install
@@ -149,4 +158,5 @@ Stopping a turn does not stop background jobs. Use **Stop** on the job in the se
 | `MSB1009: Project file does not exist. Switch: apps/desktop` | Your checkout has no desktop app: it is a clone of the upstream repository, or you are not in the checkout folder. See [Before running any desktop-app command](#before-running-any-desktop-app-command). |
 | `'Start-Process' is not recognized…` or a folder literally named `$env:LOCALAPPDATA` appears | The command ran in Command Prompt. Run it in PowerShell. |
 | The app does not start and asks for a .NET runtime | Install the [.NET Desktop Runtime](https://dotnet.microsoft.com/download) 10 or newer, then reinstall the app with the publish command from [B](#b-first-install--web--desktop-app). |
+| `git pull` says local changes "would be overwritten by merge" | The pull did nothing, so later steps rebuild the old version. Run `git stash`, then `git pull` again (see [C](#c-update-the-web-version)). |
 | Port 2323 is already in use | Another harness is still running. Quit it (tray → Quit) or start on another port with `pnpm dsh web --port 3000`. |
