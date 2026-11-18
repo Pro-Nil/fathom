@@ -4,6 +4,10 @@
 // shell, which plays the app's sound and shows a notification. It never
 // changes, blocks or answers anything.
 (() => {
+  // WebView2 also runs injected scripts in child frames (for example the
+  // Browser panel's live-view iframe); the bridge and title bar belong only
+  // to the top document.
+  if (window.top !== window) return
   if (!window.chrome || !window.chrome.webview) return
   const post = (message) => window.chrome.webview.postMessage(JSON.stringify(message))
   const seen = new Set()
