@@ -41,7 +41,7 @@ const publicLandlockPackages = new Set([
 const publicationSourceAllowlist: Readonly<Record<string, readonly string[]>> = {
   '@pentest-harness/node-addon-landlock-run': ['src/main.c'],
 }
-const repositoryUrl = 'git+https://github.com/deepseek-harness/deepseek-harness.git'
+const repositoryUrl = 'git+https://github.com/pentest-harness/pentest-harness.git'
 /**
  * Source home the published packages point consumers at. It differs from
  * {@link repositoryUrl}, which the Landlock packages keep because npm resolves

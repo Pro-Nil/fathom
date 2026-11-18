@@ -686,7 +686,7 @@ describe('CodexAppServerWire', () => {
     const initialize = await child.peer.nextMethod('initialize')
     expect(initialize.params).toEqual({
       clientInfo: {
-        name: 'deepseek-harness',
+        name: 'pentest-harness',
         title: 'Pentest Harness',
         version: '0.0.1',
       },

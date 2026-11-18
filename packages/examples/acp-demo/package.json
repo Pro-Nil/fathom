@@ -56,21 +56,22 @@
     "@pentest-harness/schemastery": "workspace:^"
   },
   "devDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/cordis-plugin-include": "workspace:^",
     "@pentest-harness/cordis-plugin-loader": "workspace:^",
     "@pentest-harness/dsh-acp": "workspace:^",
     "@pentest-harness/dsh-agent": "workspace:^",
+    "@pentest-harness/dsh-agent-instructions": "workspace:^",
     "@pentest-harness/dsh-agent-spine-demo": "workspace:^",
     "@pentest-harness/dsh-app-boot": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/dsh-session-checkpoint-policy": "workspace:^",
     "@pentest-harness/dsh-session-persistence-jsonl": "workspace:^",
     "@pentest-harness/dsh-session-query": "workspace:^",
     "@pentest-harness/dsh-session-query-sqlite": "workspace:^",
     "@pentest-harness/dsh-system-prompt": "workspace:^",
     "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/dsh-agent-instructions": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/schemastery": "workspace:^"
   }
 }

@@ -8,11 +8,26 @@ import ToolRuntime, { defineContentToolFixture } from '@pentest-harness/dsh-tool
 import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
 
 import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
+
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
 
 /**
  * With-key proof that log-derived requests translate into real provider cache hits: a
- * multi-step tool turn (plus a follow-up turn) against the live DeepSeek API must report
+ * multi-step tool turn (plus a follow-up turn) against the live Acme API must report
  * `cacheReadTokens > 0` on every request after the first — the adapter maps the provider's
  * `prompt_cache_hit_tokens`, and the per-step usage recorded on `assistant/message` events is
  * the production observable for cache behavior (the reconstructability Agent Note's measurement
@@ -45,7 +60,7 @@ async function loopHarness(): Promise<Context> {
   await created.plugin(ToolRuntime)
   await created.plugin(AgentRegistry)
   await created.plugin(AgentLoop, { agents: [] })
-  await created.plugin(LlmDeepSeek)
+  await created.plugin(LlmPiAi, acmeRoute())
   created.tools.register(defineContentToolFixture({
     name: 'lookup',
     description: 'Look up the stored value for a key.',
@@ -68,10 +83,10 @@ function waitForIdle(context: Context, agent: Agent): Promise<void> {
   })
 }
 
-describe.skipIf(!process.env.DEEPSEEK_API_KEY)('log-derived request cache hits (real API)', () => {
+describe.skipIf(!process.env.ACME_API_KEY)('log-derived request cache hits (real API)', () => {
   it('every request after the first hits the provider prefix cache', async () => {
     ctx = await loopHarness()
-    const agent = ctx.agentLoop.create(SessionId('cache-e2e'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
+    const agent = ctx.agentLoop.create(SessionId('cache-e2e'), { provider: 'acme-official', model: 'acme-v4-flash' })
 
     // Turn 1: forces a tool call → at least two steps (two model requests).
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'Look up the key "deploy-color" with the lookup tool and tell me the value.' }], source: { kind: 'user' } }))

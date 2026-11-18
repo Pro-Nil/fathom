@@ -11,12 +11,27 @@ import ToolRuntime from '@pentest-harness/dsh-tools'
 import AgentRegistry from '@pentest-harness/dsh-agent'
 import type { Agent } from '@pentest-harness/dsh-agent'
 import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import * as WorkspaceContext from '@pentest-harness/dsh-agent-instructions'
 import { candidateScopeKey } from '../src/render.ts'
 import LocalFileSystem from '@pentest-harness/dsh-fs-local'
 import * as ToolFs from '@pentest-harness/dsh-tool-fs'
 import type { SessionEvent } from '@pentest-harness/dsh-session'
+
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
 
 const PROBE = 'banana-271828'
 const NESTED_PROBE = 'papaya-314159'
@@ -46,11 +61,11 @@ async function harness(): Promise<{ ctx: Context; agent: Agent }> {
   await ctx.plugin(ToolFs)
   await ctx.plugin(WorkspaceContext, { maxBytes: 65536 })
   await ctx.plugin(AgentLoop, { agents: [] })
-  await ctx.plugin(LlmDeepSeek, { models: [{ id: 'deepseek-v4-flash' }] })
+  await ctx.plugin(LlmPiAi, acmeRoute([{ id: 'acme-v4-flash' }]))
   const handle = await ctx.agents.create({
     sessionId: SessionId('workspace-context-e2e-session'),
     meta: { cwd: workdir },
-    agentOptions: { provider: 'deepseek-official', model: 'deepseek-v4-flash' },
+    agentOptions: { provider: 'acme-official', model: 'acme-v4-flash' },
   })
   return { ctx, agent: handle.agent }
 }
@@ -75,7 +90,7 @@ function finalText(events: SessionEvent[]): string {
     .join('')
 }
 
-describe.skipIf(!process.env.DEEPSEEK_API_KEY)('workspace context e2e: real model sees AGENTS.md baseline', () => {
+describe.skipIf(!process.env.ACME_API_KEY)('workspace context e2e: real model sees AGENTS.md baseline', () => {
   it('obeys a probe instruction loaded from the workspace', async () => {
     const live = await harness()
 

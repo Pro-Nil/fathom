@@ -605,8 +605,8 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
       file,
       providers: [
         {
-          id: 'deepseek',
-          name: 'DeepSeek',
+          id: 'acme',
+          name: 'Acme',
           retryPolicy: {
             mode: 'normal',
             maxRetries: 2,
@@ -629,15 +629,15 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
     })
 
     expect(ctx.llm.listProviders()).toEqual([
-      { id: 'deepseek', name: 'DeepSeek' },
+      { id: 'acme', name: 'Acme' },
       { id: 'empty', name: 'empty' },
     ])
-    await expect(ctx.llm.listModels('deepseek')).resolves.toEqual([
-      { provider: 'deepseek', id: 'flash', name: 'flash', inputModalities: ['text', 'image'] },
-      { provider: 'deepseek', id: 'pro', name: 'Pro', description: 'Larger model' },
+    await expect(ctx.llm.listModels('acme')).resolves.toEqual([
+      { provider: 'acme', id: 'flash', name: 'flash', inputModalities: ['text', 'image'] },
+      { provider: 'acme', id: 'pro', name: 'Pro', description: 'Larger model' },
     ])
     await expect(ctx.llm.listModels('empty')).resolves.toEqual([])
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'flash')).resolves.toMatchObject({
+    await expect(ctx.llm.resolveModelInfo('acme', 'flash')).resolves.toMatchObject({
       context: { contextWindow: 128_000 },
       inputModalities: ['text', 'image'],
       defaultMaxTokens: 64_000,
@@ -646,16 +646,16 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
         defaultEffort: 'max',
       },
     })
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'pro')).resolves.not.toHaveProperty('inputModalities')
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'pro')).resolves.not.toHaveProperty('context')
+    await expect(ctx.llm.resolveModelInfo('acme', 'pro')).resolves.not.toHaveProperty('inputModalities')
+    await expect(ctx.llm.resolveModelInfo('acme', 'pro')).resolves.not.toHaveProperty('context')
     // Efforts without a configured default preserve the provider's own default.
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'pro')).resolves.toMatchObject({
+    await expect(ctx.llm.resolveModelInfo('acme', 'pro')).resolves.toMatchObject({
       reasoning: { efforts: [{ id: 'high', name: 'high' }] },
     })
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'pro')).resolves.not.toHaveProperty('defaultMaxTokens')
-    await expect(ctx.llm.resolveModelInfo('deepseek', 'unlisted')).resolves.not.toHaveProperty('context')
+    await expect(ctx.llm.resolveModelInfo('acme', 'pro')).resolves.not.toHaveProperty('defaultMaxTokens')
+    await expect(ctx.llm.resolveModelInfo('acme', 'unlisted')).resolves.not.toHaveProperty('context')
     await expect(ctx.llm.resolveModelInfo('empty', 'unlisted')).resolves.not.toHaveProperty('context')
-    expect(ctx.llm.providerRetryPolicy('deepseek')).toMatchObject({
+    expect(ctx.llm.providerRetryPolicy('acme')).toMatchObject({
       mode: 'normal',
       maxRetries: 2,
       initialDelayMs: 1,
@@ -669,7 +669,7 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
       maxDelayMs: 10_000,
       jitterRatio: 0.1,
     })
-    expect(await drain(ctx.llm.stream({ provider: 'deepseek', model: 'pro', messages: [] }))).toEqual(TEXT_CHUNKS)
+    expect(await drain(ctx.llm.stream({ provider: 'acme', model: 'pro', messages: [] }))).toEqual(TEXT_CHUNKS)
 
     dispose()
     expect(ctx.llm.listProviders()).toEqual([])
@@ -683,9 +683,9 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
     expect(() => {
       installLlmReplay(ctx, {
         file,
-        providers: [{ id: 'deepseek', retryPolicy: { mode: 'normal', maxRetries: -1 } }],
+        providers: [{ id: 'acme', retryPolicy: { mode: 'normal', maxRetries: -1 } }],
       })
-    }).toThrow(/llm-replay: provider "deepseek" retryPolicy\.maxRetries/)
+    }).toThrow(/llm-replay: provider "acme" retryPolicy\.maxRetries/)
   })
 
   it('serves the Nth call the Nth derived entry (positional)', async () => {

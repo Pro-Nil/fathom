@@ -29,7 +29,7 @@ import {
   type NormalizeContext,
 } from '@pentest-harness/dsh-acp-snapshot'
 import { resolveExampleLaunch } from '@pentest-harness/dsh-loader-smoke'
-import { DeepSeekHarness, type HarnessNotification, type RunResult } from '@pentest-harness/dsh-sdk-client'
+import { PentestHarness, type HarnessNotification, type RunResult } from '@pentest-harness/dsh-sdk-client'
 
 const testsDir = dirOf(import.meta.url)
 const snapshotsDir = join(testsDir, 'snapshots')
@@ -294,7 +294,7 @@ async function runScenario(scenario: SdkScenario): Promise<{
     ...scenario.environment,
   }
 
-  const harness = new DeepSeekHarness({
+  const harness = new PentestHarness({
     launch: {
       command: launch.command,
       args: launch.args,
@@ -303,8 +303,8 @@ async function runScenario(scenario: SdkScenario): Promise<{
       requestTimeoutMs: 110_000,
     },
     cwd,
-    provider: 'deepseek-official',
-    model: 'deepseek-v4-flash',
+    provider: 'acme-official',
+    model: 'acme-v4-flash',
   })
   try {
     const notifications: HarnessNotification[] = []

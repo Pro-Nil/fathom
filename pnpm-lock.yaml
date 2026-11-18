@@ -535,9 +535,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:*
         version: link:../packages/llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:*
-        version: link:../packages/llm/llm-deepseek
       '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:*
         version: link:../packages/llm/llm-pi-ai
@@ -1140,9 +1137,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:^
-        version: link:../../llm/llm-deepseek
       '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
         version: link:../../llm/llm-pi-ai
@@ -1299,9 +1293,6 @@ importers:
       '@pentest-harness/dsh-web':
         specifier: workspace:^
         version: link:../../web/web
-      '@pentest-harness/dsh-web-search-deepseek':
-        specifier: workspace:^
-        version: link:../../web/web-search-deepseek
       '@pentest-harness/dsh-web-search-duckduckgo':
         specifier: workspace:^
         version: link:../../web/web-search-duckduckgo
@@ -3607,9 +3598,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
+      '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
-        version: link:../../llm/llm-deepseek
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -3836,6 +3827,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@pentest-harness/dsh-llm-pi-ai':
+        specifier: workspace:^
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-scope':
         specifier: workspace:^
         version: link:../scope
@@ -4125,6 +4119,9 @@ importers:
       '@pentest-harness/dsh-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@pentest-harness/dsh-llm-pi-ai':
+        specifier: workspace:^
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-session-checkpoint-policy':
         specifier: workspace:^
         version: link:../../session/session-checkpoint-policy
@@ -4721,9 +4718,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
+      '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
-        version: link:../../llm/llm-deepseek
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-sandbox':
         specifier: workspace:^
         version: link:../../sandbox/sandbox
@@ -5662,52 +5659,6 @@ importers:
         specifier: workspace:^
         version: link:../../util/timeout
 
-  packages/llm/llm-deepseek:
-    dependencies:
-      '@pentest-harness/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
-      eventsource-parser:
-        specifier: ^3.1.0
-        version: 3.1.1
-    devDependencies:
-      '@pentest-harness/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@pentest-harness/dsh-anonymous-user-id':
-        specifier: workspace:^
-        version: link:../../identity/anonymous-user-id
-      '@pentest-harness/dsh-atomic-write':
-        specifier: workspace:^
-        version: link:../../util/atomic-write
-      '@pentest-harness/dsh-attachment':
-        specifier: workspace:^
-        version: link:../../attachment/attachment
-      '@pentest-harness/dsh-brand':
-        specifier: workspace:^
-        version: link:../../util/brand
-      '@pentest-harness/dsh-credentials':
-        specifier: workspace:^
-        version: link:../../credentials/credentials
-      '@pentest-harness/dsh-home-paths':
-        specifier: workspace:^
-        version: link:../../util/home-paths
-      '@pentest-harness/dsh-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
-      '@pentest-harness/dsh-launch-environment':
-        specifier: workspace:^
-        version: link:../../util/launch-environment
-      '@pentest-harness/dsh-llm':
-        specifier: workspace:^
-        version: link:../llm
-      '@pentest-harness/dsh-settings':
-        specifier: workspace:^
-        version: link:../../settings/settings
-      '@pentest-harness/dsh-timeout':
-        specifier: workspace:^
-        version: link:../../util/timeout
-
   packages/llm/llm-pi-ai:
     dependencies:
       '@earendil-works/pi-ai':
@@ -5738,9 +5689,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:^
-        version: link:../llm-deepseek
       '@pentest-harness/dsh-settings':
         specifier: workspace:^
         version: link:../../settings/settings
@@ -5781,12 +5729,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:^
-        version: link:../llm-deepseek
-      '@pentest-harness/dsh-llm-mock-server':
-        specifier: workspace:^
-        version: link:../../test-support/llm-mock-server
       '@pentest-harness/dsh-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -6306,6 +6248,9 @@ importers:
 
   packages/sdk/server:
     dependencies:
+      '@pentest-harness/dsh-llm-pi-ai':
+        specifier: workspace:^
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/schemastery':
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
@@ -6328,9 +6273,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:^
-        version: link:../../llm/llm-deepseek
       '@pentest-harness/dsh-scope':
         specifier: workspace:^
         version: link:../../core/scope
@@ -6825,9 +6767,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
+      '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
-        version: link:../../llm/llm-deepseek
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -7903,9 +7845,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
+      '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
-        version: link:../../llm/llm-deepseek
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -8642,40 +8584,6 @@ importers:
         specifier: workspace:^
         version: link:../web
 
-  packages/web/web-search-deepseek:
-    dependencies:
-      '@pentest-harness/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
-    devDependencies:
-      '@pentest-harness/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@pentest-harness/dsh-agent':
-        specifier: workspace:^
-        version: link:../../core/agent
-      '@pentest-harness/dsh-credentials':
-        specifier: workspace:^
-        version: link:../../credentials/credentials
-      '@pentest-harness/dsh-credentials-local':
-        specifier: workspace:^
-        version: link:../../credentials/credentials-local
-      '@pentest-harness/dsh-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
-      '@pentest-harness/dsh-launch-environment':
-        specifier: workspace:^
-        version: link:../../util/launch-environment
-      '@pentest-harness/dsh-session':
-        specifier: workspace:^
-        version: link:../../core/session
-      '@pentest-harness/dsh-settings':
-        specifier: workspace:^
-        version: link:../../settings/settings
-      '@pentest-harness/dsh-web':
-        specifier: workspace:^
-        version: link:../web
-
   packages/web/web-search-duckduckgo:
     dependencies:
       '@pentest-harness/schemastery':
@@ -8867,6 +8775,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@pentest-harness/dsh-llm-pi-ai':
+        specifier: workspace:^
+        version: link:../../llm/llm-pi-ai
       '@pentest-harness/dsh-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -9079,9 +8990,6 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../packages/llm/llm
-      '@pentest-harness/dsh-llm-deepseek':
-        specifier: workspace:^
-        version: link:../../packages/llm/llm-deepseek
       '@pentest-harness/dsh-llm-pi-ai':
         specifier: workspace:^
         version: link:../../packages/llm/llm-pi-ai
@@ -9286,9 +9194,6 @@ importers:
       '@pentest-harness/dsh-web-fetch-http':
         specifier: workspace:^
         version: link:../../packages/web/web-fetch-http
-      '@pentest-harness/dsh-web-search-deepseek':
-        specifier: workspace:^
-        version: link:../../packages/web/web-search-deepseek
       '@pentest-harness/dsh-web-search-duckduckgo':
         specifier: workspace:^
         version: link:../../packages/web/web-search-duckduckgo

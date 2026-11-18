@@ -3,7 +3,7 @@
 
 # Headless Agent Snapshot Composition
 
-The headless snapshot composition combines the real DeepSeek adapter and coding capabilities with one explicitly configured persisted top-level agent; its JSONL driver is test-only.
+The headless snapshot composition combines the real Acme adapter and coding capabilities with one explicitly configured persisted top-level agent; its JSONL driver is test-only.
 
 ```mermaid
 flowchart LR
@@ -12,8 +12,8 @@ flowchart LR
   cfg --> plugin_headless_settings
   plugin_headless_credentials["credentials<br/>@pentest-harness/dsh-credentials-local"]
   cfg --> plugin_headless_credentials
-  plugin_headless_llm_deepseek["llm-deepseek<br/>@pentest-harness/dsh-llm-deepseek"]
-  cfg --> plugin_headless_llm_deepseek
+  plugin_headless_llm_acme["llm-acme<br/>@pentest-harness/dsh-llm-acme"]
+  cfg --> plugin_headless_llm_acme
   plugin_headless_subprocess["subprocess<br/>@pentest-harness/dsh-subprocess-local"]
   cfg --> plugin_headless_subprocess
   plugin_headless_bash["bash<br/>@pentest-harness/dsh-bash-local"]
@@ -64,7 +64,7 @@ flowchart LR
 | --- | --- |
 | `settings` | `@pentest-harness/dsh-settings-file` |
 | `credentials` | `@pentest-harness/dsh-credentials-local` |
-| `llm-deepseek` | `@pentest-harness/dsh-llm-deepseek` |
+| `llm-acme` | `@pentest-harness/dsh-llm-acme` |
 | `subprocess` | `@pentest-harness/dsh-subprocess-local` |
 | `bash` | `@pentest-harness/dsh-bash-local` |
 | `agent-spine` | `@pentest-harness/dsh-agent-spine-demo` |

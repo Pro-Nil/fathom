@@ -16,7 +16,7 @@ You need a clone of this repository with dependencies installed; the [developmen
 
 ```sh
 git clone https://github.com/S1N6H/pentest-harness.git
-cd deepseek-harness
+cd pentest-harness
 pnpm install
 ```
 
@@ -57,4 +57,4 @@ The examples use three TypeScript features beyond ordinary modern JavaScript:
 
 Chapter 5 also uses an `interface` to describe a configuration object's fields and a generic type such as `Schema<Config>` to say which object fields a schema validates. You can copy those declarations as shown; the surrounding text explains what each one connects.
 
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/S1N6H/pentest-harness)
+[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/S1N6H/pentest-harness)

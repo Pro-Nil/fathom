@@ -9,7 +9,7 @@
 - 不生成答案（省略 `content`），由模型阅读来源。
 - 如果 DuckDuckGo 对客户端限流（HTTP 202 或验证页面），搜索以 `WEB_PROVIDER_ERROR` 失败，并提示稍后重试。
 
-基础 bundle 在 `web` 行上用 `searchProvider: duckduckgo` 选中它。DeepSeek 提供方仍然注册；如有 DeepSeek 密钥，把 `searchProvider` 改回 `deepseek-official` 即可使用。
+基础 bundle 在 `web` 行上用 `searchProvider: duckduckgo` 选中它。Acme 提供方仍然注册；如有 Acme 密钥，把 `searchProvider` 改回 `acme-official` 即可使用。
 
 ## 配置
 

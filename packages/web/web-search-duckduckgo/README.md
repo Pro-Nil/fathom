@@ -9,7 +9,7 @@ A keyless search provider for the `ctx.web` seam. It posts the query to DuckDuck
 - There is no generated answer (`content` is omitted); the model reads the sources.
 - If DuckDuckGo throttles the client (HTTP 202 or a challenge page), the search fails with `WEB_PROVIDER_ERROR` and a message to retry shortly.
 
-The base bundle selects it with `searchProvider: duckduckgo` on the `web` row. The DeepSeek provider stays registered; switch `searchProvider` back to `deepseek-official` to use it with a DeepSeek key.
+The base bundle selects it with `searchProvider: duckduckgo` on the `web` row. The model provider stays registered; switch `searchProvider` back to `acme-official` to use it with a API key.
 
 ## Configuration
 

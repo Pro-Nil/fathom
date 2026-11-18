@@ -13,7 +13,7 @@ import { carrierKeyOf, type Scoped } from '@pentest-harness/dsh-scope'
 import { SessionId } from '@pentest-harness/dsh-session'
 import type SubagentRuntime from '@pentest-harness/dsh-subagent'
 import type { SubagentRunEndInfo } from '@pentest-harness/dsh-subagent'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import type {
   InitializeParams,
   InitializeResult,
@@ -52,8 +52,8 @@ function successStatus(reason: string, options: HarnessSdkJsonRpcServerOptions):
  */
 export class HarnessSdkJsonRpcServer {
   private cwd = process.cwd()
-  private provider = 'deepseek-official'
-  private model = 'deepseek-official'
+  private provider = 'acme-official'
+  private model = 'acme-official'
   private maxTokens: number | undefined
   private llmFiber: { dispose(): Promise<void> } | undefined
   private readonly sessions = new Map<string, SessionRecord>()
@@ -104,7 +104,8 @@ export class HarnessSdkJsonRpcServer {
   }
 
   /**
-   * Configure the SDK route, mounting the DeepSeek fallback only when unowned.
+   * Configure the SDK route. A provider no mounted adapter owns becomes one
+   * OpenAI-compatible pi-ai route at `LLM_BASE_URL`, keyed by `LLM_API_KEY`.
    * @param params - SDK handshake parameters.
    * @returns server identity for the handshake.
    */
@@ -118,10 +119,23 @@ export class HarnessSdkJsonRpcServer {
     this.model = params.model
     this.maxTokens = params.maxTokens
     if (!this.hasAdapterFor(this.provider)) {
-      if (this.provider !== 'deepseek-official') throw new Error(`no adapter registered for provider "${this.provider}"`)
-      this.llmFiber = await this.ctx.plugin(LlmDeepSeek, {})
+      const baseURL = process.env['LLM_BASE_URL']
+      if (baseURL === undefined || baseURL.length === 0) {
+        throw new Error(`no adapter registered for provider "${this.provider}" and LLM_BASE_URL is unset`)
+      }
+      this.llmFiber = await this.ctx.plugin(LlmPiAi, {
+        providers: {
+          [this.provider]: {
+            displayName: this.provider,
+            api: 'openai-completions',
+            baseURL,
+            apiKeyEnv: 'LLM_API_KEY',
+            models: [{ id: this.model }],
+          },
+        },
+      } as never)
     }
-    return { serverInfo: { name: 'deepseek-harness-sdk-runtime', version: '0.0.1' } }
+    return { serverInfo: { name: 'pentest-harness-sdk-runtime', version: '0.0.1' } }
   }
 
   /**

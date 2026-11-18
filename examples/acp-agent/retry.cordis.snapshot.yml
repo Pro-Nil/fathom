@@ -1,4 +1,4 @@
-# Keyless replay for the retry overlay: disable the key-requiring DeepSeek
+# Keyless replay for the retry overlay: disable the key-requiring Acme
 # adapter, insert `llm-replay`, and give its provider the same deterministic
 # 1 ms zero-jitter retry policy as the live sibling. The app patch still
 # restates its whole config for raw JSONL persistence and the recorded model.
@@ -7,14 +7,14 @@
   config:
     path: ./cordis.yml
     patches:
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true
       - id: acp-agent
         name: '@pentest-harness/dsh-acp-demo'
         config:
-          provider: deepseek-official
-          model: deepseek-v4-flash
+          provider: acme-official
+          model: acme-v4-flash
           persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
@@ -28,8 +28,8 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
-                  name: DeepSeek
+                - id: acme-official
+                  name: Acme
                   retryPolicy:
                     mode: normal
                     maxRetries: 2
@@ -38,5 +38,5 @@
                       maxDelayMs: 1
                       jitterRatio: 0
                   models:
-                    - id: deepseek-v4-flash
-                    - id: deepseek-v4-pro
+                    - id: acme-v4-flash
+                    - id: acme-v4-pro

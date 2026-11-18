@@ -1,22 +1,22 @@
 # Keyless filesystem snapshots apply the spill and replay overlays directly
 # because include patches cannot target entries behind a nested include. The
 # sandboxed filesystem stack already lives in the base cordis.yml. This file also
-# re-pins the acp-agent model to `deepseek-v4-flash`: `cordis.yml` ships
-# `deepseek-v4-pro`, but the recorded corpus was captured on flash, and a config
+# re-pins the acp-agent model to `acme-v4-flash`: `cordis.yml` ships
+# `acme-v4-pro`, but the recorded corpus was captured on flash, and a config
 # patch replaces the whole app config, so the base fields are restated verbatim.
 - id: base
   name: '@pentest-harness/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true
       - id: acp-agent
         name: '@pentest-harness/dsh-acp-demo'
         config:
-          provider: deepseek-official
-          model: deepseek-v4-flash
+          provider: acme-official
+          model: acme-v4-flash
           persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
@@ -38,8 +38,8 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
-                  name: DeepSeek
+                - id: acme-official
+                  name: Acme
                   models:
-                    - id: deepseek-v4-flash
-                    - id: deepseek-v4-pro
+                    - id: acme-v4-flash
+                    - id: acme-v4-pro

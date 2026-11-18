@@ -41,20 +41,20 @@
     "@pentest-harness/schemastery": "workspace:^"
   },
   "devDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/cordis-plugin-loader": "workspace:^",
     "@pentest-harness/dsh-agent": "workspace:^",
     "@pentest-harness/dsh-agent-loop": "workspace:^",
     "@pentest-harness/dsh-agent-loop-testkit": "workspace:^",
     "@pentest-harness/dsh-bash-local": "workspace:^",
-    "@pentest-harness/dsh-subprocess-local": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:^",
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-subagent": "workspace:^",
     "@pentest-harness/dsh-subagent-in-process-driver": "workspace:^",
+    "@pentest-harness/dsh-subprocess-local": "workspace:^",
     "@pentest-harness/dsh-tool-bash": "workspace:^",
-    "@pentest-harness/dsh-tool-subagent": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-tool-subagent": "workspace:^"
   }
 }

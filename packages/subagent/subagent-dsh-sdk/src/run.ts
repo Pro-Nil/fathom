@@ -12,7 +12,7 @@
  */
 
 import { randomUUID } from 'node:crypto'
-import { DeepSeekHarness, type HarnessNotification } from '@pentest-harness/dsh-sdk-client'
+import { PentestHarness, type HarnessNotification } from '@pentest-harness/dsh-sdk-client'
 import type { ContentBlock } from '@pentest-harness/dsh-llm'
 import { SessionId, type SessionEvent, type TurnEndReason } from '@pentest-harness/dsh-session'
 import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@pentest-harness/dsh-subagent'
@@ -39,7 +39,7 @@ export interface SdkRunSpec {
   maxTokens?: number
   /**
    * Extra environment variables to ADD for the child (e.g. the child
-   * runtime's own `DEEPSEEK_API_KEY`, or `DSH_CORDIS_CONFIG`). Merged after
+   * runtime's own `OPENAI_API_KEY`, or `DSH_CORDIS_CONFIG`). Merged after
    * the seam's `scrubbedParentEnv()` base, so an explicit credential or
    * current `DSH_*` fact survives while ambient namesakes never leak.
    */
@@ -115,7 +115,7 @@ export async function startSdkRun(request: SubagentStartRequest, spec: SdkRunSpe
   // (minted below, private to the wire) exists only inside the child process.
   const id = SessionId(randomUUID())
 
-  const harness = new DeepSeekHarness({
+  const harness = new PentestHarness({
     launch: {
       command: spec.command,
       args: spec.args,

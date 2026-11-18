@@ -75,35 +75,8 @@ afterEach(async () => {
 })
 
 it('assembles the shipped Web catalog, file-reference guidance, retry policy, and confined access default', async () => {
-  scaffold = await launchWebScaffold({ deepSeekMissingCredential: true })
+  scaffold = await launchWebScaffold()
   const ctx = scaffold.ctx
-  expect(ctx.llm.providerRetryPolicy('deepseek-official')).toMatchInlineSnapshot(`
-    {
-      "initialDelayMs": 500,
-      "jitterRatio": 0.1,
-      "maxDelayMs": 10000,
-      "maxRetries": 5,
-      "mode": "normal",
-      "retryableCodes": [
-        "EMPTY_RESPONSE",
-        "RATE_LIMIT",
-        "SERVER",
-        "TIMEOUT",
-        "TRANSPORT",
-      ],
-    }
-  `)
-  await ctx.settings.update(settingsNamespace('llm-deepseek'), {
-    retryPolicy: { mode: 'always', maxRetries: 5 },
-  })
-  expect(ctx.llm.providerRetryPolicy('deepseek-official')).toMatchInlineSnapshot(`
-    {
-      "initialDelayMs": 500,
-      "jitterRatio": 0.1,
-      "maxDelayMs": 10000,
-      "mode": "always",
-    }
-  `)
   await ctx.settings.update(settingsNamespace('llm-pi-ai'), {
     providers: {
       openai: {},
@@ -171,7 +144,7 @@ it('assembles the shipped Web catalog, file-reference guidance, retry policy, an
   const commandHandle = await scaffold.ctx.agents.create({
     sessionId: SessionId('shipped-command-catalog'),
     meta: { cwd: scaffold.workspaceCwd },
-    agentOptions: { provider: 'deepseek-official', model: 'deepseek-v4-flash' },
+    agentOptions: { provider: 'acme-official', model: 'acme-v4-flash' },
   })
   try {
     expect(scaffold.ctx.commands.list(commandHandle.agent)).toContainEqual({

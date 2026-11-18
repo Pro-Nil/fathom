@@ -27,11 +27,17 @@ export interface ILayout {
   openDetails(): void
   /** Close the details panel. */
   closeDetails(): void
-  /** Open the aside column at `px` wide (ignored while already open). */
+  /**
+   * Open the aside column (ignored while already open).
+   * @param px - column width in pixels.
+   */
   openAside(px: number): void
   /** Close the aside column. */
   closeAside(): void
-  /** Open the aside column at `px` wide when closed, close it when open. */
+  /**
+   * Open the aside column when closed, close it when open.
+   * @param px - column width in pixels when opening.
+   */
   toggleAside(px: number): void
 }
 

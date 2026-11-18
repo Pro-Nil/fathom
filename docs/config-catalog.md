@@ -399,6 +399,37 @@ Depends on: [`LocalConfig`](#pentest-harnessdsh-bash-local)
 
 Source: [`packages/shell/bash-sandbox/src/index.ts:35`](../packages/shell/bash-sandbox/src/index.ts)
 
+<a id="pentest-harnessdsh-browser"></a>
+
+## `@pentest-harness/dsh-browser`
+
+```ts config-catalog
+/** Plugin config. */
+export interface BrowserRuntimeConfig {
+  /**
+   * Browser build: `chromium` (default) is the harness's own Chromium, downloaded
+   * once on first use; `msedge` or `chrome` use an installed browser instead.
+   */
+  channel?: string
+  /** Explicit browser executable; overrides `channel`. */
+  executablePath?: string
+  /** Run without a native window (default). The live view still shows the page. */
+  headless?: boolean
+  /** Persistent profile directory. Defaults to `~/.dsh/browser/profile`. */
+  profileDir?: string
+  /** Initial viewport width (CSS px). The live view resizes it to fit its pane. */
+  width?: number
+  /** Initial viewport height (CSS px). */
+  height?: number
+  /** Serve the live view on the web server when one is mounted. Defaults to true. */
+  liveView?: boolean
+  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to DuckDuckGo. */
+  searchUrl?: string
+}
+```
+
+Source: [`packages/browser/browser/src/index.ts:35`](../packages/browser/browser/src/index.ts)
+
 <a id="pentest-harnessdsh-client-connection"></a>
 
 ## `@pentest-harness/dsh-client-connection`
@@ -484,6 +515,12 @@ Source: [`packages/code-runtime/code-runtime-worker-thread/src/index.ts:25`](../
 Requires: `llm` · `tokenMeter` · `sessions`
 
 ```ts config-catalog
+/** The plugin row's config: the compaction settings plus the Settings-card opt-in. */
+export interface BasicCompactionRowConfig extends BasicCompactionConfig {
+  /** Show this plugin's card under Settings → Plugins. */
+  settings?: boolean
+}
+
 /** Basic compaction configuration with an optional exact-target policy table. */
 export interface BasicCompactionConfig extends CompactionPolicyConfig {
   /** Exact provider/model overrides; duplicate targets fail plugin load. */
@@ -521,7 +558,7 @@ export interface ModelCompactPolicyConfig extends CompactionPolicyConfig {
 }
 ```
 
-Source: [`packages/compaction/compaction-basic/src/types.ts:38`](../packages/compaction/compaction-basic/src/types.ts)
+Source: [`packages/compaction/compaction-basic/src/index.ts:127`](../packages/compaction/compaction-basic/src/index.ts)
 
 <a id="pentest-harnessdsh-compaction-tool-result-pruner"></a>
 
@@ -530,6 +567,12 @@ Source: [`packages/compaction/compaction-basic/src/types.ts:38`](../packages/com
 Requires: `tokenMeter`
 
 ```ts config-catalog
+/** The plugin row's config: the pruning settings plus the Settings-card opt-in. */
+export interface ToolResultPruneRowConfig extends ToolResultPruneConfig {
+  /** Show this plugin's card under Settings → Plugins. */
+  settings?: boolean
+}
+
 /** Character-budget policy for deterministic tool-result pruning. */
 export interface ToolResultPruneConfig {
   /** Prune when total text exceeds this many Unicode code points. Defaults to `8192`. */
@@ -541,7 +584,7 @@ export interface ToolResultPruneConfig {
 }
 ```
 
-Source: [`packages/compaction/compaction-tool-result-pruner/src/types.ts:4`](../packages/compaction/compaction-tool-result-pruner/src/types.ts)
+Source: [`packages/compaction/compaction-tool-result-pruner/src/index.ts:55`](../packages/compaction/compaction-tool-result-pruner/src/index.ts)
 
 <a id="pentest-harnessdsh-cordis-host-runner"></a>
 
@@ -910,91 +953,6 @@ export interface Config {
 
 Source: [`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local/src/index.ts)
 
-<a id="pentest-harnessdsh-llm-deepseek"></a>
-
-## `@pentest-harness/dsh-llm-deepseek`
-
-Requires: `llm`
-
-```ts config-catalog
-/**
- * Plugin config, validated by the same-named schemastery schema and doubling
- * as the `llm-deepseek` settings-section shape. Every field is optional in
- * yml: a missing API key resolves through {@link Config.apiKeyEnv} at each
- * request (a request without any key fails with `MISSING_CREDENTIAL`, not at
- * plugin load), omitted thinking mode uses the provider default, and omitted
- * reasoning effort resolves to `high`.
- */
-export interface Config {
-  /** Credential reference (environment-variable name) resolved per request; defaults to `DEEPSEEK_API_KEY`. */
-  apiKeyEnv?: string
-  /** Display name shown by configuration surfaces; defaults to "DeepSeek". */
-  displayName?: string
-  /** Endpoint base; falls back to $DEEPSEEK_BASE_URL from a trusted environment layer, then the public API. */
-  baseURL?: string
-  /** Deployment thinking policy; `disabled` limits every conversation request to `off`. */
-  thinking?: 'enabled' | 'disabled'
-  /** Default thinking effort (default `high`); `off` disables thinking per request. */
-  reasoningEffort?: 'off' | 'low' | 'high' | 'max'
-  /** Default per-request output cap (default 256,000); a model's own cap and explicit request values win. */
-  maxTokens?: number
-  /** Positive context capacity used when the selected model has no exact value (default 1,000,000). */
-  defaultContextWindow?: number
-  /** Advisory models shown by discovery consumers; defaults to V4 Flash, V4 Pro, and V4 Flash Vision Exp. */
-  models?: DeepSeekCatalogModel[]
-  /** Maximum provider idle time while one stream read is outstanding (default five minutes). */
-  streamIdleTimeoutMs?: number
-  /** Maximum accumulated file-referenced image bytes per chat request (default 128 MiB). */
-  maxRequestFilesBytes?: number
-  /** Maximum accumulated base64 image payload after Files API fallback (default 20 MiB). */
-  maxInlineRequestImageBytes?: number
-  /** Maximum number of represented images per chat request (default 600). */
-  maxImagesPerRequest?: number
-  /** Raw-byte removal step after the request exceeds its file bound (default 64 MiB). */
-  imageOffloadByteQuantum?: number
-  /** Base64-byte removal step after inline fallback exceeds its bound (default 10 MiB). */
-  inlineImageOffloadByteQuantum?: number
-  /** Image-count removal step after the request exceeds its count bound (default 20). */
-  imageOffloadCountQuantum?: number
-  /** Maximum duration of one request-image Files API resolution (default one minute). */
-  filesApiTimeoutMs?: number
-  /** Explicit lifetime assigned to each uploaded image (default seven days). */
-  fileExpiresAfterSeconds?: number
-  /** Remaining lifetime below which an indexed file is replaced (default one hour). */
-  fileRefreshMarginSeconds?: number
-  /** Oldest harness-owned files deleted before one quota-recovery upload retry (default 100). */
-  fileQuotaCleanupBatch?: number
-  /** Provider-owned model-request retry policy; omission uses normal mode with five retries. */
-  retryPolicy?: RetryPolicyConfig
-}
-
-/** One optional model entry advertised by the direct-fetch adapter. */
-export interface DeepSeekCatalogModel {
-  /** Wire model id accepted by the configured endpoint. */
-  id: string
-  /** Selector label; defaults to {@link id}. */
-  name?: string
-  /** Optional selector detail for deployments with similar model variants. */
-  description?: string
-  /** Known combined request/response context capacity; omitted when deployment metadata is unavailable. */
-  contextWindow?: number
-  /** Per-request output cap for this model; omission falls back to the profile's {@link DeepSeekConnectionOptions.maxTokens}. */
-  maxTokens?: number
-  /** Accepted request modalities; omission is text-only. */
-  inputModalities?: ModelModality[]
-  /** Total-pixel budget for one deterministic request preview. */
-  imagePixelBudget?: number
-  /** Encoded-byte cap for one deterministic request preview. */
-  imageMaxBytes?: number
-  /** Provider detail tier; `low` uses the 512-by-512 total-pixel default. */
-  imageDetail?: 'auto' | 'low'
-}
-```
-
-Depends on: [`ModelModality`](../packages/llm/llm/src/index.ts) · [`RetryPolicyConfig`](../packages/llm/llm/src/index.ts)
-
-Source: [`packages/llm/llm-deepseek/src/index.ts:106`](../packages/llm/llm-deepseek/src/index.ts)
-
 <a id="pentest-harnessdsh-llm-pi-ai"></a>
 
 ## `@pentest-harness/dsh-llm-pi-ai`
@@ -1219,6 +1177,18 @@ export interface PiAiCompatProfile {
    * `openai-completions`, the three Responses protocols, `anthropic-messages`.
    */
   supportsLongCacheRetention?: boolean
+  /**
+   * Whether to send the session id as session-affinity headers, so a gateway
+   * that load-balances replicas keeps one conversation on the replica holding
+   * its prompt cache; `openai-completions`, `anthropic-messages`.
+   */
+  sendSessionAffinityHeaders?: boolean
+  /**
+   * Which affinity headers to send: `openai` (`session_id`, `x-client-request-id`,
+   * `x-session-affinity`), `openai-nosession` (without `session_id`) or
+   * `openrouter` (`x-session-id`); `openai-completions` and the three Responses protocols.
+   */
+  sessionAffinityFormat?: PiAiSessionAffinityFormat
   /** Whether the endpoint accepts per-tool `eager_input_streaming`; `anthropic-messages`. */
   supportsEagerToolInputStreaming?: boolean
   /** Whether the endpoint accepts `cache_control` on tool definitions; `anthropic-messages`. */
@@ -1248,11 +1218,14 @@ export type PiAiReasoningEfforts = Partial<Record<ModelThinkingLevel, string | n
 
 /** One reasoning-dispatch wire format a profile may name. */
 export type PiAiThinkingFormat = NonNullable<OpenAICompletionsCompat['thinkingFormat']>
+
+/** The session-affinity header conventions pi-ai accepts. */
+export type PiAiSessionAffinityFormat = NonNullable<OpenAICompletionsCompat['sessionAffinityFormat']>
 ```
 
 Depends on: `Api` (`@earendil-works/pi-ai`) · `CacheRetention` (`@earendil-works/pi-ai`) · `Model` (`@earendil-works/pi-ai`) · `ModelThinkingLevel` (`@earendil-works/pi-ai`) · `OpenAICompletionsCompat` (`@earendil-works/pi-ai`) · [`RetryPolicyConfig`](../packages/llm/llm/src/index.ts) · `ThinkingBudgets` (`@earendil-works/pi-ai`) · `Transport` (`@earendil-works/pi-ai`)
 
-Source: [`packages/llm/llm-pi-ai/src/config.ts:222`](../packages/llm/llm-pi-ai/src/config.ts)
+Source: [`packages/llm/llm-pi-ai/src/config.ts:223`](../packages/llm/llm-pi-ai/src/config.ts)
 
 <a id="pentest-harnessdsh-llm-replay"></a>
 
@@ -1466,6 +1439,22 @@ export interface Config {
 
 Source: [`packages/feedback/message-feedback/src/index.ts:49`](../packages/feedback/message-feedback/src/index.ts)
 
+<a id="pentest-harnessdsh-pentest-toolkit"></a>
+
+## `@pentest-harness/dsh-pentest-toolkit`
+
+Requires: `tools` · `systemPrompt`
+
+```ts config-catalog
+/** Plugin config. */
+export interface Config {
+  /** Toolkit folder (binaries, launchers, state). Defaults to `~/.dsh/tools`. */
+  home?: string
+}
+```
+
+Source: [`packages/pentest/pentest-toolkit/src/index.ts:40`](../packages/pentest/pentest-toolkit/src/index.ts)
+
 <a id="pentest-harnessdsh-permission-presets"></a>
 
 ## `@pentest-harness/dsh-permission-presets`
@@ -1524,10 +1513,15 @@ export interface Config {
   complete?: boolean
   /** Suppress dynamic runtime-context snapshots for this persona's agent scope. */
   includeRuntimeContext?: boolean
+  /**
+   * Register the `persona` settings namespace so the settings page can replace
+   * the text. Only one mounted row may set this: a namespace registers once.
+   */
+  settings?: boolean
 }
 ```
 
-Source: [`packages/preset/persona/src/index.ts:34`](../packages/preset/persona/src/index.ts)
+Source: [`packages/preset/persona/src/index.ts:35`](../packages/preset/persona/src/index.ts)
 
 <a id="pentest-harnessdsh-plan-mode"></a>
 
@@ -1629,10 +1623,21 @@ export interface Config {
    * always compares the FULL canonical string).
    */
   argumentsPreviewChars?: number
+  /**
+   * Consecutive-FAILURE counts that trigger a failure-loop reminder (default
+   * `[]`, disabled). Unlike `thresholds`, the arguments may differ between
+   * calls: a run of tracked calls that each failed (`isError`, or a shell
+   * result carrying a non-zero `[exit code: N]` marker) counts, and any
+   * successful tracked call resets it. This catches the "tweak the payload and
+   * retry" loop that identical-argument detection misses.
+   */
+  failureThresholds?: number[]
+  /** Register the `repeat-tool-reminder` settings namespace so the settings page can edit both threshold lists. */
+  settings?: boolean
 }
 ```
 
-Source: [`packages/guard/repeat-tool-reminder/src/index.ts:28`](../packages/guard/repeat-tool-reminder/src/index.ts)
+Source: [`packages/guard/repeat-tool-reminder/src/index.ts:29`](../packages/guard/repeat-tool-reminder/src/index.ts)
 
 <a id="pentest-harnessdsh-sandbox-local"></a>
 
@@ -1716,6 +1721,30 @@ export interface JsonRpcConfig {
 Depends on: `Readable` (`node:stream`) · `Writable` (`node:stream`)
 
 Source: [`packages/sdk/server/src/index.ts:25`](../packages/sdk/server/src/index.ts)
+
+<a id="pentest-harnessdsh-session-folders"></a>
+
+## `@pentest-harness/dsh-session-folders`
+
+```ts config-catalog
+/** Plugin configuration. */
+export interface Config extends Partial<SessionFolderSettings> {
+  /** How long to wait for a model-written title before naming the folder from the fallback title. */
+  titleWaitMs?: number
+  /** Register the `session-folders` settings namespace so the settings page can edit it. */
+  settings?: boolean
+}
+
+/** The user-editable part of the configuration. */
+export interface SessionFolderSettings {
+  /** Give each new session its own folder. */
+  enabled: boolean
+  /** Parent folder, relative to the workspace, that holds the session folders. */
+  folder: string
+}
+```
+
+Source: [`packages/workspace/session-folders/src/index.ts:52`](../packages/workspace/session-folders/src/index.ts)
 
 <a id="pentest-harnessdsh-session-persistence-jsonl"></a>
 
@@ -2087,10 +2116,12 @@ export interface Config {
    * this is spilled and replaced with a preview derived from this same budget.
    */
   maxInlineBytes?: number
+  /** Register the `spill-policy` settings namespace so the settings page can change the cap. */
+  settings?: boolean
 }
 ```
 
-Source: [`packages/spill/spill-policy/src/index.ts:60`](../packages/spill/spill-policy/src/index.ts)
+Source: [`packages/spill/spill-policy/src/index.ts:61`](../packages/spill/spill-policy/src/index.ts)
 
 <a id="pentest-harnessdsh-storage-domain"></a>
 
@@ -2207,7 +2238,7 @@ export interface Config {
   permission: PermissionPolicy
   /**
    * Extra environment variables for the child process — e.g. the child
-   * harness's own `DEEPSEEK_API_KEY`. Forwarded on top of a credential-scrubbed
+   * harness's own `OPENAI_API_KEY`. Forwarded on top of a credential-scrubbed
    * copy of the parent env, so an explicit key here reaches the child while
    * ambient secrets do not leak implicitly.
    */
@@ -2317,15 +2348,15 @@ export interface Config {
    * fails.
    */
   cwd?: string
-  /** Provider route the child runtime initializes with (default `deepseek-official`). */
+  /** Provider route the child runtime initializes with (default `acme-official`). */
   provider: string
-  /** Model the child runtime initializes with (default `deepseek-v4-flash`). */
+  /** Model the child runtime initializes with (default `acme-v4-flash`). */
   model: string
   /** Optional per-request output-token cap for the child runtime. */
   maxTokens?: number
   /**
    * Extra environment variables for the child process — e.g. the child
-   * runtime's own `DEEPSEEK_API_KEY`, or `DSH_CORDIS_CONFIG` naming its
+   * runtime's own `OPENAI_API_KEY`, or `DSH_CORDIS_CONFIG` naming its
    * config. Forwarded on top of a credential-scrubbed copy of the parent
    * env, so an explicit key here reaches the child while ambient secrets do
    * not leak implicitly.
@@ -2530,7 +2561,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/shell/tool-bash/src/index.ts:34`](../packages/shell/tool-bash/src/index.ts)
+Source: [`packages/shell/tool-bash/src/index.ts:35`](../packages/shell/tool-bash/src/index.ts)
 
 <a id="pentest-harnessdsh-tool-bash-persistent"></a>
 
@@ -2553,6 +2584,22 @@ export interface Config {
 ```
 
 Source: [`packages/shell/tool-bash-persistent/src/index.ts:432`](../packages/shell/tool-bash-persistent/src/index.ts)
+
+<a id="pentest-harnessdsh-tool-browser"></a>
+
+## `@pentest-harness/dsh-tool-browser`
+
+Requires: `tools` · `systemPrompt` · `browser`
+
+```ts config-catalog
+/** Plugin config. */
+export interface Config {
+  /** Default and maximum characters returned by read_page, get_page_text and log reads. */
+  maxChars?: number
+}
+```
+
+Source: [`packages/browser/tool-browser/src/index.ts:27`](../packages/browser/tool-browser/src/index.ts)
 
 <a id="pentest-harnessdsh-tool-fs"></a>
 
@@ -3123,33 +3170,23 @@ export interface Config {
 
 Source: [`packages/web/web-fetch-http/src/index.ts:34`](../packages/web/web-fetch-http/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-deepseek"></a>
+<a id="pentest-harnessdsh-web-search-duckduckgo"></a>
 
-## `@pentest-harness/dsh-web-search-deepseek`
+## `@pentest-harness/dsh-web-search-duckduckgo`
 
 Requires: `web`
 
 ```ts config-catalog
-/** Plugin config (all optional — `apply` fills env-var and constant defaults). */
+/** Plugin config (all optional). */
 export interface Config {
-  /** Literal DeepSeek API key; prefer {@link apiKeyEnv} so no secret enters configuration files. */
-  apiKey?: string
-  /** Credential reference resolved for each search; defaults to `DEEPSEEK_API_KEY`. */
-  apiKeyEnv?: string
-  /** Anthropic-compatible endpoint base; `/messages` is appended. */
+  /** Results page the query is posted to. Defaults to DuckDuckGo's HTML page. */
   baseURL?: string
-  /** Anthropic-format model name. Defaults to `deepseek-v4-flash`. */
-  model?: string
-  /** `anthropic-version` header value. Defaults to `2023-06-01`. */
-  apiVersion?: string
-  /** Upper bound on generated tokens for the Messages request. Defaults to 4096. */
-  maxTokens?: number
-  /** Maximum `web_search` server-tool uses per request. Defaults to 5. */
-  maxUses?: number
+  /** Region code sent as `kl` (for example `us-en`, `in-en`). Omitted = DuckDuckGo's default. */
+  region?: string
 }
 ```
 
-Source: [`packages/web/web-search-deepseek/src/index.ts:46`](../packages/web/web-search-deepseek/src/index.ts)
+Source: [`packages/web/web-search-duckduckgo/src/index.ts:31`](../packages/web/web-search-duckduckgo/src/index.ts)
 
 <a id="pentest-harnessdsh-web-search-exa"></a>
 
@@ -3243,6 +3280,7 @@ These load from a `cordis.yml` entry with no `config:` block; they declare no co
 - `@pentest-harness/dsh-client-ui-agent-preset` ([`packages/client/ui-agent-preset/src/index.ts`](../packages/client/ui-agent-preset/src/index.ts))
 - `@pentest-harness/dsh-client-ui-attachment` ([`packages/client/ui-attachment/src/index.ts`](../packages/client/ui-attachment/src/index.ts))
 - `@pentest-harness/dsh-client-ui-brand-official` ([`packages/client/ui-brand-official/src/index.ts`](../packages/client/ui-brand-official/src/index.ts))
+- `@pentest-harness/dsh-client-ui-browser` ([`packages/client/ui-browser/src/index.ts`](../packages/client/ui-browser/src/index.ts))
 - `@pentest-harness/dsh-client-ui-commands` ([`packages/client/ui-commands/src/index.ts`](../packages/client/ui-commands/src/index.ts))
 - `@pentest-harness/dsh-client-ui-conversation` ([`packages/client/ui-conversation/src/index.ts`](../packages/client/ui-conversation/src/index.ts))
 - `@pentest-harness/dsh-client-ui-cordis` ([`packages/extensions/ui-cordis/src/index.ts`](../packages/extensions/ui-cordis/src/index.ts))
@@ -3271,6 +3309,7 @@ These load from a `cordis.yml` entry with no `config:` block; they declare no co
 - `@pentest-harness/dsh-client-ui-tool` ([`packages/client/ui-tool/src/index.ts`](../packages/client/ui-tool/src/index.ts))
 - `@pentest-harness/dsh-client-ui-trajectory` ([`packages/client/ui-trajectory/src/index.ts`](../packages/client/ui-trajectory/src/index.ts))
 - `@pentest-harness/dsh-client-ui-user-questions` ([`packages/client/ui-user-questions/src/index.ts`](../packages/client/ui-user-questions/src/index.ts))
+- `@pentest-harness/dsh-client-ui-workflow` ([`packages/client/ui-workflow/src/index.ts`](../packages/client/ui-workflow/src/index.ts))
 - `@pentest-harness/dsh-client-ui-workflow-run` ([`packages/client/ui-workflow-run/src/index.ts`](../packages/client/ui-workflow-run/src/index.ts))
 - `@pentest-harness/dsh-client-ui-workspace` ([`packages/client/ui-workspace/src/index.ts`](../packages/client/ui-workspace/src/index.ts))
 - `@pentest-harness/dsh-command-compact` — requires `commands` · `compaction` ([`packages/compaction/command-compact/src/index.ts`](../packages/compaction/command-compact/src/index.ts))

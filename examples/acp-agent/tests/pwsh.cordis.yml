@@ -1,9 +1,15 @@
 # Minimal live counterpart for the pwsh-tool-turn snapshot composition.
-- id: llm-deepseek
-  name: '@pentest-harness/dsh-llm-deepseek'
+- id: llm-pi-ai
+  name: '@pentest-harness/dsh-llm-pi-ai'
   config:
-    models:
-      - id: deepseek-v4-pro
+    providers:
+      acme-official:
+        displayName: Acme
+        api: openai-completions
+        baseURL: !!js process.env.ACME_BASE_URL ?? 'https://api.acme.test/v1'
+        apiKeyEnv: ACME_API_KEY
+        models:
+          - id: acme-v4-pro
 
 - id: subprocess
   name: '@pentest-harness/dsh-subprocess-local'
@@ -17,8 +23,8 @@
 - id: acp-agent
   name: '@pentest-harness/dsh-acp-demo'
   config:
-    provider: deepseek-official
-    model: deepseek-v4-pro
+    provider: acme-official
+    model: acme-v4-pro
     persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
     persistenceCompression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
     workspaceContext: false

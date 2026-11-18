@@ -5,7 +5,7 @@ import { credentialRef } from '../src/index.ts'
 import * as CredentialsInvariant from '../src/invariant.ts'
 import { MemoryCredentials } from './memory.ts'
 
-const REF = credentialRef('DEEPSEEK_API_KEY')
+const REF = credentialRef('ACME_API_KEY')
 
 describe('credentials invariant companion', () => {
   it('accepts a committed change emitted by a live service', async () => {
@@ -22,7 +22,7 @@ describe('credentials invariant companion', () => {
     await ctx.plugin(InvariantRegistry)
     await ctx.plugin(CredentialsInvariant)
 
-    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@deepseek-ai\/dsh-credentials"/)
+    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@pentest-harness\/dsh-credentials"/)
   })
 
   it('reserves the package name against duplicate registration', async () => {

@@ -4,7 +4,7 @@ English | [中文](README.zh.md)
 
 These three **default-off reference configurations** connect one memory system to DSH through [`@pentest-harness/dsh-mcp-client`](../../packages/mcp/mcp-client/README.md). Pick one, or copy the same generic MCP row for another server.
 
-These third-party configurations are provided as interoperability examples only. Their inclusion does not imply endorsement, recommendation, partnership, or ongoing support by DeepSeek.
+These third-party configurations are provided as interoperability examples only. Their inclusion does not imply endorsement, recommendation, partnership, or ongoing support by Acme.
 
 ## What DSH does
 

@@ -8,8 +8,8 @@ The ACP demo exposes fresh baseline-prompt agent sessions to programmatic client
 ```mermaid
 flowchart LR
   cfg["examples/acp-agent<br/>cordis.yml"]
-  plugin_acp_llm_deepseek["llm-deepseek<br/>@pentest-harness/dsh-llm-deepseek"]
-  cfg --> plugin_acp_llm_deepseek
+  plugin_acp_llm_acme["llm-acme<br/>@pentest-harness/dsh-llm-acme"]
+  cfg --> plugin_acp_llm_acme
   plugin_acp_sandbox["sandbox<br/>@pentest-harness/dsh-sandbox-local"]
   cfg --> plugin_acp_sandbox
   plugin_acp_sandbox_policy["sandbox-policy<br/>@pentest-harness/dsh-sandbox-policy"]
@@ -75,7 +75,7 @@ flowchart LR
 
 | Plugin id | Package / module |
 | --- | --- |
-| `llm-deepseek` | `@pentest-harness/dsh-llm-deepseek` |
+| `llm-acme` | `@pentest-harness/dsh-llm-acme` |
 | `sandbox` | `@pentest-harness/dsh-sandbox-local` |
 | `sandbox-policy` | `@pentest-harness/dsh-sandbox-policy` |
 | `subprocess` | `@pentest-harness/dsh-subprocess-local` |

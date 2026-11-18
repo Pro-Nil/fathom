@@ -16,7 +16,7 @@ import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
 import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
 import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
 import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import { WorkerThreadCodeRuntime } from '@pentest-harness/dsh-code-runtime-worker-thread'
 import LocalFileSystem from '@pentest-harness/dsh-fs-local'
 import * as ToolFs from '@pentest-harness/dsh-tool-fs'
@@ -25,6 +25,21 @@ import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
 import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
 import CordisHostRunner from '@pentest-harness/dsh-cordis-host-runner'
 import * as ToolCordis from '@pentest-harness/dsh-tool-cordis'
+
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
 
 /**
  * With-key Code Mode proof: a real model receives only `run_code`, composes two
@@ -57,7 +72,7 @@ async function codeModeHarness(cwd: string): Promise<Context> {
   await harness.plugin(ToolRuntime, { mode: 'code' })
   await harness.plugin(AgentRegistry)
   await harness.plugin(AgentLoop, { agents: [] })
-  await harness.plugin(LlmDeepSeek)
+  await harness.plugin(LlmPiAi, acmeRoute())
   await harness.plugin(LocalSubprocessRuntime)
   await harness.plugin(BashEnvPlugin)
   await harness.plugin(LocalBashExecutor, { cwd, timeoutMs: 30_000 })
@@ -77,7 +92,7 @@ async function workspaceCodeModeHarness(): Promise<Context> {
   await harness.plugin(ToolFs)
   await harness.plugin(WorkspaceContext, { maxBytes: 65536 })
   await harness.plugin(AgentLoop, { agents: [] })
-  await harness.plugin(LlmDeepSeek, { models: [{ id: 'deepseek-v4-flash' }] })
+  await harness.plugin(LlmPiAi, acmeRoute([{ id: 'acme-v4-flash' }]))
   await harness.plugin(WorkerThreadCodeRuntime, {})
   return harness
 }
@@ -349,11 +364,11 @@ function waitForIdle(harness: Context, agent: Agent): Promise<void> {
   })
 }
 
-describe.skipIf(!process.env.DEEPSEEK_API_KEY)('Code Mode: real model writes a program over real tools', () => {
+describe.skipIf(!process.env.ACME_API_KEY)('Code Mode: real model writes a program over real tools', () => {
   it('collapses the wire tool list to [run_code], bridges sub-calls, and returns curated output', async () => {
     workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-e2e-'))
     ctx = await codeModeHarness(workdir)
-    const agent = ctx.agentLoop.create(SessionId('e2e-code-mode'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
+    const agent = ctx.agentLoop.create(SessionId('e2e-code-mode'), { provider: 'acme-official', model: 'acme-v4-flash' })
 
     agent.followup(createUserMessage({
       content: [{
@@ -405,7 +420,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('Code Mode: real model writes a p
     const handle = await ctx.agents.create({
       sessionId: SessionId('e2e-code-mode-workspace-session'),
       meta: { cwd: workdir },
-      agentOptions: { provider: 'deepseek-official', model: 'deepseek-v4-flash' },
+      agentOptions: { provider: 'acme-official', model: 'acme-v4-flash' },
     })
 
     handle.agent.followup(createUserMessage({

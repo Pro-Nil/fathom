@@ -1,21 +1,26 @@
 # ACP automation server and backend snapshot-record composition. With
-# `DSH_SNAPSHOT=record`, the app bin runs the real DeepSeek adapter and the
+# `DSH_SNAPSHOT=record`, the app bin runs the real Acme adapter and the
 # harness harvests its persisted log. The bin loads the gitignored root `.env`
 # before this config. This tree has no stdout logger or HMR because stdout
 # carries ACP JSON-RPC.
 
-# The DeepSeek adapter. Shipped default: full thinking at max effort on every
+# The Acme adapter. Shipped default: full thinking at max effort on every
 # request; exact-model resolution materializes request defaults before logging.
-- id: llm-deepseek
-  name: '@pentest-harness/dsh-llm-deepseek'
+- id: llm-pi-ai
+  name: '@pentest-harness/dsh-llm-pi-ai'
   config:
-    thinking: enabled
-    reasoningEffort: max
-    models:
-      - id: deepseek-v4-flash
-      - id: deepseek-v4-pro
-      - id: deepseek-v4-flash-vision-exp
-        inputModalities: [text, image]
+    providers:
+      acme-official:
+        displayName: Acme
+        api: openai-completions
+        baseURL: !!js process.env.ACME_BASE_URL ?? 'https://api.acme.test/v1'
+        apiKeyEnv: ACME_API_KEY
+        reasoning: xhigh
+        models:
+          - id: acme-v4-flash
+          - id: acme-v4-pro
+          - id: acme-v4-flash-vision-exp
+            input: [text, image]
 
 # The default composition confines bash AND the filesystem tools to the
 # workspace and asks before a wider retry. Snapshot runs select
@@ -53,8 +58,8 @@
 - id: acp-agent
   name: '@pentest-harness/dsh-acp-demo'
   config:
-    provider: deepseek-official
-    model: deepseek-v4-pro
+    provider: acme-official
+    model: acme-v4-pro
     persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
     persistenceCompression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
     workspaceContext:

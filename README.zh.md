@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-Pentest Harness（`dsh`）是由 [DeepSeek AI](https://deepseek.com) 开发的开源 agent harness（智能体框架）。
+Pentest Harness（`dsh`）是由 [Acme AI](https://acme.test) 开发的开源 agent harness（智能体框架）。
 
 它采用**一切皆插件**的架构，并由 [Cordis](https://github.com/cordiverse/cordis) 驱动，其设计参见论文 [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper)。
 
@@ -56,9 +56,9 @@ pnpm dsh web
   </thead>
   <tbody>
     <tr>
-      <td align="center"><img src="https://cdn.deepseek.com/harness/readme/community-wecom-assistant.png" alt="Pentest Harness 企微小助手二维码" width="180" height="180"></td>
-      <td align="center"><a href="https://trtgsjkv6r.feishu.cn/share/base/form/shrcnIt5twSVdLGD52KJBckGCgg"><img src="https://cdn.deepseek.com/harness/readme/community-wecom-survey.png" alt="Pentest Harness 入群问卷二维码" width="180" height="180"></a></td>
-      <td align="center"><img src="https://cdn.deepseek.com/harness/readme/community-wechat-official-account.png" alt="Pentest Harness 团队微信公众号二维码" width="180" height="180"></td>
+      <td align="center"><img src="https://cdn.acme.test/harness/readme/community-wecom-assistant.png" alt="Pentest Harness 企微小助手二维码" width="180" height="180"></td>
+      <td align="center"><a href="https://trtgsjkv6r.feishu.cn/share/base/form/shrcnIt5twSVdLGD52KJBckGCgg"><img src="https://cdn.acme.test/harness/readme/community-wecom-survey.png" alt="Pentest Harness 入群问卷二维码" width="180" height="180"></a></td>
+      <td align="center"><img src="https://cdn.acme.test/harness/readme/community-wechat-official-account.png" alt="Pentest Harness 团队微信公众号二维码" width="180" height="180"></td>
     </tr>
   </tbody>
 </table>

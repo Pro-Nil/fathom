@@ -40,7 +40,6 @@
     "@pentest-harness/dsh-invariants": "workspace:*",
     "@pentest-harness/dsh-sdk-jsonrpc-server": "workspace:*",
     "@pentest-harness/dsh-llm": "workspace:*",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:*",
     "@pentest-harness/dsh-llm-pi-ai": "workspace:*",
     "@pentest-harness/dsh-llm-replay": "workspace:*",
     "@pentest-harness/dsh-loader-smoke": "workspace:*",

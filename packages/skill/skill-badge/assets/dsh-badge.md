@@ -5,7 +5,7 @@ Add the official “powered by dsh” badge without recreating or restyling it.
 ## Assets
 
 - Local PNG: [`dsh-badge.png`](dsh-badge.png), 726×120 source image; render at 121×20
-- Shields.io image URL: `https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white`
+- Shields.io image URL: `https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white`
 - Project URL: `https://github.com/S1N6H/pentest-harness`
 
 ## Markdown
@@ -13,13 +13,13 @@ Add the official “powered by dsh” badge without recreating or restyling it.
 Use this linked badge in Markdown:
 
 ```markdown
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/S1N6H/pentest-harness)
+[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/S1N6H/pentest-harness)
 ```
 
 If attribution should not be linked, use:
 
 ```markdown
-![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)
+![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white)
 ```
 
 ## Usage rules

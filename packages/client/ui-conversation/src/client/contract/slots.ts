@@ -178,7 +178,7 @@ declare module '@pentest-harness/dsh-client-ui-slots' {
     'conversation.hero.workspace': { kind: 'single'; scope: 'root'; owner: EmptyWorkspaceOwnerProps }
     /**
      * Brand mark leading the blank-session headline. Declared by this
-     * package's `conversation` entry; the shell supplies a fish fallback.
+     * package's `conversation` entry; the shell supplies a neutral fallback mark.
      */
     'conversation.hero.brand.mark': { kind: 'single'; scope: 'root'; owner: HeroBrandMarkOwnerProps }
     /**

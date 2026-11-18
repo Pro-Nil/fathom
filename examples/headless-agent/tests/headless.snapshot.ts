@@ -1,6 +1,4 @@
 import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
-import { createServer } from 'node:http'
-import type { IncomingMessage, ServerResponse } from 'node:http'
 import { delimiter, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
@@ -55,7 +53,6 @@ const binScript = fileURLToPath(new URL('./fixtures/headless-driver.ts', import.
 const dshBinScript = fileURLToPath(new URL('../../../apps/cli/src/bin.ts', import.meta.url))
 const tsconfigPath = fileURLToPath(new URL('../../../tsconfig.json', import.meta.url))
 const reasoningConfigPath = fileURLToPath(new URL('./fixtures/cli.cordis.yml', import.meta.url))
-const deepseekDefaultsConfigPath = fileURLToPath(new URL('./fixtures/deepseek-defaults.cordis.yml', import.meta.url))
 const headlessOverlayPath = fileURLToPath(new URL('./fixtures/headless-profile.cordis.yml', import.meta.url))
 const headlessSessionExpected = join(snapshotsDir, 'headless-profile', 'session.expected.jsonl')
 const headlessFailureExpected = join(snapshotsDir, 'headless-profile', 'stderr.expected.txt')
@@ -91,49 +88,6 @@ function projectSessionFixture(rawLog: string): string {
     delete record.time0
     return JSON.stringify(record)
   }).join('\n')
-}
-
-interface DeepSeekDefaultsServer {
-  readonly url: string
-  readonly requests: JsonObject[]
-  close(): Promise<void>
-}
-
-/** Serve one deterministic DeepSeek-compatible response while retaining its request body. */
-async function deepseekDefaultsServer(): Promise<DeepSeekDefaultsServer> {
-  const requests: JsonObject[] = []
-  const server = createServer((request: IncomingMessage, response: ServerResponse) => {
-    let body = ''
-    request.setEncoding('utf8')
-    request.on('data', (chunk: string) => { body += chunk })
-    request.on('end', () => {
-      requests.push(JSON.parse(body) as JsonObject)
-      response.writeHead(200, { 'content-type': 'text/event-stream' })
-      let keepAlives = 3
-      const write = (): void => {
-        if (keepAlives-- > 0) {
-          response.write(': keep-alive\n\n')
-          setTimeout(write, 60)
-          return
-        }
-        response.end([
-          'data: {"choices":[{"delta":{"content":"DEFAULTS_OK"}}]}',
-          'data: {"choices":[{"delta":{},"finish_reason":"stop"}],"usage":{"prompt_tokens":3,"completion_tokens":1}}',
-          'data: [DONE]',
-          '',
-        ].join('\n\n'))
-      }
-      setTimeout(write, 60)
-    })
-  })
-  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
-  const address = server.address()
-  if (address === null || typeof address === 'string') throw new Error('DeepSeek defaults snapshot server has no port')
-  return {
-    url: `http://127.0.0.1:${address.port}`,
-    requests,
-    close: () => new Promise(resolve => server.close(() => { resolve() })),
-  }
 }
 
 function parseJsonl(content: string): JsonObject[] {
@@ -336,7 +290,7 @@ describe('headless stream-json snapshots', () => {
         const retries = records.filter(record => record.type === 'llm/retry')
         expect(retries).toHaveLength(1)
         expect(retries[0]?.data).toMatchObject({
-          provider: 'deepseek-official',
+          provider: 'acme-official',
           mode: 'normal',
           policyKey: '["normal",1,["RATE_LIMIT"],1,1,0]',
           retry: 1,
@@ -436,8 +390,8 @@ describe('headless stream-json snapshots', () => {
       tsconfigPath,
       env: {
         // First-run posture: no key in the environment, none under ./.dsh.
-        DEEPSEEK_API_KEY: '',
-        DEEPSEEK_BASE_URL: '',
+        ACME_API_KEY: '',
+        ACME_BASE_URL: '',
         NODE_OPTIONS: [process.env.NODE_OPTIONS, '--disable-warning=ExperimentalWarning'].filter(Boolean).join(' '),
       },
       prepare: (cwd) => { runCwd = cwd },
@@ -455,9 +409,9 @@ describe('headless stream-json snapshots', () => {
     // environment, and stops there: configuration carries the reference, so
     // there is no literal-key escape hatch left to offer.
     expect(normalized).toContain(
-      'store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it),',
+      'store ACME_API_KEY through the credentials service (the web Models page writes it),',
     )
-    expect(normalized).toContain('or export DEEPSEEK_API_KEY in the launching environment')
+    expect(normalized).toContain('or export ACME_API_KEY in the launching environment')
     expect(normalized).not.toContain('as a last resort')
   }, LOADER_SMOKE_TEST_TIMEOUT_MS)
 
@@ -476,8 +430,8 @@ describe('headless stream-json snapshots', () => {
         // A key that exists but no HTTP header can carry — the paste the
         // credential guard exists for: without it, `fetch` refuses to build
         // the header and the turn ends on a retried ByteString TypeError.
-        DEEPSEEK_API_KEY: 'sk-\u{1F600}pasted-from-a-chat-window',
-        DEEPSEEK_BASE_URL: '',
+        ACME_API_KEY: 'sk-\u{1F600}pasted-from-a-chat-window',
+        ACME_BASE_URL: '',
         NODE_OPTIONS: [process.env.NODE_OPTIONS, '--disable-warning=ExperimentalWarning'].filter(Boolean).join(' '),
       },
       prepare: (cwd) => { runCwd = cwd },
@@ -490,7 +444,7 @@ describe('headless stream-json snapshots', () => {
     // The durable failure names the reference to correct and the writer that
     // usually owns it, and stays true in a composition that mounts no Models
     // page at all.
-    expect(normalized).toContain('the API key resolved from DEEPSEEK_API_KEY contains characters')
+    expect(normalized).toContain('the API key resolved from ACME_API_KEY contains characters')
     expect(normalized).toContain('the web Models page writes it')
     // Neither the key nor its transport-level symptom (the ByteString error)
     // may reach the user: the code point of one character is still the key.
@@ -537,59 +491,6 @@ describe('headless stream-json snapshots', () => {
         },
       ]
     `)
-  }, LOADER_SMOKE_TEST_TIMEOUT_MS)
-
-  it('keeps provider comments alive and sends DeepSeek defaults through the one-shot app', async () => {
-    const server = await deepseekDefaultsServer()
-    try {
-      const result = await runLoaderSmoke({
-        label: 'DeepSeek adapter defaults headless stream-json snapshot',
-        tempDirPrefix: 'headless-snapshot-deepseek-defaults-',
-        binScript,
-        libBinScript: binScript,
-        configPath: deepseekDefaultsConfigPath,
-        binArgs: [
-          deepseekDefaultsConfigPath,
-          'return the deterministic response',
-        ],
-        tsconfigPath,
-        env: {
-          // Configuration carries only the reference; the key rides the
-          // launching environment, which is the whole credential plane here.
-          DEEPSEEK_API_KEY: 'snapshot-key',
-          DSH_SNAPSHOT_BASE_URL: server.url,
-          NODE_OPTIONS: [process.env.NODE_OPTIONS, '--disable-warning=ExperimentalWarning'].filter(Boolean).join(' '),
-        },
-      })
-
-      expect(result.stderr).toBe('')
-      expect(server.requests).toHaveLength(1)
-      expect(server.requests[0]?.max_tokens).toBe(256_000)
-      expect(server.requests[0]?.reasoning_effort).toBe('low')
-      const header = (parseJsonl(result.stdout)
-        .map(record => record.event)
-        .find((event): event is JsonObject => (
-          event !== null
-          && typeof event === 'object'
-          && !Array.isArray(event)
-          && 'type' in event
-          && event.type === 'request/header'
-        ))?.data as JsonObject | undefined)?.header as JsonObject | undefined
-      expect(header?.config).toMatchInlineSnapshot(`
-        {
-          "maxTokens": 256000,
-          "model": "deepseek-v4-flash",
-          "provider": "deepseek-official",
-          "reasoningEffort": "low",
-        }
-      `)
-      expect(header?.adapterDefaults).toEqual({
-        maxTokens: true,
-        reasoningEffort: true,
-      })
-    } finally {
-      await server.close()
-    }
   }, LOADER_SMOKE_TEST_TIMEOUT_MS)
 
   it('replays the advanced toolchain through the one-shot app', async () => {

@@ -2,7 +2,7 @@
  * `@pentest-harness/dsh-web-search-perplexity`: registers a Perplexity-backed
  * `WebSearchProvider` with `ctx.web`. A function/namespace plugin (NOT a
  * default-export service): it registers INTO the seam's provider registry, like
- * `@pentest-harness/dsh-llm-deepseek` registers an adapter into `ctx.llm`.
+ * `@pentest-harness/dsh-llm-acme` registers an adapter into `ctx.llm`.
  *
  * @module @pentest-harness/dsh-web-search-perplexity
  */

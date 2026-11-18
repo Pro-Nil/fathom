@@ -2,7 +2,7 @@
  * `@pentest-harness/dsh-web-search-exa`: registers an Exa-backed `WebSearchProvider`
  * with `ctx.web`. A function/namespace plugin (NOT a default-export service):
  * a search provider does not own the `ctx.web` key — it registers INTO the
- * seam's provider registry, exactly as `@pentest-harness/dsh-llm-deepseek`
+ * seam's provider registry, exactly as `@pentest-harness/dsh-llm-acme`
  * registers an adapter into `ctx.llm`. The key is owned by `@pentest-harness/dsh-web`.
  *
  * @module @pentest-harness/dsh-web-search-exa

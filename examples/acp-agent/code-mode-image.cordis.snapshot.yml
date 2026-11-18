@@ -6,14 +6,14 @@
   config:
     path: ./cordis.yml
     patches:
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true
       - id: acp-agent
         name: '@pentest-harness/dsh-acp-demo'
         config:
-          provider: deepseek-official
-          model: deepseek-v4-flash-vision-exp
+          provider: acme-official
+          model: acme-v4-flash-vision-exp
           persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
@@ -33,12 +33,12 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
-                  name: DeepSeek
+                - id: acme-official
+                  name: Acme
                   models:
-                    - id: deepseek-v4-flash
+                    - id: acme-v4-flash
                       inputModalities: [text]
-                    - id: deepseek-v4-pro
+                    - id: acme-v4-pro
                       inputModalities: [text]
-                    - id: deepseek-v4-flash-vision-exp
+                    - id: acme-v4-flash-vision-exp
                       inputModalities: [text, image]

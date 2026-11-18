@@ -6,13 +6,28 @@ import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
 import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
 import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
 import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import SubagentRuntime from '@pentest-harness/dsh-subagent'
 import * as Spawn from '../src/index.ts'
 import * as ToolSubagent from '@pentest-harness/dsh-tool-subagent'
 
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
+
 /**
- * Shared harness for the spawn-backend e2e: the full real stack (DeepSeek
+ * Shared harness for the spawn-backend e2e: the full real stack (Acme
  * adapter + real bash tool + the subagent tool bound to the spawn backend), so
  * a real parent agent can delegate to a real in-process child that does real
  * work (writes a file). Lives outside the *.e2e.ts pattern so importing it never
@@ -28,7 +43,7 @@ export async function spawnHarness(workdir: string): Promise<Context> {
     systemPrompt: { persona: 'You are a coding agent. Report only when the requested work is done.' },
   })
   await ctx.plugin(AgentLoop, { agents: [] })
-  await ctx.plugin(LlmDeepSeek)
+  await ctx.plugin(LlmPiAi, acmeRoute())
   await ctx.plugin(LocalSubprocessRuntime)
   await ctx.plugin(BashEnvPlugin)
   await ctx.plugin(LocalBashExecutor, { cwd: workdir, timeoutMs: 30_000 })

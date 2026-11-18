@@ -1,5 +1,5 @@
 /**
- * Rescope the vendored Cordis packages into the `@deepseek-ai` scope, and undo
+ * Rescope the vendored Cordis packages into the `@pentest-harness` scope, and undo
  * that rescope with `--reverse`. Every harness package declares `cordis` as a
  * peer dependency, so publication carries this framework layer too; publishing
  * it under the upstream names would squat them on the registry
@@ -153,7 +153,7 @@ const POSTCONDITIONS: readonly PostCondition[] = [
   { file: 'packages/boot/app-boot/tsdown.config.ts', text: '[\'@pentest-harness/cordis-plugin-include\']', count: 1 },
   { file: 'tsconfig.base.json', text: '"@pentest-harness/cordis-plugin-loader": ["./vendor/loader/src"]', count: 1 },
   // The vendored README owns this required entry; reject its deletion or duplication.
-  { file: 'vendor/README.md', text: '17. **`@deepseek-ai` rescope**', count: 1 },
+  { file: 'vendor/README.md', text: '17. **`@pentest-harness` rescope**', count: 1 },
   { file: 'knip.json', text: '@cordisjs', count: 0 },
   { file: 'pnpm-workspace.yaml', text: 'cordis@4.0.0-rc.7', count: 0 },
   // The preset ids in this table are product data, not package names.
@@ -250,7 +250,7 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     id: 'vendor-readme-preamble',
     file: 'vendor/README.md',
     find: 'All vendored packages keep their **original npm names** and are marked `private: true` — they are never published from this repo. `pnpm-workspace.yaml#linkWorkspacePackages` makes matching upstream semver ranges resolve these pinned workspaces, including imports from built `lib/`; disabling it substitutes npm copies behind the same names.',
-    replace: 'All vendored packages are **renamed into the `@deepseek-ai` scope** (`cordis` → `@pentest-harness/cordis`, `@cordisjs/plugin-<x>` → `@pentest-harness/cordis-plugin-<x>`): every harness package declares `cordis` as a peer dependency, so publishing the harness publishes this framework layer too, and a publication under the upstream names would squat them on the registry. Directory names and upstream version numbers are deliberately unchanged, so the manifest below still reads as an upstream snapshot. `pnpm-workspace.yaml#linkWorkspacePackages` makes those preserved semver ranges resolve these pinned workspaces, including imports from built `lib/`.',
+    replace: 'All vendored packages are **renamed into the `@pentest-harness` scope** (`cordis` → `@pentest-harness/cordis`, `@cordisjs/plugin-<x>` → `@pentest-harness/cordis-plugin-<x>`): every harness package declares `cordis` as a peer dependency, so publishing the harness publishes this framework layer too, and a publication under the upstream names would squat them on the registry. Directory names and upstream version numbers are deliberately unchanged, so the manifest below still reads as an upstream snapshot. `pnpm-workspace.yaml#linkWorkspacePackages` makes those preserved semver ranges resolve these pinned workspaces, including imports from built `lib/`.',
     expect: 1,
   },
   {
@@ -402,7 +402,7 @@ const VENDORED_LIBRARY = /^@pentest-harness\\/(cosmokit|schemastery)(\\/|$)/`,
     id: 'notices-vendored-section',
     file: 'scripts/gen-third-party-notices.ts',
     find: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm. All are MIT-licensed',
-    replace: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the \\`@deepseek-ai\\` scope. All are MIT-licensed',
+    replace: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the \\`@pentest-harness\\` scope. All are MIT-licensed',
     expect: 1,
   },
   {
@@ -443,7 +443,7 @@ const VENDORED_LIBRARY = /^@pentest-harness\\/(cosmokit|schemastery)(\\/|$)/`,
 ]`,
     replace: `  'packages/runtime-diagnostics/invariants',
   // The framework and the vendored packages the closure declares outright:
-  // rescoped into @deepseek-ai, so the consumer installs this repository's
+  // rescoped into @pentest-harness, so the consumer installs this repository's
   // copies. Schemastery is a hard dependency of three members above, not a
   // peer, so npm resolves it while installing them.
   'vendor/cordis',

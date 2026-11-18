@@ -1,19 +1,19 @@
 # Keyless counterpart to background-job-admission.cordis.yml: replace the
-# DeepSeek adapter with replay while preserving the app's one-task admission
+# Acme adapter with replay while preserving the app's one-task admission
 # config and the recorded flash route.
 - id: base
   name: '@pentest-harness/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true
       - id: acp-agent
         name: '@pentest-harness/dsh-acp-demo'
         config:
-          provider: deepseek-official
-          model: deepseek-v4-flash
+          provider: acme-official
+          model: acme-v4-flash
           persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
@@ -29,8 +29,8 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
-                  name: DeepSeek
+                - id: acme-official
+                  name: Acme
                   models:
-                    - id: deepseek-v4-flash
-                    - id: deepseek-v4-pro
+                    - id: acme-v4-flash
+                    - id: acme-v4-pro

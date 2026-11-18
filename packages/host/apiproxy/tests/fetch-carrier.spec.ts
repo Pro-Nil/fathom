@@ -62,7 +62,7 @@ function fakeApi(overrides: Partial<{ muxFrames: MuxFrame[]; hostFrames: HostFra
           result: {
             ok: true,
             value: {
-              current: { provider: 'deepseek-official', model: 'deepseek-v4-flash' },
+              current: { provider: 'acme-official', model: 'acme-v4-flash' },
               routable: true,
               groups: [],
               failures: [],
@@ -343,16 +343,16 @@ describe('unary round trip (handler ⇄ client, no network)', () => {
     expect((await c.sessions.models({ sessionId: 's' as never })).result.ok).toBe(true)
     const selected = await c.sessions.selectModel({
       sessionId: 's' as never,
-      provider: 'deepseek-official',
-      model: 'deepseek-v4-flash',
+      provider: 'acme-official',
+      model: 'acme-v4-flash',
       reasoningEffort: 'max',
     })
     expect(selected.result).toMatchObject({
       ok: true,
       value: {
         selected: {
-          provider: 'deepseek-official',
-          model: 'deepseek-v4-flash',
+          provider: 'acme-official',
+          model: 'acme-v4-flash',
           reasoningEffort: 'max',
         },
       },

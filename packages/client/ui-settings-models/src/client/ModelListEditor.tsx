@@ -18,19 +18,19 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { DiscoveredModelView, IApiClient } from '@pentest-harness/dsh-api-remotes/client'
 import { Button, Modal } from '@pentest-harness/dsh-client-ui-primitives'
-import { formatCapacity, parseCapacity } from './DeepSeekModelsEditor.tsx'
-import type { DeepSeekModelDraft } from './DeepSeekModelsEditor.tsx'
+import { formatCapacity, parseCapacity } from './model-catalog.ts'
+import type { ModelCatalogDraft } from './model-catalog.ts'
 import { messageOf } from './store.ts'
 import type { en } from './locales.ts'
 import styles from './ModelsSection.module.css'
 
 /**
- * One configured model row. Structurally open, exactly like the DeepSeek
+ * One configured model row. Structurally open, exactly like the shared
  * catalog editor's rows: a profile field this card does not edit — one a future
  * schema adds, or one hand-written in `settings.yaml` — has to survive being
  * edited here rather than being dropped by a rebuild.
  */
-export type ModelDraft = DeepSeekModelDraft
+export type ModelDraft = ModelCatalogDraft
 
 /** A row's text field, or the empty string when unset or not a string. */
 function textOf(model: ModelDraft, key: string): string {
@@ -134,7 +134,7 @@ const CAPACITY_HINT: Readonly<Record<CapacityField, string>> = {
 
 /**
  * Spell a stored count for a field that may be unset. The spelling itself is
- * {@link formatCapacity}, shared with the DeepSeek catalog editor so both
+ * {@link formatCapacity}, shared with the custom-provider card so both
  * surfaces read and write one K/M vocabulary.
  * @param value - stored capacity, or `undefined` for an unset field.
  * @returns the field text, empty when unset.

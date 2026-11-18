@@ -6,14 +6,22 @@
   config:
     maxTokensAsSuccess: !!js "process.env.DSH_MAX_TOKENS_AS_SUCCESS === undefined ? true : JSON.parse(process.env.DSH_MAX_TOKENS_AS_SUCCESS)"
 
-# The DeepSeek adapter. Shipped default: full thinking at max effort on every
+# The Acme adapter. Shipped default: full thinking at max effort on every
 # request; exact-model resolution materializes request defaults before logging.
 # The model arrives per session over JSON-RPC, so it is not pinned here.
-- id: llm-deepseek
-  name: '@pentest-harness/dsh-llm-deepseek'
+- id: llm-pi-ai
+  name: '@pentest-harness/dsh-llm-pi-ai'
   config:
-    thinking: enabled
-    reasoningEffort: max
+    providers:
+      acme-official:
+        displayName: Acme
+        api: openai-completions
+        baseURL: !!js process.env.ACME_BASE_URL ?? 'https://api.acme.test/v1'
+        apiKeyEnv: ACME_API_KEY
+        reasoning: xhigh
+        models:
+          - id: acme-v4-flash
+          - id: acme-v4-pro
 
 # Managed child-process groups for the bash executor (spawn/kill/output plumbing).
 - id: subprocess

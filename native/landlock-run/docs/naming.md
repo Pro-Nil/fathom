@@ -2,7 +2,7 @@
 
 ## npm packages
 
-The public package family belongs to the `@deepseek-ai` scope and uses the `node-addon-landlock-run` package prefix; platform packages append platform information only:
+The public package family belongs to the `@pentest-harness` scope and uses the `node-addon-landlock-run` package prefix; platform packages append platform information only:
 
 ```text
 @pentest-harness/node-addon-landlock-run

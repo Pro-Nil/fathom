@@ -9,8 +9,8 @@
       - id: acp-agent
         name: '@pentest-harness/dsh-acp-demo'
         config:
-          provider: deepseek-official
-          model: deepseek-v4-flash-vision-exp
+          provider: acme-official
+          model: acme-v4-flash-vision-exp
           persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
           workspaceContext:

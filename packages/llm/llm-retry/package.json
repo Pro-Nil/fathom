@@ -56,8 +56,6 @@
     "@pentest-harness/dsh-agent-loop-testkit": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:^",
-    "@pentest-harness/dsh-llm-mock-server": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-session-persistence-jsonl": "workspace:^",
     "@pentest-harness/dsh-session-persistence-sqlite": "workspace:^",

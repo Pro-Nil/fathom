@@ -7,18 +7,33 @@ import ToolRuntime from '@pentest-harness/dsh-tools'
 import AgentRegistry from '@pentest-harness/dsh-agent'
 
 import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import SubagentRuntime from '@pentest-harness/dsh-subagent'
 import * as Spawn from '@pentest-harness/dsh-subagent-spawn-in-process'
 import WorkerThreadWorkflowEngine from '../src/index.ts'
 
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
+
 /**
  * With-key e2e: a REAL script in a REAL worker thread
- * drives REAL spawn children against the live DeepSeek API — one plain child
+ * drives REAL spawn children against the live Acme API — one plain child
  * and one schema'd child through the real structured-output runtime — and
  * the run's value, events, and child sessions are asserted from the outside
  * (never the script's self-report alone). Key-gated (self-skips without
- * DEEPSEEK_API_KEY).
+ * ACME_API_KEY).
  */
 
 let ctx: Context | undefined
@@ -36,7 +51,7 @@ async function harness(): Promise<Context> {
   await built.plugin(ToolRuntime)
   await built.plugin(AgentRegistry)
   await built.plugin(AgentLoop, { agents: [] })
-  await built.plugin(LlmDeepSeek)
+  await built.plugin(LlmPiAi, acmeRoute())
   await built.plugin(SubagentRuntime)
   await built.plugin(Spawn, { providerName: 'spawn' })
   await built.plugin(WorkerThreadWorkflowEngine, { provider: 'spawn' })
@@ -59,12 +74,12 @@ const judged = await agent(
 )
 return { prose, containsFour: judged === null ? null : judged.containsFour }`
 
-describe.skipIf(!process.env.DEEPSEEK_API_KEY)('worker workflow engine with-key e2e', () => {
+describe.skipIf(!process.env.ACME_API_KEY)('worker workflow engine with-key e2e', () => {
   it('runs a two-phase script in a worker thread over real children, one through the structured runtime', async () => {
     ctx = await harness()
     const parentHandle = await ctx.agents.create({
       sessionId: 'wf-worker-e2e-session' as never,
-      agentOptions: { provider: 'deepseek-official', model: 'deepseek-v4-flash' },
+      agentOptions: { provider: 'acme-official', model: 'acme-v4-flash' },
     })
 
     const events: string[] = []

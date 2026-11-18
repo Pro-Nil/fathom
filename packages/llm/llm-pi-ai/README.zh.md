@@ -40,10 +40,10 @@
             contextWindow: 200000
       # Catalog route with one model reshaped in place; the rest of the
       # catalog keeps serving (a models list would replace it instead).
-      deepseek:
-        apiKeyEnv: DEEPSEEK_API_KEY
+      openai:
+        apiKeyEnv: OPENAI_API_KEY
         modelOverrides:
-          deepseek-v4-pro:
+          gpt-5.5:
             reasoningEfforts:
               off:
               high: high
@@ -57,7 +57,7 @@
         # Request shape for an endpoint whose URL pi-ai cannot recognize; it
         # would otherwise be addressed as though it were OpenAI itself.
         compat:
-          thinkingFormat: deepseek
+          thinkingFormat: openai
           supportsDeveloperRole: false
           maxTokensField: max_tokens
         models:

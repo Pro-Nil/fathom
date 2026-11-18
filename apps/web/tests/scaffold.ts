@@ -5,7 +5,7 @@
 // layer stack the profile boot composes), patched the
 // snapshot way — so a real chromium exercises the real HTTP uplink/WebSocket
 // downlink, api-gateway, agent loop, tools, and persistence. Modes ride $DSH_SNAPSHOT:
-// replay (default, keyless: normally disables the llm-deepseek row and
+// replay (default, keyless: installs replay routes on the open llm seam and
 // inserts dsh-llm-replay in providers mode), record (real adapter + key,
 // harvests fixtures from live session memory), refresh (keyless replay that
 // rewrites goldens). A first-run option keeps the real adapter mounted while
@@ -18,7 +18,7 @@
 // disabled (recorded fixtures must not embed this repo's AGENTS.md);
 // session-title-llm disabled (its fire-and-forget title call would race the
 // loop for the session's replay cursor); webserver pinned to port 0 with the
-// built dist; ordinary keyless modes disable llm-deepseek and fill the open
+// built dist; ordinary keyless modes fill the open
 // llm seam post-boot with installLlmReplay on the settled root ctx
 // (the plugin-row path discards the ReplayHandle; the direct install keeps
 // assertConsumed for the teardown fixture-consumption check).
@@ -109,14 +109,14 @@ const INSTALL_ANCHOR = join(REPO_ROOT, 'apps/cli/package.json')
 const SHIPPED_PRESET_DIR = join(REPO_ROOT, 'apps/cli/config/agent-presets')
 
 // Replay publishes the provider catalog the gateway routes to (providers
-// mode, never catch-all: with llm-deepseek disabled no adapter exists, so a
+// mode, never catch-all: with no configured pi-ai route no adapter exists, so a
 // catch-all would leave resolveModelInfo unroutable and compaction-basic's
 // post-step pressure check would warn every step). The published
 // contextWindow keeps that pressure path provably inert for small fixtures.
 const REPLAY_PROVIDERS = [{
-  id: 'deepseek-official',
-  name: 'DeepSeek',
-  models: [{ id: 'deepseek-v4-flash', name: 'DeepSeek-V4-Flash', contextWindow: 128_000 }],
+  id: 'acme-official',
+  name: 'Acme',
+  models: [{ id: 'acme-v4-flash', name: 'Acme-V4-Flash', contextWindow: 128_000 }],
 }]
 
 /**
@@ -203,7 +203,7 @@ export interface LaunchOptions {
    * Replay fixture (session.jsonl) served by the inserted dsh-llm-replay row
    * in replay/refresh modes; ignored in record mode (the real adapter
    * answers). Omit for scenarios issuing no model calls — a stray stream then
-   * fails loud with NO_ADAPTER (llm-deepseek is disabled and no replay row
+   * fails loud with NO_ADAPTER (no pi-ai route is configured and no replay row
    * mounts). With {@link replayProvidersOnly}, the fixture must record no
    * model calls (its header alone mounts the catalog).
    */
@@ -252,25 +252,8 @@ export interface LaunchOptions {
    * remain reconstructable without making the tools a product default.
    */
   cordisTools?: boolean
-  /**
-   * Keep the shipped DeepSeek adapter mounted while masking the process
-   * environment's DEEPSEEK_API_KEY for this scaffold lifetime. This is the
-   * keyless first-run configuration lane; the default disables the adapter.
-   */
-  deepSeekMissingCredential?: boolean
   /** Leave the current welcome notice pending; ordinary scenarios pre-acknowledge it before browser boot. */
   welcomeNoticePending?: boolean
-  /**
-   * Patch the shipped DeepSeek search row to a deterministic endpoint and
-   * credential reference. Browser search scenarios keep the real provider and
-   * credentials seam while avoiding external search traffic and ambient keys.
-   */
-  deepSeekSearch?: {
-    /** Anthropic-compatible base URL; the provider appends `/messages`. */
-    baseURL: string
-    /** Credential reference resolved by the shipped search provider. */
-    apiKeyEnv: string
-  }
   /**
    * Replace the roster the scaffold mounts by default (the shipped directory
    * at `system` trust, default `standard`). Supply this only to change WHICH
@@ -323,23 +306,8 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
   if (mode === 'record') {
     // Both owning vitest configs (web unconditionally, snapshot in record
     // mode) load the repo-root .env before this file runs.
-    if (process.env.DEEPSEEK_API_KEY === undefined || process.env.DEEPSEEK_API_KEY.length === 0) {
-      throw new Error('web e2e record mode needs DEEPSEEK_API_KEY (env or repo-root .env)')
-    }
-  }
-  if (mode === 'record' && options.deepSeekMissingCredential === true) {
-    throw new Error('deepSeekMissingCredential is a keyless replay/refresh option')
-  }
-  const maskDeepSeekCredential = mode !== 'record' && options.deepSeekMissingCredential === true
-  const originalDeepSeekCredential = process.env.DEEPSEEK_API_KEY
-  let credentialEnvironmentRestored = false
-  const restoreCredentialEnvironment = (): void => {
-    if (credentialEnvironmentRestored || !maskDeepSeekCredential) return
-    credentialEnvironmentRestored = true
-    if (originalDeepSeekCredential === undefined) {
-      Reflect.deleteProperty(process.env, 'DEEPSEEK_API_KEY')
-    } else {
-      process.env.DEEPSEEK_API_KEY = originalDeepSeekCredential
+    if (process.env.ACME_API_KEY === undefined || process.env.ACME_API_KEY.length === 0) {
+      throw new Error('web e2e record mode needs ACME_API_KEY (env or repo-root .env)')
     }
   }
   const workspaceCwd = await realpath(await mkdtemp(join(tmpdir(), 'dsh-web-e2e-ws-')))
@@ -385,7 +353,6 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
     if (failures.length > 1) throw new AggregateError(failures, 'web scaffold temp-root setup failed')
     throw error
   }
-  if (maskDeepSeekCredential) Reflect.deleteProperty(process.env, 'DEEPSEEK_API_KEY')
 
   // The include patch set — the same layer stack the profile boot composes
   // (bundle patches in dsh.profile.bundles order), applied over the SAME empty root (a
@@ -502,18 +469,24 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
         { id: 'tool-cordis', name: '@pentest-harness/dsh-tool-cordis' },
       ] }]
       : [],
-    ...options.deepSeekSearch === undefined
-      ? []
-      : [{
-        id: 'web-search-deepseek',
+    // Record mode talks to a real OpenAI-compatible endpoint through the
+    // shipped pi-ai adapter; every other mode installs replay routes below.
+    ...mode === 'record'
+      ? [{
+        id: 'llm-pi-ai',
         config: {
-          apiKeyEnv: options.deepSeekSearch.apiKeyEnv,
-          baseURL: options.deepSeekSearch.baseURL,
+          providers: {
+            'acme-official': {
+              displayName: 'Acme',
+              api: 'openai-completions',
+              baseURL: process.env.ACME_BASE_URL ?? 'https://api.acme.test/v1',
+              apiKeyEnv: 'ACME_API_KEY',
+              models: [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }],
+            },
+          },
         },
-      }],
-    ...mode === 'record' || options.deepSeekMissingCredential === true
-      ? []
-      : [{ id: 'llm-deepseek', disabled: true }],
+      }]
+      : [],
   ]
 
   // Sessions inherit the gateway's process.cwd() default; run the boot from
@@ -569,9 +542,8 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
     }
     port = boundPort
 
-    // Fill the open llm seam on the settled root ctx. Ordinary keyless modes
-    // disable llm-deepseek; the first-run lane keeps it mounted but has no
-    // replay fixture and never streams. The direct install, unlike the plugin
+    // Fill the open llm seam on the settled root ctx: keyless modes install
+    // replay routes; record mode streams through the configured pi-ai route. The direct install, unlike the plugin
     // row, returns the ReplayHandle for the teardown consumption check.
     if (options.replayProvidersOnly) {
       if (options.replayFixture === undefined) {
@@ -614,7 +586,7 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
         ...(options.replayChildFixtures === undefined ? {} : { childFiles: options.replayChildFixtures }),
         ...(options.paceMs === undefined ? {} : { paceMs: options.paceMs }),
       })
-    } else if (mode !== 'record' && options.deepSeekMissingCredential !== true) {
+    } else if (mode !== 'record') {
       // No fixture and no shipped adapter would leave the tree with ZERO
       // provider routes — a state no product composition has, and one the
       // composer refuses to type into. Register the same routes
@@ -628,7 +600,6 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
   } catch (error) {
     if (process.cwd() !== originalCwd) process.chdir(originalCwd)
     const cleanupFailures = await cleanupScaffoldWorld(ctx, workspaceCwd, persistenceRoot)
-    restoreCredentialEnvironment()
     restoreSkillRootEnvironment()
     if (cleanupFailures.length > 0) {
       throw new AggregateError([error, ...cleanupFailures], 'web scaffold setup failed and cleanup was incomplete')
@@ -679,7 +650,6 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
       try {
         failures.push(...await cleanupScaffoldWorld(ctx, workspaceCwd, persistenceRoot))
       } finally {
-        restoreCredentialEnvironment()
         restoreSkillRootEnvironment()
       }
       if (failures.length > 0) throw new AggregateError(failures, 'web scaffold teardown failed')

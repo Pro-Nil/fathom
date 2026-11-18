@@ -10,11 +10,11 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
-                  name: DeepSeek
+                - id: acme-official
+                  name: Acme
                   models:
-                    - id: deepseek-v4-flash
-                    - id: deepseek-v4-pro
+                    - id: acme-v4-flash
+                    - id: acme-v4-pro
           - id: subagent-result-diagnostic
             name: './tests/fixtures/subagent-result-diagnostic.ts'
           - id: tool-subagent-codex
@@ -24,6 +24,6 @@
               toolName: subagent_codex
               backgroundMode: one-shot
               maxDepth: provider-managed
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true

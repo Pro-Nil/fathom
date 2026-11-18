@@ -44,15 +44,15 @@ export interface HarnessClientOptions {
   disposeGraceMs?: number
 }
 
-/** Options for the high-level {@link DeepSeekHarness} wrapper. */
-export interface DeepSeekHarnessOptions {
+/** Options for the high-level {@link PentestHarness} wrapper. */
+export interface PentestHarnessOptions {
   /** Launch spec for the runtime subprocess (command, args, cwd, env, timeouts). */
   launch: HarnessClientOptions
   /** Workspace cwd recorded on every SDK-created session (default: the launch cwd, else `process.cwd()`). */
   cwd?: string
-  /** Provider route for SDK-created agents (default `deepseek-official`). */
+  /** Provider route for SDK-created agents (default `acme-official`). */
   provider?: string
-  /** Model for SDK-created agents (default `deepseek-v4-flash`). */
+  /** Model for SDK-created agents (default `acme-v4-flash`). */
   model?: string
   /** Maximum output tokens for each conversation-model request. */
   maxTokens?: number

@@ -150,8 +150,8 @@ flowchart LR
   cfg --> plugin_dsh_base_repeat_tool_reminder
   plugin_dsh_base_web["web<br/>@pentest-harness/dsh-web"]
   cfg --> plugin_dsh_base_web
-  plugin_dsh_base_web_search_deepseek["web-search-deepseek<br/>@pentest-harness/dsh-web-search-deepseek"]
-  cfg --> plugin_dsh_base_web_search_deepseek
+  plugin_dsh_base_web_search_acme["web-search-acme<br/>@pentest-harness/dsh-web-search-acme"]
+  cfg --> plugin_dsh_base_web_search_acme
   plugin_dsh_base_tool_web["tool-web<br/>@pentest-harness/dsh-tool-web"]
   cfg --> plugin_dsh_base_tool_web
   plugin_dsh_base_tools["tools<br/>@pentest-harness/dsh-tools"]
@@ -162,8 +162,8 @@ flowchart LR
   cfg --> plugin_dsh_base_agent_loop
   plugin_dsh_base_fs_sandbox["fs-sandbox<br/>@pentest-harness/dsh-fs-sandbox"]
   cfg --> plugin_dsh_base_fs_sandbox
-  plugin_dsh_base_llm_deepseek["llm-deepseek<br/>@pentest-harness/dsh-llm-deepseek"]
-  cfg --> plugin_dsh_base_llm_deepseek
+  plugin_dsh_base_llm_acme["llm-acme<br/>@pentest-harness/dsh-llm-acme"]
+  cfg --> plugin_dsh_base_llm_acme
 ```
 
 | Plugin id | Package / module |
@@ -239,13 +239,13 @@ flowchart LR
 | `tool-str-replace-editor` | `@pentest-harness/dsh-tool-str-replace-editor` |
 | `repeat-tool-reminder` | `@pentest-harness/dsh-repeat-tool-reminder` |
 | `web` | `@pentest-harness/dsh-web` |
-| `web-search-deepseek` | `@pentest-harness/dsh-web-search-deepseek` |
+| `web-search-acme` | `@pentest-harness/dsh-web-search-acme` |
 | `tool-web` | `@pentest-harness/dsh-tool-web` |
 | `tools` | `@pentest-harness/dsh-tools` |
 | `system-prompt` | `@pentest-harness/dsh-system-prompt` |
 | `agent-loop` | `@pentest-harness/dsh-agent-loop` |
 | `fs-sandbox` | `@pentest-harness/dsh-fs-sandbox` |
-| `llm-deepseek` | `@pentest-harness/dsh-llm-deepseek` |
+| `llm-acme` | `@pentest-harness/dsh-llm-acme` |
 
 Source config: [`packages/bundle/base/cordis.patch.yml`](../../packages/bundle/base/cordis.patch.yml).
 

@@ -31,8 +31,17 @@ const repoTsconfig = fileURLToPath(new URL('../../../../tsconfig.json', import.m
 // A minimal opt-in leaf that loads this app + the two backends and the optional
 // session-query consumer/policies, inlined so the package test owns its fixture.
 const CORDIS_YML = `
-- id: llm-deepseek
-  name: '@pentest-harness/dsh-llm-deepseek'
+- id: llm-pi-ai
+  name: '@pentest-harness/dsh-llm-pi-ai'
+  config:
+    providers:
+      acme-official:
+        displayName: Acme
+        api: openai-completions
+        baseURL: https://api.acme.test/v1
+        apiKeyEnv: ACME_API_KEY
+        models:
+          - id: acme-v4-flash
 - id: subprocess
   name: '@pentest-harness/dsh-subprocess-local'
 - id: bash
@@ -40,8 +49,8 @@ const CORDIS_YML = `
 - id: acp-agent
   name: '@pentest-harness/dsh-acp-demo'
   config:
-    provider: deepseek-official
-    model: deepseek-v4-flash
+    provider: acme-official
+    model: acme-v4-flash
     persona: 'You are a test agent.'
     workspaceContext: false
 - id: tool-session-query
@@ -88,7 +97,7 @@ async function boot(): Promise<Spawned & { cwd: string }> {
         ...process.env,
         TSX_TSCONFIG_PATH: repoTsconfig,
         // Key-present check only; no prompt is sent, so the model is never called.
-        DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY ?? 'keyless-acp-agent-smoke',
+        ACME_API_KEY: process.env.ACME_API_KEY ?? 'keyless-acp-agent-smoke',
         DSH_HOME: join(cwd, '.dsh'),
         DSH_AGENTS_HOME: join(cwd, '.agents'),
       },

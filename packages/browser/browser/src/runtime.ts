@@ -10,7 +10,7 @@ import { mkdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { chromium } from 'playwright-core'
-import type { BrowserContext, CDPSession, FileChooser, Page } from 'playwright-core'
+import type { BrowserContext, CDPSession, FileChooser, Locator, Page } from 'playwright-core'
 import { parsePasswordCsv, writeLogins } from './passwords.ts'
 import type { ImportedLogin, PasswordImportResult } from './passwords.ts'
 
@@ -407,7 +407,7 @@ export class SharedBrowser {
   }
 
   /** Locator for an element ref from the latest snapshot. */
-  async locate(ref: string, tabId?: string) {
+  async locate(ref: string, tabId?: string): Promise<Locator> {
     const page = await this.page(tabId)
     if (!/^[\w-]+$/u.test(ref)) throw new Error(`"${ref}" is not an element ref; use a ref such as e12 from read_page or find`)
     return page.locator(`aria-ref=${ref}`)

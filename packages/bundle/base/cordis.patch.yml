@@ -68,12 +68,15 @@
       name: '@pentest-harness/dsh-agent'
 
     # The transport-independent default for Agents created by entry points.
-    # Settings may supply a saved selection; consumers read it at creation time.
+    # Settings may supply a saved selection (the Models page and the composer's
+    # model picker write one); consumers read it at creation time. No provider
+    # ships configured, so this placeholder only routes once an `openai` profile
+    # exists in the `llm-pi-ai:` settings section.
     - id: agent-default-model
       name: '@pentest-harness/dsh-agent-default-model'
       config:
-        provider: deepseek-official
-        model: deepseek-v4-flash
+        provider: openai
+        model: gpt-5.5
 
     - id: jobs
       name: '@pentest-harness/dsh-jobs-local'
@@ -82,7 +85,7 @@
       name: '@pentest-harness/dsh-llm-retry'
 
     # User-settings document (`$DSH_HOME/settings.yaml`, hot-reloaded): a
-    # `llm-deepseek:` or `llm-pi-ai:` section there overrides the adapter entries
+    # `llm-pi-ai:` section there overrides the adapter entry
     # below without a restart, and is what the web Models page writes.
     - id: settings
       name: '@pentest-harness/dsh-settings-file'
@@ -160,7 +163,7 @@
         mode: !!js process.env.DSH_TELEMETRY_MODE || 'DISABLED'
         shutdownTimeoutMillis: 3000
         exporter:
-          url: !!js process.env.DSH_TELEMETRY_OTLP_URL ?? 'https://harness-telemetry.deepseeksvc.com/v1/logs'
+          url: !!js process.env.DSH_TELEMETRY_OTLP_URL ?? 'http://127.0.0.1:4318/v1/logs'
           compression: gzip
           timeoutMillis: 1000
         processor:
@@ -408,17 +411,11 @@
         failureThresholds: [4, 7]
         settings: true
 
-    # Every mode enables the stable model-facing web_search tool. DeepSeek search
-    # resolves the same DEEPSEEK_API_KEY credential the Models page manages for
-    # chat, at each search; its Messages endpoint is separate from the
-    # chat-completions endpoint, so it takes its own base-URL override. Fetch stays
+    # Every mode enables the stable model-facing web_search tool, served by
+    # DuckDuckGo's keyless HTML results: no account, key or payment. Fetch stays
     # disabled and no fetch provider is mounted: that provider defers SSRF
-    # protection and the model would choose the request target. Search is a full
-    # auxiliary model request with server-side retrieval, so this shipped DeepSeek
-    # route gets 60s while the provider-neutral tool default remains 30s.
-    # Search defaults to DuckDuckGo's keyless HTML results: no account, key or
-    # payment. The DeepSeek provider below stays registered; set
-    # `searchProvider: deepseek-official` here to use it with a DeepSeek key.
+    # protection and the model would choose the request target. Searches get 60s
+    # while the provider-neutral tool default remains 30s.
     - id: web
       name: '@pentest-harness/dsh-web'
       config:
@@ -426,11 +423,6 @@
 
     - id: web-search-duckduckgo
       name: '@pentest-harness/dsh-web-search-duckduckgo'
-
-    - id: web-search-deepseek
-      name: '@pentest-harness/dsh-web-search-deepseek'
-      config:
-        apiKeyEnv: DEEPSEEK_API_KEY
 
     - id: tool-web
       name: '@pentest-harness/dsh-tool-web'
@@ -463,10 +455,3 @@
     # overlay can pin another workspace.
     - id: fs-sandbox
       name: '@pentest-harness/dsh-fs-sandbox'
-
-    # The native DeepSeek adapter. No key or endpoint is inlined: both resolve per
-    # request from the `llm-deepseek:` settings section over this entry, with the
-    # key coming from the credential store below. Thinking defaults are a deployment
-    # choice.
-    - id: llm-deepseek
-      name: '@pentest-harness/dsh-llm-deepseek'

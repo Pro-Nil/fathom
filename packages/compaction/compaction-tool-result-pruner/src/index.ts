@@ -51,7 +51,14 @@ interface SnapshotCandidate {
   readonly event: SessionEvent<'tool/result'>
 }
 
+/** The plugin row's config: the pruning settings plus the Settings-card opt-in. */
+export interface ToolResultPruneRowConfig extends ToolResultPruneConfig {
+  /** Show this plugin's card under Settings → Plugins. */
+  settings?: boolean
+}
+
 /** Deterministic head/middle/tail pruning for current tool-result surface nodes. */
+
 export class ToolResultPruner extends Service {
   // The token meter prices each shadowed node for its logged shadow-price
   // event, so pruning genuinely requires the pricing capability.
@@ -74,7 +81,7 @@ export class ToolResultPruner extends Service {
     return this.resolved
   }
 
-  constructor(ctx: Context, config: ToolResultPruneConfig & { settings?: boolean } = {}) {
+  constructor(ctx: Context, config: ToolResultPruneRowConfig = {}) {
     super(ctx, 'toolResultPruner')
     const { settings, ...row } = config
     this.resolved = resolveConfig(row)

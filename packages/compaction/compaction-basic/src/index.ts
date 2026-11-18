@@ -123,6 +123,12 @@ function withSettings(row: BasicCompactionConfig, value: CompactionSettings): Ba
   return merged
 }
 
+/** The plugin row's config: the compaction settings plus the Settings-card opt-in. */
+export interface BasicCompactionRowConfig extends BasicCompactionConfig {
+  /** Show this plugin's card under Settings → Plugins. */
+  settings?: boolean
+}
+
 /**
  * Dependency-light compaction backend using `ctx.tokenMeter` for pressure,
  * retention, cited source events, and summary-convergence pricing.
@@ -131,6 +137,7 @@ function withSettings(row: BasicCompactionConfig, value: CompactionSettings): Ba
  * mutation strategy stays fixed so every pricing decision uses the singleton
  * token meter.
  */
+
 export class BasicCompactionEngine extends CompactionEngine {
   static inject = ['llm', 'tokenMeter', 'sessions']
 
@@ -148,7 +155,6 @@ export class BasicCompactionEngine extends CompactionEngine {
     settings: z.boolean(),
   })
 
-
   private resolved: ResolvedConfig
 
   /**
@@ -163,7 +169,7 @@ export class BasicCompactionEngine extends CompactionEngine {
   private readonly overflowRetries = new WeakMap<Agent, number>()
   private readonly overflowAgents = new WeakMap<Session, Agent>()
 
-  constructor(ctx: Context, config: BasicCompactionConfig & { settings?: boolean } = {}) {
+  constructor(ctx: Context, config: BasicCompactionRowConfig = {}) {
     super(ctx)
     const { settings, ...row } = config
     this.resolved = resolveConfig(row)

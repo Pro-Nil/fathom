@@ -293,7 +293,7 @@ export function apply(ctx: Context, config: AcpConfig): void {
         imagePromptEnabled = await supportsAcpImagePrompts(ctx, config.provider, config.model)
         return {
           protocolVersion: PROTOCOL_VERSION,
-          agentInfo: { name: 'deepseek-harness-acp', version: '0.0.1' },
+          agentInfo: { name: 'pentest-harness-acp', version: '0.0.1' },
           agentCapabilities: {
             promptCapabilities: { image: imagePromptEnabled, audio: false, embeddedContext: false },
           },

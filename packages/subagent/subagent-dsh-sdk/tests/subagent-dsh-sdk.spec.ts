@@ -131,15 +131,15 @@ describe('dsh-subagent-dsh-sdk provider', () => {
     process.env.DSH_TEST_AMBIENT_SECRET_KEY = 'leak-me-not'
     try {
       const ctx = await setup({
-        FAKE_ECHO_ENV: 'DSH_TEST_AMBIENT_SECRET_KEY,DEEPSEEK_API_KEY',
-        DEEPSEEK_API_KEY: 'explicit-child-key',
+        FAKE_ECHO_ENV: 'DSH_TEST_AMBIENT_SECRET_KEY,ACME_API_KEY',
+        ACME_API_KEY: 'explicit-child-key',
         FAKE_TEXT: 'done',
       })
       const run = await ctx.subagents.start('dsh-sdk', request())
       const result = await run.result
       const answer = text(result.output)
       expect(answer).toContain('DSH_TEST_AMBIENT_SECRET_KEY=\n')
-      expect(answer).toContain('DEEPSEEK_API_KEY=explicit-child-key')
+      expect(answer).toContain('ACME_API_KEY=explicit-child-key')
       await run.dispose()
       await ctx.fiber.dispose()
     } finally {

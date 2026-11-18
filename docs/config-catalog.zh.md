@@ -908,25 +908,25 @@ export interface Config {
 
 来源：[`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local/src/index.ts)
 
-<a id="pentest-harnessdsh-llm-deepseek"></a>
+<a id="pentest-harnessdsh-llm-acme"></a>
 
-## `@pentest-harness/dsh-llm-deepseek`
+## `@pentest-harness/dsh-llm-acme`
 
 需要：`llm`
 
 ```ts config-catalog
 /**
  * Plugin config, validated by the same-named schemastery schema and doubling
- * as the `llm-deepseek` settings-section shape. Every field is optional in
+ * as the `llm-acme` settings-section shape. Every field is optional in
  * yml: a missing API key resolves through {@link Config.apiKeyEnv} at each
  * request (a request without any key fails with `MISSING_CREDENTIAL`, not at
  * plugin load), omitted thinking mode uses the provider default, and omitted
  * reasoning effort resolves to `high`.
  */
 export interface Config {
-  /** Credential reference (environment-variable name) resolved per request; defaults to `DEEPSEEK_API_KEY`. */
+  /** Credential reference (environment-variable name) resolved per request; defaults to `ACME_API_KEY`. */
   apiKeyEnv?: string
-  /** Endpoint base; falls back to $DEEPSEEK_BASE_URL from a trusted environment layer, then the public API. */
+  /** Endpoint base; falls back to $ACME_BASE_URL from a trusted environment layer, then the public API. */
   baseURL?: string
   /** Deployment thinking policy; `disabled` limits every conversation request to `off`. */
   thinking?: 'enabled' | 'disabled'
@@ -937,7 +937,7 @@ export interface Config {
   /** Positive context capacity used when the selected model has no exact value (default 1,000,000). */
   defaultContextWindow?: number
   /** Advisory models shown by discovery consumers; defaults to V4 Flash, V4 Pro, and V4 Flash Vision Exp. */
-  models?: DeepSeekCatalogModel[]
+  models?: AcmeCatalogModel[]
   /** Maximum provider idle time while one stream read is outstanding (default five minutes). */
   streamIdleTimeoutMs?: number
   /** Maximum accumulated file-referenced image bytes per chat request (default 128 MiB). */
@@ -965,7 +965,7 @@ export interface Config {
 }
 
 /** One optional model entry advertised by the direct-fetch adapter. */
-export interface DeepSeekCatalogModel {
+export interface AcmeCatalogModel {
   /** Wire model id accepted by the configured endpoint. */
   id: string
   /** Selector label; defaults to {@link id}. */
@@ -974,7 +974,7 @@ export interface DeepSeekCatalogModel {
   description?: string
   /** Known combined request/response context capacity; omitted when deployment metadata is unavailable. */
   contextWindow?: number
-  /** Per-request output cap for this model; omission falls back to the profile's {@link DeepSeekConnectionOptions.maxTokens}. */
+  /** Per-request output cap for this model; omission falls back to the profile's {@link AcmeConnectionOptions.maxTokens}. */
   maxTokens?: number
   /** Accepted request modalities; omission is text-only. */
   inputModalities?: ModelModality[]
@@ -989,7 +989,7 @@ export interface DeepSeekCatalogModel {
 
 依赖：[`ModelModality`](../packages/llm/llm/src/index.ts) · [`RetryPolicyConfig`](../packages/llm/llm/src/index.ts)
 
-来源：[`packages/llm/llm-deepseek/src/index.ts:106`](../packages/llm/llm-deepseek/src/index.ts)
+来源：[`packages/llm/llm-acme/src/index.ts:106`](../packages/llm/llm-acme/src/index.ts)
 
 <a id="pentest-harnessdsh-llm-pi-ai"></a>
 
@@ -2198,7 +2198,7 @@ export interface Config {
   permission: PermissionPolicy
   /**
    * Extra environment variables for the child process — e.g. the child
-   * harness's own `DEEPSEEK_API_KEY`. Forwarded on top of a credential-scrubbed
+   * harness's own `ACME_API_KEY`. Forwarded on top of a credential-scrubbed
    * copy of the parent env, so an explicit key here reaches the child while
    * ambient secrets do not leak implicitly.
    */
@@ -2308,15 +2308,15 @@ export interface Config {
    * fails.
    */
   cwd?: string
-  /** Provider route the child runtime initializes with (default `deepseek-official`). */
+  /** Provider route the child runtime initializes with (default `acme-official`). */
   provider: string
-  /** Model the child runtime initializes with (default `deepseek-v4-flash`). */
+  /** Model the child runtime initializes with (default `acme-v4-flash`). */
   model: string
   /** Optional per-request output-token cap for the child runtime. */
   maxTokens?: number
   /**
    * Extra environment variables for the child process — e.g. the child
-   * runtime's own `DEEPSEEK_API_KEY`, or `DSH_CORDIS_CONFIG` naming its
+   * runtime's own `ACME_API_KEY`, or `DSH_CORDIS_CONFIG` naming its
    * config. Forwarded on top of a credential-scrubbed copy of the parent
    * env, so an explicit key here reaches the child while ambient secrets do
    * not leak implicitly.
@@ -3114,22 +3114,22 @@ export interface Config {
 
 来源：[`packages/web/web-fetch-http/src/index.ts:34`](../packages/web/web-fetch-http/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-deepseek"></a>
+<a id="pentest-harnessdsh-web-search-acme"></a>
 
-## `@pentest-harness/dsh-web-search-deepseek`
+## `@pentest-harness/dsh-web-search-acme`
 
 需要：`web`
 
 ```ts config-catalog
 /** Plugin config (all optional — `apply` fills env-var and constant defaults). */
 export interface Config {
-  /** Literal DeepSeek API key; prefer {@link apiKeyEnv} so no secret enters configuration files. */
+  /** Literal Acme API key; prefer {@link apiKeyEnv} so no secret enters configuration files. */
   apiKey?: string
-  /** Credential reference resolved for each search; defaults to `DEEPSEEK_API_KEY`. */
+  /** Credential reference resolved for each search; defaults to `ACME_API_KEY`. */
   apiKeyEnv?: string
   /** Anthropic-compatible endpoint base; `/messages` is appended. */
   baseURL?: string
-  /** Anthropic-format model name. Defaults to `deepseek-v4-flash`. */
+  /** Anthropic-format model name. Defaults to `acme-v4-flash`. */
   model?: string
   /** `anthropic-version` header value. Defaults to `2023-06-01`. */
   apiVersion?: string
@@ -3140,7 +3140,7 @@ export interface Config {
 }
 ```
 
-来源：[`packages/web/web-search-deepseek/src/index.ts:46`](../packages/web/web-search-deepseek/src/index.ts)
+来源：[`packages/web/web-search-acme/src/index.ts:46`](../packages/web/web-search-acme/src/index.ts)
 
 <a id="pentest-harnessdsh-web-search-exa"></a>
 

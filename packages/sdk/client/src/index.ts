@@ -1,7 +1,7 @@
 /**
  * TypeScript client SDK for the Pentest Harness runtime: spawn the
  * `dsh-jsonrpc-agent` runtime as a subprocess and drive agent turns over
- * stdio JSON-RPC. `DeepSeekHarness` is the high-level run API;
+ * stdio JSON-RPC. `PentestHarness` is the high-level run API;
  * `HarnessClient` is the lower-level protocol client. A pure library — it
  * registers nothing on a Cordis context; the runtime process it spawns is a
  * complete harness configured by its own `cordis.yml`.
@@ -9,7 +9,7 @@
  * @module @pentest-harness/dsh-sdk-client
  */
 
-export { DeepSeekHarness, HarnessSession } from './api.ts'
+export { PentestHarness, HarnessSession } from './api.ts'
 export type { RunOptions } from './api.ts'
 export {
   HarnessClient,
@@ -21,7 +21,7 @@ export type { NotificationSubscription } from './client.ts'
 export { JsonRpcResponseError } from '@pentest-harness/dsh-sdk-protocol'
 export type {
   ContentBlock,
-  DeepSeekHarnessOptions,
+  PentestHarnessOptions,
   HarnessClientOptions,
   HarnessNotification,
   NotificationFilter,

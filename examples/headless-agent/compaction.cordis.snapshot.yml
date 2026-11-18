@@ -4,8 +4,8 @@
   config:
     path: ./cordis.yml
     patches:
-      - id: llm-deepseek
-        name: '@pentest-harness/dsh-llm-deepseek'
+      - id: llm-pi-ai
+        name: '@pentest-harness/dsh-llm-pi-ai'
         disabled: true
       - id: compaction-basic
         name: '@pentest-harness/dsh-compaction-basic'
@@ -18,7 +18,7 @@
             name: '@pentest-harness/dsh-llm-replay'
             config:
               providers:
-                - id: deepseek-official
+                - id: acme-official
                   models:
-                    - id: deepseek-v4-flash
+                    - id: acme-v4-flash
                       contextWindow: 128000

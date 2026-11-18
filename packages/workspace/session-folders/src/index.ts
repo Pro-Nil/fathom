@@ -192,7 +192,10 @@ export class SessionFolders extends Service {
     })
   }
 
-  /** The settings currently in force (user layer over the plugin row). */
+  /**
+   * The settings currently in force (user layer over the plugin row).
+   * @returns the effective session-folder settings.
+   */
   settings(): SessionFolderSettings {
     return this.source()
   }

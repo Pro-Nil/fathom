@@ -14,7 +14,7 @@ function fail<T>(message: string): RpcResponse<T> {
 }
 
 const DIRECTORY = [
-  { provider: 'deepseek-official', displayName: 'DeepSeek', settingsNs: 'llm-deepseek', settingsPath: [], active: true },
+  { provider: 'acme-official', displayName: 'Acme', settingsNs: 'llm-acme', settingsPath: [], active: true },
   { provider: 'openai', displayName: 'openai', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'openai'], active: true },
   { provider: 'anthropic', displayName: 'anthropic', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'anthropic'], active: false },
   { provider: 'ghost', displayName: 'Ghost', settingsNs: '', settingsPath: [], active: true },
@@ -22,9 +22,9 @@ const DIRECTORY = [
 
 const NAMESPACES = [
   {
-    ns: 'llm-deepseek',
+    ns: 'llm-acme',
     schema: {},
-    value: { apiKeyEnv: 'DEEPSEEK_API_KEY', baseURL: 'https://base' },
+    value: { apiKeyEnv: 'ACME_API_KEY', baseURL: 'https://base' },
     base: { baseURL: 'https://base' },
     applies: 'live' as const,
     secrets: [],
@@ -81,12 +81,12 @@ describe('ModelsSettingsStore', () => {
     expect(state.status).toBe('ready')
     expect(state.writable).toBe(true)
     expect(state.credentialError).toBeNull()
-    expect(seenRefs).toEqual([['DEEPSEEK_API_KEY', 'OPENAI_API_KEY']])
+    expect(seenRefs).toEqual([['ACME_API_KEY', 'OPENAI_API_KEY']])
     const byProvider = new Map(state.rows.map(row => [row.entry.provider, row]))
-    expect(byProvider.get('deepseek-official')).toMatchObject({
+    expect(byProvider.get('acme-official')).toMatchObject({
       configured: true,
       removable: false,
-      apiKeyEnv: 'DEEPSEEK_API_KEY',
+      apiKeyEnv: 'ACME_API_KEY',
       credential: { configured: false, writable: true },
     })
     expect(byProvider.get('openai')).toMatchObject({

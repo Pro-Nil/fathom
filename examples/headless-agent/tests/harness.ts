@@ -8,7 +8,7 @@ import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
 import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
 import * as ToolBash from '@pentest-harness/dsh-tool-bash'
 import * as ToolTodo from '@pentest-harness/dsh-tool-todo'
-import * as LlmDeepSeek from '@pentest-harness/dsh-llm-deepseek'
+import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
 import TokenMeter from '@pentest-harness/dsh-token-meter'
 import ToolResultPruner from '@pentest-harness/dsh-compaction-tool-result-pruner'
 import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
@@ -16,9 +16,24 @@ import * as SessionCheckpointPolicy from '@pentest-harness/dsh-session-checkpoin
 import { BasicCompactionEngine } from '@pentest-harness/dsh-compaction-basic'
 import type { BasicCompactionConfig } from '@pentest-harness/dsh-compaction-basic'
 
+/** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
+function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
+  return {
+    providers: {
+      'acme-official': {
+        displayName: 'Acme',
+        api: 'openai-completions',
+        baseURL: process.env['ACME_BASE_URL'] ?? 'https://api.acme.test/v1',
+        apiKeyEnv: 'ACME_API_KEY',
+        models,
+      },
+    },
+  } as never
+}
+
 /**
  * Shared harness for the headless-agent e2e suites: the full plugin stack
- * with the real DeepSeek adapter and the real bash + todo_write tools. Lives
+ * with the real Acme adapter and the real bash + todo_write tools. Lives
  * outside the *.e2e.ts pattern so importing it never re-registers another
  * file's tests.
  */
@@ -49,7 +64,7 @@ export interface CodingHarnessOptions {
    * compaction plugin (the default suites run without it).
    */
   compact?: BasicCompactionConfig
-  /** Test-only context capacity advertised for `deepseek-v4-flash`. */
+  /** Test-only context capacity advertised for `acme-v4-flash`. */
   modelContextWindow?: number
 }
 
@@ -59,9 +74,9 @@ export async function codingHarness(workdir: string, options: CodingHarnessOptio
     systemPrompt: { persona: options.persona ?? '' },
   })
   await ctx.plugin(AgentLoop, { agents: [] })
-  await ctx.plugin(LlmDeepSeek, options.modelContextWindow === undefined ? {} : {
-    models: [{ id: 'deepseek-v4-flash', contextWindow: options.modelContextWindow }],
-  })
+  await ctx.plugin(LlmPiAi, acmeRoute(options.modelContextWindow === undefined ? undefined : [
+    { id: 'acme-v4-flash', contextWindow: options.modelContextWindow },
+  ]))
   await ctx.plugin(LocalSubprocessRuntime)
   await ctx.plugin(BashEnvPlugin)
   await ctx.plugin(LocalBashExecutor, { cwd: workdir, timeoutMs: 30_000 })

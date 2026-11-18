@@ -32,31 +32,32 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/schemastery": "workspace:^"
   },
   "peerDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/dsh-agent": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:^",
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/dsh-scope": "workspace:^",
     "@pentest-harness/dsh-sdk-protocol": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-subagent": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-subagent": "workspace:^"
   },
   "devDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/cordis-plugin-loader": "workspace:^",
     "@pentest-harness/dsh-agent": "workspace:^",
     "@pentest-harness/dsh-agent-spine-demo": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:^",
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/dsh-scope": "workspace:^",
     "@pentest-harness/dsh-sdk-protocol": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-session-persistence-jsonl": "workspace:^",
-    "@pentest-harness/dsh-subagent": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-subagent": "workspace:^"
   }
 }

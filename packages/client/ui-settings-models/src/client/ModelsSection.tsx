@@ -18,7 +18,7 @@ import type { IApiClient } from '@pentest-harness/dsh-api-remotes/client'
 import { Button, IconPlusOutline16, Modal } from '@pentest-harness/dsh-client-ui-primitives'
 import type { InjectFace } from '@pentest-harness/dsh-client-ui-slots'
 import { CustomProviderCard } from './CustomProviderCard.tsx'
-import { formatCapacity } from './DeepSeekModelsEditor.tsx'
+import { formatCapacity } from './model-catalog.ts'
 import { deriveKeyRef, messageOf, protocolChoices, protocolLabel, providerUsable } from './store.ts'
 import type { ModelsSettingsStore, ProviderRow } from './store.ts'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
@@ -191,10 +191,6 @@ function providerProtocol(
 ): string {
   const value = schema.getPath(namespace.value, [...target.settingsPath, 'api'])
   if (typeof value === 'string' && value.length > 0) return protocolLabel(value)
-  // The direct DeepSeek adapter always speaks OpenAI Chat Completions; its
-  // profile has no `api` field, so the card shows the endpoint it actually
-  // serves instead of an empty value.
-  if (target.settingsNs === 'llm-deepseek') return protocolLabel('openai-completions')
   return '—'
 }
 
@@ -454,7 +450,7 @@ function Loaded({ injected }: { injected: ModelsSectionFace }): ReactNode {
                   </button>
                   {/* The connector asks the host discovery path, which the
                       generic pi-ai family owns: routes in other namespaces
-                      (the direct DeepSeek adapter) cannot be probed this way,
+                      cannot be probed this way,
                       so the action is withheld rather than failing on click. */}
                   {target.settingsNs === 'llm-pi-ai'
                     ? (() => {

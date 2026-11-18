@@ -24,7 +24,11 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["lib/index.js", "lib/invariant.js", "lib/types/**/*.d.ts"],
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/types/**/*.d.ts"
+  ],
   "license": "MIT",
   "peerDependencies": {
     "@pentest-harness/dsh-invariants": "workspace:^",
@@ -38,14 +42,14 @@
     "@pentest-harness/schemastery": "workspace:^"
   },
   "devDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/cordis-plugin-include": "workspace:^",
     "@pentest-harness/cordis-plugin-loader": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-deepseek": "workspace:^",
+    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
     "@pentest-harness/dsh-session": "workspace:^",
     "@pentest-harness/dsh-session-title": "workspace:^",
-    "@pentest-harness/dsh-session-title-llm": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-session-title-llm": "workspace:^"
   }
 }
