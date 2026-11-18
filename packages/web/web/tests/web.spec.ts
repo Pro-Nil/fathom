@@ -213,3 +213,49 @@ describe('WebError', () => {
     expect(error.name).toBe('WebError')
   })
 })
+
+describe('WebRuntime search fallback', () => {
+  it('tries the chosen provider first, then falls back in order and says so', async () => {
+    const { web } = await mountWeb({ searchProvider: 'google', searchFallback: true })
+    const calls: string[] = []
+    web.registerSearchProvider(makeSearchProvider('duckduckgo', available, () => { calls.push('duckduckgo'); return Promise.resolve(searchResult('ddg')) }))
+    web.registerSearchProvider(makeSearchProvider('google', available, () => { calls.push('google'); return Promise.reject(new Error('CAPTCHA')) }))
+    web.registerSearchProvider(makeSearchProvider('google-api', unavailable, () => Promise.resolve(searchResult('api'))))
+    const result = await web.search({ query: 'x' })
+    expect(calls).toEqual(['google', 'duckduckgo'])
+    expect(result.content).toBe('Searched with duckduckgo after: google failed (CAPTCHA).\nddg')
+  })
+
+  it('uses the next usable provider when the chosen one is unavailable', async () => {
+    const { web } = await mountWeb({ searchProvider: 'google-api', searchFallback: true })
+    web.registerSearchProvider(makeSearchProvider('google-api', unavailable, () => Promise.resolve(searchResult('api'))))
+    web.registerSearchProvider(makeSearchProvider('duckduckgo', available, () => Promise.resolve(searchResult('ddg'))))
+    expect((await web.search({ query: 'x' })).content).toBe('ddg')
+  })
+
+  it('reports every attempt when all providers fail', async () => {
+    const { web } = await mountWeb({ searchFallback: true })
+    web.registerSearchProvider(makeSearchProvider('google', available, () => Promise.reject(new Error('blocked'))))
+    web.registerSearchProvider(makeSearchProvider('duckduckgo', available, () => Promise.reject(new Error('HTTP 429'))))
+    await expect(web.search({ query: 'x' })).rejects.toThrow('every search provider failed: google failed (blocked); duckduckgo failed (HTTP 429)')
+  })
+
+  it('stays strict when fallback is off', async () => {
+    const { web } = await mountWeb({ searchProvider: 'google' })
+    web.registerSearchProvider(makeSearchProvider('google', available, () => Promise.reject(new Error('blocked'))))
+    web.registerSearchProvider(makeSearchProvider('duckduckgo', available, () => Promise.resolve(searchResult('ddg'))))
+    await expect(web.search({ query: 'x' })).rejects.toThrow('blocked')
+  })
+
+  it('lists providers in fallback order with their availability', async () => {
+    const { web } = await mountWeb()
+    web.registerSearchProvider(makeSearchProvider('exa', unavailable, () => Promise.resolve(searchResult('e'))))
+    web.registerSearchProvider(makeSearchProvider('duckduckgo', available, () => Promise.resolve(searchResult('d'))))
+    web.registerSearchProvider(makeSearchProvider('google', available, () => Promise.resolve(searchResult('g'))))
+    expect(web.searchProviderIds()).toEqual([
+      { id: 'google', available: true },
+      { id: 'duckduckgo', available: true },
+      { id: 'exa', available: false },
+    ])
+  })
+})

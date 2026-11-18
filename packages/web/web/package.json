@@ -32,16 +32,18 @@
   ],
   "license": "MIT",
   "peerDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-settings": "workspace:^"
   },
   "dependencies": {
     "@pentest-harness/schemastery": "workspace:^"
   },
   "devDependencies": {
+    "@pentest-harness/cordis": "workspace:^",
     "@pentest-harness/dsh-invariants": "workspace:^",
     "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@pentest-harness/dsh-settings": "workspace:^"
   }
 }

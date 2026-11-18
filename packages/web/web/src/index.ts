@@ -8,6 +8,7 @@
 
 import { Context, Service } from '@pentest-harness/cordis'
 import z from '@pentest-harness/schemastery'
+import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
 import type {
   WebFetchProvider,
   WebFetchRequest,
@@ -57,7 +58,38 @@ export interface WebRuntimeConfig {
   readonly searchProvider?: string
   /** Explicit fetch provider id. Omitted = auto-select when exactly one usable. */
   readonly fetchProvider?: string
+  /**
+   * When the chosen search provider fails (rate limit, block, network) or is
+   * unavailable, try the other usable providers in {@link SEARCH_FALLBACK_ORDER}.
+   * Defaults to false (strict selection).
+   */
+  readonly searchFallback?: boolean
+  /** Expose `searchProvider` / `searchFallback` as the live `web-search` settings section. */
+  readonly settings?: boolean
 }
+
+/** The user-editable search selection (`web-search` settings section). */
+export interface WebSearchSettings {
+  /** Chosen search provider id; empty means auto-select. */
+  searchProvider?: string
+  /** Fall back to other usable providers when the chosen one fails. */
+  searchFallback?: boolean
+}
+
+/** Settings namespace of the search selection. */
+export const WEB_SEARCH_SETTINGS_NAMESPACE = 'web-search'
+
+/** Schema of the `web-search` settings section. */
+export const WEB_SEARCH_SETTINGS_SCHEMA: z<WebSearchSettings> = z.object({
+  searchProvider: z.string(),
+  searchFallback: z.boolean(),
+})
+
+/**
+ * Order the seam tries providers after the chosen one fails. Ids not listed
+ * follow in registration order; unregistered or unavailable ones are skipped.
+ */
+export const SEARCH_FALLBACK_ORDER: readonly string[] = ['google', 'google-api', 'duckduckgo', 'exa', 'perplexity']
 
 /**
  * The web access service. Registered as `ctx.web` (one instance per context).
@@ -80,17 +112,40 @@ export class WebRuntime extends Service {
   static Config: z<WebRuntimeConfig> = z.object({
     searchProvider: z.string(),
     fetchProvider: z.string(),
+    searchFallback: z.boolean(),
+    settings: z.boolean(),
   })
 
   private searchProviders = new Map<string, WebSearchProvider>()
   private fetchProviders = new Map<string, WebFetchProvider>()
-  private readonly searchProviderId: string | undefined
+  private searchSettings: () => WebSearchSettings
   private readonly fetchProviderId: string | undefined
 
   constructor(ctx: Context, config: WebRuntimeConfig = {}) {
     super(ctx, 'web')
-    this.searchProviderId = config.searchProvider ?? process.env.DSH_WEB_SEARCH_PROVIDER
+    const searchProvider = config.searchProvider ?? process.env.DSH_WEB_SEARCH_PROVIDER
+    const entry: WebSearchSettings = {
+      ...searchProvider === undefined ? {} : { searchProvider },
+      searchFallback: config.searchFallback ?? false,
+    }
+    this.searchSettings = () => entry
     this.fetchProviderId = config.fetchProvider ?? process.env.DSH_WEB_FETCH_PROVIDER
+    if (config.settings === true) {
+      installSettingsSection(ctx, settingsNamespace(WEB_SEARCH_SETTINGS_NAMESPACE), WEB_SEARCH_SETTINGS_SCHEMA, entry, {
+        setSource: (current) => { this.searchSettings = current },
+        // Read at every search, so a change applies to the next one.
+        onChange: () => {},
+      })
+    }
+  }
+
+  /**
+   * The registered search providers and whether each can run now, in the
+   * order the fallback tries them.
+   * @returns provider ids with their availability.
+   */
+  searchProviderIds(): { id: string; available: boolean }[] {
+    return orderedProviders(this.searchProviders, undefined).map(provider => ({ id: provider.id, available: provider.available() }))
   }
 
   /**
@@ -138,12 +193,39 @@ export class WebRuntime extends Service {
    * @returns the provider's results, capped to `request.maxResults`.
    */
   async search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult> {
-    const provider = resolveProvider({
-      providers: this.searchProviders,
-      ...this.searchProviderId !== undefined ? { configuredId: this.searchProviderId } : {},
-    })
-    const result = await provider.search(request, signal)
-    return capSources(result, request.maxResults)
+    const settings = this.searchSettings()
+    const configuredId = settings.searchProvider === undefined || settings.searchProvider.trim() === ''
+      ? undefined
+      : settings.searchProvider.trim()
+    if (settings.searchFallback === false) {
+      const provider = resolveProvider({
+        providers: this.searchProviders,
+        ...configuredId !== undefined ? { configuredId } : {},
+      })
+      return capSources(await provider.search(request, signal), request.maxResults)
+    }
+    // Chosen provider first, then the rest in fallback order; each failure is
+    // kept so the final error explains every attempt.
+    const candidates = orderedProviders(this.searchProviders, configuredId).filter(provider => provider.available())
+    if (candidates.length === 0) {
+      throw new WebError(configuredId === undefined
+        ? 'no usable web search provider is registered'
+        : `configured web provider "${configuredId}" is unavailable and no other search provider is usable`,
+      configuredId === undefined ? 'WEB_PROVIDER_UNAVAILABLE' : 'WEB_PROVIDER_CONFIGURED_UNAVAILABLE')
+    }
+    const failures: string[] = []
+    for (const provider of candidates) {
+      signal?.throwIfAborted()
+      try {
+        const result = await provider.search(request, signal)
+        const note = failures.length === 0 ? undefined : `Searched with ${provider.id} after: ${failures.join('; ')}.`
+        return capSources(note === undefined ? result : { ...result, content: [note, result.content].filter(Boolean).join('\n') }, request.maxResults)
+      } catch (error: unknown) {
+        if (signal?.aborted === true) throw error
+        failures.push(`${provider.id} failed (${error instanceof Error ? error.message : String(error)})`)
+      }
+    }
+    throw new WebError(`every search provider failed: ${failures.join('; ')}`, 'WEB_PROVIDER_UNAVAILABLE')
   }
 
   /**
@@ -166,6 +248,19 @@ export class WebRuntime extends Service {
 interface ResolvableProvider {
   readonly id: string
   available(): boolean
+}
+
+/**
+ * Providers in the order a search tries them: the configured id first, then
+ * {@link SEARCH_FALLBACK_ORDER}, then any others in registration order.
+ */
+function orderedProviders<P extends ResolvableProvider>(providers: ReadonlyMap<string, P>, configuredId: string | undefined): P[] {
+  const ids = [...new Set([
+    ...configuredId === undefined ? [] : [configuredId],
+    ...SEARCH_FALLBACK_ORDER,
+    ...providers.keys(),
+  ])]
+  return ids.map(id => providers.get(id)).filter((provider): provider is P => provider !== undefined)
 }
 
 /** Resolve the selected provider or throw the matching {@link WebError}. */

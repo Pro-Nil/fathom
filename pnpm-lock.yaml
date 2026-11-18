@@ -1296,6 +1296,9 @@ importers:
       '@pentest-harness/dsh-web-search-duckduckgo':
         specifier: workspace:^
         version: link:../../web/web-search-duckduckgo
+      '@pentest-harness/dsh-web-search-google':
+        specifier: workspace:^
+        version: link:../../web/web-search-google
       '@pentest-harness/dsh-workflow-worker-thread':
         specifier: workspace:^
         version: link:../../workflow/workflow-worker-thread
@@ -8564,6 +8567,9 @@ importers:
       '@pentest-harness/dsh-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@pentest-harness/dsh-settings':
+        specifier: workspace:^
+        version: link:../../settings/settings
 
   packages/web/web-fetch-http:
     dependencies:
@@ -8615,6 +8621,28 @@ importers:
       '@pentest-harness/dsh-launch-environment':
         specifier: workspace:^
         version: link:../../util/launch-environment
+      '@pentest-harness/dsh-web':
+        specifier: workspace:^
+        version: link:../web
+
+  packages/web/web-search-google:
+    dependencies:
+      '@pentest-harness/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-browser':
+        specifier: workspace:^
+        version: link:../../browser/browser
+      '@pentest-harness/dsh-credentials':
+        specifier: workspace:^
+        version: link:../../credentials/credentials
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
       '@pentest-harness/dsh-web':
         specifier: workspace:^
         version: link:../web

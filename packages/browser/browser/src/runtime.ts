@@ -256,7 +256,11 @@ export class SharedBrowser {
   }
 
   private track(page: Page, activate: boolean): void {
-    if (this.tabs.has(page)) return
+    if (this.tabs.has(page) || this.scratchPages.has(page)) return
+    if (this.openingScratch) {
+      this.scratchPages.add(page)
+      return
+    }
     const state: TabState = { id: `tab-${this.nextTabNumber++}`, page, console: [], network: [], title: '' }
     this.tabs.set(page, state)
     const push = <T>(list: T[], item: T, limit: number): void => {
@@ -355,6 +359,40 @@ export class SharedBrowser {
       url: state.page.url(),
       active: state.page === this.activePage,
     }))
+  }
+
+  /** Pages opened by {@link withScratchPage}: never listed as tabs or mirrored. */
+  private readonly scratchPages = new WeakSet<Page>()
+  /** True while a scratch page is being created, so `track` skips it. */
+  private openingScratch = false
+  /** Serializes scratch-page creation so the `openingScratch` flag is unambiguous. */
+  private scratchQueue: Promise<unknown> = Promise.resolve()
+
+  /**
+   * Run work in a hidden page of the shared browser (same profile and cookies)
+   * that never appears in the tab list or the live view, then close it.
+   * @param work - receives the page; its result is returned.
+   * @returns what `work` returned.
+   */
+  async withScratchPage<T>(work: (page: Page) => Promise<T>): Promise<T> {
+    const context = await this.ensureContext()
+    const opened = this.scratchQueue.then(async () => {
+      this.openingScratch = true
+      try {
+        const page = await context.newPage()
+        this.scratchPages.add(page)
+        return page
+      } finally {
+        this.openingScratch = false
+      }
+    })
+    this.scratchQueue = opened.catch(() => {})
+    const page = await opened
+    try {
+      return await work(page)
+    } finally {
+      await page.close().catch(() => {})
+    }
   }
 
   /**

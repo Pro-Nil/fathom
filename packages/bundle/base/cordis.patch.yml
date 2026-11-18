@@ -419,10 +419,21 @@
     - id: web
       name: '@pentest-harness/dsh-web'
       config:
-        searchProvider: duckduckgo
+        # Google first; when it is unavailable or refuses (CAPTCHA, rate
+        # limit) the seam falls back through google-api, duckduckgo, exa and
+        # perplexity. Settings -> Plugins -> Web search changes both live.
+        searchProvider: google
+        searchFallback: true
+        settings: true
 
     - id: web-search-duckduckgo
       name: '@pentest-harness/dsh-web-search-duckduckgo'
+
+    # Keyless Google through a hidden page of the shared browser (needs the
+    # browser plugin, mounted by the pentest mode), plus the Programmable
+    # Search API once GOOGLE_API_KEY and GOOGLE_CSE_ID are stored.
+    - id: web-search-google
+      name: '@pentest-harness/dsh-web-search-google'
 
     - id: tool-web
       name: '@pentest-harness/dsh-tool-web'
