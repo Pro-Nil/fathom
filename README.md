@@ -52,7 +52,7 @@ Download the full video
 ## Quick start
 
 ```sh
-git clone https://github.com/S1N6H/pentest-harness.git
+git clone https://github.com/Pro-Nil/pentest-harness.git
 cd pentest-harness
 pnpm install
 pnpm build

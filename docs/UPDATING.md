@@ -17,7 +17,19 @@ Pick your situation:
 ## Requirements
 
 - **Everyone:** Git, **Node.js 20+** (22 recommended) and **pnpm** (`npm i -g pnpm`).
-- **Desktop app (Windows only):** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET 10 SDK](https://dotnet.microsoft.com/download). Node.js must be on `PATH`, because the app starts the harness with it.
+- **Desktop app (Windows only):** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET SDK](https://dotnet.microsoft.com/download), version 10 or newer. Node.js must be on `PATH`, because the app starts the harness with it.
+
+### Before running any desktop-app command
+
+1. **Use PowerShell, not Command Prompt.** The app commands use `$env:LOCALAPPDATA` and `Start-Process`, which only exist in PowerShell. Open **Start → PowerShell**, or type `powershell` in an existing Command Prompt window, then `cd` into your checkout.
+2. **Check the app's folder exists:** `Test-Path apps\desktop` must print `True`. The desktop app lives in [Pro-Nil/pentest-harness](https://github.com/Pro-Nil/pentest-harness); a clone of the original upstream repository does not have it. If it prints `False`, point your clone at this repository and update:
+
+   ```powershell
+   git remote set-url origin https://github.com/Pro-Nil/pentest-harness.git
+   git pull origin main
+   pnpm install
+   pnpm build
+   ```
 
 ## A. First install — web
 
@@ -33,7 +45,7 @@ The web UI opens at `http://127.0.0.1:2323`. Then add a model under **Settings �
 
 ## B. First install — web + desktop app
 
-Run the first four commands of [A](#a-first-install--web) (clone, `cd`, `pnpm install`, `pnpm build`) but **not** `pnpm dsh web`: the app starts the harness itself. Then, in PowerShell from the checkout:
+Run the first four commands of [A](#a-first-install--web) (clone, `cd`, `pnpm install`, `pnpm build`) but **not** `pnpm dsh web`: the app starts the harness itself. First do the two checks in [Before running any desktop-app command](#before-running-any-desktop-app-command). Then, in PowerShell from the checkout:
 
 ```powershell
 dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
@@ -61,7 +73,7 @@ Run all three update commands every time. A plugin that a mode uses but that was
 ## D. Add the desktop app to a web install
 
 1. Do [C](#c-update-the-web-version) steps 1–3 to get the latest code built, but don't start the harness from the terminal.
-2. Install and open the app, in PowerShell from the checkout:
+2. Do the two checks in [Before running any desktop-app command](#before-running-any-desktop-app-command), then install and open the app, in PowerShell from the checkout:
 
    ```powershell
    dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
@@ -82,7 +94,7 @@ Your existing sessions, models and keys show up in the app unchanged; it is the 
    ```
 
 3. Read the [upgrade notes](#upgrade-notes) below.
-4. If the update changed the app itself (files under `apps/desktop` in the `git pull` output), reinstall it over the old one:
+4. If the update changed the app itself (files under `apps/desktop` in the `git pull` output), reinstall it over the old one, in PowerShell:
 
    ```powershell
    dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
@@ -134,4 +146,7 @@ Stopping a turn does not stop background jobs. Use **Stop** on the job in the se
 | Harness exits at start after an update | Look for a patch entry naming a removed plugin in `~/.dsh/profiles/*/cordis.patch.yml` (see the upgrade notes). The desktop app's log is `%LOCALAPPDATA%\PentestHarness\logs\harness.log`. |
 | The model picker is empty or the page keeps reloading | The harness is failing to start sessions; check the log above, fix, restart, then reload the page. |
 | `pnpm install` fails in `postinstall` with an "invalid ownership marker" | The git-hooks folder was installed by an older build. Delete `.git/dsh-hooks` and run `pnpm install` again. |
+| `MSB1009: Project file does not exist. Switch: apps/desktop` | Your checkout has no desktop app: it is a clone of the upstream repository, or you are not in the checkout folder. See [Before running any desktop-app command](#before-running-any-desktop-app-command). |
+| `'Start-Process' is not recognized…` or a folder literally named `$env:LOCALAPPDATA` appears | The command ran in Command Prompt. Run it in PowerShell. |
+| The app does not start and asks for a .NET runtime | Install the [.NET Desktop Runtime](https://dotnet.microsoft.com/download) 10 or newer, then reinstall the app with the publish command from [B](#b-first-install--web--desktop-app). |
 | Port 2323 is already in use | Another harness is still running. Quit it (tray → Quit) or start on another port with `pnpm dsh web --port 3000`. |
