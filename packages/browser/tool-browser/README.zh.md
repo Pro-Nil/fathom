@@ -19,6 +19,15 @@
 
 文本读取是主要通道。`screenshot` 和 `zoom` 只有在调用方模型路由声明支持图像输入时，才会通过 `ctx.attachments` 附加 JPEG；否则结果会说明原因并引导使用文本工具。元素引用来自 Playwright 的 AI 快照（`aria-ref`），页面变化后即失效。
 
+## 人工交接
+
+验证码和登录交给用户处理，并在作用于页面的工具中强制执行（`src/handoff.ts`）：
+
+- 页面上有验证码时（reCAPTCHA、hCaptcha、Cloudflare Turnstile 或质询页、Arkose/FunCaptcha、PerimeterX、DataDome、GeeTest，或“验证你是人类”页面），`browser_computer` 的点击、输入、按键和拖拽，以及 `browser_form_input` 和 `browser_javascript` 都会失败，并要求调用 `ask_user_question`。读取、滚动、等待和截图不受影响。
+- 在同一主机上，如果上一次输入密码后登录表单仍在，再次输入密码即计为一次失败。失败 2 次后，该主机上的密码输入会以同样的提示失败。表单消失视为成功并重置计数。
+- 一次成功的 `ask_user_question` 调用会解除这两种限制；已询问过用户的验证码在该主机上保持已清除状态，因为已解决的验证码组件仍然可见。
+- `browser_navigate`、`browser_read_page` 和 `browser_get_page_text` 在页面有验证码或登录表单时会附加一条简短说明。
+
 ## 配置
 
 | 键 | 默认值 | 含义 |

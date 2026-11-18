@@ -19,6 +19,15 @@ Model-facing browser tools over the shared browser [`ctx.browser`](../browser/RE
 
 Text reads are the primary channel. `screenshot` and `zoom` attach a JPEG through `ctx.attachments` only when the calling model route declares image input; otherwise the result says so and points at the text tools. Element refs come from Playwright's AI snapshot (`aria-ref`) and go stale when the page changes.
 
+## Human handoff
+
+CAPTCHAs and sign-ins are handed to the user, enforced in the tools that act on the page (`src/handoff.ts`):
+
+- While a CAPTCHA is on the page (reCAPTCHA, hCaptcha, Cloudflare Turnstile or challenge, Arkose/FunCaptcha, PerimeterX, DataDome, GeeTest, or a "verify you are human" page), `browser_computer` clicks, typing, keys and drags, `browser_form_input` and `browser_javascript` fail with an instruction to call `ask_user_question`. Reading, scrolling, waiting and screenshots keep working.
+- A password entered on a host while the sign-in form from the previous entry is still there counts as a failed attempt. After 2 failures, password entry on that host fails with the same instruction. The form disappearing counts as success and resets the count.
+- A successful `ask_user_question` call releases both blocks; a CAPTCHA the user was asked about stays cleared for that host, since solved widgets remain visible.
+- `browser_navigate`, `browser_read_page` and `browser_get_page_text` append a short note when a CAPTCHA or a sign-in form is present.
+
 ## Configuration
 
 | Key | Default | Meaning |
