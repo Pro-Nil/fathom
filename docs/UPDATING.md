@@ -1,48 +1,96 @@
-# Updating Pentest Harness
+# Installing and updating Pentest Harness
 
-How to move an existing install to the latest code without losing your sessions, settings or keys. Everything you own lives outside the checkout, in `~/.dsh` (`$DSH_HOME`): `settings.yaml`, `.credentials.yaml`, `sessions/`, `profiles/` and the installed pentest tools under `tools/`. Updating the checkout never touches it.
+Pentest Harness runs as a local server with a web UI at `http://127.0.0.1:2323`. On Windows you can also use the **desktop app**: a small native window around the same web UI that starts the harness for you (no terminal), lives in the tray, and notifies you when a session needs your input. Both use the same data, so you can switch between them at any time.
 
-## 1. Update the code
+Everything you own lives outside the code checkout, in `~/.dsh` (`$DSH_HOME`): `settings.yaml`, `.credentials.yaml` (your keys), `sessions/`, `profiles/`, and the pentest tools under `tools/`. Installing, updating or adding the app never touches it.
 
-From your clone:
+Pick your situation:
+
+| You are… | Go to |
+| --- | --- |
+| Installing for the first time, browser only | [A. First install — web](#a-first-install--web) |
+| Installing for the first time, with the desktop app | [B. First install — web + desktop app](#b-first-install--web--desktop-app) |
+| Already on the web version, updating it | [C. Update the web version](#c-update-the-web-version) |
+| Already on the web version, adding the desktop app | [D. Add the desktop app to a web install](#d-add-the-desktop-app-to-a-web-install) |
+| Already using the desktop app, updating | [E. Update the desktop app install](#e-update-the-desktop-app-install) |
+
+## Requirements
+
+- **Everyone:** Git, **Node.js 20+** (22 recommended) and **pnpm** (`npm i -g pnpm`).
+- **Desktop app (Windows only):** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET 10 SDK](https://dotnet.microsoft.com/download). Node.js must be on `PATH`, because the app starts the harness with it.
+
+## A. First install — web
 
 ```sh
-git pull
+git clone https://github.com/Pro-Nil/pentest-harness.git
+cd pentest-harness
 pnpm install
 pnpm build
+pnpm dsh web
 ```
 
-`pnpm build` rebuilds the host libraries and the web client. Run all three every time: a plugin that is referenced by a preset but not built makes every session of that preset fail to start (see [Troubleshooting](#troubleshooting)).
+The web UI opens at `http://127.0.0.1:2323`. Then add a model under **Settings → Models** (see the [README](../README.md#first-run--connect-any-ai-model)). Keep the terminal open while you work; `Ctrl+C` stops the harness.
 
-If you have local changes, commit or stash them before `git pull`.
+## B. First install — web + desktop app
 
-## 2. Restart the harness
-
-A running harness keeps the code it started with, so restart it after building.
-
-- **Terminal:** stop `pnpm dsh web` with `Ctrl+C`, then start it again.
-- **Windows desktop app:** right-click the tray icon → **Quit**, then open **Pentest Harness** from the Start menu. Quit stops the harness the app started; reopening starts it with the new build.
-
-Client-only changes (styles, UI) need just `pnpm build` and a browser reload; anything under `packages/*/src` that runs on the host needs the restart.
-
-## 3. Desktop app (Windows, optional)
-
-**Web-only users can stop here.** The desktop app is just a window around the same web UI; nothing in steps 1–2 depends on it, and you can keep using the browser at `http://127.0.0.1:2323`.
-
-### Install it for the first time
-
-Needs Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11), the [.NET 10 SDK](https://dotnet.microsoft.com/download), and Node.js on `PATH`. First stop any harness you started from a terminal (`Ctrl+C`), so the app can start its own:
+Run the first four commands of [A](#a-first-install--web) (clone, `cd`, `pnpm install`, `pnpm build`) but **not** `pnpm dsh web`: the app starts the harness itself. Then, in PowerShell from the checkout:
 
 ```powershell
 dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
 Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
 ```
 
-The app starts the harness itself (no terminal), hides to the tray when closed, and notifies you when a session needs your input. To find it again from the Start menu, pin the running app or create a shortcut to `PentestHarness.exe`. Your sessions, settings and keys are the same ones the web version used.
+The window opens on the web UI. Closing it hides it to the tray; **tray icon → Quit** stops the app and the harness. To open it from the Start menu later, pin it while it runs or create a shortcut to `%LOCALAPPDATA%\Programs\PentestHarness\PentestHarness.exe`. Then add a model under **Settings → Models**.
 
-### Update it
+## C. Update the web version
 
-Only needed when `apps/desktop` changed. Publish to a staging folder, close the app without stopping the harness, swap the files, and reopen:
+1. Stop the harness (`Ctrl+C` in its terminal).
+2. Update and rebuild, from the checkout:
+
+   ```sh
+   git pull
+   pnpm install
+   pnpm build
+   ```
+
+3. Read the [upgrade notes](#upgrade-notes) below for anything you must change in `~/.dsh` first.
+4. Start it again: `pnpm dsh web`.
+
+Run all three update commands every time. A plugin that a mode uses but that was not built makes every session of that mode fail to start. If you have local changes, commit or stash them before `git pull`.
+
+## D. Add the desktop app to a web install
+
+1. Do [C](#c-update-the-web-version) steps 1–3 to get the latest code built, but don't start the harness from the terminal.
+2. Install and open the app, in PowerShell from the checkout:
+
+   ```powershell
+   dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+   Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
+   ```
+
+Your existing sessions, models and keys show up in the app unchanged; it is the same harness. From now on start Pentest Harness from the app instead of `pnpm dsh web`, and update with [E](#e-update-the-desktop-app-install). You can still open `http://127.0.0.1:2323` in a browser while the app runs.
+
+## E. Update the desktop app install
+
+1. **Tray icon → Quit** (stops the app and the harness it started).
+2. Update and rebuild the harness, from the checkout:
+
+   ```sh
+   git pull
+   pnpm install
+   pnpm build
+   ```
+
+3. Read the [upgrade notes](#upgrade-notes) below.
+4. If the update changed the app itself (files under `apps/desktop` in the `git pull` output), reinstall it over the old one:
+
+   ```powershell
+   dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+   ```
+
+5. Open **Pentest Harness** again; it starts the updated harness.
+
+**Updating only the app while the harness keeps running** (for example mid-engagement): publish to a staging folder, close the app without stopping the harness, swap the files and reopen. The reopened app re-attaches to the running harness.
 
 ```powershell
 dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\PentestHarness\staged"
@@ -51,7 +99,9 @@ Copy-Item "$env:LOCALAPPDATA\PentestHarness\staged\*" "$env:LOCALAPPDATA\Program
 Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
 ```
 
-`--keep-harness` leaves the running harness alone and the reopened app re-attaches to it. Plain `--quit` stops the harness too.
+Plain `--quit` (or tray → Quit) stops the harness too.
+
+**Client-only changes** (styles, UI) need just `pnpm build` and a page reload (`Ctrl+R` in the app or browser), no restart.
 
 ## Upgrade notes
 

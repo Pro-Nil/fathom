@@ -69,9 +69,9 @@ The Web UI opens at **http://127.0.0.1:2323** in your browser.
 - **Node.js 20+** (Node 22 recommended)
 - **pnpm** (`npm i -g pnpm`)
 
-### Updating
+### Desktop app and updating
 
-Already installed? See **[docs/UPDATING.md](docs/UPDATING.md)** for updating the code, restarting, the desktop app, and upgrade notes.
+Want the Windows desktop app, or already installed and updating? **[docs/UPDATING.md](docs/UPDATING.md)** covers every case: first install with or without the app, updating the web version, adding the app to a web install, and updating the app.
 
 ### Run on another port
 
