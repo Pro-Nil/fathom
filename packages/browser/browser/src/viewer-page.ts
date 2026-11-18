@@ -89,7 +89,7 @@ export const VIEWER_PAGE = String.raw`<!doctype html>
   <button id="reload" title="Reload"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
   <input class="url" id="url" spellcheck="false" autocomplete="off" placeholder="Enter a URL">
   <button id="newtab" title="New tab"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-  <button id="more" title="More"><svg viewBox="0 0 24 24"><path d="M12 6h.01M12 12h.01M12 18h.01"/></svg></button>
+  <button id="more" title="More: import passwords, password manager"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="18.5" r="1.7" fill="currentColor" stroke="none"/></svg></button>
 </div>
 <div class="menu" id="menu">
   <button id="import-passwords">Import saved passwords…<small>From Chrome, Brave, Edge or any browser's password export (CSV)</small></button>
