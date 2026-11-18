@@ -25,7 +25,22 @@ A running harness keeps the code it started with, so restart it after building.
 
 Client-only changes (styles, UI) need just `pnpm build` and a browser reload; anything under `packages/*/src` that runs on the host needs the restart.
 
-## 3. Update the desktop app (Windows, optional)
+## 3. Desktop app (Windows, optional)
+
+**Web-only users can stop here.** The desktop app is just a window around the same web UI; nothing in steps 1–2 depends on it, and you can keep using the browser at `http://127.0.0.1:2323`.
+
+### Install it for the first time
+
+Needs Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11), the [.NET 10 SDK](https://dotnet.microsoft.com/download), and Node.js on `PATH`. First stop any harness you started from a terminal (`Ctrl+C`), so the app can start its own:
+
+```powershell
+dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
+```
+
+The app starts the harness itself (no terminal), hides to the tray when closed, and notifies you when a session needs your input. To find it again from the Start menu, pin the running app or create a shortcut to `PentestHarness.exe`. Your sessions, settings and keys are the same ones the web version used.
+
+### Update it
 
 Only needed when `apps/desktop` changed. Publish to a staging folder, close the app without stopping the harness, swap the files, and reopen:
 
