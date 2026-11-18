@@ -13,19 +13,24 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { PropsRenderSlots, PropsRuntime, PropsStore } from '@pentest-harness/dsh-client-ui-slots'
-import { computeColumns, SIDEBAR_AUTO_COLLAPSE, SIDEBAR_DEFAULT } from './columns.ts'
+import { ASIDE_DEFAULT_RATIO, CENTER_MIN_BESIDE_ASIDE, computeColumnsWithAside, SIDEBAR_AUTO_COLLAPSE, SIDEBAR_DEFAULT } from './columns.ts'
 import type { createLayoutStore } from './stores.ts'
 import css from './AppFrame.module.css'
 
 /** Full composed props: runtime share + child-slot render share + store share. */
 export type AppFrameProps =
   & PropsRuntime<'root'>
-  & PropsRenderSlots<'sidebar' | 'conversation' | 'details' | 'shell.overlay'>
+  & PropsRenderSlots<'sidebar' | 'conversation' | 'details' | 'shell.overlay' | 'aside'>
   & PropsStore<ReturnType<typeof createLayoutStore>>
 
 /** Center column grid item (session-body building block). */
 function CenterColumn(props: { children?: ReactNode }) {
   return <div className={css.centerCol}>{props.children}</div>
+}
+
+/** Aside column grid item; width 0 keeps the subtree mounted but takes no space. */
+function AsideColumn(props: { children?: ReactNode }) {
+  return <div className={css.asideCol}>{props.children}</div>
 }
 
 /** Details column grid item; width 0 keeps the subtree mounted (never unmount on close). */
@@ -37,7 +42,7 @@ function DetailsColumn(props: { children?: ReactNode }) {
  * One drag handle: pointer capture, rAF-throttled dx reports against the drag-start origin.
  * `side` keys the hover-reveal CSS to the owning column.
  */
-function DragHandle(props: { side: 'sidebar' | 'details'; left: number; onStart: () => void; onDrag: (dx: number) => void; onEnd: () => void }) {
+function DragHandle(props: { side: 'sidebar' | 'details' | 'aside'; left: number; onStart: () => void; onDrag: (dx: number) => void; onEnd: () => void }) {
   const [dragging, setDragging] = useState(false)
   const origin = useRef(0)
   const latest = useRef(0)
@@ -139,7 +144,7 @@ export function AppFrame({
   const sidebarPreference = sidebarCollapsed
     ? 0
     : panels.sidebar === 0 ? SIDEBAR_DEFAULT : panels.sidebar
-  const cols = computeColumns(viewport, sidebarPreference, detailsSession === undefined ? 0 : panels.details)
+  const cols = computeColumnsWithAside(viewport, sidebarPreference, detailsSession === undefined ? 0 : panels.details, panels.aside)
   const colsRef = useRef(cols)
   colsRef.current = cols
 
@@ -148,6 +153,7 @@ export function AppFrame({
   // it stays frozen for the whole gesture so dx deltas do not compound.
   const sidebarBase = useRef(0)
   const detailsBase = useRef(0)
+  const asideBase = useRef(0)
   // Track-level transitions pause for the whole gesture: eased tracks would
   // detach the column edge from the pointer (AppFrame.module.css).
   const [dragging, setDragging] = useState(false)
@@ -160,14 +166,24 @@ export function AppFrame({
   const onDetailsDrag = useCallback((dx: number) => {
     actions.setDetails(detailsBase.current - dx)
   }, [actions])
+  const onAsideStart = useCallback(() => { asideBase.current = colsRef.current.aside; setDragging(true) }, [])
+  const onAsideDrag = useCallback((dx: number) => {
+    actions.setAside(asideBase.current - dx)
+  }, [actions])
+  const openAside = useCallback(() => { actions.openAside(Math.round(viewport * ASIDE_DEFAULT_RATIO)) }, [actions, viewport])
+  const closeAside = useCallback(() => { actions.closeAside() }, [actions])
+  const toggleAsideMaximized = useCallback(() => {
+    actions.toggleAsideMaximized(viewport - colsRef.current.sidebar - CENTER_MIN_BESIDE_ASIDE)
+  }, [actions, viewport])
 
   return (
     <div
       ref={frameRef}
       className={css.frame}
-      style={{ gridTemplateColumns: `${cols.sidebar}px minmax(0, 1fr) ${cols.details}px` }}
+      style={{ gridTemplateColumns: `${cols.sidebar}px minmax(0, 1fr) ${cols.details}px ${cols.aside}px` }}
       data-sidebar-collapsed={sidebarCollapsed || undefined}
       data-details-collapsed={cols.details === 0 || undefined}
+      data-aside-collapsed={cols.aside === 0 || undefined}
       data-dragging={dragging || undefined}
     >
       <div className={css.sidebarCol}>
@@ -189,13 +205,22 @@ export function AppFrame({
             empty while no session is current. */}
         <CenterColumn>{renderSlot('conversation', {})}</CenterColumn>
         <DetailsColumn>{renderSlot('details', {})}</DetailsColumn>
+        <AsideColumn>
+          {renderSlot('aside', {
+            width: cols.aside,
+            maximized: panels.asideRestore > 0,
+            close: closeAside,
+            toggleMaximized: toggleAsideMaximized,
+          })}
+        </AsideColumn>
       </>
       <div className={css.overlayLayer} data-shell-overlay>
-        {renderSlot('shell.overlay', {})}
+        {renderSlot('shell.overlay', { asideWidth: cols.aside, openAside, closeAside })}
       </div>
       {/* The collapsed rail is fixed-width: no resize handle while closed. */}
       {!sidebarCollapsed && <DragHandle side="sidebar" left={cols.sidebar} onStart={onSidebarStart} onDrag={onSidebarDrag} onEnd={onDragEnd} />}
-      {cols.details > 0 && <DragHandle side="details" left={viewport - cols.details} onStart={onDetailsStart} onDrag={onDetailsDrag} onEnd={onDragEnd} />}
+      {cols.details > 0 && <DragHandle side="details" left={viewport - cols.aside - cols.details} onStart={onDetailsStart} onDrag={onDetailsDrag} onEnd={onDragEnd} />}
+      {cols.aside > 0 && <DragHandle side="aside" left={viewport - cols.aside} onStart={onAsideStart} onDrag={onAsideDrag} onEnd={onDragEnd} />}
     </div>
   )
 }

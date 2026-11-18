@@ -27,6 +27,10 @@ export interface ILayout {
   openDetails(): void
   /** Close the details panel. */
   closeDetails(): void
+  /** Open the aside column at `px` wide (ignored while already open). */
+  openAside(px: number): void
+  /** Close the aside column. */
+  closeAside(): void
 }
 
 /** Cross-plugin panel-action face (ctx.layout). */
@@ -57,6 +61,14 @@ export class LayoutController implements ILayout {
   /** Close the details panel. */
   closeDetails(): void {
     this.#require().closeDetails()
+  }
+
+  openAside(px: number): void {
+    this.#require().openAside(px)
+  }
+
+  closeAside(): void {
+    this.#require().closeAside()
   }
 
   #require(): PanelActions {

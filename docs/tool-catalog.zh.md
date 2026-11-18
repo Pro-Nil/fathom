@@ -45,6 +45,7 @@
 | `@pentest-harness/dsh-tool-todo` | `todo_write` | `ctx.tools`、`owning Agent session` | `tool/call`、`todo/write`、`tool/result` | - | todo_write 是会话所有的状态；UI 将最新的 todo/write 事件渲染为检查清单。`allowParallelInProgress` 是没有默认值的必填项，因此本目录明确选择 `true`，对应描述允许同时存在多个 `in_progress` 项。选择 `false` 的部署会获得同一工具，但描述会要求只能有 1 个活动任务。 |
 | `@pentest-harness/dsh-tool-workflow` | `workflow` | `ctx.tools`、`ctx.workflowEngine`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents the script children)` | `tool/call`、`tool/result` | - | - |
 | `@pentest-harness/dsh-tool-web` | `web_fetch`、`web_search` | `ctx.tools`、`ctx.web`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。 |
+| `@pentest-harness/dsh-tool-browser` | `browser_computer`、`browser_console`、`browser_find`、`browser_form_input`、`browser_get_page_text`、`browser_javascript`、`browser_navigate`、`browser_network`、`browser_read_page`、`browser_resize`、`browser_tabs` | `ctx.tools`、`ctx.browser`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | browser_* 工具操作同一个共享浏览器，用户可在 Web 客户端的浏览器面板中实时查看并接管。 |
 
 <a id="pentest-harnessdsh-tool-ask-user"></a>
 
@@ -2227,3 +2228,387 @@ todo_write 是会话所有的状态；UI 将最新的 todo/write 事件渲染为
 来源：[`packages/web/tool-web/src/index.ts`](../packages/web/tool-web/src/index.ts)
 
 web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。
+
+<a id="pentest-harnessdsh-tool-browser"></a>
+
+## `@pentest-harness/dsh-tool-browser`
+
+### `browser_computer`
+
+Mouse and keyboard in the shared browser. Actions: left_click, right_click, double_click, triple_click, hover, left_click_drag (start_coordinate → coordinate), scroll (coordinate + scroll_direction), scroll_to (ref), type (text), key (space-separated chords such as "ctrl+a Backspace Enter"), screenshot, zoom (region), wait (duration seconds). Pointer actions take a ref from browser_read_page/browser_find, or viewport coordinates [x, y] in CSS pixels.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "left_click",
+        "right_click",
+        "double_click",
+        "triple_click",
+        "hover",
+        "left_click_drag",
+        "scroll",
+        "scroll_to",
+        "type",
+        "key",
+        "screenshot",
+        "zoom",
+        "wait"
+      ]
+    },
+    "ref": {
+      "type": "string",
+      "description": "Element ref such as e12."
+    },
+    "coordinate": {
+      "type": "array",
+      "description": "[x, y] viewport point; the end point for left_click_drag.",
+      "items": {
+        "type": "number"
+      }
+    },
+    "start_coordinate": {
+      "type": "array",
+      "description": "[x, y] start point for left_click_drag.",
+      "items": {
+        "type": "number"
+      }
+    },
+    "text": {
+      "type": "string",
+      "description": "Text for \"type\", or key chords for \"key\"."
+    },
+    "modifiers": {
+      "type": "string",
+      "description": "Modifier keys held during a click, e.g. \"ctrl\" or \"ctrl+shift\"."
+    },
+    "scroll_direction": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down",
+        "left",
+        "right"
+      ]
+    },
+    "scroll_amount": {
+      "type": "integer",
+      "description": "Scroll wheel ticks (default 3)."
+    },
+    "repeat": {
+      "type": "integer",
+      "description": "Times to repeat the key sequence (default 1, max 100)."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Seconds to wait for \"wait\" (max 10)."
+    },
+    "region": {
+      "type": "array",
+      "description": "[x0, y0, x1, y1] for \"zoom\".",
+      "items": {
+        "type": "number"
+      }
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "action"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_console`
+
+Read console messages, uncaught errors and dialogs from a tab (most recent last).
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "only_errors": {
+      "type": "boolean",
+      "description": "Only error-level entries."
+    },
+    "pattern": {
+      "type": "string",
+      "description": "Case-insensitive substring filter."
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum entries (default 50, max 200)."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  }
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_find`
+
+Find elements on the page whose role, name or text contains the query (case-insensitive). Returns up to 20 matching accessibility-tree lines with their refs.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Text to look for, e.g. \"Sign in\", \"search\", \"Add to cart\"."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "query"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_form_input`
+
+Set a form control by ref: fills text inputs and textareas, selects an option (by value or label) in a select, or checks/unchecks a checkbox or radio (value true/false).
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "ref": {
+      "type": "string",
+      "description": "Element ref from browser_read_page / browser_find."
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "description": "Value to set."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "ref",
+    "value"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_get_page_text`
+
+Return the readable text of the page (article or main content first, falling back to the whole body).
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "max_chars": {
+      "type": "integer",
+      "description": "Character cap (default and maximum 40000)."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  }
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_javascript`
+
+Run JavaScript in the page and return the result as JSON. An expression is evaluated and returned (top-level await works); for several statements, use an explicit return. For inspection and debugging.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "JavaScript expression or statements."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "code"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_navigate`
+
+Open a URL in the shared browser, or go "back" / "forward" / "reload". Bare hosts get https://. Returns the resulting page title and URL.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "URL to open, or \"back\", \"forward\" or \"reload\"."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "url"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_network`
+
+List network requests made by a tab (method, status, type, URL; most recent last).
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "url_pattern": {
+      "type": "string",
+      "description": "Substring filter on the URL."
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum entries (default 50, max 200)."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  }
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_read_page`
+
+Read the page as an accessibility tree. Each element shows its role, name and a ref such as [ref=e12] to pass to browser_computer or browser_form_input. Use filter "interactive" for only clickable/typable elements.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "filter": {
+      "type": "string",
+      "description": "\"all\" (default) or \"interactive\".",
+      "enum": [
+        "all",
+        "interactive"
+      ]
+    },
+    "max_chars": {
+      "type": "integer",
+      "description": "Character cap (default and maximum 40000)."
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  }
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_resize`
+
+Set the tab viewport size in CSS pixels (200–4000 each side). The Browser pane resets it to fit the pane when the user resizes the pane.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab to act on (from browser_tabs). Omit for the active tab."
+    }
+  },
+  "required": [
+    "width",
+    "height"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+### `browser_tabs`
+
+Manage tabs: "list" shows every tab with its id, title and URL; "create" opens a tab (optionally at url) and makes it active; "select" makes tab_id active (the one the user sees); "close" closes tab_id.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "list",
+        "create",
+        "select",
+        "close"
+      ]
+    },
+    "tab_id": {
+      "type": "string",
+      "description": "Tab for \"select\" and \"close\"."
+    },
+    "url": {
+      "type": "string",
+      "description": "Address for \"create\"."
+    }
+  },
+  "required": [
+    "action"
+  ]
+}
+```
+
+源码：[`packages/browser/tool-browser/src/index.ts`](../packages/browser/tool-browser/src/index.ts)
+
+The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane.

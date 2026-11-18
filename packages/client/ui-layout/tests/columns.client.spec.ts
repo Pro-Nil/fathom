@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  CENTER_MIN, clampWidth, computeColumns,
+  ASIDE_MIN, CENTER_MIN, CENTER_MIN_BESIDE_ASIDE, clampWidth, computeColumns, computeColumnsWithAside,
   DETAILS_DEFAULT, DETAILS_MIN, SIDEBAR_COLLAPSED, SIDEBAR_DEFAULT, SIDEBAR_MIN,
 } from '@pentest-harness/dsh-client-ui-layout/src/client/columns.ts'
 
@@ -91,5 +91,31 @@ describe('computeColumns — degenerate viewports', () => {
     // Reaches step 3's auto-close with the compact rail sidebar.
     expect(computeColumns(500, closed(300), open(DETAILS_DEFAULT)))
       .toEqual({ sidebar: SIDEBAR_COLLAPSED, center: 500 - SIDEBAR_COLLAPSED, details: 0 })
+  })
+})
+
+describe('computeColumnsWithAside', () => {
+  it('matches the three-column chain while the aside is closed', () => {
+    expect(computeColumnsWithAside(1920, open(SIDEBAR_DEFAULT), open(DETAILS_DEFAULT), 0))
+      .toEqual({ ...computeColumns(1920, open(SIDEBAR_DEFAULT), open(DETAILS_DEFAULT)), aside: 0 })
+  })
+
+  it('reserves the aside and lets the center absorb the rest', () => {
+    expect(computeColumnsWithAside(1920, open(SIDEBAR_DEFAULT), 0, 800))
+      .toEqual({ sidebar: 280, center: 1920 - 280 - 800, details: 0, aside: 800 })
+  })
+
+  it('shrinks the aside to keep the center at its aside floor, never below ASIDE_MIN', () => {
+    const cols = computeColumnsWithAside(1200, open(SIDEBAR_DEFAULT), 0, 2000)
+    expect(cols.aside).toBe(1200 - 280 - CENTER_MIN_BESIDE_ASIDE)
+    expect(cols.center).toBe(CENTER_MIN_BESIDE_ASIDE)
+    expect(computeColumnsWithAside(700, open(SIDEBAR_DEFAULT), 0, 900).aside).toBe(ASIDE_MIN)
+  })
+
+  it('closes details before squeezing the center beside an open aside', () => {
+    const cols = computeColumnsWithAside(1400, open(SIDEBAR_DEFAULT), open(DETAILS_DEFAULT), 600)
+    expect(cols.aside).toBe(600)
+    expect(cols.details).toBe(0)
+    expect(cols.sidebar + cols.center + cols.details + cols.aside).toBe(1400)
   })
 })

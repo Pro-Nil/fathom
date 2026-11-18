@@ -80,7 +80,15 @@ declare module '@pentest-harness/dsh-client-ui-slots' {
      * This is the additive seat for a frame-wide surface of your own: a fresh
      * `id` is added beside the shipped entries instead of replacing them.
      */
-    'shell.overlay': { kind: 'list'; scope: 'root' }
+    'shell.overlay': { kind: 'list'; scope: 'root'; owner: OverlayOwnerProps }
+    /**
+     * The right-most aside column, after details, for a full-height tool
+     * surface such as the Browser pane. Absent an occupant, or while closed
+     * (width 0), it renders nothing and takes no space. The occupant receives
+     * its rendered width and the column actions; the conversation shrinks to
+     * make room instead of being covered.
+     */
+    'aside': { kind: 'single'; scope: 'root'; owner: AsideOwnerProps }
   }
 }
 
@@ -104,6 +112,28 @@ export interface ConvOwnerProps {}
 /** Details owner share: empty — sessionId arrives as a framework-standard prop. */
 export interface DetailsOwnerProps {}
 
+/** Overlay owner share: the aside column's state, so frame-wide controls can avoid and toggle it. */
+export interface OverlayOwnerProps {
+  /** Rendered aside width in px (0 = closed). */
+  asideWidth: number
+  /** Open the aside column at its default width. */
+  openAside: () => void
+  /** Close the aside column. */
+  closeAside: () => void
+}
+
+/** Aside owner share: live column state and its actions. */
+export interface AsideOwnerProps {
+  /** Rendered width in px (0 = closed: render nothing heavy). */
+  width: number
+  /** True while widened to fill the frame beside a minimal center. */
+  maximized: boolean
+  /** Close the column. */
+  close: () => void
+  /** Toggle between the dragged width and the widest width the frame allows. */
+  toggleMaximized: () => void
+}
+
 /** Required services (cordis fiber inject — the loader passes all module exports as an object plugin). */
 export const inject = ['slots', 'theme']
 
@@ -124,6 +154,7 @@ export function apply(ctx: ClientContext): void {
         'conversation': { kind: 'single', scope: 'session-maybe' },
         'details': { kind: 'single', scope: 'session' },
         'shell.overlay': { kind: 'list', scope: 'root' },
+        'aside': { kind: 'single', scope: 'root' },
       },
       // Exclusive store: the factory itself — the framework instantiates per
       // entry and delivers useStore/actions to AppFrame as standard props.

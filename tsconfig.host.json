@@ -245,6 +245,8 @@
     { "path": "./packages/web/web-search-duckduckgo" },
     { "path": "./packages/web/web-fetch-http" },
     { "path": "./packages/web/tool-web" },
+    { "path": "./packages/browser/browser" },
+    { "path": "./packages/browser/tool-browser" },
     { "path": "./packages/spill/spill" },
     { "path": "./packages/spill/spill-local" },
     { "path": "./packages/spill/spill-policy" },

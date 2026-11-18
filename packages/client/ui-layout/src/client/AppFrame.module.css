@@ -36,6 +36,18 @@
   overflow: hidden;
 }
 
+.asideCol {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--dsh-carbon-sidebar, var(--dsw-specific-sidebar-fill));
+}
+
+.frame:not([data-aside-collapsed]) .asideCol {
+  border-left: 1px solid var(--dsw-alias-border-l1);
+}
+
 .detailsCol {
   min-width: 0;
   overflow: hidden;
@@ -116,4 +128,34 @@
 
 .overlayLayer > * {
   pointer-events: auto;
+}
+
+/* Aside handle: the same pill as details, shown on hover or while dragging. */
+.handle[data-side='aside']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 32px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background: var(--dsw-alias-button-floating-fill);
+  border: 1px solid var(--dsw-alias-border-l2-darkmode-thin);
+  opacity: 0;
+  transition: opacity var(--ds-transition-duration-slow) var(--ds-ease-in-out);
+}
+
+.handle[data-side='aside']:hover::after,
+.handle[data-side='aside'][data-dragging='true']::after {
+  opacity: 1;
+  background: var(--dsw-alias-button-floating-hover);
+  border-color: var(--dsw-alias-border-l3);
+}
+
+/* Embedded documents (the Browser pane's iframe) would swallow the pointer
+   mid-drag; every column ignores pointer input while any drag runs. */
+.frame[data-dragging] iframe {
+  pointer-events: none;
 }

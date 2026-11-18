@@ -8,7 +8,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createLayoutStore } from '@pentest-harness/dsh-client-ui-layout/src/client/stores.ts'
 import {
-  DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
+  ASIDE_MIN, DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
   SIDEBAR_DEFAULT, SIDEBAR_MAX, SIDEBAR_MIN,
 } from '@pentest-harness/dsh-client-ui-layout/src/client/columns.ts'
 
@@ -19,7 +19,9 @@ beforeEach(() => { localStorage.clear() })
 describe('createLayoutStore', () => {
   it('initializes the sidebar at its default width, details closed, wide viewport assumed', () => {
     const { store } = createLayoutStore().create()
-    expect(store.getSnapshot()).toEqual({ sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false })
+    expect(store.getSnapshot()).toEqual({
+      sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false, aside: 0, asideRestore: 0,
+    })
   })
 
   it('each create() is an independent instance (factory is not a singleton)', () => {
@@ -55,7 +57,7 @@ describe('createLayoutStore', () => {
     actions.setSidebar(400)
     actions.setNarrow(true)
     actions.toggleSidebar()
-    expect(store.getSnapshot()).toEqual({ sidebar: 400, details: 0, narrow: true, narrowExpanded: true })
+    expect(store.getSnapshot()).toEqual({ sidebar: 400, details: 0, narrow: true, narrowExpanded: true, aside: 0, asideRestore: 0 })
     actions.toggleSidebar()
     expect(store.getSnapshot().narrowExpanded).toBe(false)
     expect(store.getSnapshot().sidebar).toBe(400)
@@ -98,6 +100,26 @@ describe('createLayoutStore', () => {
       details: 0,
       narrow: false,
       narrowExpanded: false,
+      aside: 0,
+      asideRestore: 0,
     })
+  })
+
+  it('opens, drags, maximizes, restores and closes the aside column', () => {
+    const { store, actions } = createLayoutStore().create()
+    actions.openAside(700)
+    expect(store.getSnapshot().aside).toBe(700)
+    actions.openAside(900)
+    expect(store.getSnapshot().aside).toBe(700)
+    actions.toggleAsideMaximized(1300)
+    expect(store.getSnapshot()).toMatchObject({ aside: 1300, asideRestore: 700 })
+    actions.toggleAsideMaximized(1300)
+    expect(store.getSnapshot()).toMatchObject({ aside: 700, asideRestore: 0 })
+    actions.setAside(10)
+    expect(store.getSnapshot().aside).toBe(ASIDE_MIN)
+    actions.closeAside()
+    expect(store.getSnapshot()).toMatchObject({ aside: 0, asideRestore: 0 })
+    actions.toggleAsideMaximized(1300)
+    expect(store.getSnapshot().aside).toBe(0)
   })
 })

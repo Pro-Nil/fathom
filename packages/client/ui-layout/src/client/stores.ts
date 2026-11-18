@@ -9,7 +9,7 @@
  */
 import { defineStore, type EngineStoreHandle } from '@pentest-harness/dsh-client-runtime/client'
 import {
-  clampWidth, DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
+  ASIDE_MAX, ASIDE_MIN, clampWidth, DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
   SIDEBAR_DEFAULT, SIDEBAR_MAX, SIDEBAR_MIN,
 } from './columns.ts'
 
@@ -20,7 +20,16 @@ import {
  * `narrowExpanded` is the manual override that re-expands the auto-collapsed
  * sidebar over the squeezed center without rewriting the width preference.
  */
-type LayoutState = { sidebar: number; details: number; narrow: boolean; narrowExpanded: boolean }
+type LayoutState = {
+  sidebar: number
+  details: number
+  narrow: boolean
+  narrowExpanded: boolean
+  /** Aside width preference in px (0 = closed). */
+  aside: number
+  /** Aside width to restore after a maximize (0 = not maximized). */
+  asideRestore: number
+}
 
 /**
  * Annotation twin of the actions literal below (the export needs a declared
@@ -33,6 +42,10 @@ type LayoutActions = {
   setNarrow: (draft: LayoutState, narrow: boolean) => void
   openDetails: (draft: LayoutState) => void
   closeDetails: (draft: LayoutState) => void
+  setAside: (draft: LayoutState, px: number) => void
+  openAside: (draft: LayoutState, px: number) => void
+  closeAside: (draft: LayoutState) => void
+  toggleAsideMaximized: (draft: LayoutState, maxPx: number) => void
 }
 
 /**
@@ -47,7 +60,7 @@ type LayoutActions = {
  */
 export function createLayoutStore(): EngineStoreHandle<LayoutState, LayoutActions>  {
   const handle = defineStore({
-    init: (): LayoutState => ({ sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false }),
+    init: (): LayoutState => ({ sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false, aside: 0, asideRestore: 0 }),
     actions: {
       setSidebar: (d, px: number) => { d.sidebar = clampWidth(px, SIDEBAR_MIN, SIDEBAR_MAX) },
       setDetails: (d, px: number) => { d.details = clampWidth(px, DETAILS_MIN, DETAILS_MAX) },
@@ -66,6 +79,26 @@ export function createLayoutStore(): EngineStoreHandle<LayoutState, LayoutAction
       },
       openDetails: (d) => { if (d.details === 0) d.details = DETAILS_DEFAULT },
       closeDetails: (d) => { d.details = 0 },
+      // A drag ends any maximize: the dragged width is the new preference.
+      setAside: (d, px: number) => {
+        d.aside = clampWidth(px, ASIDE_MIN, ASIDE_MAX)
+        d.asideRestore = 0
+      },
+      openAside: (d, px: number) => { if (d.aside === 0) d.aside = clampWidth(px, ASIDE_MIN, ASIDE_MAX) },
+      closeAside: (d) => {
+        d.aside = 0
+        d.asideRestore = 0
+      },
+      toggleAsideMaximized: (d, maxPx: number) => {
+        if (d.aside === 0) return
+        if (d.asideRestore > 0) {
+          d.aside = d.asideRestore
+          d.asideRestore = 0
+        } else {
+          d.asideRestore = d.aside
+          d.aside = clampWidth(maxPx, ASIDE_MIN, ASIDE_MAX)
+        }
+      },
     },
   })
   return handle

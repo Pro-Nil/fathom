@@ -16,6 +16,10 @@ function fakePanels(): PanelActions {
     setNarrow: vi.fn(),
     openDetails: vi.fn(),
     closeDetails: vi.fn(),
+    setAside: vi.fn(),
+    openAside: vi.fn(),
+    closeAside: vi.fn(),
+    toggleAsideMaximized: vi.fn(),
   }
 }
 

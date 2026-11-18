@@ -255,6 +255,9 @@ importers:
       '@pentest-harness/dsh-tool-bash-persistent':
         specifier: workspace:^
         version: link:../../packages/shell/tool-bash-persistent
+      '@pentest-harness/dsh-tool-browser':
+        specifier: workspace:^
+        version: link:../../packages/browser/tool-browser
       '@pentest-harness/dsh-tool-cordis':
         specifier: workspace:^
         version: link:../../packages/extensions/tool-cordis
@@ -1001,6 +1004,68 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0
 
+  packages/browser/browser:
+    dependencies:
+      '@pentest-harness/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+      playwright-core:
+        specifier: 1.62.1
+        version: 1.62.1
+      ws:
+        specifier: ^8.21.0
+        version: 8.21.3
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-home-paths':
+        specifier: workspace:^
+        version: link:../../util/home-paths
+      '@pentest-harness/dsh-host-webserver':
+        specifier: workspace:^
+        version: link:../../host/webserver
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@types/ws':
+        specifier: ^8.18.1
+        version: 8.18.1
+
+  packages/browser/tool-browser:
+    dependencies:
+      '@pentest-harness/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+      playwright-core:
+        specifier: 1.62.1
+        version: 1.62.1
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-agent':
+        specifier: workspace:^
+        version: link:../../core/agent
+      '@pentest-harness/dsh-attachment':
+        specifier: workspace:^
+        version: link:../../attachment/attachment
+      '@pentest-harness/dsh-browser':
+        specifier: workspace:^
+        version: link:../browser
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@pentest-harness/dsh-llm':
+        specifier: workspace:^
+        version: link:../../llm/llm
+      '@pentest-harness/dsh-system-prompt':
+        specifier: workspace:^
+        version: link:../../core/system-prompt
+      '@pentest-harness/dsh-tools':
+        specifier: workspace:^
+        version: link:../../core/tools
+
   packages/bundle/base:
     dependencies:
       '@pentest-harness/cordis-plugin-hmr':
@@ -1296,6 +1361,9 @@ importers:
       '@pentest-harness/dsh-app-boot':
         specifier: workspace:^
         version: link:../../boot/app-boot
+      '@pentest-harness/dsh-browser':
+        specifier: workspace:^
+        version: link:../../browser/browser
       '@pentest-harness/dsh-client-connection':
         specifier: workspace:^
         version: link:../../client/connection
@@ -1320,6 +1388,9 @@ importers:
       '@pentest-harness/dsh-client-ui-brand-official':
         specifier: workspace:^
         version: link:../../client/ui-brand-official
+      '@pentest-harness/dsh-client-ui-browser':
+        specifier: workspace:^
+        version: link:../../client/ui-browser
       '@pentest-harness/dsh-client-ui-commands':
         specifier: workspace:^
         version: link:../../client/ui-commands
@@ -1800,6 +1871,36 @@ importers:
       '@pentest-harness/dsh-client-ui-sidebar':
         specifier: workspace:^
         version: link:../ui-sidebar
+      '@pentest-harness/dsh-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@testing-library/react':
+        specifier: ^16.1.0
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react':
+        specifier: ~18.3.1
+        version: 18.3.31
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+
+  packages/client/ui-browser:
+    devDependencies:
+      '@pentest-harness/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@pentest-harness/dsh-client-runtime':
+        specifier: workspace:^
+        version: link:../runtime
+      '@pentest-harness/dsh-client-ui-layout':
+        specifier: workspace:^
+        version: link:../ui-layout
+      '@pentest-harness/dsh-client-ui-slots':
+        specifier: workspace:^
+        version: link:../ui-slots
       '@pentest-harness/dsh-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants

@@ -75,3 +75,37 @@ export function computeColumns(viewport: number, sidebar: number, details: numbe
   // absorbs any remaining deficit (may drop below CENTER_MIN).
   return { sidebar: s, center: Math.max(0, viewport - s), details: 0 }
 }
+
+/** Aside (right-most panel, e.g. the Browser pane) drag clamp floor. */
+export const ASIDE_MIN = 360
+/** Aside drag clamp ceiling. */
+export const ASIDE_MAX = 2400
+/** Aside width on open, as a share of the frame width. */
+export const ASIDE_DEFAULT_RATIO = 0.45
+/** Center floor while the aside is open: the aside may squeeze the center below CENTER_MIN down to this. */
+export const CENTER_MIN_BESIDE_ASIDE = 420
+
+/** Resolved widths including the aside column. */
+export interface ColumnsWithAside extends Columns { aside: number }
+
+/**
+ * Solve the frame with an optional aside column to the right of details. The
+ * aside is reserved first, shrinking toward ASIDE_MIN only to keep the center
+ * at CENTER_MIN_BESIDE_ASIDE; the remaining width then runs the ordinary
+ * three-column concession chain (details shrinks, then auto-closes).
+ * @param viewport - available frame width in px.
+ * @param sidebar - sidebar width preference in px (0 = closed).
+ * @param details - details width preference in px (0 = closed).
+ * @param aside - aside width preference in px (0 = closed).
+ * @returns resolved widths; aside 0 means closed.
+ */
+export function computeColumnsWithAside(viewport: number, sidebar: number, details: number, aside: number): ColumnsWithAside {
+  if (aside === 0) return { ...computeColumns(viewport, sidebar, details), aside: 0 }
+  const s = sidebar === 0 ? SIDEBAR_COLLAPSED : clampWidth(sidebar, SIDEBAR_MIN, SIDEBAR_MAX)
+  const room = viewport - s - CENTER_MIN_BESIDE_ASIDE
+  const a = Math.max(ASIDE_MIN, Math.min(clampWidth(aside, ASIDE_MIN, ASIDE_MAX), room))
+  const rest = computeColumns(Math.max(0, viewport - a), sidebar, details)
+  // Below CENTER_MIN the three-column chain already closed details; keep the
+  // center at least at the aside floor's leftover.
+  return { ...rest, aside: a }
+}

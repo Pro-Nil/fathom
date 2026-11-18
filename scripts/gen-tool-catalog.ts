@@ -63,6 +63,8 @@ import * as ToolTeam from '@pentest-harness/dsh-experimental-tool-agent-team'
 import * as ToolTodo from '@pentest-harness/dsh-tool-todo'
 import * as ToolSubagent from '@pentest-harness/dsh-tool-subagent'
 import * as ToolWeb from '@pentest-harness/dsh-tool-web'
+import BrowserRuntime from '@pentest-harness/dsh-browser'
+import * as ToolBrowser from '@pentest-harness/dsh-tool-browser'
 import VmWorkflowEngine from '@pentest-harness/dsh-workflow-worker-thread'
 import * as ToolRalph from '@pentest-harness/dsh-tool-ralph'
 import * as ToolWorkflow from '@pentest-harness/dsh-tool-workflow'
@@ -605,6 +607,21 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     note:
       'web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps.',
+  },
+  {
+    pkg: '@pentest-harness/dsh-tool-browser',
+    dir: 'tool-browser',
+    source: 'packages/browser/tool-browser/src/index.ts',
+    requires: ['ctx.tools', 'ctx.browser', 'ctx.systemPrompt'],
+    writes: ['tool/call', 'tool/result'],
+    async mount(ctx) {
+      // The shared browser launches on first use, so mounting it here only
+      // registers the service; no browser process starts.
+      await ctx.plugin(BrowserRuntime, { liveView: false })
+      await ctx.plugin(ToolBrowser)
+    },
+    note:
+      'The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane.',
   },
 ]
 
