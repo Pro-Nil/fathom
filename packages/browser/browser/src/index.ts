@@ -18,7 +18,7 @@ import { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser } from './runtime.ts
 import { VIEWER_PAGE } from './viewer-page.ts'
 
 export { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser, normalizeUrl, resolveAddress, toPlaywrightChord } from './runtime.ts'
-export type { BrowserLaunchOptions, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
+export type { BrowserLaunchOptions, BrowserScope, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
 
 declare module '@pentest-harness/cordis' {
   interface Context {

@@ -93,6 +93,43 @@ describe('SharedBrowser (real Chromium)', () => {
     expect(tabs.find(tab => tab.active)?.id).toBe(tabs[1]?.id)
   }, 60_000)
 
+  it('keeps each session in its own tabs', async () => {
+    const page = (title: string): string => `data:text/html,${encodeURIComponent(`<title>${title}</title>`)}`
+    const alpha = browser.scope('session-alpha')
+    const beta = browser.scope('session-beta')
+
+    // The user opens a tab; the first session to act takes it, the second gets its own.
+    await browser.handleViewerMessage(JSON.stringify({ type: 'newTab', url: page('user page') }))
+    const userTab = (await browser.listTabs()).find(tab => tab.active)?.id
+    expect((await alpha.listTabs()).find(tab => tab.id === userTab)?.unclaimed).toBe(true)
+    await alpha.navigate(page('alpha page'))
+    expect(await alpha.activeTabId()).toBe(userTab)
+    await beta.navigate(page('beta page'))
+    const betaTab = await beta.activeTabId()
+    expect(betaTab).not.toBe(userTab)
+
+    // Each keeps acting on its own page, whatever the other or the user does.
+    await browser.handleViewerMessage(JSON.stringify({ type: 'selectTab', tabId: betaTab }))
+    expect(await (await alpha.page()).title()).toBe('alpha page')
+    expect(await (await beta.page()).title()).toBe('beta page')
+
+    // Neither sees nor reaches the other's tabs; the user's view sees both.
+    expect((await alpha.listTabs()).map(tab => tab.id)).not.toContain(betaTab)
+    expect((await beta.listTabs()).map(tab => tab.id)).not.toContain(userTab)
+    await expect(alpha.page(betaTab)).rejects.toThrow(/belongs to another session/u)
+    await expect(beta.closeTab(userTab as string)).rejects.toThrow(/belongs to another session/u)
+    const all = (await browser.listTabs()).map(tab => tab.id)
+    expect(all).toContain(userTab)
+    expect(all).toContain(betaTab)
+
+    // A tab a session opens is its new current one.
+    const second = await alpha.createTab(page('alpha second'))
+    expect(await alpha.activeTabId()).toBe(second)
+    expect(await (await beta.page()).title()).toBe('beta page')
+    await alpha.closeTab(second)
+    expect(await alpha.activeTabId()).toBe(userTab)
+  }, 60_000)
+
   it('hands a page file chooser to the viewer and fills it with the picked file', async () => {
     const html = '<input type="file" id="f"><script>f.onchange=()=>{f.files[0].text().then(t=>{document.title=f.files[0].name+":"+t})}</script>'
     await browser.navigate(`data:text/html,${encodeURIComponent(html)}`)

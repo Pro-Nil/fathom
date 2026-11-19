@@ -47,6 +47,8 @@ export interface BrowserTab {
   readonly title: string
   readonly url: string
   readonly active: boolean
+  /** In a session's list: a tab no session has claimed yet (the user's); acting on it claims it. */
+  readonly unclaimed?: boolean
 }
 
 /** One retained console line. */
@@ -88,6 +90,41 @@ interface TabState {
   readonly console: ConsoleEntry[]
   readonly network: NetworkEntry[]
   title: string
+  /**
+   * The session whose agent works in this tab. Unset for a tab the user opened
+   * (or the launch tab) until an agent acts on it, which claims it. A session
+   * never sees or touches another session's tabs, so two agents running at
+   * once each keep their own pages instead of driving one another's.
+   */
+  owner?: string
+}
+
+/**
+ * The tab operations one session's agent may perform: the same as
+ * {@link SharedBrowser}'s, limited to that session's own tabs plus the
+ * unclaimed ones the user opened. Obtained with {@link SharedBrowser.scope}.
+ */
+export interface BrowserScope {
+  /** The page a call acts on: the given tab, else this session's current tab (opened on first use). */
+  page(tabId?: string): Promise<Page>
+  /** This session's tabs and the user's unclaimed ones; `active` marks this session's current tab. */
+  listTabs(): Promise<BrowserTab[]>
+  /** Open a tab owned by this session and make it current. */
+  createTab(url?: string): Promise<string>
+  /** Make a tab this session's current one (and the one the user sees). */
+  selectTab(tabId: string): Promise<void>
+  /** Close one of this session's tabs. */
+  closeTab(tabId: string): Promise<void>
+  /** Load an address, or move through history. */
+  navigate(target: string, tabId?: string): Promise<void>
+  /** Locator for an element ref from the latest snapshot. */
+  locate(ref: string, tabId?: string): Promise<Locator>
+  /** Console lines retained for a tab. */
+  consoleOf(tabId?: string): Promise<readonly ConsoleEntry[]>
+  /** Network requests retained for a tab. */
+  networkOf(tabId?: string): Promise<readonly NetworkEntry[]>
+  /** Id of this session's current tab. */
+  activeTabId(): Promise<string>
 }
 
 /**
@@ -154,7 +191,10 @@ export class SharedBrowser {
   private context: BrowserContext | undefined
   private launching: Promise<BrowserContext> | undefined
   private readonly tabs = new Map<Page, TabState>()
+  /** The page the user sees in the live view. */
   private activePage: Page | undefined
+  /** Each session's current tab: what its agent's calls act on by default. */
+  private readonly activeByOwner = new Map<string, Page>()
   private nextTabNumber = 1
   private readonly viewers = new Set<BrowserViewer>()
   private screencast: { page: Page; cdp: CDPSession } | undefined
@@ -275,6 +315,11 @@ export class SharedBrowser {
     }
     const state: TabState = { id: `tab-${this.nextTabNumber++}`, page, console: [], network: [], title: '' }
     this.tabs.set(page, state)
+    // A popup or target=_blank tab belongs to the session whose page opened it.
+    void page.opener().then((opener) => {
+      const owner = opener === null ? undefined : this.tabs.get(opener)?.owner
+      if (owner !== undefined && state.owner === undefined) state.owner = owner
+    }, () => {})
     const push = <T>(list: T[], item: T, limit: number): void => {
       list.push(item)
       if (list.length > limit) list.splice(0, list.length - limit)
@@ -322,6 +367,7 @@ export class SharedBrowser {
     page.on('load', refreshTitle)
     page.on('close', () => {
       this.tabs.delete(page)
+      for (const [owner, current] of this.activeByOwner) if (current === page) this.activeByOwner.delete(owner)
       if (this.activePage === page) {
         const remaining = [...this.tabs.keys()]
         this.activePage = remaining.at(-1)
@@ -336,41 +382,123 @@ export class SharedBrowser {
     this.publishTabs()
   }
 
-  private stateFor(tabId?: string): TabState {
+  /**
+   * The tab a call names, or the default one. Without an owner (the user's
+   * live view) every tab is reachable and the default is the one on screen.
+   * With an owner (one session's agent) another session's tab is refused, a
+   * tab nobody owns (the user opened it, or it is the launch tab) is claimed
+   * by the first session that acts on it, and the default is that session's
+   * current tab. Undefined means the session has no tab yet.
+   */
+  private stateFor(tabId: string | undefined, owner?: string): TabState | undefined {
     if (tabId !== undefined) {
-      for (const state of this.tabs.values()) if (state.id === tabId) return state
-      throw new Error(`no tab with id "${tabId}"; list tabs to see the open ones`)
+      let found: TabState | undefined
+      for (const state of this.tabs.values()) if (state.id === tabId) found = state
+      if (found === undefined) throw new Error(`no tab with id "${tabId}"; list tabs to see the open ones`)
+      if (owner !== undefined) {
+        if (found.owner !== undefined && found.owner !== owner) {
+          throw new Error(`tab "${tabId}" belongs to another session; open your own with browser_tabs create`)
+        }
+        found.owner = owner
+      }
+      return found
     }
-    const page = this.activePage
-    const state = page === undefined ? undefined : this.tabs.get(page)
-    if (state === undefined) throw new Error('no tab is open; create one first')
+    if (owner === undefined) return this.activePage === undefined ? undefined : this.tabs.get(this.activePage)
+    const current = this.activeByOwner.get(owner)
+    const currentState = current === undefined ? undefined : this.tabs.get(current)
+    if (currentState !== undefined) return currentState
+    let latest: TabState | undefined
+    for (const state of this.tabs.values()) if (state.owner === owner) latest = state
+    if (latest !== undefined) return latest
+    // Nothing of its own yet: take the tab on screen if no session has it, so
+    // "look at this page" keeps working for a single session; a second
+    // session then gets a fresh tab instead of the first one's.
+    const shown = this.activePage === undefined ? undefined : this.tabs.get(this.activePage)
+    if (shown !== undefined && shown.owner === undefined) {
+      shown.owner = owner
+      return shown
+    }
+    return undefined
+  }
+
+  /** {@link stateFor} for a named tab, which always resolves or throws. */
+  private namedState(tabId: string, owner?: string): TabState {
+    const state = this.stateFor(tabId, owner)
+    if (state === undefined) throw new Error(`no tab with id "${tabId}"; list tabs to see the open ones`)
     return state
   }
 
   /**
-   * The page a call acts on: the given tab, else the active one. Launches the
-   * browser on first use.
+   * Resolve the tab a call acts on, opening one for a session that has none
+   * yet. Launches the browser on first use.
+   */
+  private async resolveTab(tabId: string | undefined, owner: string | undefined): Promise<TabState> {
+    await this.ensureContext()
+    const state = this.stateFor(tabId, owner)
+    if (state !== undefined) {
+      if (owner !== undefined && tabId === undefined) this.activeByOwner.set(owner, state.page)
+      return state
+    }
+    if (owner === undefined) throw new Error('no tab is open; create one first')
+    const id = await this.createTab(undefined, owner)
+    return this.namedState(id, owner)
+  }
+
+  /**
+   * The page a call acts on: the given tab, else the current one (for a
+   * session, its own current tab, opened on first use).
    * @param tabId - optional tab id.
+   * @param owner - the calling session; omitted for the user's live view.
    * @returns the Playwright page.
    */
-  async page(tabId?: string): Promise<Page> {
-    await this.ensureContext()
-    return this.stateFor(tabId).page
+  async page(tabId?: string, owner?: string): Promise<Page> {
+    return (await this.resolveTab(tabId, owner)).page
   }
 
-  /** Snapshot of open tabs, active first in the user's sense of "current". */
-  async listTabs(): Promise<BrowserTab[]> {
+  /**
+   * Snapshot of open tabs. For a session: its own tabs plus the ones no
+   * session has claimed, with `active` marking its current tab.
+   * @param owner - the calling session; omitted for every tab.
+   * @returns the tabs.
+   */
+  async listTabs(owner?: string): Promise<BrowserTab[]> {
     await this.ensureContext()
-    return this.describeTabs()
+    return this.describeTabs(owner)
   }
 
-  private describeTabs(): BrowserTab[] {
-    return [...this.tabs.values()].map(state => ({
-      id: state.id,
-      title: state.title,
-      url: state.page.url(),
-      active: state.page === this.activePage,
-    }))
+  private describeTabs(owner?: string): BrowserTab[] {
+    const current = owner === undefined ? this.activePage : this.activeByOwner.get(owner)
+    return [...this.tabs.values()]
+      .filter(state => owner === undefined || state.owner === undefined || state.owner === owner)
+      .map(state => ({
+        id: state.id,
+        title: state.title,
+        url: state.page.url(),
+        active: state.page === current,
+        ...owner !== undefined && state.owner === undefined ? { unclaimed: true } : {},
+      }))
+  }
+
+  /**
+   * The tab operations bound to one session: it sees and acts on only its own
+   * tabs and the ones nobody has claimed, so concurrent sessions never drive
+   * each other's pages.
+   * @param owner - the session id.
+   * @returns the scoped operations.
+   */
+  scope(owner: string): BrowserScope {
+    return {
+      page: tabId => this.page(tabId, owner),
+      listTabs: () => this.listTabs(owner),
+      createTab: url => this.createTab(url, owner),
+      selectTab: tabId => this.selectTab(tabId, owner),
+      closeTab: tabId => this.closeTab(tabId, owner),
+      navigate: (target, tabId) => this.navigate(target, tabId, owner),
+      locate: (ref, tabId) => this.locate(ref, tabId, owner),
+      consoleOf: tabId => this.consoleOf(tabId, owner),
+      networkOf: tabId => this.networkOf(tabId, owner),
+      activeTabId: () => this.activeTabId(owner),
+    }
   }
 
   /** Pages opened by {@link withScratchPage}: never listed as tabs or mirrored. */
@@ -408,25 +536,33 @@ export class SharedBrowser {
   }
 
   /**
-   * Open a tab and make it active.
+   * Open a tab and make it active (and, for a session, its current tab).
    * @param url - optional address to load.
+   * @param owner - the session that owns the tab; omitted for the user's.
    * @returns the new tab id.
    */
-  async createTab(url?: string): Promise<string> {
+  async createTab(url?: string, owner?: string): Promise<string> {
     const context = await this.ensureContext()
     const page = await context.newPage()
     this.track(page, true)
+    const state = this.tabs.get(page)
+    if (state === undefined) throw new Error('the new tab closed before it opened')
+    if (owner !== undefined) {
+      state.owner = owner
+      this.activeByOwner.set(owner, page)
+    }
     this.activePage = page
     this.refreshScreencast()
     if (url !== undefined && url.trim().length > 0) await page.goto(this.address(url), { waitUntil: 'domcontentloaded' })
     this.publishTabs()
-    return this.stateFor().id
+    return state.id
   }
 
-  /** Make a tab the active one. */
-  async selectTab(tabId: string): Promise<void> {
+  /** Make a tab the active one (and, for a session, its current tab). */
+  async selectTab(tabId: string, owner?: string): Promise<void> {
     await this.ensureContext()
-    const state = this.stateFor(tabId)
+    const state = this.namedState(tabId, owner)
+    if (owner !== undefined) this.activeByOwner.set(owner, state.page)
     this.activePage = state.page
     await state.page.bringToFront().catch(() => {})
     this.refreshScreencast()
@@ -434,9 +570,9 @@ export class SharedBrowser {
   }
 
   /** Close a tab; the last remaining tab is replaced by a blank one. */
-  async closeTab(tabId: string): Promise<void> {
+  async closeTab(tabId: string, owner?: string): Promise<void> {
     const context = await this.ensureContext()
-    const state = this.stateFor(tabId)
+    const state = this.namedState(tabId, owner)
     if (this.tabs.size === 1) await context.newPage()
     await state.page.close()
   }
@@ -445,9 +581,10 @@ export class SharedBrowser {
    * Load an address, or move through history.
    * @param target - URL, or `back` / `forward` / `reload`.
    * @param tabId - optional tab id.
+   * @param owner - the calling session; omitted for the user's live view.
    */
-  async navigate(target: string, tabId?: string): Promise<void> {
-    const page = await this.page(tabId)
+  async navigate(target: string, tabId?: string, owner?: string): Promise<void> {
+    const page = await this.page(tabId, owner)
     const options = { waitUntil: 'domcontentloaded' as const }
     if (target === 'back') await page.goBack(options)
     else if (target === 'forward') await page.goForward(options)
@@ -457,28 +594,25 @@ export class SharedBrowser {
   }
 
   /** Locator for an element ref from the latest snapshot. */
-  async locate(ref: string, tabId?: string): Promise<Locator> {
-    const page = await this.page(tabId)
+  async locate(ref: string, tabId?: string, owner?: string): Promise<Locator> {
+    const page = await this.page(tabId, owner)
     if (!/^[\w-]+$/u.test(ref)) throw new Error(`"${ref}" is not an element ref; use a ref such as e12 from read_page or find`)
     return page.locator(`aria-ref=${ref}`)
   }
 
   /** Console lines retained for a tab. */
-  async consoleOf(tabId?: string): Promise<readonly ConsoleEntry[]> {
-    await this.ensureContext()
-    return this.stateFor(tabId).console
+  async consoleOf(tabId?: string, owner?: string): Promise<readonly ConsoleEntry[]> {
+    return (await this.resolveTab(tabId, owner)).console
   }
 
   /** Network requests retained for a tab. */
-  async networkOf(tabId?: string): Promise<readonly NetworkEntry[]> {
-    await this.ensureContext()
-    return this.stateFor(tabId).network
+  async networkOf(tabId?: string, owner?: string): Promise<readonly NetworkEntry[]> {
+    return (await this.resolveTab(tabId, owner)).network
   }
 
-  /** Id of the active tab, launching the browser when needed. */
-  async activeTabId(): Promise<string> {
-    await this.ensureContext()
-    return this.stateFor().id
+  /** Id of the current tab (for a session, its own), launching the browser when needed. */
+  async activeTabId(owner?: string): Promise<string> {
+    return (await this.resolveTab(undefined, owner)).id
   }
 
   // ── live view ──────────────────────────────────────────────────────────
