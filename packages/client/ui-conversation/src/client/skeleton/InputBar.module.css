@@ -211,6 +211,20 @@
   /* figma .InputText 34:10434: pl 16 / pr 12 / pt 4. Backdrop MUST share these
      metrics or the highlight ranges drift off the glyphs. */
   padding: 4px 12px 0 16px;
+  /* The browser's own textarea styles reset these, while the two div layers
+     inherit the page's (Inter's cv11/ss01 alternates, a slight negative
+     tracking, optimizeLegibility). Left apart, the visible glyphs come out
+     narrower than the caret's: the caret drifts ahead along a line, and a word
+     that wraps on one layer but not the other puts it a whole word off. All
+     three layers take the inherited values instead. */
+  font: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-kerning: inherit;
+  font-variant-ligatures: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  text-rendering: inherit;
   font-family: var(--dsw-font-family);
   font-size: inherit;
   /* Three consumers, not two: the mirror sizes the stack, the layers must break
