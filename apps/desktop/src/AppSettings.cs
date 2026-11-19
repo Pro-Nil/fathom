@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace PentestHarness.Desktop;
 
 /// <summary>
-/// Settings kept in %LOCALAPPDATA%\PentestHarness\settings.json. Created with
+/// Settings kept in settings.json in the app data folder. Created with
 /// defaults on first run; edit the file to point at another checkout or port.
 /// </summary>
 internal sealed class AppSettings
@@ -33,8 +33,15 @@ internal sealed class AppSettings
     /// <summary>Whether the window was maximized when last hidden.</summary>
     public bool Maximized { get; set; }
 
+    /// <summary>
+    /// App data folder: %LOCALAPPDATA%\PentestHarness on Windows,
+    /// ~/.local/share/PentestHarness on Linux. PENTEST_HARNESS_APP_DIR
+    /// overrides it (a second, isolated app instance for testing).
+    /// </summary>
     [JsonIgnore]
-    public static string Folder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PentestHarness");
+    public static string Folder { get; } = Environment.GetEnvironmentVariable("PENTEST_HARNESS_APP_DIR") is { Length: > 0 } dir
+        ? dir
+        : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PentestHarness");
 
     [JsonIgnore]
     private static string FilePath => Path.Combine(Folder, "settings.json");

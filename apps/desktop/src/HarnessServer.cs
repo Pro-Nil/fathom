@@ -10,8 +10,8 @@ namespace PentestHarness.Desktop;
 /// port (for example a server started from a terminal) the app attaches to it
 /// and leaves it alone on quit. Otherwise it starts
 /// <c>node --import tsx/esm apps/cli/src/bin.ts web --no-open</c> with no
-/// console window, inside a Job Object, so quitting (or a crash) ends the whole
-/// process tree.
+/// console window. On Windows it runs inside a Job Object, so quitting (or a
+/// crash) ends the whole process tree; on Linux quitting kills the tree.
 /// </summary>
 internal sealed class HarnessServer : IDisposable
 {
@@ -66,18 +66,31 @@ internal sealed class HarnessServer : IDisposable
         RotateLog();
         WriteLog($"── {DateTime.Now:yyyy-MM-dd HH:mm:ss} starting harness ({node})");
 
-        // cmd appends node's output straight to the log file. Nothing pipes
-        // through this app, so the harness can outlive an app update
+        // The shell appends node's output straight to the log file. Nothing
+        // pipes through this app, so the harness can outlive an app update
         // (Detach) without writing into a closed pipe.
-        var command = $"\"\"{node}\" --import tsx/esm apps/cli/src/bin.ts web --no-open >> \"{LogPath}\" 2>&1\"";
-        var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("ComSpec") ?? "cmd.exe")
+        ProcessStartInfo info;
+        if (OperatingSystem.IsWindows())
         {
-            WorkingDirectory = settings.Repo,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardInput = true,
-            Arguments = "/d /s /c " + command,
-        };
+            var command = $"\"\"{node}\" --import tsx/esm apps/cli/src/bin.ts web --no-open >> \"{LogPath}\" 2>&1\"";
+            info = new ProcessStartInfo(Environment.GetEnvironmentVariable("ComSpec") ?? "cmd.exe")
+            {
+                Arguments = "/d /s /c " + command,
+            };
+        }
+        else
+        {
+            // exec: the shell becomes node, so the tracked process is the server itself.
+            info = new ProcessStartInfo("/bin/sh");
+            info.ArgumentList.Add("-c");
+            info.ArgumentList.Add("exec \"$0\" --import tsx/esm apps/cli/src/bin.ts web --no-open >> \"$1\" 2>&1");
+            info.ArgumentList.Add(node);
+            info.ArgumentList.Add(LogPath);
+        }
+        info.WorkingDirectory = settings.Repo;
+        info.UseShellExecute = false;
+        info.CreateNoWindow = true;
+        info.RedirectStandardInput = true;
         info.Environment["FORCE_COLOR"] = "0";
 
         job = CreateKillOnCloseJob();
@@ -204,9 +217,26 @@ internal sealed class HarnessServer : IDisposable
         };
     }
 
-    private static List<int> ListeningPids(int port)
+    /// <summary>Processes listening on the TCP port (netstat on Windows; ss, then lsof, on Linux).</summary>
+    internal static List<int> ListeningPids(int port)
     {
         var pids = new List<int>();
+        if (!OperatingSystem.IsWindows())
+        {
+            var ss = Capture("ss", ["-Hltnp", $"sport = :{port}"]);
+            foreach (System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(ss ?? "", @"pid=(\d+)"))
+            {
+                if (int.TryParse(m.Groups[1].Value, out var pid) && !pids.Contains(pid)) pids.Add(pid);
+            }
+            if (pids.Count == 0)
+            {
+                foreach (var line in (Capture("lsof", ["-t", $"-iTCP:{port}", "-sTCP:LISTEN"]) ?? "").Split('\n'))
+                {
+                    if (int.TryParse(line.Trim(), out var pid) && !pids.Contains(pid)) pids.Add(pid);
+                }
+            }
+            return pids;
+        }
         try
         {
             var info = new ProcessStartInfo("netstat", "-ano -p TCP") { RedirectStandardOutput = true, UseShellExecute = false, CreateNoWindow = true };
@@ -222,6 +252,24 @@ internal sealed class HarnessServer : IDisposable
         return pids;
     }
 
+
+    private static string? Capture(string file, string[] args)
+    {
+        try
+        {
+            var info = new ProcessStartInfo(file) { RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false, CreateNoWindow = true };
+            foreach (var arg in args) info.ArgumentList.Add(arg);
+            using var process = Process.Start(info);
+            if (process is null) return null;
+            var output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit(5000);
+            return output;
+        }
+        catch (Win32Exception)
+        {
+            return null;
+        }
+    }
 
     /// <summary>Stop the server if this app started it. Attached servers are left running.</summary>
     public void Stop()
@@ -253,6 +301,9 @@ internal sealed class HarnessServer : IDisposable
     /// <summary>The app's own events (start, stop, detach, reconnect); harness.log is the server's output.</summary>
     public static string AppLogPath => Path.Combine(AppSettings.Folder, "logs", "desktop.log");
 
+    /// <summary>Append a line to the app's own log (desktop.log).</summary>
+    public static void AppLog(string line) => WriteLog($"{DateTime.Now:HH:mm:ss} {line}");
+
     private static void WriteLog(string line)
     {
         // cmd holds harness.log open while the server runs, so the app logs
@@ -280,13 +331,29 @@ internal sealed class HarnessServer : IDisposable
     private static string? ResolveNode(string configured)
     {
         if (Path.IsPathRooted(configured)) return File.Exists(configured) ? configured : null;
-        var names = configured.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? new[] { configured } : new[] { configured + ".exe", configured };
+        var windows = OperatingSystem.IsWindows();
+        var names = !windows || configured.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? new[] { configured } : new[] { configured + ".exe", configured };
         var path = Environment.GetEnvironmentVariable("PATH") ?? "";
-        // A shortcut launch inherits Explorer's environment, which can predate a
-        // PATH change; read the persisted user and machine PATH as well.
-        path += ";" + Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-        path += ";" + Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
-        foreach (var dir in path.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        if (windows)
+        {
+            // A shortcut launch inherits Explorer's environment, which can predate a
+            // PATH change; read the persisted user and machine PATH as well.
+            path += ";" + Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+            path += ";" + Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
+        }
+        else
+        {
+            // A desktop launcher gets the session's PATH, which often lacks the
+            // directories version managers and user installs add in shell rc files.
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            path += $":{home}/.local/bin:{home}/.volta/bin:/usr/local/bin:/usr/bin";
+            var nvm = Path.Combine(home, ".nvm", "versions", "node");
+            if (Directory.Exists(nvm))
+            {
+                foreach (var version in Directory.GetDirectories(nvm).OrderDescending()) path += $":{version}/bin";
+            }
+        }
+        foreach (var dir in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
         {
             foreach (var name in names)
             {
@@ -305,6 +372,7 @@ internal sealed class HarnessServer : IDisposable
 
     private static IntPtr CreateKillOnCloseJob()
     {
+        if (!OperatingSystem.IsWindows()) return IntPtr.Zero;
         var handle = CreateJobObject(IntPtr.Zero, null);
         if (handle == IntPtr.Zero) return IntPtr.Zero;
         var info = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();

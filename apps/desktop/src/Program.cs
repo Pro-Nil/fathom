@@ -1,70 +1,96 @@
+using System.IO.Pipes;
+using Avalonia;
+using Avalonia.Threading;
+
 namespace PentestHarness.Desktop;
 
 internal static class Program
 {
-    private const string MutexName = @"Local\PentestHarness.Desktop";
-    private const string ShowEventName = @"Local\PentestHarness.Desktop.Show";
-    private const string TestEventName = @"Local\PentestHarness.Desktop.TestNotification";
-    private const string QuitEventName = @"Local\PentestHarness.Desktop.Quit";
-    private const string QuitKeepEventName = @"Local\PentestHarness.Desktop.QuitKeepHarness";
+    /// <summary>
+    /// Per-user pipe the running app listens on (a Unix socket on Linux). A
+    /// second launch sends it one command and exits: "show" (Start menu,
+    /// launcher, toast click), "test" (`--test-notification`), "quit"
+    /// (`--quit`) or "quit-keep" (`--quit --keep-harness`, used when updating
+    /// the app: the harness keeps running and the next launch takes it back).
+    /// </summary>
+    private static readonly string PipeName = $"PentestHarness.Desktop.{Environment.UserName}"
+        + (Environment.GetEnvironmentVariable("PENTEST_HARNESS_APP_DIR") is { Length: > 0 } dir ? "." + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(dir)))[..8] : "");
 
     [STAThread]
-    private static void Main(string[] args)
+    private static int Main(string[] args)
     {
-        // One instance: a second launch (Start menu, shortcut) just brings the
-        // running window forward.
-        using var mutex = new Mutex(true, MutexName, out var first);
-        if (first && args.Contains("--quit", StringComparer.OrdinalIgnoreCase)) return;
-        if (!first)
+        var has = (string flag) => args.Contains(flag, StringComparer.OrdinalIgnoreCase);
+        var command = has("--test-notification") ? "test"
+            : has("--quit") && has("--keep-harness") ? "quit-keep"
+            : has("--quit") ? "quit"
+            : "show";
+        if (TrySend(command)) return 0;
+        // Nothing running: --quit has nothing to do.
+        if (command.StartsWith("quit", StringComparison.Ordinal)) return 0;
+
+        Platform.Register();
+        App.StartHidden = has("--tray");
+        using var cancel = new CancellationTokenSource();
+        _ = Task.Run(() => ListenAsync(cancel.Token));
+        var code = BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
+        cancel.Cancel();
+        return code;
+    }
+
+    public static AppBuilder BuildAvaloniaApp() =>
+        AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .With(new X11PlatformOptions { WmClass = "PentestHarness" })
+            .LogToTrace();
+
+    private static bool TrySend(string command)
+    {
+        try
         {
-            // `--test-notification` asks the running app to play its sound and
-            // show a sample notification; any other launch brings it forward.
-            // `--quit` closes the running app the same way the tray's Quit does;
-            // `--quit --keep-harness` closes only the app (for updates) and the
-            // next launch takes the running harness back.
-            var quit = args.Contains("--quit", StringComparer.OrdinalIgnoreCase);
-            var keep = args.Contains("--keep-harness", StringComparer.OrdinalIgnoreCase);
-            var name = args.Contains("--test-notification", StringComparer.OrdinalIgnoreCase) ? TestEventName
-                : quit && keep ? QuitKeepEventName
-                : quit ? QuitEventName
-                : ShowEventName;
+            using var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
+            client.Connect(300);
+            using var writer = new StreamWriter(client);
+            writer.WriteLine(command);
+            writer.Flush();
+            return true;
+        }
+        catch (Exception ex) when (ex is TimeoutException or IOException or UnauthorizedAccessException)
+        {
+            return false;
+        }
+    }
+
+    private static async Task ListenAsync(CancellationToken cancel)
+    {
+        while (!cancel.IsCancellationRequested)
+        {
             try
             {
-                using var signal = EventWaitHandle.OpenExisting(name);
-                signal.Set();
-            }
-            catch (WaitHandleCannotBeOpenedException) { }
-            return;
-        }
-
-        ApplicationConfiguration.Initialize();
-        Toasts.Register(Path.Combine(AppContext.BaseDirectory, "app.png"));
-        Application.SetColorMode(SystemColorMode.Dark);
-        var settings = AppSettings.Load();
-        var startHidden = args.Contains("--tray", StringComparer.OrdinalIgnoreCase);
-        using var form = new MainForm(settings, startHidden);
-
-        using var showEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ShowEventName);
-        using var testEvent = new EventWaitHandle(false, EventResetMode.AutoReset, TestEventName);
-        using var quitEvent = new EventWaitHandle(false, EventResetMode.AutoReset, QuitEventName);
-        using var quitKeepEvent = new EventWaitHandle(false, EventResetMode.AutoReset, QuitKeepEventName);
-        var listener = new Thread(() =>
-        {
-            while (true)
-            {
-                var which = WaitHandle.WaitAny([showEvent, testEvent, quitEvent, quitKeepEvent]);
-                if (form.IsDisposed) return;
-                try
+                await using var server = new NamedPipeServerStream(PipeName, PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+                await server.WaitForConnectionAsync(cancel);
+                using var reader = new StreamReader(server);
+                var command = (await reader.ReadLineAsync(cancel))?.Trim();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    if (which == 0) form.BeginInvoke(() => form.BringToFront_());
-                    else if (which == 1) form.BeginInvoke(() => form.SendTestNotification());
-                    else { form.BeginInvoke(() => form.QuitApp(keepHarness: which == 3)); return; }
-                }
-                catch (InvalidOperationException) { return; }
+                    var window = App.Window;
+                    if (window is null) return;
+                    switch (command)
+                    {
+                        case "test": window.SendTestNotification(); break;
+                        case "quit": window.Quit(); break;
+                        case "quit-keep": window.Quit(keepHarness: true); break;
+                        default: window.ShowFromTray(); break;
+                    }
+                });
             }
-        }) { IsBackground = true, Name = "single-instance" };
-        listener.Start();
-
-        Application.Run(form);
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+            catch (IOException)
+            {
+                await Task.Delay(200, CancellationToken.None);
+            }
+        }
     }
 }

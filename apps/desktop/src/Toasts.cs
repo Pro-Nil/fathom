@@ -1,3 +1,4 @@
+#if WINDOWS
 using System.Security;
 using Microsoft.Win32;
 using Windows.Data.Xml.Dom;
@@ -75,3 +76,4 @@ internal static class Toasts
     [System.Runtime.InteropServices.DllImport("shell32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
     private static extern int SetCurrentProcessExplicitAppUserModelID(string appId);
 }
+#endif

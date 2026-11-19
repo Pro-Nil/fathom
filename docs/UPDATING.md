@@ -1,6 +1,6 @@
 # Installing and updating Pentest Harness
 
-Pentest Harness runs as a local server with a web UI at `http://127.0.0.1:2323`. On Windows you can also use the **desktop app**: a small native window around the same web UI that starts the harness for you (no terminal), lives in the tray, and notifies you when a session needs your input. Both use the same data, so you can switch between them at any time.
+Pentest Harness runs as a local server with a web UI at `http://127.0.0.1:2323`. On Windows and Linux you can also use the **desktop app**: a small native window around the same web UI that starts the harness for you (no terminal), lives in the tray, and notifies you when a session needs your input. Both use the same data, so you can switch between them at any time.
 
 Everything you own lives outside the code checkout, in `~/.dsh` (`$DSH_HOME`): `settings.yaml`, `.credentials.yaml` (your keys), `sessions/`, `profiles/`, and the pentest tools under `tools/`. Installing, updating or adding the app never touches it.
 
@@ -17,8 +17,9 @@ Pick your situation:
 ## Requirements
 
 - **Everyone:** Git, **Node.js 20+** (22 recommended) and **pnpm** (`npm i -g pnpm`).
-- **Linux:** the web version runs on any x86-64 Linux with the requirements above. The first time the agent uses the browser, the harness downloads its Chromium build; if Chromium then reports missing system libraries, run `sudo npx playwright install-deps chromium` once. Pentest tools install natively (apt plus release binaries; see the upgrade notes). The desktop app is Windows-only for now.
-- **Desktop app (Windows only):** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET SDK](https://dotnet.microsoft.com/download), version 10 or newer. Node.js must be on `PATH`, because the app starts the harness with it.
+- **Linux:** the web version runs on any x86-64 Linux with the requirements above. The first time the agent uses the browser, the harness downloads its Chromium build; if Chromium then reports missing system libraries, run `sudo npx playwright install-deps chromium` once. Pentest tools install natively (apt plus release binaries; see the upgrade notes). For the desktop app on Linux, see [Desktop app on Linux](#desktop-app-on-linux).
+- **Desktop app on Windows:** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET SDK](https://dotnet.microsoft.com/download), version 10 or newer. Node.js must be on `PATH`, because the app starts the harness with it.
+- **Desktop app on Linux:** the .NET 10 SDK, Node.js, and the WebKitGTK runtime (`sudo apt install libwebkit2gtk-4.1-0 libnotify-bin` on Debian/Ubuntu). See [Desktop app on Linux](#desktop-app-on-linux).
 
 ### Before running any desktop-app command
 
@@ -49,7 +50,7 @@ The web UI opens at `http://127.0.0.1:2323` (on Linux and Windows alike). Then a
 Run the first four commands of [A](#a-first-install--web) (clone, `cd`, `pnpm install`, `pnpm build`) but **not** `pnpm dsh web`: the app starts the harness itself. First do the two checks in [Before running any desktop-app command](#before-running-any-desktop-app-command). Then, in PowerShell from the checkout:
 
 ```powershell
-dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
 Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
 ```
 
@@ -86,7 +87,7 @@ Run all three update commands every time. A plugin that a mode uses but that was
 2. Do the two checks in [Before running any desktop-app command](#before-running-any-desktop-app-command), then install and open the app, in PowerShell from the checkout:
 
    ```powershell
-   dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+   dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
    Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
    ```
 
@@ -107,7 +108,7 @@ Your existing sessions, models and keys show up in the app unchanged; it is the 
 4. If the update changed the app itself (files under `apps/desktop` in the `git pull` output), reinstall it over the old one, in PowerShell:
 
    ```powershell
-   dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+   dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
    ```
 
 5. Open **Pentest Harness** again; it starts the updated harness.
@@ -115,7 +116,7 @@ Your existing sessions, models and keys show up in the app unchanged; it is the 
 **Updating only the app while the harness keeps running** (for example mid-engagement): publish to a staging folder, close the app without stopping the harness, swap the files and reopen. The reopened app re-attaches to the running harness.
 
 ```powershell
-dotnet publish apps/desktop -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\PentestHarness\staged"
+dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\PentestHarness\staged"
 & "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe" --quit --keep-harness
 Copy-Item "$env:LOCALAPPDATA\PentestHarness\staged\*" "$env:LOCALAPPDATA\Programs\PentestHarness" -Recurse -Force
 Start-Process "$env:LOCALAPPDATA\Programs\PentestHarness\PentestHarness.exe"
@@ -125,7 +126,22 @@ Plain `--quit` (or tray → Quit) stops the harness too.
 
 **Client-only changes** (styles, UI) need just `pnpm build` and a page reload (`Ctrl+R` in the app or browser), no restart.
 
+## Desktop app on Linux
+
+From the checkout, after `pnpm install` and `pnpm build` (and without `pnpm dsh web`; the app starts the harness):
+
+```sh
+dotnet publish apps/desktop -f net10.0 -c Release -r linux-x64 --self-contained false -o ~/.local/share/pentest-harness-app
+~/.local/share/pentest-harness-app/PentestHarness &
+```
+
+The first launch adds **Pentest Harness** to your application menu. If your checkout is not `~/pentest-harness`, set `repo` in `~/.local/share/PentestHarness/settings.json`. To update, quit from the tray, update and rebuild as in [C](#c-update-the-web-version), run the `dotnet publish` line again and reopen the app. The tray icon needs a desktop with a system tray (on GNOME, the AppIndicator extension).
+
 ## Upgrade notes
+
+### Desktop app rebuilt on Avalonia (Windows and Linux)
+
+The desktop app now runs on Windows and Linux. On Windows it keeps the system title bar with a slim status bar under it, and the publish command gains `-f net10.0-windows10.0.19041.0`. To move an existing install: **tray icon → Quit** the old app first (its `--quit` signal is not understood by the new one, and the reverse), then run the new publish command from [E](#e-update-the-desktop-app-install) step 4 and reopen. Settings, logs and the in-app browser profile in `%LOCALAPPDATA%\PentestHarness` carry over.
 
 ### DeepSeek removed
 

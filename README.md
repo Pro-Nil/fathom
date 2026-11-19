@@ -71,7 +71,7 @@ The Web UI opens at **http://127.0.0.1:2323** in your browser.
 
 ### Desktop app and updating
 
-Want the Windows desktop app, or already installed and updating? **[docs/UPDATING.md](docs/UPDATING.md)** covers every case: first install with or without the app, updating the web version, adding the app to a web install, and updating the app.
+Want the desktop app (Windows or Linux), or already installed and updating? **[docs/UPDATING.md](docs/UPDATING.md)** covers every case: first install with or without the app, updating the web version, adding the app to a web install, and updating the app.
 
 ### Run on another port
 
