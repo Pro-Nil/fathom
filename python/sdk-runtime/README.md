@@ -1,7 +1,5 @@
 # Pentest Harness Runtime Wheel
 
-English | [中文](https://github.com/S1N6H/pentest-harness/blob/master/python/sdk-runtime/README.zh.md)
-
 Runtime carrier package for the Python SDK (dist `pentest-harness-runtime-bin`, module `pentest_harness_runtime`): it locates the bundled runtime binaries the `pentest-harness-sdk` client spawns, and ships the default configuration behind zero-config runs.
 
 ## Runtime carriers

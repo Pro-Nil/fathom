@@ -74,7 +74,7 @@ const WIDTHS = [1680, 1100, 640]
 const SENTENCE = 'This cell carries one full sentence so the unwrapped table is far wider than the message column.'
 /** Unbroken path-like token (no scheme, so GFM does not autolink it and no anchor joins the tab order). */
 const LONG_TOKEN = 'workspace/pentest-harness/packages/client/ui-primitives/src/markdown/render.tsx/'.repeat(3)
-const CJK_SENTENCE = '这个单元格包含一段较长的中文说明，用来验证长内容在窄列宽下按最小可读宽度换行而不是把列压缩到无法阅读。'
+const CJK_SENTENCE = '쇿옺뱷쪉뤼쥋껡퀼뾛쏉쁕춘쮿꿍켠췺，끌펇효좓쁕섋퓋맜욀홝춛읡텟릸팁썩쵵춛탢픚묄륈귷덩큶홝좉뵿쨬뎈엋뾓쵵。'
 
 /** The assistant markdown: one 3-column fill, one 12-column wide, one long-cell table. */
 function tablesMarkdown(): string {
@@ -97,7 +97,7 @@ function tablesMarkdown(): string {
     `| ${LONG_CELL_MARKER} | Value |`,
     '| --- | --- |',
     `| path | ${LONG_TOKEN} |`,
-    `| 说明 | ${CJK_SENTENCE} |`,
+    `| 켠췺 | ${CJK_SENTENCE} |`,
     '',
     TAIL_MARKER,
   ].join('\n')

@@ -224,24 +224,24 @@ describe('freeze dynamics around frontier-sensitive constructs', () => {
 
 describe('multibyte content', () => {
   const CJK_DOC = [
-    '# 标题 🎉',
+    '# 찙쒤 🎉',
     '',
-    '这是一段包含 **加粗**、`行内代码` 与表情 😀🚀 的中文段落。',
+    '쇿덩퀼뾛쥋껡 **꽼흝**、`묄섋찅큓` 쳦둘찯 😀🚀 춘쮿꿍뾛툧。',
     '',
-    '- 列表项一 ✅',
-    '- 列表项二',
+    '- 홝둘엋퀼 ✅',
+    '- 홝둘엋껠',
     '',
-    '> 引用一行,带表情 🐟',
+    '> 싧끌퀼묄,넊둘찯 🐟',
     '',
     '```',
-    '中文代码 🎯',
+    '쮿꿍찅큓 🎯',
     '```',
     '',
-    '| 键 | 值 |',
+    '| 긺 | 련 |',
     '| --- | --- |',
-    '| 甲 | 乙 |',
+    '| 됦 | 폷 |',
     '',
-    '结尾段落,足够多的块让前面全部冻结。🌊',
+    '뽉딚뾛툧,졝텥릦춘잙젏뛋퀪푬였총뽉。🌊',
   ].join('\n')
 
   it('code-unit chunking (splitting surrogate pairs mid-stream) matches fresh renders', () => {

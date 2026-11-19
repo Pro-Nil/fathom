@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-cordis-host-runner
 
-English | [中文](README.zh.md)
-
 The host half of model-mounted dynamic packages: the definition registry, the `node:vm` sandbox and fiber lifecycle for host halves, the invoke handler table, and the run round trip a browser page carries out. Provided as `ctx.dynamicCordisRunner`. The model-facing tools live in [`@pentest-harness/dsh-tool-cordis`](../tool-cordis/README.md); the browser half is loaded by [`@pentest-harness/dsh-cordis-client-runner`](../cordis-client-runner/README.md).
 
 ## What it does

@@ -1,7 +1,5 @@
 # dsh-home-paths
 
-English | [中文](README.zh.md)
-
 Shared filesystem path helpers for Pentest Harness user data.
 
 ## DSH home

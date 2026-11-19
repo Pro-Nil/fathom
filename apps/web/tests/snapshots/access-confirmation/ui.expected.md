@@ -1,10 +1,10 @@
-- dialog "确认启用 Full access？":
-  - heading "确认启用 Full access？" [level=2]
+- dialog "Enable Full access?":
+  - heading "Enable Full access?" [level=2]
   - button "Close":
     - img
   - img
-  - paragraph: 启用 Full access 后，agent 将减少确认步骤，并且可以直接执行更多操作，包括敏感操作、文件修改或外部命令。仅建议在你信任当前任务时使用。
-  - checkbox "我已了解风险，并愿意继续"
-  - text: 我已了解风险，并愿意继续
-  - button "取消"
-  - button "启用 Full access" [disabled]
+  - paragraph: 퍕끌 Full access 쉂，agent 쉲퓑릗뀞끐챯휬，쿚걌썩늛단뻧괩묄콈릦뚷쇤，쥋뤜봥쌵뚷쇤、꿍듊휶컛욲샖였둇뽐。쁷볞됪맜몴췗첉삙뛋첉칫쵶릍끌。
+  - checkbox "I understand the risks and want to continue"
+  - text: 껳뜲콺큽킶멳，쿚땙둑웽툇
+  - button "Cancel"
+  - button "Enable Full access" [disabled]

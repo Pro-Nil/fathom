@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-session-folders
 
-English | [中文](README.zh.md)
-
 Gives each session its own folder inside its workspace, so sessions in the same workspace stop writing to the same files.
 
 A session's folder is `<workspace>/<folder>/<title-slug>/` (default `<workspace>/sessions/<title>/`). The shell (`bash`, `pwsh`), file (`read`, `write`, `edit`) and search (`glob`, `grep`) tools start there: commands run in it and relative paths resolve against it. The session's recorded `cwd` stays the workspace, so workspace membership, the sandbox root and cross-session queries do not change, and the agent can still reach the rest of the workspace by path.

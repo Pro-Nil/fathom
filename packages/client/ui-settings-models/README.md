@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-client-ui-settings-models
 
-English | [中文](README.zh.md)
-
 Models settings and product-onboarding plugin. The same client Cordis plugin registers the Models page plus one first-run dialog, a versioned internal-testing notice, sequenced by `settings.onboarding`. The Models plane joins three wire domains into one shared snapshot — `llm.providers` (the configurable-provider directory with each route's live/dormant state), `settings.describe` (serialized schemas, layered redacted values, secret slots), and `credentials.describe` (value-free configured/source/writable badges) — and renders provider rows with one editor card at a time, without presenting route liveness as provider status.
 
 Rows are the *configured* providers (their profile resolves in the owning namespace).

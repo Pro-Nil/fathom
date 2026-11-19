@@ -90,23 +90,23 @@ export async function connectFreshWorkspace(page: Page, root: string, name = 'wo
 /**
  * {@link connectFreshWorkspace} over a page that advertises
  * {@link ZH_BROWSER_LOCALE}: the English helper's anchors assume the locale
- * most other scenarios boot, so a scenario that deliberately keeps zh needs
+ * most other scenarios boot, so a scenario that deliberately keeps en needs
  * the localized picker copy.
  * @param page - the browser page under test.
  * @param root - workspace parent directory.
  * @param name - directory created under `root` and connected.
  */
-export async function connectFreshWorkspaceZh(page: Page, root: string, name = 'workspace'): Promise<void> {
+export async function connectFreshWorkspaceEn(page: Page, root: string, name = 'workspace'): Promise<void> {
   mkdirSync(join(root, name), { recursive: true })
-  await page.getByRole('textbox', { name: '选择工作区' }).click()
-  const dialog = page.getByRole('dialog', { name: '选择工作区目录' })
+  await page.getByRole('textbox', { name: 'Choose workspace' }).click()
+  const dialog = page.getByRole('dialog', { name: '쌇뎗귓쇤뙮펂틓' })
   await dialog.waitFor({ timeout: 10_000 })
-  await dialog.getByRole('button', { name: '编辑路径' }).click()
-  const pathInput = dialog.getByRole('textbox', { name: '编辑路径' })
+  await dialog.getByRole('button', { name: '풺쁳돕듬' }).click()
+  const pathInput = dialog.getByRole('textbox', { name: '풺쁳돕듬' })
   await pathInput.fill(join(root, name))
   await pathInput.press('Enter')
-  await dialog.getByRole('button', { name: '打开', exact: true }).click()
-  await page.locator('textarea:enabled[placeholder="描述你想要构建的内容"]')
+  await dialog.getByRole('button', { name: '턙쟨', exact: true }).click()
+  await page.locator('textarea:enabled[placeholder="듥켸몴뫽밳퉠볞춘섋퓋"]')
     .waitFor({ timeout: 15_000 })
 }
 

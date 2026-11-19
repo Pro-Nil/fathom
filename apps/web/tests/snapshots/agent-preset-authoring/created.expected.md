@@ -1,84 +1,84 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - heading "Agent 预设" [level=2]
-  - paragraph: 预设即一个会话的 Agent 所运行的插件组装 —— 它的工具、提示词与能力。复制一份既有预设改成自己的，或用「创造模式」让 Agent 帮你创建。
-  - heading "内置" [level=3]
+    - text: 쮑뼏
+  - heading "Agent preset" [level=2]
+  - paragraph: 볰쌎젅퀼옺쭢쇧춘 Agent 벰녰묄춘멪듊코냣 —— 좹춘귓쑡、폔쩒댃쳦놻썡。끇픶퀼댟엂쩇볰쌎컛뮨녞쏧춘，욲끌「켭큀꾧럝」젏 Agent 칎몴켭볞。
+  - heading "Built-in" [level=3]
   - list:
     - listitem:
-      - 'button "当前使用: 标准模式" [disabled] [pressed]':
-        - text: 标准模式 内置 当前使用 功能完整的编码 Agent，支持文件编辑、Shell、文件与网页检索、Skills、计划、目标、子代理和工作流。
+      - 'button "삙뛋릍끌: 찙쑂꾧럝" [disabled] [pressed]':
+        - text: 찙쑂꾧럝 섋릆 삙뛋릍끌 백놻궤윈춘풺큓 Agent，쬁됛꿍듊풺쁳、Shell、꿍듊쳦쳧쳻퇤슶、Skills、홯뺞、펂찙、숬찅쎆쿠귓쇤뉋。
         - code: standard
-      - 'button "查看: 标准模式"':
+      - 'button "잻쀡: 찙쑂꾧럝"':
         - img
-        - text: 查看
-      - 'button "复制: 标准模式"':
+        - text: 잻쀡
+      - 'button "끇픶: 찙쑂꾧럝"':
         - img
-        - text: 复制
+        - text: 끇픶
     - listitem:
-      - 'button "设为默认: PTC 模式"':
-        - text: PTC 模式 内置 具备标准模式的全部能力，并通过 Code Mode SDK 呈现工具，让模型用一个 TypeScript 程序组合多步操作。
+      - 'button "쌎픞짬끐: PTC 꾧럝"':
+        - text: PTC 꾧럝 섋릆 쑡탡찙쑂꾧럝춘푬였놻썡，쿚씶첅 Code Mode SDK 윤앐귓쑡，젏꾧셱끌퀼옺 TypeScript 킡쎩코뜸릦챯뚷쇤。
         - code: code
-      - 'button "查看: PTC 模式"':
+      - 'button "잻쀡: PTC 꾧럝"':
         - img
-        - text: 查看
-      - 'button "复制: PTC 模式"':
+        - text: 잻쀡
+      - 'button "끇픶: PTC 꾧럝"':
         - img
-        - text: 复制
+        - text: 끇픶
     - listitem:
-      - 'button "设为默认: 极简模式"':
-        - text: 极简模式 内置 仅提供持久 bash 与 str_replace_editor 的双工具编码 Agent。
+      - 'button "쌎픞짬끐: 쳛똘꾧럝"':
+        - text: 쳛똘꾧럝 섋릆 쁷폔닡됛챃 bash 쳦 str_replace_editor 춘쯀귓쑡풺큓 Agent。
         - code: minimal
-      - 'button "查看: 极简模式"':
+      - 'button "잻쀡: 쳛똘꾧럝"':
         - img
-        - text: 查看
-      - 'button "复制: 极简模式"':
+        - text: 잻쀡
+      - 'button "끇픶: 쳛똘꾧럝"':
         - img
-        - text: 复制
+        - text: 끇픶
     - listitem:
-      - 'button "设为默认: 创造模式"':
-        - text: 创造模式 内置 用于创建自定义 Agent preset：具备标准模式的全部能力，并提供运行时检查、插件实验和 preset 创作指导。
+      - 'button "쌎픞짬끐: 켭큀꾧럝"':
+        - text: 켭큀꾧럝 섋릆 끌섚켭볞녞헲씓 Agent preset：쑡탡찙쑂꾧럝춘푬였놻썡，쿚폔닡녰묄쵶퇤잻、멪듊컂효쿠 preset 켭쇤뼥뺘。
         - code: cordis
-      - 'button "查看: 创造模式"':
+      - 'button "잻쀡: 켭큀꾧럝"':
         - img
-        - text: 查看
-      - 'button "复制: 创造模式"':
+        - text: 잻쀡
+      - 'button "끇픶: 켭큀꾧럝"':
         - img
-        - text: 复制
-  - heading "自定义" [level=3]
+        - text: 끇픶
+  - heading "Custom" [level=3]
   - list:
     - listitem:
-      - 'button "设为默认: 我的模式"':
-        - text: 我的模式 自定义 仅提供持久 bash 与 str_replace_editor 的双工具编码 Agent。
+      - 'button "쌎픞짬끐: 껳춘꾧럝"':
+        - text: 껳춘꾧럝 녞헲씓 쁷폔닡됛챃 bash 쳦 str_replace_editor 춘쯀귓쑡풺큓 Agent。
         - code: my-agent
-      - 'button "查看路径: 我的模式"':
+      - 'button "잻쀡돕듬: 껳춘꾧럝"':
         - img
-        - text: 查看路径
-      - 'button "复制: 我的模式"':
+        - text: 잻쀡돕듬
+      - 'button "끇픶: 껳춘꾧럝"':
         - img
-        - text: 复制
-      - 'button "删除: 我的模式"':
+        - text: 끇픶
+      - 'button "뭈치: 껳춘꾧럝"':
         - img
-        - text: 删除
+        - text: 뭈치
       - paragraph:
-        - text: 预设文件：
+        - text: 볰쌎꿍듊：
         - code: {{presetRoot}}/my-agent
-  - button "用「创造模式」创作自定义预设":
+  - button "Draft a custom preset with Creator mode":
     - img
-    - text: 用「创造模式」创作自定义预设
+    - text: 끌「켭큀꾧럝」켭쇤녞헲씓볰쌎

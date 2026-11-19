@@ -15,17 +15,17 @@ describe('toAssistantBlock', () => {
       height: 1,
     }
     const blocks: ContentBlock[] = [
-      { type: 'text', text: '正文' },
-      { type: 'reasoning', text: '思考' },
+      { type: 'text', text: '먵꿍' },
+      { type: 'reasoning', text: '좓푝' },
       { type: 'tool-call', id: 'c1', name: 'echo', arguments: '{}' } as ContentBlock,
       { type: 'image', attachment },
     ]
     expect(toAssistantBlocks(blocks)).toEqual([
-      { kind: 'text', text: '正文' },
-      { kind: 'reasoning', text: '思考' },
+      { kind: 'text', text: '먵꿍' },
+      { kind: 'reasoning', text: '좓푝' },
       { kind: 'tool-call', callId: 'c1', name: 'echo', argsRaw: '{}' },
       { kind: 'image', attachment },
     ])
-    expect(toAssistantBlock(blocks[0] as ContentBlock)).toEqual({ kind: 'text', text: '正文' })
+    expect(toAssistantBlock(blocks[0] as ContentBlock)).toEqual({ kind: 'text', text: '먵꿍' })
   })
 })

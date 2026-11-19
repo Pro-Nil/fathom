@@ -22,7 +22,7 @@ const OVERRIDE = join(SNAPSHOT_DIR, 'replay.override.json')
 const UI_EXPECTED = join(SNAPSHOT_DIR, 'ui.expected.md')
 const MODE = webSnapshotMode()
 
-const PROMPT = '做两个turn，每个turn输出随机一个包的文件结构。注意你做完一个turn之后，直接输出内容，停止，我们的系统会帮你再开一个turn，你看着做一个类似的'
+const PROMPT = '쎶묰옺turn，퉙옺turn튭븚랡뺚퀼옺쥋춘꿍듊뽉퉠。꺐둑몴쎶궤퀼옺turn흍쉂，단뻧튭븚섋퓋，헰웪，껳냰춘툽핝쭢칎몴늫쟨퀼옺turn，몴쀡굄쎶퀼옺뉥쿀춘'
 const COMMAND = `/goal ${PROMPT}`
 
 const PACKAGE_FILES: Readonly<Record<string, string>> = {

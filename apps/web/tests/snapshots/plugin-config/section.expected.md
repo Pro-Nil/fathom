@@ -1,38 +1,38 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - heading "插件" [level=2]
-  - paragraph: 配置和查看本部署已安装的插件。
-  - tablist "插件视图":
-    - tab "插件配置" [selected]
-    - tab "插件列表"
-  - tabpanel "插件配置":
+    - text: 쮑뼏
+  - heading "Plugins" [level=2]
+  - paragraph: 됫릆쿠잻쀡쇰였뉖뜲폃냣춘멪듊。
+  - tablist "Plugin views":
+    - tab "Plugin configuration" [selected]
+    - tab "Plugin list"
+  - tabpanel "Plugin configuration":
     - list:
       - listitem:
-        - 'button "展开设置: 终端"':
-          - text: 终端 限制 agent 运行的每一条命令。
+        - 'button "쉓쟨쌎릆: 젤뾵"':
+          - text: 젤뾵 욤픶 agent 녰묄춘퉙퀼꼓둇뽐。
           - img
       - listitem:
-        - 'button "展开设置: Agent 循环"':
-          - text: Agent 循环 Agent 如何派发工具调用。
+        - 'button "쉓쟨쌎릆: Agent 눚툅"':
+          - text: Agent 눚툅 Agent 굖쎏곆럛귓쑡뼕끌。
           - img
       - listitem:
-        - 'button "展开设置: 网页搜索"':
-          - text: 网页搜索 Acme 搜索提供方。
+        - 'button "쉓쟨쌎릆: 쳧쳻츰슶"':
+          - text: 쳧쳻츰슶 Acme 츰슶폔닡쌏。
           - img

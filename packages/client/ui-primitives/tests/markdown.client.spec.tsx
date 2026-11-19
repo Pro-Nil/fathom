@@ -62,7 +62,7 @@ describe('MarkdownText', () => {
     // The ts fence routed through the shared CodeBlock: shiki token spans + banner.
     expect(container.querySelector('pre.shiki')).not.toBeNull()
     expect(screen.getByText('ts')).toBeTruthy()
-    expect(screen.getByRole('button', { name: '复制' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeTruthy()
     expect(container.querySelector('br')).not.toBeNull()
     expect(screen.getByRole('link', { name: 'safe' }).getAttribute('target')).toBe('_blank')
     expect(screen.getByRole('link', { name: 'https://acme.test' })).toBeTruthy()
@@ -70,14 +70,14 @@ describe('MarkdownText', () => {
 
   it('closes punctuation-terminated strong emphasis before adjacent CJK text', () => {
     const cases = [
-      ['**注意：**内容', '注意：'],
-      ['**Notice:**内容', 'Notice:'],
-      ['**事件中间件（waterfall）**实现', '事件中间件（waterfall）'],
-      ['**事件中间件(waterfall)**实现', '事件中间件(waterfall)'],
-      ['**句号。**后续', '句号。'],
-      ['**Period.**后续', 'Period.'],
-      ['**提醒！**继续', '提醒！'],
-      ['**Warning!**继续', 'Warning!'],
+      ['**꺐둑：**섋퓋', '꺐둑：'],
+      ['**Notice:**섋퓋', 'Notice:'],
+      ['**뮕듊쮿뵤듊（waterfall）**컂앐', '뮕듊쮿뵤듊（waterfall）'],
+      ['**뮕듊쮿뵤듊(waterfall)**컂앐', '뮕듊쮿뵤듊(waterfall)'],
+      ['**뾏딉。**쉂툇', '뾏딉。'],
+      ['**Period.**쉂툇', 'Period.'],
+      ['**폔뀲！**웽툇', '폔뀲！'],
+      ['**Warning!**웽툇', 'Warning!'],
     ] as const
     const source = cases.map(([markdown]) => markdown).join('\n\n')
 
@@ -91,27 +91,27 @@ describe('MarkdownText', () => {
 
   it('keeps the CJK strong extension out of escaped, code, math, and ASCII contexts', () => {
     const source = [
-      String.raw`\**注意：**内容`,
-      '`**注意：**内容`',
+      String.raw`\**꺐둑：**섋퓋`,
+      '`**꺐둑：**섋퓋`',
       '**Notice:**text',
-      '*提醒！*继续',
-      '$**注意：**内容$',
+      '*폔뀲！*웽툇',
+      '$**꺐둑：**섋퓋$',
       '```md',
-      '**注意：**内容',
+      '**꺐둑：**섋퓋',
       '```',
-      '**普通**内容',
-      '*普通*内容',
+      '**퀊씶**섋퓋',
+      '*퀊씶*섋퓋',
     ].join('\n\n')
     const { container } = render(<MarkdownText text={source} />)
 
-    expect([...container.querySelectorAll('strong')].map(node => node.textContent)).toEqual(['普通'])
-    expect([...container.querySelectorAll('em')].map(node => node.textContent)).toEqual(['普通'])
-    expect(container.querySelector('code')?.textContent).toBe('**注意：**内容')
-    expect(container.querySelector('.katex annotation')?.textContent).toBe('**注意：**内容')
-    expect(container.querySelector('pre code')?.textContent).toContain('**注意：**内容')
+    expect([...container.querySelectorAll('strong')].map(node => node.textContent)).toEqual(['퀊씶'])
+    expect([...container.querySelectorAll('em')].map(node => node.textContent)).toEqual(['퀊씶'])
+    expect(container.querySelector('code')?.textContent).toBe('**꺐둑：**섋퓋')
+    expect(container.querySelector('.katex annotation')?.textContent).toBe('**꺐둑：**섋퓋')
+    expect(container.querySelector('pre code')?.textContent).toContain('**꺐둑：**섋퓋')
     expect(container.textContent).toContain('**Notice:**text')
-    expect(container.textContent).toContain('*提醒！*继续')
-    expect(container.textContent).toContain('**注意：**内容')
+    expect(container.textContent).toContain('*폔뀲！*웽툇')
+    expect(container.textContent).toContain('**꺐둑：**섋퓋')
   })
 
   it('links complete HTTP(S) inline code without promoting commands, unsafe schemes, or fences', () => {
@@ -513,6 +513,6 @@ describe('JsonBlock', () => {
     const { container } = render(<JsonBlock label="x" payload={big} defaultOpen />)
     const body = container.querySelector('pre')!.textContent
     expect(body.length).toBeLessThan(30_000)
-    expect(body).toContain('截断')
+    expect(body).toContain('truncated')
   })
 })

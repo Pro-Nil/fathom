@@ -1,6 +1,6 @@
 - listitem:
-  - button "ui-settings, 已挂载, 已启用":
+  - button "ui-settings, 뜲팊뢿, 뜲퍕끌":
     - strong: ui-settings
-    - img "已挂载"
-    - text: 已启用
+    - img "Mounted"
+    - text: 뜲퍕끌
     - img

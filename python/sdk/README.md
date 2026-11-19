@@ -1,7 +1,5 @@
 # Pentest Harness Python SDK
 
-English | [中文](https://github.com/S1N6H/pentest-harness/blob/master/python/sdk/README.zh.md)
-
 Python subprocess SDK for driving Pentest Harness over JSON-RPC stdio. The
 runtime inherits normal Pentest Harness environment variables such as
 `LLM_BASE_URL` and `LLM_API_KEY`, so callers can use real model

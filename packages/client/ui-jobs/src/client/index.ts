@@ -8,7 +8,7 @@ import { createElement } from 'react'
 import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
 import { JobListAction, type JobListActionProps } from './JobListAction.tsx'
 import type {} from '@pentest-harness/dsh-client-locale/client'
-import { en, NS, zh, type JobKey } from './locales.ts'
+import { en, NS, type JobKey } from './locales.ts'
 
 declare module '@pentest-harness/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -27,7 +27,7 @@ export const inject = ['sessions', 'slots', 'locale']
  * @param ctx - client root context.
  */
 export function apply(ctx: ClientContext): void {
-  ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'ui-job: dictionaries')
+  ctx.effect(() => ctx.locale.register(NS, { en }), 'ui-job: dictionaries')
   // The only RPC this plugin makes: the user's Stop on one running job.
   const stopJob: NonNullable<JobListActionProps['stopJob']> = async (sessionId, jobId) => {
     const result = await ctx.sessions.killJob(sessionId, jobId)

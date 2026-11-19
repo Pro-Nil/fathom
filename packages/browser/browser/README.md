@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-browser
 
-English | [中文](README.zh.md)
-
 One shared browser for the agent and the user. The default-exported `BrowserRuntime` service registers `ctx.browser`, whose `shared` member is a persistent Chromium session driven through Playwright. By default it is the harness's own Chromium build (Playwright's pinned Chromium, about 180 MB), downloaded into Playwright's browser cache the first time the browser starts, so it does not depend on an installed browser. The browser launches on first use, not at startup, and keeps its profile on disk, so sign-ins and cookies survive restarts.
 
 The agent drives it through [`dsh-tool-browser`](../tool-browser/README.md). When `ctx.webServer` is mounted, the service also serves a live view:

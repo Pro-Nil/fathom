@@ -45,7 +45,7 @@ describe('slugify', () => {
   it('turns a title into a lowercase dashed folder name', () => {
     expect(slugify('Gradescope Vulnerability Hunt')).toBe('gradescope-vulnerability-hunt')
     expect(slugify('  Café: API / Auth?? ')).toBe('cafe-api-auth')
-    expect(slugify('漢字')).toBe('')
+    expect(slugify('꿦삁')).toBe('')
   })
 
   it('cuts long titles at a word boundary', () => {

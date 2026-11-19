@@ -91,7 +91,7 @@ try {
   })
   const splitUtf8Outcome = await splitUtf8Handle.done
   const splitUtf8Output = splitUtf8Handle.collected.stdout?.readFrom(0).text
-  if (splitUtf8Outcome.exitCode !== 0 || splitUtf8Output !== '你好') {
+  if (splitUtf8Outcome.exitCode !== 0 || splitUtf8Output !== '몴섻') {
     throw new Error(`E2B subprocess corrupted split UTF-8 output: ${JSON.stringify({ splitUtf8Outcome, splitUtf8Output })}`)
   }
 
@@ -123,7 +123,7 @@ try {
   const remoteLspFixture = await ctx.fs.resolve('fixture-lsp.mjs')
   await ctx.fs.writeText(remoteLspFixture, lspFixture, { kind: 'createIfAbsent' })
   const remoteSource = await ctx.fs.resolve('multibyte # file.ts')
-  await ctx.fs.writeText(remoteSource, 'const café = "你好"\nconsole.log(café)\n', { kind: 'createIfAbsent' })
+  await ctx.fs.writeText(remoteSource, 'const café = "몴섻"\nconsole.log(café)\n', { kind: 'createIfAbsent' })
   const hover = await ctx.lsp.query({
     operation: 'hover',
     filePath: 'multibyte # file.ts',
@@ -140,7 +140,7 @@ try {
   const terminal = await ctx.terminals.spawn(owner, { type: 'shell' })
   terminalId = terminal.sessionId
   const terminalEcho = await ctx.terminals.startSend(owner, terminal.sessionId, {
-    text: "printf 'PTY-你好\\n'",
+    text: "printf 'PTY-몴섻\\n'",
     submit: true,
   }).done
   const sleeping = ctx.terminals.startSend(owner, terminal.sessionId, {

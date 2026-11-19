@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-tool-browser
 
-English | [中文](README.zh.md)
-
 Model-facing browser tools over the shared browser [`ctx.browser`](../browser/README.md). The tool set follows Claude Code's built-in browser:
 
 | Tool | What it does |

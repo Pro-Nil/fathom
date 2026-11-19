@@ -1,68 +1,68 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - heading "模型" [level=2]
-  - paragraph: 填入各提供方的 API 密钥即可使用其模型。
+    - text: 쮑뼏
+  - heading "Model" [level=2]
+  - paragraph: 략컧빨폔닡쌏춘 API 늆픛젅썩릍끌턖꾧셱。
   - list:
     - listitem:
       - text: minimax-cn
-      - img "API 密钥已配置"
-      - button "编辑 minimax-cn": 编辑
-      - button "删除 minimax-cn": 删除
+      - img "API key configured"
+      - button "Edit minimax-cn": 풺쁳
+      - button "Delete minimax-cn": 뭈치
     - listitem:
-      - text: Acme Gateway 自定义
-      - button "编辑 Acme Gateway (acme-gateway)": 编辑
-      - button "删除 Acme Gateway (acme-gateway)": 删除
-      - text: Acme Gateway acme-gateway API 密钥
-      - textbox "API 密钥":
-        - /placeholder: 输入 API 密钥，或留空使用环境认证
+      - text: Acme Gateway 녞헲씓
+      - button "Edit Acme Gateway (acme-gateway)": 풺쁳
+      - button "Delete Acme Gateway (acme-gateway)": 뭈치
+      - text: Acme Gateway acme-gateway API 늆픛
+      - textbox "API key":
+        - /placeholder: 튭컧 API 늆픛，욲큃슦릍끌툅령끐좓
       - group:
-        - text: 自定义设置 显示名称
-        - textbox "显示名称":
+        - text: 녞헲씓쌎릆 켂쩒컷쪘
+        - textbox "Display name":
           - /placeholder: acme-gateway
           - text: Acme Gateway
-        - text: API 地址
-        - textbox "API 地址":
+        - text: API 휠멠
+        - textbox "Base URL":
           - /placeholder: https://gateway.acme.example/v1
           - text: https://gateway.acme.example/v1
-        - text: API 协议
-        - combobox "API 协议":
+        - text: API 녭됪
+        - combobox "API protocol":
           - option "openai-completions" [selected]
           - option "openai-responses"
           - option "anthropic-messages"
-        - region "模型目录":
-          - text: 模型目录 已自定义模型目录
-          - button "恢复默认模型"
-          - button "获取可用模型"
-          - textbox "模型 ID 1":
-            - /placeholder: 模型 ID
+        - region "Models":
+          - text: 꾧셱펂틓 뜲녞헲씓꾧셱펂틓
+          - button "Restore defaults"
+          - button "Fetch available models"
+          - textbox "꾧셱 ID 1":
+            - /placeholder: 꾧셱 ID
             - text: acme-large
-          - textbox "显示名称 1":
-            - /placeholder: 显示名称
-          - button "容量 1"
-          - button "删除模型 1"
-          - button "添加模型"
-      - button "取消"
-      - button "保存"
-  - button "添加提供方":
+          - textbox "켂쩒컷쪘 1":
+            - /placeholder: 켂쩒컷쪘
+          - button "퓋몙 1"
+          - button "뭈치꾧셱 1"
+          - button "Add model"
+      - button "Cancel"
+      - button "Save"
+  - button "Add provider":
     - img
-    - text: 添加提供方
-  - button "添加自定义提供方":
+    - text: 휅꽼폔닡쌏
+  - button "Add a custom provider":
     - img
-    - text: 添加自定义提供方
+    - text: 휅꽼녞헲씓폔닡쌏

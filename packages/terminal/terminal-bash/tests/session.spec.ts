@@ -1138,7 +1138,7 @@ describe('LocalPtySession bounds, signals, and teardown', () => {
     expect(session.read({})).toMatchObject({ text: '' })
     await initialize(session, terminal)
     const operation = session.startSend({ text: '', submit: false })
-    terminal.emitData('一\n二\n三\n四')
+    terminal.emitData('퀼\n껠\n딧\n찵')
     await vi.advanceTimersByTimeAsync(60)
     expect((await operation.done).truncated).toBe(true)
     const page = session.read({ offset: 0, count: 3 })
@@ -1152,7 +1152,7 @@ describe('LocalPtySession bounds, signals, and teardown', () => {
     const tiny = new LocalPtySession(tinyTerminal, config({ maxReadBytes: 1 }))
     await initialize(tiny, tinyTerminal)
     const tinyOperation = tiny.startSend({ text: '', submit: false })
-    tinyTerminal.emitData('一')
+    tinyTerminal.emitData('퀼')
     await vi.advanceTimersByTimeAsync(60)
     await tinyOperation.done
     expect(tiny.read({ offset: 0, count: 1 }).text).toBe('')

@@ -1,34 +1,34 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - heading "模型" [level=2]
-  - paragraph: 填入各提供方的 API 密钥即可使用其模型。
-  - status: 已保存 minimax-cn。
+    - text: 쮑뼏
+  - heading "Model" [level=2]
+  - paragraph: 략컧빨폔닡쌏춘 API 늆픛젅썩릍끌턖꾧셱。
+  - status: 뜲픇돌 minimax-cn。
   - list:
     - listitem:
       - text: minimax-cn
-      - img "API 密钥已配置"
-      - button "编辑 minimax-cn": 编辑
-      - button "删除 minimax-cn": 删除
-  - button "添加提供方":
+      - img "API key configured"
+      - button "Edit minimax-cn": 풺쁳
+      - button "Delete minimax-cn": 뭈치
+  - button "Add provider":
     - img
-    - text: 添加提供方
-  - button "添加自定义提供方":
+    - text: 휅꽼폔닡쌏
+  - button "Add a custom provider":
     - img
-    - text: 添加自定义提供方
+    - text: 휅꽼녞헲씓폔닡쌏

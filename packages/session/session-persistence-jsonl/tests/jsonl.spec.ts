@@ -164,7 +164,7 @@ describe('JsonlSessionPersistence: format helpers', () => {
     expect(projectKey('/Users/qyj/work/pentest-harness')).toBe('--Users-qyj-work-pentest-harness--')
     expect(projectKey('/a/b-c')).toBe(projectKey('/a-b/c'))
     expect(projectKey('C:\\work\\agent')).toBe('--C-work-agent--')
-    expect(projectKey('/开发/~agent')).toBe('--~5F00~53D1-~007Eagent--')
+    expect(projectKey('/쟨럛/~agent')).toBe('--~C7E8~B7DB-~007Eagent--')
     expect(projectKey('/')).toBe('--root--')
     expect(projectKey('/' + 'x'.repeat(1_000))).toHaveLength(255)
     expect(() => projectKey('')).toThrow(/empty project path/)
@@ -857,8 +857,8 @@ describe('JsonlSessionPersistence: scanLog unit', () => {
 
   it('incrementally scans records split across reusable decoder chunks', () => {
     const header = Buffer.from(`${JSON.stringify(toHeaderLine(meta('incremental')))}\n`)
-    const body = Buffer.from(`${oneTurnLog().map(event => JSON.stringify(event)).join('\n').replace('"hi"', '"你好"')}\n`)
-    const split = body.indexOf(Buffer.from('你')) + 1
+    const body = Buffer.from(`${oneTurnLog().map(event => JSON.stringify(event)).join('\n').replace('"hi"', '"몴섻"')}\n`)
+    const split = body.indexOf(Buffer.from('몴')) + 1
     const firstChunk = Buffer.from(body.subarray(0, split))
     const scanner = new SessionLogScanner(header)
 

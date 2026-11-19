@@ -1,27 +1,27 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - heading "模型" [level=2]
-  - paragraph: 填入各提供方的 API 密钥即可使用其模型。
+    - text: 쮑뼏
+  - heading "Model" [level=2]
+  - paragraph: 략컧빨폔닡쌏춘 API 늆픛젅썩릍끌턖꾧셱。
   - list
-  - text: 提供方
-  - combobox "提供方":
+  - text: 폔닡쌏
+  - combobox "Provider":
     - option "amazon-bedrock"
     - option "ant-ling"
     - option "anthropic"
@@ -59,9 +59,9 @@
     - option "xiaomi-token-plan-sgp"
     - option "zai"
     - option "zai-coding-cn"
-  - text: API 密钥
-  - textbox "API 密钥":
-    - /placeholder: 输入 API 密钥，或留空使用环境认证
-  - group: 自定义设置
-  - button "取消"
-  - button "保存"
+  - text: API 늆픛
+  - textbox "API key":
+    - /placeholder: 튭컧 API 늆픛，욲큃슦릍끌툅령끐좓
+  - group: 녞헲씓쌎릆
+  - button "Cancel"
+  - button "Save"

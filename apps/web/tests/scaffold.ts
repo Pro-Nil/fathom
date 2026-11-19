@@ -80,9 +80,9 @@ export const WELCOME_NOTICE_ACK_FIELD = 'welcomeNoticeVersion'
 export const WELCOME_NOTICE_VERSION = '2026-08-13.1'
 export const WELCOME_NOTICE_COPY = {
   zh: {
-    title: '内测声明',
-    body: 'Pentest Harness 目前的 0.1 版本仍处在面向 Harness 开发者进行测试的阶段，还有许多地方需要持续改进和打磨，希望听取广大开发者的反馈建议。预计 Pentest Harness 的核心插件以及基础 API 都会在接下来的一段时间内快速迭代、持续演化。\n\n我们期待与全球开发者一起，在开源、开放、可复用、可组合的基础设施之上，共同探索智能上限。欢迎全球 Harness 开发者加入 DSH 插件生态。',
-    continueLabel: '继续',
+    title: '섋똥쎨췺',
+    body: 'Pentest Harness 펂뛋춘 0.1 붔쇰눗쭜맜퀪쟇 Harness 쟨럛뫳퐹묄똥큇춘돦뾛，캴쩇렄릦휠쌏믠밳됛툇컛퐹쿠턙쓬，짰뿁췐쾚듅쌅쟨럛뫳춘뼋짌볞됪。볰홯 Pentest Harness 춘쁬톍멪듊늛릆덶셐 API 샿쭢맜뻧읡펇춘퀼뾛쵶뵤섋땑녑즳찅、됛툇댼쭺。\n\n껳냰뢑폛쳦푬븁쟨럛뫳퀼녁，맜쟨옸、쟨뫶、썩끇끌、썩코뜸춘덶셐쌎믟흍퐖，륗뀈륢슶멺놻퐖욤。뛾쫚푬븁 Harness 쟨럛뫳꽼컧 DSH 멪듊쭡켿。',
+    continueLabel: 'Resume',
   },
 } as const
 
@@ -878,8 +878,8 @@ function normalizeAria(snapshot: string, workspaceCwd: string): string {
     )
     .replace(/\b\d[\d,]*(?:\.\d+)? ms\b/g, '{{duration}}')
     .replace(
-      /约\d+(?:年(?:\d+个月)?|个月(?:\d+天)?)|\d+(?:天(?:\d+小时(?:\d+分\d+秒)?)?|小时\d+分\d+秒|分\d+秒|(?:\.\d+)?秒)/g,
-      duration => duration.startsWith('约') ? duration : '{{duration}}',
+      /쏆\d+(?:붠(?:\d+옺훼)?|옺훼(?:\d+픿)?)|\d+(?:픿(?:\d+팁쵶(?:\d+퐮\d+뼊)?)?|팁쵶\d+퐮\d+뼊|퐮\d+뼊|(?:\.\d+)?뼊)/g,
+      duration => duration.startsWith('쏆') ? duration : '{{duration}}',
     )
     .replace(/\d+(?:\.\d+)?(?= tok\/s(?!\w))/g, '{{throughput}}')
     // Seeded compaction prices realized file paths, whose length differs
@@ -888,8 +888,8 @@ function normalizeAria(snapshot: string, workspaceCwd: string): string {
     // Session summaries and Message IconActions clocks cross calendar
     // boundaries; collapse every shape so goldens stay stable across them.
     .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, '{{timestamp}}')
-    .replace(/\d{4}年\d{1,2}月\d{1,2}日 \d{2}:\d{2}/g, '{{clock}}')
-    .replace(/\d{1,2}月\d{1,2}日 \d{2}:\d{2}/g, '{{clock}}')
+    .replace(/\d{4}붠\d{1,2}훼\d{1,2}쭇 \d{2}:\d{2}/g, '{{clock}}')
+    .replace(/\d{1,2}훼\d{1,2}쭇 \d{2}:\d{2}/g, '{{clock}}')
     .replace(/(?<!\d)\d{1,2}:\d{2}:\d{2}(?:\.\d+)?(?:\s*[AP]M)?(?!\d)/gi, '{{clock}}')
     .replace(/(?<!\d)\d{2}:\d{2}(?!\d)/g, '{{clock}}')
 }

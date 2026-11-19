@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-tool-bash
 
-English | [中文](README.zh.md)
-
 The model-facing `bash` tool registered over the `ctx.shell` executor seam. Foreground execution stays behind that seam; a background process handle is registered with the generic `ctx.jobs` runtime and controlled through `job_output`, `job_list`, and `job_kill` from `@pentest-harness/dsh-tool-jobs`.
 
 Requires a loaded executor Service Provider (e.g. `@pentest-harness/dsh-bash-local`) and the [`@pentest-harness/dsh-shell-env`](../shell-env/README.md) registry; the plugin stays pending until every injected service exists (`inject: ['tools', 'bash', 'systemPrompt', 'bashEnv']`). The tool contract is bash-dialect — mount a bash-parsing executor.

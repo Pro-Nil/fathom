@@ -1,7 +1,5 @@
 # apps/web browser e2e
 
-English | [中文](README.zh.md)
-
 These tests boot the real web composition in-process and drive it with a real
 Chromium over real HTTP. The lane's mechanics — modes, fixtures, goldens, and
 the deliberate composition divergences from `dsh web` — are documented in
@@ -31,7 +29,7 @@ When a scenario needs a Client-owned constant or pure function, mirror it here
 instead, next to the commented-out import that names the source module. A drift
 then surfaces as a missed selector or a stale mirrored value — a loud failure,
 never a silent pass. `scaffold.ts` follows this rule for the welcome-notice
-namespace, acknowledgement field, version, and asserted Chinese copy.
+namespace, acknowledgement field, version, and asserted copy.
 
 Two kinds of Client import stand. `assembled-boot.ts` drives the shell itself, so
 it imports `AppWebEntry` from `@pentest-harness/dsh-client-web` and the boot-manifest

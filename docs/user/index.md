@@ -7,5 +7,3 @@ head:
 ---
 
 # Pentest Harness
-
-English | [中文](index.zh.md)

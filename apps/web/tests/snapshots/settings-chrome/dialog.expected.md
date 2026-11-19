@@ -1,45 +1,45 @@
-- dialog "设置":
+- dialog "Settings":
   - navigation:
-    - text: 设置
-    - button "通用设置":
+    - text: 쌎릆
+    - button "General":
       - img
-      - text: 通用设置
-    - button "模型":
+      - text: 씶끌쌎릆
+    - button "Model":
       - img
-      - text: 模型
-    - button "插件":
+      - text: 꾧셱
+    - button "Plugins":
       - img
-      - text: 插件
-    - button "Agent 预设":
+      - text: 멪듊
+    - button "Agent preset":
       - img
-      - text: Agent 预设
-  - button "打开配置文件"
-  - button "关闭":
+      - text: Agent 볰쌎
+  - button "Open configuration file"
+  - button "Close":
     - img
-    - text: 关闭
-  - text: Agent 预设 对此后新建的会话生效。运行中的会话保持它开始时的预设。
-  - button "标准模式":
-    - text: 标准模式
+    - text: 쮑뼏
+  - text: Agent 볰쌎 뤓궀쉂늀볞춘쭢쇧쭡뻐。녰묄쮿춘쭢쇧픇됛좹쟨췑쵶춘볰쌎。
+  - button "Standard mode":
+    - text: 찙쑂꾧럝
     - img
-  - text: 权限 选择新会话的默认权限模式
+  - text: 켩욤 쌇뎗늀쭢쇧춘짬끐켩욤꾧럝
   - button "Workspace Write":
     - text: Workspace Write
     - img
-  - text: 语言
-  - button "中文":
-    - text: 中文
+  - text: 탋봜
+  - button "쮿꿍":
+    - text: 쮿꿍
     - img
-  - text: 外观
-  - button "浅色":
+  - text: 샖뽪
+  - button "Light":
     - img
-    - text: 浅色
-  - button "深色":
+    - text: 횿싖
+  - button "Dark":
     - img
-    - text: 深色
-  - button "跟随系统" [pressed]:
+    - text: 팫싖
+  - button "System" [pressed]:
     - img
-    - text: 跟随系统
-  - text: 繁忙时 Enter 键行为 仅在智能体运行时生效；Cmd/Ctrl+Enter 使用另一行为
-  - button "排队发送":
-    - text: 排队发送
+    - text: 킕랡툽핝
+  - text: 햛뿗쵶 Enter 긺묄픞 쁷맜멺놻녕녰묄쵶쭡뻐；Cmd/Ctrl+Enter 릍끌닚퀼묄픞
+  - button "Queue":
+    - text: 혢퉑럛텧
     - img

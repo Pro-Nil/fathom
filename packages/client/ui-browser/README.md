@@ -1,7 +1,5 @@
 # @pentest-harness/dsh-client-ui-browser
 
-English | [中文](README.zh.md)
-
 The Web client's Browser pane. It occupies the layout's `aside` column, to the right of the conversation, which shrinks to make room instead of being covered. The column frames the live view that [`dsh-browser`](../../browser/browser/README.md) serves at `/browser/view`, so the user sees the same tabs the agent drives and can click, type and navigate in them.
 
 The column's header has four buttons: reconnect the view, open it in a separate window, maximize or restore the column, and close it. Its left edge is a drag handle. Inside a Session, a **Browser** button among the conversation header's utilities (beside Session log) opens and closes the column through `ctx.layout.toggleAside`; on the new-session screen, which has no header, the same button floats at the top right through the `shell.overlay` slot. The column opens at 45% of the window width.
