@@ -89,7 +89,7 @@ export const WEB_SEARCH_SETTINGS_SCHEMA: z<WebSearchSettings> = z.object({
  * Order the seam tries providers after the chosen one fails. Ids not listed
  * follow in registration order; unregistered or unavailable ones are skipped.
  */
-export const SEARCH_FALLBACK_ORDER: readonly string[] = ['google', 'google-api', 'duckduckgo', 'exa', 'perplexity']
+export const SEARCH_FALLBACK_ORDER: readonly string[] = ['google', 'google-api', 'bing', 'duckduckgo', 'exa', 'perplexity']
 
 /**
  * The web access service. Registered as `ctx.web` (one instance per context).

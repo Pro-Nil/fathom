@@ -420,7 +420,7 @@
       name: '@pentest-harness/dsh-web'
       config:
         # Google first; when it is unavailable or refuses (CAPTCHA, rate
-        # limit) the seam falls back through google-api, duckduckgo, exa and
+        # limit) the seam falls back through google-api, bing, duckduckgo, exa and
         # perplexity. Settings -> Plugins -> Web search changes both live.
         searchProvider: google
         searchFallback: true

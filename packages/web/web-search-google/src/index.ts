@@ -1,9 +1,9 @@
 /**
- * `@pentest-harness/dsh-web-search-google`: Google search for `ctx.web`.
- * Registers `google` (keyless, through a hidden page of the shared browser;
- * usable whenever `ctx.browser` is mounted) and `google-api` (the
- * Programmable Search JSON API; usable once `GOOGLE_API_KEY` and
- * `GOOGLE_CSE_ID` are stored as credentials or set in the environment).
+ * `@pentest-harness/dsh-web-search-google`: browser-backed and Google search
+ * for `ctx.web`. Registers `google` and `bing` (keyless, each through a hidden
+ * page of the shared browser; usable whenever `ctx.browser` is mounted) and
+ * `google-api` (the Programmable Search JSON API; usable once `GOOGLE_API_KEY`
+ * and `GOOGLE_CSE_ID` are stored as credentials or set in the environment).
  * @module @pentest-harness/dsh-web-search-google
  */
 
@@ -19,6 +19,17 @@ import {
   GoogleBrowserSearchProvider,
 } from './provider.ts'
 import type { ScratchPageRunner } from './provider.ts'
+import { BING_DEFAULT_SEARCH_URL, BingBrowserSearchProvider } from './bing.ts'
+
+export {
+  BING_DEFAULT_SEARCH_URL,
+  BING_PROVIDER_ID,
+  BingBrowserSearchProvider,
+  cleanBingHits,
+  isNoResultsPage,
+  resolveBingUrl,
+} from './bing.ts'
+export type { BingBrowserSearchProviderOptions, RawBingHit } from './bing.ts'
 
 export {
   GOOGLE_API_DEFAULT_BASE_URL,
@@ -58,6 +69,10 @@ export interface Config {
   engineIdEnv?: string
   /** Page-load / request timeout in milliseconds. Defaults to 20000. */
   timeoutMs?: number
+  /** Results page for the keyless Bing provider. */
+  bingSearchURL?: string
+  /** Bing market (`mkt`, for example `en-US`, `en-IN`); empty for Bing's default. */
+  bingMarket?: string
 }
 
 export const Config: z<Config> = z.object({
@@ -67,19 +82,28 @@ export const Config: z<Config> = z.object({
   apiKeyEnv: z.string(),
   engineIdEnv: z.string(),
   timeoutMs: z.natural(),
+  bingSearchURL: z.string(),
+  bingMarket: z.string(),
 })
 
-/** Register both Google search providers with `ctx.web`. */
+/** Register the Google, Bing and Google API search providers with `ctx.web`. */
 export function apply(ctx: Context, config: Config): void {
   const timeoutMs = config.timeoutMs ?? 20_000
+  const runner = (): ScratchPageRunner | undefined => {
+    const browser = ctx.get('browser')
+    if (browser === undefined) return undefined
+    return (work => browser.shared.withScratchPage(work)) as ScratchPageRunner
+  }
   ctx.web.registerSearchProvider(new GoogleBrowserSearchProvider({
-    runner: () => {
-      const browser = ctx.get('browser')
-      if (browser === undefined) return undefined
-      return (work => browser.shared.withScratchPage(work)) as ScratchPageRunner
-    },
+    runner,
     searchURL: config.searchURL ?? GOOGLE_DEFAULT_SEARCH_URL,
     language: config.language ?? 'en',
+    timeoutMs,
+  }))
+  ctx.web.registerSearchProvider(new BingBrowserSearchProvider({
+    runner,
+    searchURL: config.bingSearchURL ?? BING_DEFAULT_SEARCH_URL,
+    market: config.bingMarket ?? '',
     timeoutMs,
   }))
 

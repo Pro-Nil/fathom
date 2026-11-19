@@ -1453,7 +1453,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/pentest-toolkit/src/index.ts:40`](../packages/pentest/pentest-toolkit/src/index.ts)
+Source: [`packages/pentest/pentest-toolkit/src/index.ts:41`](../packages/pentest/pentest-toolkit/src/index.ts)
 
 <a id="pentest-harnessdsh-permission-presets"></a>
 
@@ -3112,10 +3112,18 @@ export interface WebRuntimeConfig {
   readonly searchProvider?: string
   /** Explicit fetch provider id. Omitted = auto-select when exactly one usable. */
   readonly fetchProvider?: string
+  /**
+   * When the chosen search provider fails (rate limit, block, network) or is
+   * unavailable, try the other usable providers in {@link SEARCH_FALLBACK_ORDER}.
+   * Defaults to false (strict selection).
+   */
+  readonly searchFallback?: boolean
+  /** Expose `searchProvider` / `searchFallback` as the live `web-search` settings section. */
+  readonly settings?: boolean
 }
 ```
 
-Source: [`packages/web/web/src/index.ts:55`](../packages/web/web/src/index.ts)
+Source: [`packages/web/web/src/index.ts:56`](../packages/web/web/src/index.ts)
 
 <a id="pentest-harnessdsh-web-app"></a>
 
@@ -3211,6 +3219,36 @@ export interface Config {
 ```
 
 Source: [`packages/web/web-search-exa/src/index.ts:38`](../packages/web/web-search-exa/src/index.ts)
+
+<a id="pentest-harnessdsh-web-search-google"></a>
+
+## `@pentest-harness/dsh-web-search-google`
+
+Requires: `web`
+
+```ts config-catalog
+/** Plugin config (all optional). */
+export interface Config {
+  /** Results page for the keyless provider. */
+  searchURL?: string
+  /** Interface language (`hl`) for the keyless provider; empty for Google's default. */
+  language?: string
+  /** Endpoint for the API provider. */
+  apiBaseURL?: string
+  /** Credential reference holding the API key. Defaults to `GOOGLE_API_KEY`. */
+  apiKeyEnv?: string
+  /** Credential reference holding the search-engine id (`cx`). Defaults to `GOOGLE_CSE_ID`. */
+  engineIdEnv?: string
+  /** Page-load / request timeout in milliseconds. Defaults to 20000. */
+  timeoutMs?: number
+  /** Results page for the keyless Bing provider. */
+  bingSearchURL?: string
+  /** Bing market (`mkt`, for example `en-US`, `en-IN`); empty for Bing's default. */
+  bingMarket?: string
+}
+```
+
+Source: [`packages/web/web-search-google/src/index.ts:59`](../packages/web/web-search-google/src/index.ts)
 
 <a id="pentest-harnessdsh-web-search-perplexity"></a>
 
