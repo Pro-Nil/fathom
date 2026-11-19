@@ -1,6 +1,6 @@
 # Pentest Harness desktop app (Windows and Linux)
 
-A small native window around the harness web UI, built with [Avalonia](https://avaloniaui.net) on .NET 10. The page is shown by the system web view (Edge WebView2 on Windows, WebKitGTK or WPE WebKit on Linux), so no Chromium is bundled.
+A small native window around the harness web UI, built with [Avalonia](https://avaloniaui.net) 12 on .NET 10. The page is shown by the system web view (Edge WebView2 on Windows, WebKitGTK or WPE WebKit on Linux), so no Chromium is bundled. On Linux, WebKitGTK renders offscreen and Avalonia draws its frames into the window (the WebView package marks this mode experimental).
 
 - **Opening the app runs the harness.** It starts `node --import tsx/esm apps/cli/src/bin.ts web --no-open` in the checkout with no console window and shows the UI when the server answers. If something already listens on the port (for example a server started from a terminal), the app attaches to it instead.
 - **Closing the window hides it to the tray.** The harness keeps working. Click the tray icon to bring the window back.
@@ -32,7 +32,7 @@ On Linux the first launch adds **Pentest Harness** to the desktop's application 
 Requirements:
 
 - **Windows:** Windows 10 1809+ with the Edge WebView2 Runtime (preinstalled on Windows 11), the .NET 10 SDK (or the .NET Desktop Runtime 10+ to only run a build), and Node.js on PATH.
-- **Linux:** an X11 or XWayland desktop session, the .NET 10 SDK (or runtime), Node.js, and the WebKitGTK runtime: `sudo apt install libwebkit2gtk-4.1-0` on Debian/Ubuntu (`webkit2gtk4.1` on Fedora). Notifications use `notify-send` (`libnotify-bin`); the chime plays through `pw-play`, `paplay` or `aplay`, whichever exists. The tray icon needs a desktop with a system tray (StatusNotifierItem); on GNOME that is the AppIndicator extension.
+- **Linux:** an X11 or XWayland desktop session, the .NET 10 SDK (or runtime), Node.js, and the WebKitGTK runtime and the X session libraries Avalonia loads: `sudo apt install libwebkit2gtk-4.1-0 libice6 libsm6 fontconfig` on Debian/Ubuntu (`webkit2gtk4.1 libICE libSM` on Fedora). Notifications use `notify-send` (`libnotify-bin`); the chime plays through `pw-play`, `paplay` or `aplay`, whichever exists. The tray icon needs a desktop with a system tray (StatusNotifierItem); on GNOME that is the AppIndicator extension.
 
 ## Files
 

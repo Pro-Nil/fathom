@@ -90,6 +90,9 @@ internal sealed class MainWindow : Window
                 break;
             case GtkWebViewEnvironmentRequestedEventArgs gtk:
                 gtk.BaseDataDirectory = data;
+                // WebKitGTK cannot be reparented into an Avalonia window; it
+                // renders offscreen and Avalonia composites the frames instead.
+                gtk.ExperimentalOffscreen = true;
                 gtk.ApplicationNameForUserAgent = "PentestHarness";
                 break;
             case LinuxWpeWebViewEnvironmentRequestedEventArgs wpe:

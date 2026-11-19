@@ -19,7 +19,7 @@ Pick your situation:
 - **Everyone:** Git, **Node.js 20+** (22 recommended) and **pnpm** (`npm i -g pnpm`).
 - **Linux:** the web version runs on any x86-64 Linux with the requirements above. The first time the agent uses the browser, the harness downloads its Chromium build; if Chromium then reports missing system libraries, run `sudo npx playwright install-deps chromium` once. Pentest tools install natively (apt plus release binaries; see the upgrade notes). For the desktop app on Linux, see [Desktop app on Linux](#desktop-app-on-linux).
 - **Desktop app on Windows:** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET SDK](https://dotnet.microsoft.com/download), version 10 or newer. Node.js must be on `PATH`, because the app starts the harness with it.
-- **Desktop app on Linux:** the .NET 10 SDK, Node.js, and the WebKitGTK runtime (`sudo apt install libwebkit2gtk-4.1-0 libnotify-bin` on Debian/Ubuntu). See [Desktop app on Linux](#desktop-app-on-linux).
+- **Desktop app on Linux:** the .NET 10 SDK, Node.js, and the WebKitGTK runtime and X session libraries (`sudo apt install libwebkit2gtk-4.1-0 libice6 libsm6 fontconfig libnotify-bin` on Debian/Ubuntu). See [Desktop app on Linux](#desktop-app-on-linux).
 
 ### Before running any desktop-app command
 
