@@ -45,6 +45,9 @@ const COMPACTION_INSTRUCTION = [
   '## Errors and Fixes',
   '- [error: how it was resolved, plus any related user feedback]',
   '',
+  '## Completed and Ruled Out',
+  '- [steps already finished and verified, and approaches, inputs, or paths already tried and found not to work — so the resuming model does not repeat them. This is a durable ledger: carry EVERY prior entry forward and append new ones; never drop an item because the section grew long.]',
+  '',
   '## Pending Jobs',
   '- [explicitly requested work not yet completed]',
   '',
@@ -62,7 +65,7 @@ const COMPACTION_INSTRUCTION = [
   '- Capture user feedback and explicit instructions faithfully, especially corrections.',
   '- Do NOT mention this summarization request or that the context was compacted.',
   '- Output only the checkpoint text: do not call any tool or take any other action.',
-  `- If the conversation already contains a ${SUMMARY_OPEN_TAG} block, it is a PRIOR checkpoint. Do not copy it forward verbatim: preserve still-true facts, drop stale ones, and merge newer information into a single consolidated summary under the same structure.`,
+  `- If the conversation already contains a ${SUMMARY_OPEN_TAG} block, it is a PRIOR checkpoint. Do not copy it forward verbatim: preserve still-true facts, drop stale ones, and merge newer information into a single consolidated summary under the same structure. The one exception is "Completed and Ruled Out": that ledger is append-only — reproduce every one of its prior entries and add the new ones, since dropping a ruled-out path makes the model repeat it.`,
 ].join('\n')
 
 /** Framing that makes the replacement user message established context. */
