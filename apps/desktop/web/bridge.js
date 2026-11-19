@@ -105,10 +105,13 @@
     mountTitleBar()
   }
 
-  // ── Status bar ────────────────────────────────────────────────────────
-  // A slim strip under the native title bar: the session name, the harness
-  // state, how many sessions wait for the user, and reload / open in browser /
-  // app menu buttons.
+  // ── Title bar ─────────────────────────────────────────────────────────
+  // The session name, the harness state, how many sessions wait for the user,
+  // and reload / open in browser / app menu buttons. On Windows the window has
+  // no native caption and this bar replaces it: it adds the window buttons, and
+  // its empty space is a native drag region (app-region: drag), so dragging,
+  // double-click to maximize, snapping and the system menu behave like a real
+  // title bar. On Linux it sits under the desktop's own title bar.
   const BAR = 34
   // Breathing room between the bar and the page's own header.
   const GAP = 6
@@ -118,6 +121,10 @@
     reload: icon('<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'),
     external: icon('<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/>'),
     more: icon('<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>', ' stroke-width="2.4"'),
+    min: '<svg viewBox="0 0 10 10" width="10" height="10"><path d="M0 5h10" stroke="currentColor" stroke-width="1"/></svg>',
+    max: '<svg viewBox="0 0 10 10" width="10" height="10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1"/></svg>',
+    restore: '<svg viewBox="0 0 10 10" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1"><rect x="0.5" y="2.5" width="7" height="7"/><path d="M2.5 2.5V0.5h7v7h-2"/></svg>',
+    close: '<svg viewBox="0 0 10 10" width="10" height="10"><path d="M0.5 0.5l9 9M9.5 0.5l-9 9" stroke="currentColor" stroke-width="1"/></svg>',
   }
   const CSS = `
     #ph-titlebar { position: fixed; top: 0; left: 0; right: 0; height: ${BAR}px; z-index: 2147483000;
@@ -125,7 +132,9 @@
       font: 12.5px/1 var(--dsw-font-family, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif);
       color: var(--dsw-alias-label-secondary, #9a9aa4); background: rgba(0, 0, 0, .035);
       border-bottom: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.07)); user-select: none; }
+    #ph-titlebar[data-frame] { app-region: drag; -webkit-app-region: drag; }
     #ph-titlebar svg { display: block; flex: none; width: 16px !important; height: 16px !important; }
+    #ph-titlebar .ph-win svg { width: 10px !important; height: 10px !important; }
     #ph-titlebar .ph-mark { display: grid; place-items: center; color: var(--dsw-alias-label-primary, #ececf0); flex: none; }
     #ph-titlebar .ph-title { display: flex; align-items: baseline; gap: 7px; min-width: 0; overflow: hidden; white-space: nowrap; }
     #ph-titlebar .ph-session { color: var(--dsw-alias-label-primary, #ececf0); font-weight: 560; overflow: hidden; text-overflow: ellipsis; }
@@ -140,11 +149,17 @@
     #ph-titlebar .ph-waiting { background: rgba(245,158,11,.16); color: #f5b041; font-weight: 560; }
     #ph-titlebar .ph-waiting[hidden] { display: none; }
     @keyframes ph-pulse { 50% { opacity: .35; } }
-    #ph-titlebar button { all: unset; display: grid; place-items: center;
+    #ph-titlebar button { all: unset; app-region: no-drag; -webkit-app-region: no-drag; display: grid; place-items: center;
       height: ${BAR}px; color: var(--dsw-alias-label-secondary, #9a9aa4); cursor: default; flex: none; }
     #ph-titlebar .ph-tool { width: 30px; height: 28px; border-radius: 7px; }
     #ph-titlebar .ph-tool:hover { background: var(--dsw-alias-interactive-bg-hover, rgba(128,128,128,.15)); color: var(--dsw-alias-label-primary, #ececf0); }
-    #ph-titlebar .ph-tools { display: flex; align-items: center; gap: 2px; margin-right: 8px; }
+    #ph-titlebar .ph-tools { display: flex; align-items: center; gap: 2px; margin-right: 8px; app-region: no-drag; -webkit-app-region: no-drag; }
+    #ph-titlebar[data-frame] .ph-tools { margin-right: 0; }
+    #ph-titlebar .ph-win { display: none; height: ${BAR}px; margin-left: 4px; }
+    #ph-titlebar[data-frame] .ph-win { display: flex; }
+    #ph-titlebar .ph-win button { width: 46px; }
+    #ph-titlebar .ph-win button:hover { background: var(--dsw-alias-interactive-bg-hover, rgba(128,128,128,.15)); color: var(--dsw-alias-label-primary, #ececf0); }
+    #ph-titlebar .ph-win .ph-close:hover { background: #c42b1c; color: #fff; }
     body[data-ds-dark-theme] #ph-titlebar { background: rgba(0, 0, 0, .34); border-bottom-color: rgba(255, 255, 255, .06); }
     /* Reserve the bar's space with padding, not a margin on #root: a margin
        collapses through <body>, makes the document taller than the window, and
@@ -153,7 +168,7 @@
     body { padding-top: ${BAR + GAP}px !important; box-sizing: border-box !important; }
     #root { height: 100% !important; margin-top: 0 !important; }
   `
-  const chrome = { state: 'starting', port: 0, waiting: 0 }
+  const chrome = { state: 'starting', port: 0, waiting: 0, frame: false, maximized: false }
 
   function mountTitleBar() {
     if (document.getElementById('ph-titlebar')) return
@@ -172,6 +187,11 @@
         '<button class="ph-tool" data-action="reload" title="Reload">' + ICONS.reload + '</button>' +
         '<button class="ph-tool" data-action="external" title="Open in browser">' + ICONS.external + '</button>' +
         '<button class="ph-tool" data-action="menu" title="More">' + ICONS.more + '</button>' +
+      '</span>' +
+      '<span class="ph-win">' +
+        '<button data-action="minimize" title="Minimize">' + ICONS.min + '</button>' +
+        '<button data-action="maximize" class="ph-max" title="Maximize">' + ICONS.max + '</button>' +
+        '<button data-action="close" class="ph-close" title="Close to tray">' + ICONS.close + '</button>' +
       '</span>'
     document.body.appendChild(bar)
     bar.addEventListener('click', (event) => {
@@ -194,7 +214,12 @@
     const text = !isApp ? 'Starting' : session.length > 0 && session !== 'Pentest Harness' ? session : 'New session'
     const node = bar.querySelector('.ph-session')
     if (node.textContent !== text) node.textContent = text
+    if (isApp && document.title !== lastTitle) {
+      lastTitle = document.title
+      post({ kind: 'window', action: 'title', title: document.title })
+    }
   }
+  let lastTitle
 
   function renderChrome() {
     const bar = document.getElementById('ph-titlebar')
@@ -209,6 +234,10 @@
     const waiting = bar.querySelector('.ph-waiting')
     waiting.hidden = !(chrome.waiting > 0)
     waiting.textContent = chrome.waiting === 1 ? '1 waiting for you' : chrome.waiting + ' waiting for you'
+    bar.toggleAttribute('data-frame', !!chrome.frame)
+    const max = bar.querySelector('.ph-max')
+    max.innerHTML = chrome.maximized ? ICONS.restore : ICONS.max
+    max.title = chrome.maximized ? 'Restore' : 'Maximize'
   }
 
   // The shell pushes its state with InvokeScript("window.__phChrome({...})").

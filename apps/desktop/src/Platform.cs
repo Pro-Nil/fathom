@@ -230,6 +230,9 @@ internal static class Platform
                 core.Settings.IsStatusBarEnabled = false;
                 core.Settings.IsGeneralAutofillEnabled = false;
                 core.Settings.IsPasswordAutosaveEnabled = false;
+                // The page's bar marks its empty space app-region: drag, which
+                // WebView2 turns into the window caption (see WindowFrame).
+                core.Settings.IsNonClientRegionSupportEnabled = true;
                 return true;
             }
 #endif

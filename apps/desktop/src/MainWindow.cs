@@ -70,12 +70,39 @@ internal sealed class MainWindow : Window
         };
 
         // An invisible anchor at the top right positions the app menu under
-        // the status bar's ⋯ button.
-        menuAnchor = new Border { Width = 1, Height = 34, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 0, 12, 0) };
+        // the bar's ⋯ button (left of the window buttons when the bar is the title bar).
+        menuAnchor = new Border { Width = 1, Height = 34, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 0, CustomFrame ? 156 : 12, 0) };
         Content = new Grid { Children = { web, menuAnchor } };
+        UpdateResizeStrip();
 
-        Opened += async (_, _) => await StartAsync();
+        Opened += async (_, _) =>
+        {
+#if WINDOWS
+            WindowFrame.Attach(this);
+#endif
+            await StartAsync();
+        };
         Closing += OnClosing;
+        PropertyChanged += (_, args) =>
+        {
+            if (args.Property != WindowStateProperty) return;
+            UpdateResizeStrip();
+            PushChrome();
+        };
+    }
+
+    /// <summary>
+    /// Windows: the page's bar is the title bar (WindowFrame removes the native
+    /// caption). Linux keeps the desktop's title bar and the bar sits under it.
+    /// </summary>
+    private static bool CustomFrame => OperatingSystem.IsWindows();
+
+    /// <summary>Leave a thin strip above the web view so the top edge stays resizable.</summary>
+    private void UpdateResizeStrip()
+    {
+#if WINDOWS
+        web.Margin = new Thickness(0, WindowState == WindowState.Normal ? WindowFrame.ResizeStrip : 0, 0, 0);
+#endif
     }
 
     private void OnEnvironmentRequested(object? sender, WebViewEnvironmentRequestedEventArgs args)
@@ -189,7 +216,7 @@ internal sealed class MainWindow : Window
             switch (notice.Kind)
             {
                 case "theme": ApplyTheme(notice.Dark == true, notice.Background); break;
-                case "window": HandleWindowAction(notice.Action); break;
+                case "window": HandleWindowAction(notice.Action, notice.Title); break;
                 default: HandleNotice(notice, test: false); break;
             }
         });
@@ -216,11 +243,16 @@ internal sealed class MainWindow : Window
         if (!focused) Platform.RequestAttention(this);
     }
 
-    private void HandleWindowAction(string? action)
+    private void HandleWindowAction(string? action, string? title)
     {
         switch (action)
         {
             case "ready": PushChrome(); break;
+            // Taskbar / Alt-Tab (and the Linux title bar) follow the page: "<session> — Pentest Harness".
+            case "title": Title = string.IsNullOrWhiteSpace(title) ? "Pentest Harness" : title; break;
+            case "minimize": WindowState = WindowState.Minimized; break;
+            case "maximize": WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized; break;
+            case "close": Close(); break;
             case "reload": if (uiLoaded) web.Refresh(); break;
             case "external": Platform.OpenExternal(server.Url.ToString()); break;
             case "menu":
@@ -232,11 +264,11 @@ internal sealed class MainWindow : Window
         }
     }
 
-    /// <summary>Send the status bar what it shows: server state, port, waiting count.</summary>
+    /// <summary>Send the bar what it shows: server state, port, waiting count, window buttons.</summary>
     private void PushChrome()
     {
         if (!uiLoaded) return;
-        var state = JsonSerializer.Serialize(new { type = "chrome", state = serverState, port = settings.Port, waiting });
+        var state = JsonSerializer.Serialize(new { type = "chrome", state = serverState, port = settings.Port, waiting, frame = CustomFrame, maximized = WindowState == WindowState.Maximized });
         _ = SafeScript($"window.__phChrome && window.__phChrome({state})");
     }
 

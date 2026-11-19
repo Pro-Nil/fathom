@@ -30,6 +30,9 @@
   .error .bar { display: none; }
   .error .status { color: #ffb4b4; white-space: pre-wrap; }
   .hint { color: #6b6b75; font-size: 12px; }
+  /* Windows: the window has no native caption while the page's bar is not
+     up yet, so the whole splash drags the window. */
+  html { app-region: drag; -webkit-app-region: drag; }
 </style>
 </head>
 <body>
