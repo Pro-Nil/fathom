@@ -187,6 +187,8 @@ export const en = {
   'terminal.collapseAria': 'Collapse output',
   'terminal.expandAria': 'Expand the remaining {n} output lines',
   'terminal.expandRest': '… {n} more lines',
+  'terminal.showCommand': 'Show full command',
+  'terminal.hideCommand': 'Hide full command',
   'json.truncated': '… truncated, {total} characters total',
   'clock.md': '{m}/{d}',
   'clock.ymd': '{y}-{m}-{d}',

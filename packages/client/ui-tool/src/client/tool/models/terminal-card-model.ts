@@ -35,6 +35,8 @@ export function terminalBlockLabels(t: TranslateNS<'conversation'>): TerminalBlo
     collapse: t('collapse'),
     expandAria: hidden => t('terminal.expandAria', { n: hidden }),
     expand: hidden => t('terminal.expandRest', { n: hidden }),
+    showCommand: t('terminal.showCommand'),
+    hideCommand: t('terminal.hideCommand'),
   }
 }
 
