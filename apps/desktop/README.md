@@ -6,7 +6,7 @@ A small native window around the harness web UI, built with [Avalonia](https://a
 - **Closing the window hides it to the tray.** The harness keeps working. Click the tray icon to bring the window back.
 - **Quit (tray menu) really closes it.** On Windows the server the app started runs inside a Job Object, so Quit, or the app crashing, ends node and every process it spawned; on Linux Quit kills the process tree. A server the app only attached to is left running. *Restart harness* replaces it with one the app owns.
 - **Notifications when a session needs you.** When the agent asks a question, wants a tool approval or has a plan to review, the app plays its own chime and shows a notification with a short summary: a Windows toast (clicking it opens the window), or a desktop notification through `notify-send` on Linux. While the window is focused it only plays the chime; set `notifyWhenFocused` to also show the notification.
-- **A status bar under the title bar.** The window keeps the system title bar. A slim strip drawn into the page shows the current session, a waiting-for-you count, the server state (Running / Attached / Starting / Stopped with the port), reload, open in browser and a ⋯ menu with the tray actions.
+- **One title bar.** On Windows the app draws its own title bar into the page (drag, double-click, snap and the window buttons work as usual); on Linux the window manager's title bar stays and the strip sits under it. The strip shows the current session, a waiting-for-you count, the server state (Running / Attached / Starting / Stopped with the port), reload, open in browser and a ⋯ menu with the tray actions.
 
 Tray menu: Open, Restart harness, Open log, Open in browser, Send test notification, Start with Windows / Start at login, Quit.
 
@@ -18,7 +18,7 @@ Windows (PowerShell, from the checkout):
 dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
 ```
 
-Linux (from the checkout):
+Linux (from the checkout; full package list and per-distribution commands in [docs/UPDATING.md](../../docs/UPDATING.md#linux-setup)):
 
 ```sh
 dotnet publish apps/desktop -f net10.0 -c Release -r linux-x64 --self-contained false -o ~/.local/share/pentest-harness-app
