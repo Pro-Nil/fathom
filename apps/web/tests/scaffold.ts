@@ -79,10 +79,10 @@ export const WELCOME_NOTICE_SETTINGS_NAMESPACE = 'ui-onboarding'
 export const WELCOME_NOTICE_ACK_FIELD = 'welcomeNoticeVersion'
 export const WELCOME_NOTICE_VERSION = '2026-08-13.1'
 export const WELCOME_NOTICE_COPY = {
-  zh: {
-    title: '섋똥쎨췺',
-    body: 'Pentest Harness 펂뛋춘 0.1 붔쇰눗쭜맜퀪쟇 Harness 쟨럛뫳퐹묄똥큇춘돦뾛，캴쩇렄릦휠쌏믠밳됛툇컛퐹쿠턙쓬，짰뿁췐쾚듅쌅쟨럛뫳춘뼋짌볞됪。볰홯 Pentest Harness 춘쁬톍멪듊늛릆덶셐 API 샿쭢맜뻧읡펇춘퀼뾛쵶뵤섋땑녑즳찅、됛툇댼쭺。\n\n껳냰뢑폛쳦푬븁쟨럛뫳퀼녁，맜쟨옸、쟨뫶、썩끇끌、썩코뜸춘덶셐쌎믟흍퐖，륗뀈륢슶멺놻퐖욤。뛾쫚푬븁 Harness 쟨럛뫳꽼컧 DSH 멪듊쭡켿。',
-    continueLabel: 'Resume',
+  en: {
+    title: 'Welcome to Pentest Harness',
+    body: 'Pentest Harness is a professional security testing workspace for authorized penetration tests, bug bounty research, security labs, and CTF engagements. Test only targets you own or are explicitly authorized to assess.\n\nOpen source, open, reusable, and composable — welcome to the community.',
+    continueLabel: 'Continue',
   },
 } as const
 

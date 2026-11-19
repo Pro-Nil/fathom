@@ -11,18 +11,9 @@ export const DIST_INDEX = fileURLToPath(new URL('../dist/index.html', import.met
 export const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 
 /**
- * Browser language a page must advertise to boot into the product's Chinese
- * surface: with no stored preference the client derives its initial locale
- * from the browser, and Playwright's default browser asks for English.
- */
-export const ZH_BROWSER_LOCALE = 'zh-CN'
-
-/**
  * Open the standard browser-test page advertising English before client boot.
  * This keeps role locators and goldens deterministic while leaving the Host
- * settings document free to override the provisional browser-derived locale;
- * scenarios asserting the Chinese surface advertise
- * {@link ZH_BROWSER_LOCALE} instead.
+ * settings document free to override the provisional browser-derived locale.
  * @param browser - Playwright browser owning the page.
  * @param height - Viewport height; width is fixed to the lane baseline.
  * @returns the initialized page.
@@ -84,29 +75,6 @@ export async function connectFreshWorkspace(page: Page, root: string, name = 'wo
   // The pick connected the workspace: the blank session's live composer
   // replaces the locked placeholder and enables.
   await page.locator('textarea:enabled[placeholder="Describe what you want to build"]')
-    .waitFor({ timeout: 15_000 })
-}
-
-/**
- * {@link connectFreshWorkspace} over a page that advertises
- * {@link ZH_BROWSER_LOCALE}: the English helper's anchors assume the locale
- * most other scenarios boot, so a scenario that deliberately keeps en needs
- * the localized picker copy.
- * @param page - the browser page under test.
- * @param root - workspace parent directory.
- * @param name - directory created under `root` and connected.
- */
-export async function connectFreshWorkspaceEn(page: Page, root: string, name = 'workspace'): Promise<void> {
-  mkdirSync(join(root, name), { recursive: true })
-  await page.getByRole('textbox', { name: 'Choose workspace' }).click()
-  const dialog = page.getByRole('dialog', { name: '쌇뎗귓쇤뙮펂틓' })
-  await dialog.waitFor({ timeout: 10_000 })
-  await dialog.getByRole('button', { name: '풺쁳돕듬' }).click()
-  const pathInput = dialog.getByRole('textbox', { name: '풺쁳돕듬' })
-  await pathInput.fill(join(root, name))
-  await pathInput.press('Enter')
-  await dialog.getByRole('button', { name: '턙쟨', exact: true }).click()
-  await page.locator('textarea:enabled[placeholder="듥켸몴뫽밳퉠볞춘섋퓋"]')
     .waitFor({ timeout: 15_000 })
 }
 

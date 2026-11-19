@@ -101,7 +101,7 @@ describe('GoogleApiSearchProvider', () => {
       engineId: () => Promise.resolve('cx'),
       fetchImpl: (() => Promise.resolve(new Response(JSON.stringify({ error: { code: 429, message: 'Quota exceeded' } }), { status: 429 }))) as unknown as typeof fetch,
     })
-    const error = await denied.search({ query: 'x' }).catch((e: unknown) => e as Error)
+    const error = await denied.search({ query: 'x' }).then(() => new Error('expected a rejection'), (e: unknown) => e as Error)
     expect(error.message).toContain('HTTP 429')
     expect(error.message).not.toContain('secret-key')
   })
