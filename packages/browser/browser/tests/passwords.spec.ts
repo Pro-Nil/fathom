@@ -1,9 +1,10 @@
+import { createDecipheriv, pbkdf2Sync } from 'node:crypto'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import { DEFAULT_SEARCH_URL, SharedBrowser } from '@pentest-harness/dsh-browser'
-import { parseCsv, parsePasswordCsv } from '../src/passwords.ts'
+import { encryptChromiumLinuxValue, parseCsv, parsePasswordCsv } from '../src/passwords.ts'
 
 describe('parseCsv', () => {
   it('handles quotes, doubled quotes, commas, CRLF and a BOM', () => {
@@ -25,9 +26,19 @@ describe('parsePasswordCsv', () => {
   })
 })
 
+describe('encryptChromiumLinuxValue', () => {
+  it('writes v10 blobs that decrypt with the basic-store key', () => {
+    const blob = encryptChromiumLinuxValue('s3cret pässword')
+    expect(blob.subarray(0, 3).toString('latin1')).toBe('v10')
+    const key = pbkdf2Sync('peanuts', 'saltysalt', 1, 16, 'sha1')
+    const decipher = createDecipheriv('aes-128-cbc', key, Buffer.alloc(16, 0x20))
+    expect(Buffer.concat([decipher.update(blob.subarray(3)), decipher.final()]).toString('utf8')).toBe('s3cret pässword')
+  })
+})
+
 // Real Chromium: import into a throwaway profile, reopen, and check the
 // browser's own password manager lists the entries.
-describe.runIf(process.platform === 'win32')('SharedBrowser.importPasswords (real Chromium)', () => {
+describe.runIf(process.platform === 'win32' || process.platform === 'linux')('SharedBrowser.importPasswords (real Chromium)', () => {
   const profileDir = mkdtempSync(join(tmpdir(), 'dsh-browser-pw-'))
   const browser = new SharedBrowser({ channel: 'chromium', headless: true, profileDir, width: 900, height: 700, searchUrl: DEFAULT_SEARCH_URL })
   afterAll(async () => {

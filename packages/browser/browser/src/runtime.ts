@@ -201,7 +201,8 @@ export class SharedBrowser {
 
   /**
    * Download the pinned Chromium build into Playwright's browser cache
-   * (`%LOCALAPPDATA%\\ms-playwright` on Windows) with Playwright's own installer.
+   * (`%LOCALAPPDATA%\\ms-playwright` on Windows, `~/.cache/ms-playwright` on Linux)
+   * with Playwright's own installer.
    */
   installBundledBrowser(): Promise<void> {
     this.installing ??= new Promise<void>((resolve, reject) => {
@@ -227,13 +228,24 @@ export class SharedBrowser {
 
   private async launchOnce(): Promise<BrowserContext> {
     mkdirSync(this.options.profileDir, { recursive: true })
+    const linux = process.platform === 'linux'
+    // A Linux host without a display server (a server or container) cannot
+    // show a window; the live view works from screencasts either way.
+    const headless = this.options.headless || (linux && !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY)
+    // Chromium refuses to start its sandbox as root on Linux.
+    const asRoot = linux && typeof process.getuid === 'function' && process.getuid() === 0
     const context = await chromium.launchPersistentContext(this.options.profileDir, {
       ...this.options.executablePath !== undefined
         ? { executablePath: this.options.executablePath }
         : { channel: this.options.channel },
-      headless: this.options.headless,
+      headless,
       viewport: { width: this.options.width, height: this.options.height },
-      args: ['--no-first-run', '--no-default-browser-check'],
+      args: ['--no-first-run', '--no-default-browser-check', ...asRoot ? ['--no-sandbox'] : []],
+    }).catch((error: unknown) => {
+      if (linux && error instanceof Error && /missing dependencies|error while loading shared libraries/iu.test(error.message)) {
+        throw new Error(`the harness browser needs system libraries this Linux host lacks; run "sudo npx playwright install-deps chromium" once, then try again (${error.message.split('\n')[0] ?? ''})`, { cause: error })
+      }
+      throw error
     })
     this.context = context
     context.setDefaultTimeout(ACTION_TIMEOUT_MS)

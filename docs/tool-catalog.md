@@ -42,7 +42,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@pentest-harness/dsh-tool-workflow` | `workflow` | `ctx.tools`, `ctx.workflowEngine`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents the script children)` | `tool/call`, `tool/result` | - | - |
 | `@pentest-harness/dsh-tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
 | `@pentest-harness/dsh-tool-browser` | `browser_computer`, `browser_console`, `browser_find`, `browser_form_input`, `browser_get_page_text`, `browser_javascript`, `browser_navigate`, `browser_network`, `browser_read_page`, `browser_resize`, `browser_tabs` | `ctx.tools`, `ctx.browser`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane. |
-| `@pentest-harness/dsh-pentest-toolkit` | `pentest_tools` | `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows. |
+| `@pentest-harness/dsh-pentest-toolkit` | `pentest_tools` | `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) how to install them (WSL or native Windows on a Windows host; native packages on a Linux host). |
 
 <a id="pentest-harnessdsh-tool-ask-user"></a>
 
@@ -2633,10 +2633,11 @@ Report which pentest tools are available, or install the missing ones. action "s
     },
     "method": {
       "type": "string",
-      "description": "Only when the user explicitly asked for a different installation type than the saved one.",
+      "description": "Only when the user explicitly asked for a different installation type than the saved one (wsl and windows on a Windows host, linux on a Linux host).",
       "enum": [
         "wsl",
-        "windows"
+        "windows",
+        "linux"
       ]
     }
   },
@@ -2648,4 +2649,4 @@ Report which pentest tools are available, or install the missing ones. action "s
 
 Source: [`packages/pentest/pentest-toolkit/src/index.ts`](../packages/pentest/pentest-toolkit/src/index.ts)
 
-pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows.
+pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) how to install them (WSL or native Windows on a Windows host; native packages on a Linux host).

@@ -635,7 +635,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(PentestToolkit)
     },
     note:
-      'pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) whether to use WSL or native Windows.',
+      'pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) how to install them (WSL or native Windows on a Windows host; native packages on a Linux host).',
   },
 ]
 

@@ -17,6 +17,7 @@ Pick your situation:
 ## Requirements
 
 - **Everyone:** Git, **Node.js 20+** (22 recommended) and **pnpm** (`npm i -g pnpm`).
+- **Linux:** the web version runs on any x86-64 Linux with the requirements above. The first time the agent uses the browser, the harness downloads its Chromium build; if Chromium then reports missing system libraries, run `sudo npx playwright install-deps chromium` once. Pentest tools install natively (apt plus release binaries; see the upgrade notes). The desktop app is Windows-only for now.
 - **Desktop app (Windows only):** Windows 10 1809+ with the Edge WebView2 Runtime (built into Windows 11) and the [.NET SDK](https://dotnet.microsoft.com/download), version 10 or newer. Node.js must be on `PATH`, because the app starts the harness with it.
 
 ### Before running any desktop-app command
@@ -41,7 +42,7 @@ pnpm build
 pnpm dsh web
 ```
 
-The web UI opens at `http://127.0.0.1:2323`. Then add a model under **Settings → Models** (see the [README](../README.md#first-run--connect-any-ai-model)). Keep the terminal open while you work; `Ctrl+C` stops the harness.
+The web UI opens at `http://127.0.0.1:2323` (on Linux and Windows alike). Then add a model under **Settings → Models** (see the [README](../README.md#first-run--connect-any-ai-model)). Keep the terminal open while you work; `Ctrl+C` stops the harness.
 
 ## B. First install — web + desktop app
 
@@ -128,7 +129,7 @@ Plain `--quit` (or tray → Quit) stops the harness too.
 
 ### DeepSeek removed
 
-The built-in DeepSeek model adapter and DeepSeek web search are gone. Models come only from the providers you add under **Settings → Models** (any OpenAI-compatible endpoint, or a catalog provider such as OpenAI or Anthropic). Web search uses DuckDuckGo and needs no key.
+The built-in DeepSeek model adapter and DeepSeek web search are gone. Models come only from the providers you add under **Settings → Models** (any OpenAI-compatible endpoint, or a catalog provider such as OpenAI or Anthropic).
 
 If you had DeepSeek configured, clean up before restarting:
 
@@ -139,9 +140,17 @@ If you had DeepSeek configured, clean up before restarting:
 
 The Python SDK now defaults to `provider="openai-compatible"` and reads `LLM_BASE_URL` and `LLM_API_KEY` (previously `DEEPSEEK_BASE_URL` / `DEEPSEEK_API_KEY`).
 
+### Web search engine
+
+Web search defaults to Google, through a hidden page of the harness browser (no key). If Google blocks the search with a CAPTCHA, the harness falls back to the next engine: Google API, DuckDuckGo, Exa, Perplexity. Pick the engine and turn the fallback on or off under **Settings → Plugins → Web search**. The Google API engine needs `GOOGLE_API_KEY` and `GOOGLE_CSE_ID` stored as credentials (Programmable Search, 100 free queries a day).
+
+### English-only interface
+
+The interface, docs and tooling are English only. A language preference saved by an older build is ignored, so nothing in `~/.dsh` needs changing.
+
 ### Pentest tools install themselves
 
-Pentest-mode sessions ask once how to install the toolkit (WSL Ubuntu, Windows native, or not now) and install it in the background. The choice is saved in `~/.dsh/tools/state.json`; delete that file to be asked again.
+Pentest-mode sessions ask once how to install the toolkit and install it in the background: on Windows through WSL Ubuntu or natively, on Linux natively (apt packages plus verified release binaries in `~/.dsh/tools/bin`). On Linux, apt runs only when the harness runs as root or `sudo` needs no password; otherwise the result names the single `sudo apt-get install …` command to run yourself. The choice is saved in `~/.dsh/tools/state.json`; delete that file to be asked again.
 
 ### Stopping background jobs
 

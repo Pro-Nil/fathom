@@ -8,7 +8,7 @@
  */
 
 import { spawn } from 'node:child_process'
-import { createCipheriv, randomBytes } from 'node:crypto'
+import { createCipheriv, pbkdf2Sync, randomBytes } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
@@ -119,8 +119,7 @@ export function parsePasswordCsv(text: string): { logins: ImportedLogin[]; skipp
  * @param profileDir - the browser's user-data directory.
  * @returns the 32-byte AES key.
  */
-async function ownStorageKey(profileDir: string): Promise<Buffer> {
-  if (process.platform !== 'win32') throw new Error('password import is available on Windows only for now')
+async function windowsStorageKey(profileDir: string): Promise<Buffer> {
   const statePath = join(profileDir, 'Local State')
   if (!existsSync(statePath)) throw new Error('the browser profile is not initialised yet; open the browser once and try again')
   const state = JSON.parse(readFileSync(statePath, 'utf8')) as { os_crypt?: { encrypted_key?: string } }
@@ -165,6 +164,44 @@ export function encryptChromiumValue(key: Buffer, plaintext: string): Buffer {
   return Buffer.concat([Buffer.from('v10', 'latin1'), nonce, body, cipher.getAuthTag()])
 }
 
+/**
+ * The key Chromium on Linux uses with its basic (keyring-less) password store,
+ * which Playwright selects with `--password-store=basic`: PBKDF2-SHA1 of the
+ * fixed password "peanuts" with salt "saltysalt", one iteration, 16 bytes.
+ */
+const LINUX_BASIC_KEY = pbkdf2Sync('peanuts', 'saltysalt', 1, 16, 'sha1')
+
+/**
+ * Encrypt one password the way Chromium's os_crypt does on Linux with the
+ * basic store (`v10`, AES-128-CBC, an IV of 16 spaces, PKCS#7 padding).
+ * @param plaintext - the password.
+ * @returns the stored blob.
+ */
+export function encryptChromiumLinuxValue(plaintext: string): Buffer {
+  const cipher = createCipheriv('aes-128-cbc', LINUX_BASIC_KEY, Buffer.alloc(16, 0x20))
+  return Buffer.concat([Buffer.from('v10', 'latin1'), cipher.update(plaintext, 'utf8'), cipher.final()])
+}
+
+/** Encrypts passwords for one profile; dispose wipes any unwrapped key. */
+interface StorageCipher {
+  encrypt(plaintext: string): Buffer
+  dispose(): void
+}
+
+/**
+ * This browser's password encryption on the current platform.
+ * @param profileDir - the browser's user-data directory.
+ * @returns the cipher.
+ */
+async function storageCipher(profileDir: string): Promise<StorageCipher> {
+  if (process.platform === 'win32') {
+    const key = await windowsStorageKey(profileDir)
+    return { encrypt: plaintext => encryptChromiumValue(key, plaintext), dispose: () => { key.fill(0) } }
+  }
+  if (process.platform === 'linux') return { encrypt: encryptChromiumLinuxValue, dispose: () => {} }
+  throw new Error(`password import is available on Windows and Linux only (this host is ${process.platform})`)
+}
+
 /** Microseconds since 1601-01-01, Chromium's timestamp base. */
 function chromiumNow(): bigint {
   return (BigInt(Date.now()) + 11_644_473_600_000n) * 1000n
@@ -179,7 +216,7 @@ function chromiumNow(): bigint {
 export async function writeLogins(profileDir: string, logins: readonly ImportedLogin[]): Promise<{ imported: number; duplicates: number }> {
   const dbPath = join(profileDir, 'Default', 'Login Data')
   if (!existsSync(dbPath)) throw new Error('the browser profile has no password store yet; open the browser once and try again')
-  const key = await ownStorageKey(profileDir)
+  const cipher = await storageCipher(profileDir)
   const db = new DatabaseSync(dbPath)
   try {
     const insert = db.prepare(`INSERT OR IGNORE INTO logins (
@@ -194,7 +231,7 @@ export async function writeLogins(profileDir: string, logins: readonly ImportedL
       for (const login of logins) {
         const url = new URL(login.url)
         const origin = `${url.protocol}//${url.host}/`
-        const result = insert.run(`${origin}${url.pathname.replace(/^\//u, '')}`, login.username, encryptChromiumValue(key, login.password), origin, now, now)
+        const result = insert.run(`${origin}${url.pathname.replace(/^\//u, '')}`, login.username, cipher.encrypt(login.password), origin, now, now)
         imported += Number(result.changes)
       }
       db.exec('COMMIT')
@@ -205,6 +242,6 @@ export async function writeLogins(profileDir: string, logins: readonly ImportedL
     return { imported, duplicates: logins.length - imported }
   } finally {
     db.close()
-    key.fill(0)
+    cipher.dispose()
   }
 }

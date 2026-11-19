@@ -40,4 +40,5 @@ None directly; tool results that report this browser's pages are appended by `ds
 - **One shared session** — every agent and viewer acts on the same tabs, so concurrent agents can interfere with each other's page state.
 - **Live-view input is coarse** — mouse moves are throttled to 25 per second, and IME composition and file drag-and-drop are not forwarded.
 - **No download handling** — downloads are left to Playwright defaults.
-- **Password import is Windows-only and CSV-based** — it unlocks this browser's own key with Windows DPAPI, and it cannot read other browsers' stores directly, so the user exports from each browser first. Cookies and sign-ins are not imported; sign in once in the pane and the profile keeps them.
+- **Password import is CSV-based and runs on Windows and Linux** — on Windows it unlocks this browser's own key with DPAPI; on Linux it uses Chromium's basic-store key, which Playwright selects. It cannot read other browsers' stores directly, so the user exports from each browser first. Cookies and sign-ins are not imported; sign in once in the pane and the profile keeps them.
+- **Linux hosts** — without `DISPLAY` or `WAYLAND_DISPLAY` the browser runs headless (the live view still streams it); as root it starts Chromium with `--no-sandbox`; missing system libraries produce an error that names `sudo npx playwright install-deps chromium`.
