@@ -210,6 +210,25 @@ Your existing sessions, models and keys show up in the app unchanged; it is the 
 
 ## E. Update the desktop app install
 
+### With the Update button (recommended)
+
+The app checks your checkout for updates: new commits on the branch it tracks (every 20 minutes) and new local commits not built yet (every 2 minutes). When there is something, a blue **Update** button appears in the title bar (also in the ⋯ menu and the tray menu as **Update and restart**; **Check for updates** checks now).
+
+Click it and confirm. The app then, while you keep working:
+
+1. pulls the new commits (`git pull --ff-only --autostash`, so local edits such as a rewritten lockfile are kept),
+2. installs dependencies (`pnpm install`) and builds (`pnpm build`),
+3. restarts the harness on the new build (turns still running stop; sessions stay),
+4. if the update changed the app itself, rebuilds the app (needs the .NET SDK), and reopens it on the same harness.
+
+Read the [upgrade notes](#upgrade-notes) for anything you must change by hand. If a step fails, nothing is restarted: the app shows the error and opens `logs/update.log` from the app folder (also **⋯ → Open update log**). A checkout whose local commits have diverged from the remote is not pulled; push or rebase them first.
+
+The button pulls from the branch your checkout tracks (`git rev-parse --abbrev-ref @{u}`). A clone of Pro-Nil/pentest-harness tracks it already; if yours tracks another repository, point it here with `git branch -u <remote>/main`.
+
+The first app with the button has to be installed once by hand (step 4 below, or the swap in the last part of this section). After that, updates of the app come through the button too.
+
+### By hand
+
 1. **Tray icon → Quit** (or ⋯ menu → Quit; stops the app and the harness it started).
 2. Update and rebuild the harness, from the checkout:
 

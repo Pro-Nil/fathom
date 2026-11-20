@@ -34,6 +34,13 @@ internal sealed class AppSettings
     public bool Maximized { get; set; }
 
     /// <summary>
+    /// The checkout commit the last in-app update built. When the checkout's
+    /// HEAD moves past it (a pull, or a commit made in the checkout), the app
+    /// offers Update so the harness is rebuilt and restarted on the new code.
+    /// </summary>
+    public string? LastBuiltCommit { get; set; }
+
+    /// <summary>
     /// App data folder: %LOCALAPPDATA%\PentestHarness on Windows,
     /// ~/.local/share/PentestHarness on Linux. PENTEST_HARNESS_APP_DIR
     /// overrides it (a second, isolated app instance for testing).

@@ -26,6 +26,11 @@ internal static class WindowFrame
         {
             // SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED
             SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
+            HarnessServer.AppLog($"custom frame attached before show: {!IsWindowVisible(hwnd)}");
+        }
+        else
+        {
+            HarnessServer.AppLog("custom frame: no window handle yet");
         }
     }
 
@@ -75,6 +80,7 @@ internal static class WindowFrame
 
     [DllImport("user32.dll")] private static extern IntPtr DefWindowProcW(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll")] private static extern bool IsZoomed(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr hwnd);
     [DllImport("user32.dll")] private static extern bool ScreenToClient(IntPtr hwnd, ref POINT point);
     [DllImport("user32.dll")] private static extern bool GetClientRect(IntPtr hwnd, out RECT rect);
     [DllImport("user32.dll")] private static extern int GetDpiForWindow(IntPtr hwnd);

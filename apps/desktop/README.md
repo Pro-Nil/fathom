@@ -8,7 +8,9 @@ A small native window around the harness web UI, built with [Avalonia](https://a
 - **Notifications when a session needs you.** When the agent asks a question, wants a tool approval or has a plan to review, the app plays its own chime and shows a notification with a short summary: a Windows toast (clicking it opens the window), or a desktop notification through `notify-send` on Linux. While the window is focused it only plays the chime; set `notifyWhenFocused` to also show the notification.
 - **One title bar.** On Windows the app draws its own title bar into the page (drag, double-click, snap and the window buttons work as usual); on Linux the window manager's title bar stays and the strip sits under it. The strip shows the current session, a waiting-for-you count, the server state (Running / Attached / Starting / Stopped with the port), reload, open in browser and a ⋯ menu with the tray actions.
 
-Tray menu: Open, Restart harness, Open log, Open in browser, Send test notification, Start with Windows / Start at login, Quit.
+- **Update from the app.** When the checkout's tracked branch has new commits, or the checkout has commits the running build was not made from, an Update button appears in the title bar. It pulls, runs `pnpm install` and `pnpm build` while the harness keeps running, restarts the harness, and reinstalls and reopens the app when `apps/desktop` changed. Output goes to `logs/update.log`. See [docs/UPDATING.md](../../docs/UPDATING.md#e-update-the-desktop-app-install).
+
+Tray menu: Open, Update and restart (or Check for updates), Restart harness, Open log, Open update log, Open in browser, Send test notification, Start with Windows / Start at login, Quit.
 
 ## Build and install
 

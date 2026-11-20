@@ -148,6 +148,13 @@
     #ph-titlebar .ph-pill[data-state="stopped"] .ph-dot { background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.15); }
     #ph-titlebar .ph-waiting { background: rgba(245,158,11,.16); color: #f5b041; font-weight: 560; }
     #ph-titlebar .ph-waiting[hidden] { display: none; }
+    #ph-titlebar button.ph-update { height: 22px; padding: 0 10px; border-radius: 11px; gap: 6px; display: flex; align-items: center;
+      background: rgba(59,130,246,.18); color: #7fb0ff; font-weight: 560; white-space: nowrap; cursor: pointer; }
+    #ph-titlebar button.ph-update:hover { background: rgba(59,130,246,.3); color: #fff; }
+    #ph-titlebar button.ph-update[data-busy] { cursor: default; background: rgba(59,130,246,.12); }
+    #ph-titlebar button.ph-update[data-busy] .ph-update-dot { animation: ph-pulse 1.2s ease-in-out infinite; }
+    #ph-titlebar button.ph-update[hidden] { display: none; }
+    #ph-titlebar .ph-update-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b82f6; }
     @keyframes ph-pulse { 50% { opacity: .35; } }
     #ph-titlebar button { all: unset; app-region: no-drag; -webkit-app-region: no-drag; display: grid; place-items: center;
       height: ${BAR}px; color: var(--dsw-alias-label-secondary, #9a9aa4); cursor: default; flex: none; }
@@ -168,7 +175,21 @@
     body { padding-top: ${BAR + GAP}px !important; box-sizing: border-box !important; }
     #root { height: 100% !important; margin-top: 0 !important; }
   `
-  const chrome = { state: 'starting', port: 0, waiting: 0, frame: false, maximized: false }
+  const chrome = { state: 'starting', port: 0, waiting: 0, frame: false, maximized: false, update: null }
+
+  // Restarting stops turns in progress, so the update asks first. The app's
+  // menu and tray entries ask through here too.
+  function confirmUpdate() {
+    const update = chrome.update || {}
+    if (update.step) return
+    const what = update.behind > 0
+      ? 'downloads ' + update.behind + ' new commit' + (update.behind === 1 ? '' : 's') + (update.upstream ? ' from ' + update.upstream : '') + ', installs and builds them'
+      : 'builds the new code in your checkout'
+    if (window.confirm('Update Pentest Harness?\n\nThis ' + what + ' while you keep working, then restarts the harness. Turns still running stop at the restart; your sessions stay.')) {
+      post({ kind: 'window', action: 'update' })
+    }
+  }
+  window.__phConfirmUpdate = confirmUpdate
 
   function mountTitleBar() {
     if (document.getElementById('ph-titlebar')) return
@@ -181,6 +202,7 @@
       '<span class="ph-mark">' + ICONS.mark + '</span>' +
       '<span class="ph-title"><span class="ph-session"></span><span class="ph-sep">·</span><span class="ph-app">Pentest Harness</span></span>' +
       '<span class="ph-space"></span>' +
+      '<button class="ph-update" data-action="update" hidden><span class="ph-update-dot"></span><span class="ph-update-text">Update</span></button>' +
       '<span class="ph-pill ph-waiting" hidden></span>' +
       '<span class="ph-pill ph-status"><span class="ph-dot"></span><span class="ph-status-text"></span></span>' +
       '<span class="ph-tools">' +
@@ -196,7 +218,9 @@
     document.body.appendChild(bar)
     bar.addEventListener('click', (event) => {
       const button = event.target.closest('button[data-action]')
-      if (button) post({ kind: 'window', action: button.dataset.action })
+      if (!button) return
+      if (button.dataset.action === 'update') confirmUpdate()
+      else post({ kind: 'window', action: button.dataset.action })
     })
     renderChrome()
     // The harness keeps document.title as "<session> — Pentest Harness"; the
@@ -238,6 +262,25 @@
     const max = bar.querySelector('.ph-max')
     max.innerHTML = chrome.maximized ? ICONS.restore : ICONS.max
     max.title = chrome.maximized ? 'Restore' : 'Maximize'
+    renderUpdate(bar)
+  }
+
+  function renderUpdate(bar) {
+    const update = chrome.update || {}
+    const button = bar.querySelector('.ph-update')
+    const text = bar.querySelector('.ph-update-text')
+    button.hidden = !(update.step || update.available)
+    button.toggleAttribute('data-busy', !!update.step)
+    if (update.step) {
+      text.textContent = update.step
+      button.title = 'Updating. The harness keeps running until the restart.'
+    } else if (update.behind > 0) {
+      text.textContent = 'Update · ' + update.behind + ' new'
+      button.title = update.behind + ' new commit' + (update.behind === 1 ? '' : 's') + (update.upstream ? ' on ' + update.upstream : '') + '. Click to download, build and restart.'
+    } else {
+      text.textContent = 'Update'
+      button.title = 'Your checkout has code the running harness was not built from. Click to build and restart.'
+    }
   }
 
   // The shell pushes its state with InvokeScript("window.__phChrome({...})").

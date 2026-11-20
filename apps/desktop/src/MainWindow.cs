@@ -21,6 +21,12 @@ internal sealed class MainWindow : Window
 
     private readonly AppSettings settings;
     private readonly HarnessServer server;
+    private readonly Updater updater;
+    /// <summary>The last update check, shown as the bar's Update button.</summary>
+    private Updater.Status? updateStatus;
+    /// <summary>The running update's current step; null when none runs.</summary>
+    private string? updateStep;
+    private bool updateLoopStarted;
     private readonly NativeWebView web;
     private readonly Border menuAnchor;
     private readonly CancellationTokenSource lifetime = new();
@@ -43,6 +49,7 @@ internal sealed class MainWindow : Window
         this.settings = settings;
         server = new HarnessServer(settings);
         server.Exited += code => Dispatcher.UIThread.Post(() => OnServerExited(code));
+        updater = new Updater(settings);
 
         Title = "Pentest Harness";
         Icon = new WindowIcon(Embedded.Open("app.png"));
@@ -74,14 +81,14 @@ internal sealed class MainWindow : Window
         menuAnchor = new Border { Width = 1, Height = 34, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 0, CustomFrame ? 156 : 12, 0) };
         Content = new Grid { Children = { web, menuAnchor } };
         UpdateResizeStrip();
-
-        Opened += async (_, _) =>
-        {
 #if WINDOWS
-            WindowFrame.Attach(this);
+        // Remove the native caption now, while the window exists but is not
+        // shown: attached in Opened, the first frames still had Windows' own
+        // title bar above the page's.
+        WindowFrame.Attach(this);
 #endif
-            await StartAsync();
-        };
+
+        Opened += async (_, _) => await StartAsync();
         Closing += OnClosing;
         PropertyChanged += (_, args) =>
         {
@@ -147,6 +154,7 @@ internal sealed class MainWindow : Window
             serverState = server.Owned ? "running" : "attached";
             web.Navigate(server.Url);
             TipChanged?.Invoke(server.Owned ? "Pentest Harness" : "Pentest Harness (attached to a running server)");
+            StartUpdateChecks();
         }
         catch (OperationCanceledException)
         {
@@ -255,6 +263,8 @@ internal sealed class MainWindow : Window
             case "close": Close(); break;
             case "reload": if (uiLoaded) web.Refresh(); break;
             case "external": Platform.OpenExternal(server.Url.ToString()); break;
+            // The page already asked the user to confirm.
+            case "update": _ = UpdateAsync(); break;
             case "menu":
                 var menu = BuildMenu();
                 menu.PlacementTarget = menuAnchor;
@@ -268,7 +278,16 @@ internal sealed class MainWindow : Window
     private void PushChrome()
     {
         if (!uiLoaded) return;
-        var state = JsonSerializer.Serialize(new { type = "chrome", state = serverState, port = settings.Port, waiting, frame = CustomFrame, maximized = WindowState == WindowState.Maximized });
+        var update = new
+        {
+            available = updateStatus?.Available == true,
+            behind = updateStatus?.Behind ?? 0,
+            unbuilt = updateStatus?.Unbuilt == true,
+            upstream = updateStatus?.Upstream,
+            problem = updateStatus?.Problem,
+            step = updateStep,
+        };
+        var state = JsonSerializer.Serialize(new { type = "chrome", state = serverState, port = settings.Port, waiting, frame = CustomFrame, maximized = WindowState == WindowState.Maximized, update });
         _ = SafeScript($"window.__phChrome && window.__phChrome({state})");
     }
 
@@ -359,13 +378,121 @@ internal sealed class MainWindow : Window
     {
         yield return ("Open Pentest Harness", ShowFromTray);
         yield return (null, null);
+        if (updateStep is not null) yield return ($"Updating: {updateStep}", () => Platform.OpenExternal(Updater.LogPath));
+        else if (updateStatus?.Available == true) yield return (UpdateLabel(updateStatus), () => _ = ConfirmUpdateAsync());
+        else yield return ("Check for updates", () => _ = CheckForUpdatesAsync(announce: true));
         yield return (server.Owned || !server.IsListening() ? "Restart harness" : "Restart harness (stops the terminal server)", () => _ = RestartAsync());
         yield return ("Open log", () => Platform.OpenExternal(HarnessServer.LogPath));
+        yield return ("Open update log", () => Platform.OpenExternal(Updater.LogPath));
         yield return ("Open in browser", () => Platform.OpenExternal(server.Url.ToString()));
         yield return ("Send test notification", SendTestNotification);
         yield return ((Platform.StartsAtLogin() ? "✓ " : "") + Platform.StartupLabel, () => Platform.SetStartsAtLogin(!Platform.StartsAtLogin()));
         yield return (null, null);
         yield return ("Quit", () => Quit());
+    }
+
+    // ── in-app update ───────────────────────────────────────────────────
+
+    private static string UpdateLabel(Updater.Status status) => status.Behind > 0
+        ? $"Update and restart ({status.Behind} new)"
+        : "Rebuild and restart (new local code)";
+
+    /// <summary>Check once now, then every few minutes: locally often, against the remote less often.</summary>
+    private void StartUpdateChecks()
+    {
+        if (updateLoopStarted) return;
+        updateLoopStarted = true;
+        _ = Task.Run(async () =>
+        {
+            var lastFetch = DateTime.MinValue;
+            while (!lifetime.IsCancellationRequested)
+            {
+                var fetch = DateTime.UtcNow - lastFetch > TimeSpan.FromMinutes(20);
+                if (fetch) lastFetch = DateTime.UtcNow;
+                await CheckForUpdatesAsync(announce: false, fetch);
+                try { await Task.Delay(TimeSpan.FromMinutes(2), lifetime.Token); }
+                catch (OperationCanceledException) { return; }
+            }
+        });
+    }
+
+    private async Task CheckForUpdatesAsync(bool announce, bool fetch = true)
+    {
+        if (updater.IsRunning) return;
+        Updater.Status status;
+        try { status = await updater.CheckAsync(fetch, lifetime.Token); }
+        catch (OperationCanceledException) { return; }
+        catch (Exception ex) { HarnessServer.AppLog($"update check failed: {ex.Message}"); return; }
+        Dispatcher.UIThread.Post(() =>
+        {
+            updateStatus = status;
+            PushChrome();
+            if (!announce) return;
+            if (status.Problem is not null) Notify("Cannot update", status.Problem, "update", urgent: false);
+            else if (!status.Available) Notify("Pentest Harness is up to date", status.Upstream is null ? "No upstream branch is set, and the build matches the checkout." : $"Nothing new on {status.Upstream}.", "update", urgent: false);
+        });
+    }
+
+    /// <summary>Ask in the page (where the bar's button asks too), or run directly when no page is up.</summary>
+    private async Task ConfirmUpdateAsync()
+    {
+        ShowFromTray();
+        if (uiLoaded) await SafeScript("window.__phConfirmUpdate && window.__phConfirmUpdate()");
+        else await UpdateAsync();
+    }
+
+    /// <summary>
+    /// Pull, install and build while the harness keeps running, then restart
+    /// it on the new build; when the app itself changed, reinstall it and
+    /// reopen it on the same harness.
+    /// </summary>
+    private async Task UpdateAsync()
+    {
+        if (updater.IsRunning) return;
+        void Step(string text) => Dispatcher.UIThread.Post(() =>
+        {
+            updateStep = text;
+            PushChrome();
+        });
+        Updater.Outcome outcome;
+        try
+        {
+            outcome = await Task.Run(() => updater.RunAsync(Step, lifetime.Token));
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+        catch (Exception ex)
+        {
+            HarnessServer.AppLog($"update failed: {ex.Message}");
+            updateStep = null;
+            PushChrome();
+            Notify("Update failed", ex.Message.Split('\n')[0] + " Open Update log from the ⋯ menu for details.", "update", urgent: false);
+            Platform.OpenExternal(Updater.LogPath);
+            return;
+        }
+
+        string? staged = null;
+        if (outcome.DesktopChanged)
+        {
+            Step("Rebuilding the app…");
+            var (folder, problem) = await Task.Run(() => updater.PublishAppAsync(lifetime.Token));
+            staged = folder;
+            if (problem is not null) Notify("App not updated", problem, "update", urgent: false);
+        }
+
+        Step("Restarting…");
+        updateStatus = null;
+        await RestartAsync();
+        updateStep = null;
+        PushChrome();
+        _ = CheckForUpdatesAsync(announce: false, fetch: false);
+        if (staged is not null && server.IsListening())
+        {
+            Updater.SwapAndRelaunch(staged);
+            Quit(keepHarness: true);
+        }
     }
 
     /// <summary>Play the sound and show a sample notification.</summary>

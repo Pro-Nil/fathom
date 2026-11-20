@@ -328,11 +328,34 @@ internal sealed class HarnessServer : IDisposable
         catch (IOException) { }
     }
 
-    private static string? ResolveNode(string configured)
+    internal static string? ResolveNode(string configured)
     {
         if (Path.IsPathRooted(configured)) return File.Exists(configured) ? configured : null;
         var windows = OperatingSystem.IsWindows();
         var names = !windows || configured.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? new[] { configured } : new[] { configured + ".exe", configured };
+        foreach (var dir in ToolSearchPath().Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            foreach (var name in names)
+            {
+                try
+                {
+                    var candidate = Path.Combine(Environment.ExpandEnvironmentVariables(dir), name);
+                    if (File.Exists(candidate)) return candidate;
+                }
+                catch (ArgumentException) { }
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// PATH for finding node, git and pnpm: the app's own PATH plus what a
+    /// shortcut or desktop launcher tends to miss (the persisted user and
+    /// machine PATH on Windows; ~/.local/bin, volta and nvm on Linux).
+    /// </summary>
+    internal static string ToolSearchPath()
+    {
+        var windows = OperatingSystem.IsWindows();
         var path = Environment.GetEnvironmentVariable("PATH") ?? "";
         if (windows)
         {
@@ -352,20 +375,10 @@ internal sealed class HarnessServer : IDisposable
             {
                 foreach (var version in Directory.GetDirectories(nvm).OrderDescending()) path += $":{version}/bin";
             }
+            var pnpmHome = Path.Combine(home, ".local", "share", "pnpm");
+            if (Directory.Exists(pnpmHome)) path += $":{pnpmHome}";
         }
-        foreach (var dir in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            foreach (var name in names)
-            {
-                try
-                {
-                    var candidate = Path.Combine(Environment.ExpandEnvironmentVariables(dir), name);
-                    if (File.Exists(candidate)) return candidate;
-                }
-                catch (ArgumentException) { }
-            }
-        }
-        return null;
+        return path;
     }
 
     // ── Job object ──────────────────────────────────────────────────────
