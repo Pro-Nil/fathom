@@ -28,6 +28,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@fathom/tool-fs-search` | `glob`, `grep` | `ctx.tools`, `ctx.subprocess`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | glob and grep are unconditional discovery tools that spawn the packaged ripgrep binary (`@vscode/ripgrep`) through ctx.subprocess as ordinary foreground calls (never background jobs) — no host `rg` install and no shell layer. The catalog uses `sampleOverCapGlobResults: true`; deployments must choose that behavior explicitly. Capped results save the complete formatted list through the optional ctx.spillStore backend; returned locators are follow-up-readable/searchable when the backend exposes local paths in co-located deployments. |
 | `@fathom/tool-terminal` | `terminal_close`, `terminal_list`, `terminal_open`, `terminal_read`, `terminal_send`, `terminal_signal` | `ctx.tools`, `ctx.terminals`, `ctx.systemPrompt`, `ctx.jobs at call time for run_in_background` | `tool/call`, `tool/result` | - | The six terminal tools are opt-in and complement one-shot shell/filesystem tools. `terminal_send(run_in_background: true)` registers with `ctx.jobs`; TUI, named key sequences, BEL, resize, auto-start, and cross-agent sharing are absent from the schema. |
 | `@fathom/tool-goal` | `create_goal`, `get_goal`, `update_goal` | `ctx.tools`, `ctx.agents`, `ctx.goals`, `ctx.systemPrompt`, `a calling Agent in an authorized open turn` | `tool/call`, `goal/change for mutations`, `tool/result` | - | create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds. |
+| `@fathom/tool-findings` | `list_findings`, `record_finding`, `update_finding`, `write_report` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the findings.json store and report files in the session folder`, `tool/result` | - | record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log. |
 | `@fathom/schedule` | `schedule_create`, `schedule_delete`, `schedule_list` | `ctx.tools`, `ctx.sessions`, `Session persistence`, `a future live root Agent` | `tool/call`, `schedule/change create or delete`, `tool/result` | - | Registered only inside live root Agent scopes created after the opt-in Schedule plugin loads. Version 1 accepts after_seconds, explicit absolute at, and bounded fixed-rate every_seconds, and discloses session-local delivery; management reads and mutations require the shared Session persistence barrier. |
 | `@fathom/tool-lsp` | `lsp` | `ctx.tools`, `ctx.lsp`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | The lsp tool keeps provider selection and language-server subprocesses behind ctx.lsp, so its model-visible schema stays stable across providers. Requires a registered provider (e.g. `@fathom/lsp-stdio`) at runtime; without one, a query returns the structured `LSP_UNAVAILABLE` error rather than changing the schema. |
 | `@fathom/tool-ralph` | `ralph` | `ctx.tools`, `ctx.workflowEngine`, `ctx.subagents`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents every fresh round)` | `tool/call`, `tool/result`, `workflow and child session events during execution` | - | A fixed foreground workflow starts one fresh structured child per round; the model selects only the immutable objective and an optional round cap. |
@@ -1061,6 +1062,258 @@ Update the exact current goal revision. edit, pause, and resume require a direct
 Source: [`packages/goal/tool-goal/src/index.ts`](../packages/goal/tool-goal/src/index.ts)
 
 create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds.
+
+<a id="fathomtool-findings"></a>
+
+## `@fathom/tool-findings`
+
+### `list_findings`
+
+List the findings recorded for this engagement, with per-severity counts.
+
+```json
+{
+  "type": "object",
+  "properties": {}
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
+### `record_finding`
+
+Record one confirmed or suspected vulnerability finding with its evidence. Returns the finding including its assigned id.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "One-line title."
+    },
+    "severity": {
+      "type": "string",
+      "description": "info | low | medium | high | critical",
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "description": "What the issue is and why it matters."
+    },
+    "target": {
+      "type": "string",
+      "description": "Affected asset: host, URL, endpoint or parameter."
+    },
+    "cwe": {
+      "type": "string",
+      "description": "CWE identifier, e.g. CWE-89."
+    },
+    "reproduction": {
+      "type": "string",
+      "description": "Steps to reproduce."
+    },
+    "impact": {
+      "type": "string",
+      "description": "Security impact if exploited."
+    },
+    "remediation": {
+      "type": "string",
+      "description": "Suggested fix."
+    },
+    "status": {
+      "type": "string",
+      "description": "Defaults to unverified; use verified only with bound evidence.",
+      "enum": [
+        "unverified",
+        "verified",
+        "false-positive",
+        "fixed"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Supporting evidence entries.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "summary": {
+            "type": "string",
+            "description": "What this evidence shows, in one line."
+          },
+          "request": {
+            "type": "string",
+            "description": "The raw request that triggered the behaviour."
+          },
+          "response": {
+            "type": "string",
+            "description": "The raw response that proves it."
+          },
+          "quotes": {
+            "type": "array",
+            "description": "Verbatim strings from the output that justify the claim.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "summary"
+        ]
+      }
+    }
+  },
+  "required": [
+    "title",
+    "severity",
+    "description"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
+### `update_finding`
+
+Update an existing finding by id: change its status or fields, or append evidence. Omitted fields are kept; evidence is added, never removed.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The finding id, e.g. F1."
+    },
+    "status": {
+      "type": "string",
+      "description": "New verification status.",
+      "enum": [
+        "unverified",
+        "verified",
+        "false-positive",
+        "fixed"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "description": "New severity.",
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "Replacement title."
+    },
+    "description": {
+      "type": "string",
+      "description": "Replacement description."
+    },
+    "target": {
+      "type": "string",
+      "description": "Replacement target."
+    },
+    "cwe": {
+      "type": "string",
+      "description": "Replacement CWE."
+    },
+    "reproduction": {
+      "type": "string",
+      "description": "Replacement reproduction steps."
+    },
+    "impact": {
+      "type": "string",
+      "description": "Replacement impact."
+    },
+    "remediation": {
+      "type": "string",
+      "description": "Replacement remediation."
+    },
+    "add_evidence": {
+      "type": "array",
+      "description": "Evidence entries to append.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "summary": {
+            "type": "string",
+            "description": "What this evidence shows, in one line."
+          },
+          "request": {
+            "type": "string",
+            "description": "The raw request that triggered the behaviour."
+          },
+          "response": {
+            "type": "string",
+            "description": "The raw response that proves it."
+          },
+          "quotes": {
+            "type": "array",
+            "description": "Verbatim strings from the output that justify the claim.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "summary"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
+### `write_report`
+
+Render the recorded findings into a report file in the session folder. Returns the written file paths and the finding counts.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "description": "markdown | json | both (default both).",
+      "enum": [
+        "markdown",
+        "json",
+        "both"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "Report title / engagement name."
+    },
+    "scope": {
+      "type": "string",
+      "description": "Declared scope or targets, shown in the report header."
+    }
+  }
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
+record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log.
 
 <a id="fathomschedule"></a>
 

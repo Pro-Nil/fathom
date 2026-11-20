@@ -52,6 +52,7 @@ import * as ToolStrReplaceEditor from '@fathom/tool-str-replace-editor'
 import TerminalSessionService from '@fathom/terminal'
 import * as ToolPty from '@fathom/tool-terminal'
 import * as ToolGoal from '@fathom/tool-goal'
+import * as ToolFindings from '@fathom/tool-findings'
 import * as ToolSchedule from '@fathom/schedule'
 import Lsp from '@fathom/lsp'
 import * as ToolLsp from '@fathom/tool-lsp'
@@ -374,6 +375,19 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     note:
       'create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds.',
+  },
+  {
+    pkg: '@fathom/tool-findings',
+    dir: 'tool-findings',
+    source: 'packages/pentest/tool-findings/src/index.ts',
+    requires: ['ctx.tools', 'ctx.agents', 'ctx.systemPrompt', 'a calling Agent with a session folder'],
+    writes: ['tool/call', 'the findings.json store and report files in the session folder', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(AgentRegistry)
+      await ctx.plugin(ToolFindings)
+    },
+    note:
+      'record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log.',
   },
   {
     pkg: '@fathom/schedule',

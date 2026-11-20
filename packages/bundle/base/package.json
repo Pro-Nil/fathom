@@ -96,6 +96,7 @@
     "@fathom/tool-call-timeout-policy": "workspace:^",
     "@fathom/tool-fs": "workspace:^",
     "@fathom/tool-fs-search": "workspace:^",
+    "@fathom/tool-findings": "workspace:^",
     "@fathom/tool-goal": "workspace:^",
     "@fathom/tool-jobs": "workspace:^",
     "@fathom/tool-pwsh": "workspace:^",

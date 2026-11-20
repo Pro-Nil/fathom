@@ -2601,6 +2601,24 @@ export interface Config {
 
 Source: [`packages/browser/tool-browser/src/index.ts:27`](../packages/browser/tool-browser/src/index.ts)
 
+<a id="fathomtool-findings"></a>
+
+## `@fathom/tool-findings`
+
+Requires: `agents` · `tools` · `systemPrompt`
+
+```ts config-catalog
+/** Plugin configuration. */
+export interface Config {
+  /** File name of the findings store inside the session folder. */
+  dataFile?: string
+  /** Base name (without extension) for generated report files. */
+  reportName?: string
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts:31`](../packages/pentest/tool-findings/src/index.ts)
+
 <a id="fathomtool-fs"></a>
 
 ## `@fathom/tool-fs`

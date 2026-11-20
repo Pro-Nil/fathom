@@ -63,6 +63,7 @@
     "@fathom/tool-cordis": "workspace:^",
     "@fathom/tool-fs": "workspace:^",
     "@fathom/tool-fs-search": "workspace:^",
+    "@fathom/tool-findings": "workspace:^",
     "@fathom/tool-goal": "workspace:^",
     "@fathom/tool-pwsh": "workspace:^",
     "@fathom/tool-ralph": "workspace:^",

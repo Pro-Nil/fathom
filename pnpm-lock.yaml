@@ -264,6 +264,9 @@ importers:
       '@fathom/tool-cordis':
         specifier: workspace:^
         version: link:../../packages/extensions/tool-cordis
+      '@fathom/tool-findings':
+        specifier: workspace:^
+        version: link:../../packages/pentest/tool-findings
       '@fathom/tool-fs':
         specifier: workspace:^
         version: link:../../packages/fs/tool-fs
@@ -1233,6 +1236,9 @@ importers:
       '@fathom/tool-call-timeout-policy':
         specifier: workspace:^
         version: link:../../guard/timeout-policy
+      '@fathom/tool-findings':
+        specifier: workspace:^
+        version: link:../../pentest/tool-findings
       '@fathom/tool-fs':
         specifier: workspace:^
         version: link:../../fs/tool-fs
@@ -5953,6 +5959,28 @@ importers:
       '@fathom/user-questions':
         specifier: workspace:^
         version: link:../../interaction/user-questions
+
+  packages/pentest/tool-findings:
+    dependencies:
+      '@fathom/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@fathom/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@fathom/llm':
+        specifier: workspace:^
+        version: link:../../llm/llm
+      '@fathom/session-folders':
+        specifier: workspace:^
+        version: link:../../workspace/session-folders
+      '@fathom/system-prompt':
+        specifier: workspace:^
+        version: link:../../core/system-prompt
+      '@fathom/tools':
+        specifier: workspace:^
+        version: link:../../core/tools
 
   packages/plan/plan-mode:
     dependencies:
