@@ -288,6 +288,9 @@ importers:
       '@fathom/tool-ralph':
         specifier: workspace:^
         version: link:../../packages/workflow/tool-ralph
+      '@fathom/tool-session-query':
+        specifier: workspace:^
+        version: link:../../packages/session-query/tool-session-query
       '@fathom/tool-skill':
         specifier: workspace:^
         version: link:../../packages/skill/tool-skill

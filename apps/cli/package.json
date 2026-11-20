@@ -68,6 +68,7 @@
     "@fathom/tool-pwsh": "workspace:^",
     "@fathom/tool-ralph": "workspace:^",
     "@fathom/schedule": "workspace:^",
+    "@fathom/tool-session-query": "workspace:^",
     "@fathom/tool-skill": "workspace:^",
     "@fathom/tool-str-replace-editor": "workspace:^",
     "@fathom/tool-subagent": "workspace:^",
