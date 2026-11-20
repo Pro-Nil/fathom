@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { credentialKey } from '@pentest-harness/dsh-credentials'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import AuthorizationService from '@pentest-harness/dsh-authorization'
+import { Context } from '@fathom/cordis'
+import { credentialKey } from '@fathom/credentials'
+import InvariantRegistry from '@fathom/invariants'
+import AuthorizationService from '@fathom/authorization'
 import * as AuthorizationInvariant from '../src/invariant.ts'
 import { MemoryCredentials } from './memory.ts'
 
@@ -81,7 +81,7 @@ describe('authorization invariant companion', () => {
     await ctx.plugin(AuthorizationInvariant)
 
     expect(() => {
-      ctx.invariants.register('@pentest-harness/dsh-authorization', () => {})
+      ctx.invariants.register('@fathom/authorization', () => {})
     }).toThrow(/already registered/)
   })
 })

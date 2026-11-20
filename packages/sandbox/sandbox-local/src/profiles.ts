@@ -1,12 +1,12 @@
 /**
  * Internal platform-profile builders for the local sandbox provider.
  *
- * @module @pentest-harness/dsh-sandbox-local/profiles
+ * @module @fathom/sandbox-local/profiles
  */
 
-import { grantArgs as landlockGrantArgs } from '@pentest-harness/node-addon-landlock-run'
-import { writableRoots } from '@pentest-harness/dsh-sandbox'
-import type { SandboxPolicy } from '@pentest-harness/dsh-sandbox'
+import { grantArgs as landlockGrantArgs } from '@fathom/node-addon-landlock-run'
+import { writableRoots } from '@fathom/sandbox'
+import type { SandboxPolicy } from '@fathom/sandbox'
 
 /**
  * Build the bwrap profile arguments for one file-effect policy.
@@ -44,7 +44,7 @@ function sbplString(path: string): string {
  * Build the sandbox-exec arguments and SBPL profile for one policy. The
  * writable roots come from the shared {@link writableRoots} helper (canonical,
  * deduplicated) so the Seatbelt grant and the in-process fs fence
- * (`@pentest-harness/dsh-fs-sandbox`) can never drift apart.
+ * (`@fathom/fs-sandbox`) can never drift apart.
  * @param policy - file-effect policy to express as an SBPL profile.
  * @returns sandbox-exec arguments before the trailing separator and command argv.
  */

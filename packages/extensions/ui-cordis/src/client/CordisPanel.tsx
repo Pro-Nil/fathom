@@ -5,11 +5,11 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import {
   IconCheckOutline16, IconCloseOutline16, IconCordisPluginOutline14, IconPlayOutline16,
   IconStopFill16, IconTrashOutline16, Tooltip, useDismissOnOutsidePointer,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
-import type {} from '@pentest-harness/dsh-client-ui-sidebar/client'
-import type { CordisRunActivity } from '@pentest-harness/dsh-cordis-client-runner/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
+import type {} from '@fathom/client-ui-sidebar/client'
+import type { CordisRunActivity } from '@fathom/cordis-client-runner/client'
+import type { SessionId } from '@fathom/client-connection/client'
 import type { CordisInventoryRow } from './dynamic-port.ts'
 import type { CordisPanelFace } from './slots.ts'
 import type { CordisKey } from './locales.ts'

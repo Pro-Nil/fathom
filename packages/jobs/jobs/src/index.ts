@@ -2,12 +2,12 @@
  * The background-job Service Definition (`ctx.jobs`). It owns the contract for
  * job ids, session-scoped access, lifecycle state, completion listeners, and
  * owner cleanup while producers retain their execution resources. The
- * process-local registry lives in `@pentest-harness/dsh-jobs-local`.
- * @module @pentest-harness/dsh-jobs
+ * process-local registry lives in `@fathom/jobs-local`.
+ * @module @fathom/jobs
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import { Context, Service } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
 import type {
   JobDoneListener, JobId, JobRead, JobSnapshot, JobStart, JobsChangedListener,
 } from './types.ts'
@@ -26,7 +26,7 @@ export type {
   JobsChangedListener,
 } from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     jobs: JobRegistry
   }
@@ -65,7 +65,7 @@ export abstract class JobRegistry extends Service {
     // would register a ctx.jobs with no method implementations and fail far
     // from the misconfiguration. Fail loud at load instead.
     if (new.target === JobRegistry) {
-      throw new Error('@pentest-harness/dsh-jobs is the abstract job registry seam; load an implementation such as @pentest-harness/dsh-jobs-local instead')
+      throw new Error('@fathom/jobs is the abstract job registry seam; load an implementation such as @fathom/jobs-local instead')
     }
     super(ctx, 'jobs')
   }

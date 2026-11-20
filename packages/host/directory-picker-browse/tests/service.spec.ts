@@ -4,9 +4,9 @@ import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { DirectoryPickerError } from '@pentest-harness/dsh-host-directory-picker'
-import type { DirectoryPickerBrowseCapability } from '@pentest-harness/dsh-host-directory-picker'
+import { Context } from '@fathom/cordis'
+import { DirectoryPickerError } from '@fathom/host-directory-picker'
+import type { DirectoryPickerBrowseCapability } from '@fathom/host-directory-picker'
 import BrowseDirectoryPicker, { boundedInsert, fullyQualified, raceAbort } from '../src/index.ts'
 import type { ListingCandidate } from '../src/index.ts'
 
@@ -15,7 +15,7 @@ let capability: DirectoryPickerBrowseCapability
 let dispose: () => Promise<void>
 
 beforeAll(async () => {
-  root = await mkdtemp(join(tmpdir(), 'dsh-browse-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-browse-'))
   await mkdir(join(root, 'projects'))
   await mkdir(join(root, 'projects', 'harness'))
   await mkdir(join(root, '.hidden-dir'))

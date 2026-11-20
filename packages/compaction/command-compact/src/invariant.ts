@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-command-compact`.
- * @module @pentest-harness/dsh-command-compact/invariant
+ * Package-owned invariant companion for `@fathom/command-compact`.
+ * @module @fathom/command-compact/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-command-compact'
+const PACKAGE_NAME = '@fathom/command-compact'
 
 /** Cordis companion plugin name. */
 export const name = 'command-compact-invariant'

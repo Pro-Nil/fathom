@@ -7,13 +7,13 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { createMessage, createUserMessage } from '@pentest-harness/dsh-llm'
+import { createMessage, createUserMessage } from '@fathom/llm'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session'
+import type {} from '@fathom/session-title'
 import {
   assertFixtureInventory,
   captureStableAria,

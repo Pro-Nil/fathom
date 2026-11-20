@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import LlmRuntime, { createUserMessage, LlmAdapter  } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SessionTitleService from '@pentest-harness/dsh-session-title'
-import * as providerPlugin from '@pentest-harness/dsh-session-title-first-prompt-llm'
+import LlmRuntime, { createUserMessage, LlmAdapter  } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SessionTitleService from '@fathom/session-title'
+import * as providerPlugin from '@fathom/session-title-first-prompt-llm'
 
 let root: string | undefined
 let context: Context | undefined
@@ -33,17 +33,17 @@ afterEach(async () => {
 })
 
 async function loadComposition(): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-title-loader-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-title-loader-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@pentest-harness/dsh-llm'",
-    "- name: '@pentest-harness/dsh-session'",
-    "- name: '@pentest-harness/dsh-session-title'",
+    "- name: '@fathom/llm'",
+    "- name: '@fathom/session'",
+    "- name: '@fathom/session-title'",
     '  config:',
     '    fallbackMaxWords: 5',
     '    fallbackMaxBytes: 40',
     '    maxTitleBytes: 80',
-    "- name: '@pentest-harness/dsh-session-title-first-prompt-llm'",
+    "- name: '@fathom/session-title-first-prompt-llm'",
     '  config:',
     '    targetWords: 5',
     '    targetCjkCharacters: 10',
@@ -60,10 +60,10 @@ async function loadComposition(): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-llm', LlmRuntime],
-    ['@pentest-harness/dsh-session', SessionStore],
-    ['@pentest-harness/dsh-session-title', SessionTitleService],
-    ['@pentest-harness/dsh-session-title-first-prompt-llm', providerPlugin],
+    ['@fathom/llm', LlmRuntime],
+    ['@fathom/session', SessionStore],
+    ['@fathom/session-title', SessionTitleService],
+    ['@fathom/session-title-first-prompt-llm', providerPlugin],
   ])
   context.loader.internal = {
     version: 'v2',

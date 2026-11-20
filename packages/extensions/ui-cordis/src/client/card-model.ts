@@ -1,6 +1,6 @@
 /** Replay-stable view models for Cordis lifecycle Tool calls. */
 
-import type { ToolCallViewProps } from '@pentest-harness/dsh-client-ui-tool/client'
+import type { ToolCallViewProps } from '@fathom/client-ui-tool/client'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId, CordisDynamicRunMode,
 } from './events.ts'

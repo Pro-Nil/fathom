@@ -10,11 +10,11 @@
  */
 import { statSync } from 'node:fs'
 import type { ServerResponse } from 'node:http'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 // Empty type imports carry the clientModuleHost/webServer Context merges.
-import type {} from '@pentest-harness/dsh-client-modules'
-import type {} from '@pentest-harness/dsh-host-webserver'
+import type {} from '@fathom/client-modules'
+import type {} from '@fathom/host-webserver'
 import type { PluginsEventFrame } from './events.ts'
 import { EVENTS_ENDPOINT } from './events.ts'
 

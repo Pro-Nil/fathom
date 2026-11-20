@@ -3,15 +3,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Include from '@pentest-harness/cordis-plugin-include'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import Storage from '@pentest-harness/dsh-storage'
-import * as StorageDomain from '@pentest-harness/dsh-storage-domain'
-import * as StorageJson from '@pentest-harness/dsh-storage-json'
-import { remoteMethods } from '@pentest-harness/dsh-typert-protocol'
+import { Context } from '@fathom/cordis'
+import Include from '@fathom/cordis-plugin-include'
+import Loader from '@fathom/cordis-plugin-loader'
+import SessionStore, { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import Storage from '@fathom/storage'
+import * as StorageDomain from '@fathom/storage-domain'
+import * as StorageJson from '@fathom/storage-json'
+import { remoteMethods } from '@fathom/typert-protocol'
 import MessageFeedbackService from '../src/index.ts'
 import { appendMessageFixture } from './helpers.ts'
 
@@ -30,12 +30,12 @@ async function loadComposition(configPath: string): Promise<Context> {
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-session', SessionStore],
-    ['@pentest-harness/dsh-session-persistence-jsonl', JsonlSessionPersistence],
-    ['@pentest-harness/dsh-storage', Storage],
-    ['@pentest-harness/dsh-storage-json', StorageJson],
-    ['@pentest-harness/dsh-storage-domain', StorageDomain],
-    ['@pentest-harness/dsh-message-feedback', MessageFeedbackService],
+    ['@fathom/session', SessionStore],
+    ['@fathom/session-persistence-jsonl', JsonlSessionPersistence],
+    ['@fathom/storage', Storage],
+    ['@fathom/storage-json', StorageJson],
+    ['@fathom/storage-domain', StorageDomain],
+    ['@fathom/message-feedback', MessageFeedbackService],
   ])
   ctx.loader.internal = {
     version: 'v2',
@@ -58,23 +58,23 @@ async function loadComposition(configPath: string): Promise<Context> {
 
 describe('message feedback through a real Loader composition', () => {
   it('persists a checkpointed target and its sidecar across a cold restart', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-message-feedback-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'fathom-message-feedback-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-session'",
-      "- name: '@pentest-harness/dsh-session-persistence-jsonl'",
+      "- name: '@fathom/session'",
+      "- name: '@fathom/session-persistence-jsonl'",
       '  config:',
       `    root: ${JSON.stringify(join(root, 'sessions'))}`,
       '    compression: none',
       '    writeBatchMaxDelayMs: 1',
-      "- name: '@pentest-harness/dsh-storage'",
-      "- name: '@pentest-harness/dsh-storage-json'",
+      "- name: '@fathom/storage'",
+      "- name: '@fathom/storage-json'",
       '  config:',
       `    root: ${JSON.stringify(join(root, 'storage'))}`,
-      "- name: '@pentest-harness/dsh-storage-domain'",
+      "- name: '@fathom/storage-domain'",
       '  config:',
       '    backend: json',
-      "- name: '@pentest-harness/dsh-message-feedback'",
+      "- name: '@fathom/message-feedback'",
       '  config:',
       '    maxNoteBytes: 32',
       '',

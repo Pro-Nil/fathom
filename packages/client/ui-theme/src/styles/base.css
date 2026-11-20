@@ -28,7 +28,7 @@ body {
   background: color-mix(in srgb, var(--dsw-static-brand-500) 32%, transparent);
 }
 
-/* Pentest Harness scrollbar: subtle accent-tinted thumb, theme-safe. */
+/* Fathom scrollbar: subtle accent-tinted thumb, theme-safe. */
 * {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--dsw-alias-label-tertiary) 55%, transparent) transparent;

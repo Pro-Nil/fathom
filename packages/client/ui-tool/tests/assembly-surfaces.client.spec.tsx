@@ -2,11 +2,11 @@
 /** Tool assembly acceptance through the real ui-conversation host. */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, waitFor } from '@testing-library/react'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import type { ISession, SessionId, TodoItem, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as applyConversation, inject as injectConversation } from '@pentest-harness/dsh-client-ui-conversation/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import type { ISession, SessionId, TodoItem, ToolResultNode } from '@fathom/client-runtime/client'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@fathom/client-test-runtime'
+import { apply as applyConversation, inject as injectConversation } from '@fathom/client-ui-conversation/client'
 import { apply as applyTool, inject as injectTool } from '../src/client/apply.ts'
 import { toolChatSnapshot } from './tool-details-render.client.tsx'
 

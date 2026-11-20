@@ -1,17 +1,17 @@
 /**
- * `@pentest-harness/dsh-web-search-google`: browser-backed and Google search
+ * `@fathom/web-search-google`: browser-backed and Google search
  * for `ctx.web`. Registers `google` and `bing` (keyless, each through a hidden
  * page of the shared browser; usable whenever `ctx.browser` is mounted) and
  * `google-api` (the Programmable Search JSON API; usable once `GOOGLE_API_KEY`
  * and `GOOGLE_CSE_ID` are stored as credentials or set in the environment).
- * @module @pentest-harness/dsh-web-search-google
+ * @module @fathom/web-search-google
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-web'
-import type {} from '@pentest-harness/dsh-browser'
-import { credentialRef } from '@pentest-harness/dsh-credentials'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/web'
+import type {} from '@fathom/browser'
+import { credentialRef } from '@fathom/credentials'
 import {
   GOOGLE_API_DEFAULT_BASE_URL,
   GOOGLE_DEFAULT_SEARCH_URL,

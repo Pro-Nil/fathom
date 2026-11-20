@@ -2,14 +2,14 @@
  * SQLite storage backend for the storage hub: one database file hosts every
  * routed unit, document-per-row (`key TEXT` / `value TEXT` JSON). Registers
  * as backend `sqlite`; the disposer unregisters first, then closes the medium.
- * @module @pentest-harness/dsh-storage-sqlite
+ * @module @fathom/storage-sqlite
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import type { DatabaseSync } from 'node:sqlite'
-import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@pentest-harness/dsh-storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@pentest-harness/dsh-storage'
+import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@fathom/storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@fathom/storage'
 import { openDatabase, recordTableName, type JournalMode } from './schema.ts'
 import { SqliteKvUnit } from './unit.ts'
 

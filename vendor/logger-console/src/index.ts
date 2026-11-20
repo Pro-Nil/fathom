@@ -1,4 +1,4 @@
-import { Formatter } from '@pentest-harness/cordis'
+import { Formatter } from '@fathom/cordis'
 import { inspect } from 'node:util'
 import supportsColor from 'supports-color'
 import { ConsoleExporter as Base } from './shared.ts'

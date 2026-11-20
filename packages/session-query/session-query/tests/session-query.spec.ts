@@ -1,15 +1,15 @@
-import { createUserMessage, createMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage, createMessage } from '@fathom/llm'
 import { describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@pentest-harness/cordis'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@pentest-harness/dsh-session'
-import SessionPersistence, { SessionPersistenceCorruptionError, SessionPersistenceRevision } from '@pentest-harness/dsh-session-persistence'
+import { Context, type Fiber } from '@fathom/cordis'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@fathom/session'
+import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@fathom/session'
+import SessionPersistence, { SessionPersistenceCorruptionError, SessionPersistenceRevision } from '@fathom/session-persistence'
 import SessionQueryEngine, {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   type SessionEventSurface,
   type SessionQueryErrorCode,
-} from '@pentest-harness/dsh-session-query'
-import { SessionTitleProviderId } from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-query'
+import { SessionTitleProviderId } from '@fathom/session-title'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 function header(id: string, createdAt = 1, extra: Partial<SessionHeader> = {}): SessionHeader {

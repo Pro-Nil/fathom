@@ -9,16 +9,16 @@ import {
 
 const experimental: WorkspaceManifest = {
   dir: 'packages/experimental/prototype',
-  manifest: { name: '@pentest-harness/dsh-experimental-prototype', private: true },
+  manifest: { name: '@fathom/experimental-prototype', private: true },
 }
 
 describe('experimental workspace constraints', () => {
   it('requires the experimental package-name prefix', () => {
     expect(checkExperimentalManifest({
       ...experimental,
-      manifest: { ...experimental.manifest, name: '@pentest-harness/dsh-prototype' },
+      manifest: { ...experimental.manifest, name: '@fathom/prototype' },
     })).toEqual([
-      '@pentest-harness/dsh-prototype: experimental package name must start with "@pentest-harness/dsh-experimental-"',
+      '@fathom/prototype: experimental package name must start with "@fathom/experimental-"',
     ])
   })
 
@@ -28,8 +28,8 @@ describe('experimental workspace constraints', () => {
       ...experimental,
       manifest: { ...experimental.manifest, private: false, publishConfig: { access: 'public' } },
     })).toEqual([
-      '@pentest-harness/dsh-experimental-prototype: experimental package must set "private": true',
-      '@pentest-harness/dsh-experimental-prototype: experimental package must omit publishConfig',
+      '@fathom/experimental-prototype: experimental package must set "private": true',
+      '@fathom/experimental-prototype: experimental package must omit publishConfig',
     ])
   })
 
@@ -39,11 +39,11 @@ describe('experimental workspace constraints', () => {
       expect(checkExperimentalDependencyIsolation([experimental, {
         dir: 'packages/core/consumer',
         manifest: {
-          name: '@pentest-harness/dsh-consumer',
-          [section]: { '@pentest-harness/dsh-experimental-prototype': 'workspace:^' },
+          name: '@fathom/consumer',
+          [section]: { '@fathom/experimental-prototype': 'workspace:^' },
         },
       }])).toEqual([
-        `@pentest-harness/dsh-consumer: ${section}.@pentest-harness/dsh-experimental-prototype must not reference an experimental package`,
+        `@fathom/consumer: ${section}.@fathom/experimental-prototype must not reference an experimental package`,
       ])
     },
   )
@@ -52,25 +52,25 @@ describe('experimental workspace constraints', () => {
     const manifests: WorkspaceManifest[] = [experimental, {
       dir: 'packages/core/test-only',
       manifest: {
-        name: '@pentest-harness/dsh-test-only',
-        devDependencies: { '@pentest-harness/dsh-experimental-prototype': 'workspace:^' },
+        name: '@fathom/test-only',
+        devDependencies: { '@fathom/experimental-prototype': 'workspace:^' },
       },
     }, {
       dir: 'packages/experimental/consumer',
       manifest: {
-        name: '@pentest-harness/dsh-experimental-consumer',
-        dependencies: { '@pentest-harness/dsh-experimental-prototype': 'workspace:^' },
+        name: '@fathom/experimental-consumer',
+        dependencies: { '@fathom/experimental-prototype': 'workspace:^' },
       },
     }, {
       dir: 'python/sdk-runtime',
       manifest: {
-        name: '@pentest-harness/dsh-python-runtime',
-        dependencies: { '@pentest-harness/dsh-experimental-prototype': 'workspace:^' },
+        name: '@fathom/python-runtime',
+        dependencies: { '@fathom/experimental-prototype': 'workspace:^' },
       },
     }]
 
     expect(checkExperimentalDependencyIsolation(manifests)).toEqual([
-      '@pentest-harness/dsh-python-runtime: dependencies.@pentest-harness/dsh-experimental-prototype must not reference an experimental package',
+      '@fathom/python-runtime: dependencies.@fathom/experimental-prototype must not reference an experimental package',
     ])
   })
 })

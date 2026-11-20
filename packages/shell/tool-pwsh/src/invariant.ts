@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tool-pwsh`.
- * @module @pentest-harness/dsh-tool-pwsh/invariant
+ * Package-owned invariant companion for `@fathom/tool-pwsh`.
+ * @module @fathom/tool-pwsh/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-pwsh'
+const PACKAGE_NAME = '@fathom/tool-pwsh'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-pwsh-invariant'

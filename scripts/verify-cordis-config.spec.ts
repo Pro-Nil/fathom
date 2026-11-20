@@ -17,7 +17,7 @@ import {
 describe('verify-cordis-config metadata expressions', () => {
   it('accepts a disabled !!js expression', () => {
     const problems = metadataExpressionErrors(
-      { id: 'tool-bash', name: '@pentest-harness/dsh-tool-bash', disabled: { __jsExpr: "process.platform === 'win32'" } },
+      { id: 'tool-bash', name: '@fathom/tool-bash', disabled: { __jsExpr: "process.platform === 'win32'" } },
       '[0]',
     )
     expect(problems).toEqual([])
@@ -47,18 +47,18 @@ describe('verify-cordis-config metadata expressions', () => {
 
 describe('workspace Bundle discovery and product dependency closures', () => {
   it('discovers a Bundle outside packages/bundle from its manifest declaration', () => {
-    const fixture = mkdtempSync(join(tmpdir(), 'dsh-bundle-discovery-'))
+    const fixture = mkdtempSync(join(tmpdir(), 'fathom-bundle-discovery-'))
     try {
       const bundleDir = join(fixture, 'packages/subagent/example')
       const plainDir = join(fixture, 'packages/bundle/plain')
       mkdirSync(bundleDir, { recursive: true })
       mkdirSync(plainDir, { recursive: true })
       writeFileSync(join(bundleDir, 'package.json'), JSON.stringify({
-        name: '@pentest-harness/dsh-subagent-example',
-        dsh: { bundle: { patch: './cordis.patch.yml' } },
+        name: '@fathom/subagent-example',
+        fathom: { bundle: { patch: './cordis.patch.yml' } },
       }))
       writeFileSync(join(plainDir, 'package.json'), JSON.stringify({
-        name: '@pentest-harness/dsh-plain',
+        name: '@fathom/plain',
       }))
 
       expect(bundleManifestPaths(fixture)).toEqual([
@@ -73,16 +73,16 @@ describe('workspace Bundle discovery and product dependency closures', () => {
     const manifestPath = 'packages/subagent/example/package.json'
     const file = 'packages/subagent/example/cordis.patch.yml'
     const manifest = {
-      name: '@pentest-harness/dsh-subagent-example',
+      name: '@fathom/subagent-example',
       dependencies: {},
     }
-    const self = { file, name: '@pentest-harness/dsh-subagent-example' }
+    const self = { file, name: '@fathom/subagent-example' }
     expect(bundlePluginDependencyErrors(manifestPath, manifest, [self])).toEqual([])
     expect(bundlePluginDependencyErrors(manifestPath, manifest, [
       self,
-      { file, name: '@pentest-harness/dsh-missing-plugin' },
+      { file, name: '@fathom/missing-plugin' },
     ])).toEqual([
-      `${file}: @pentest-harness/dsh-missing-plugin must be declared in ${manifestPath} dependencies`,
+      `${file}: @fathom/missing-plugin must be declared in ${manifestPath} dependencies`,
     ])
   })
 })

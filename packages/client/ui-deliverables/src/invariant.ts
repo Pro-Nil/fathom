@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-client-ui-deliverables`.
- * @module @pentest-harness/dsh-client-ui-deliverables/invariant
+ * Package-owned invariant companion for `@fathom/client-ui-deliverables`.
+ * @module @fathom/client-ui-deliverables/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-client-ui-deliverables'
+const PACKAGE_NAME = '@fathom/client-ui-deliverables'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-deliverables-invariant'

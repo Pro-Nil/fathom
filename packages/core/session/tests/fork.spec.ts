@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId , createMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionForkError, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, TurnEndReason } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId , createMessage } from '@fathom/llm'
+import SessionStore, { Session, SessionForkError, SessionId } from '@fathom/session'
+import type { SessionEvent, TurnEndReason } from '@fathom/session'
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     'test/log-only': { value: string }
     /** Stands in for a plugin's open/close bracket (`compaction/start`). */

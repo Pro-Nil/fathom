@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 import { AssistantOutputFold, finalAssistantOutput } from '../src/assistant-output.ts'
 
 function message(content: ContentBlock[]): SessionEvent {

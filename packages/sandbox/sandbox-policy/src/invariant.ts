@@ -1,11 +1,11 @@
-/** Package-owned session-event invariants for sandbox policy. @module @pentest-harness/dsh-sandbox-policy/invariant */
+/** Package-owned session-event invariants for sandbox policy. @module @fathom/sandbox-policy/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import { SANDBOX_MODES } from './session-mode.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-sandbox-policy'
+const PACKAGE_NAME = '@fathom/sandbox-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'sandbox-policy-invariant'

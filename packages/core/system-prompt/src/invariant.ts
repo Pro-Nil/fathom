@@ -1,10 +1,10 @@
-/** Package-owned prompt-assembly invariants. @module @pentest-harness/dsh-system-prompt/invariant */
+/** Package-owned prompt-assembly invariants. @module @fathom/system-prompt/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { PromptAssembly } from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-system-prompt'
+const PACKAGE_NAME = '@fathom/system-prompt'
 const VARIABLE_NAME = /^[a-z][a-z0-9_]*$/
 
 /** Cordis companion plugin name. */

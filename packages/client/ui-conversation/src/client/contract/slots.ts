@@ -1,18 +1,18 @@
 /** Conversation slot declarations and their composed component props. */
 import type { ReactNode, RefObject } from 'react'
-import type { ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
+import type { ImageAttachmentRef } from '@fathom/attachment'
 import type {
   InjectFace, MaybeSnapshotSelectorHook, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore,
   SlotHookFactory, SnapshotSelectorHook,
-} from '@pentest-harness/dsh-client-ui-slots'
+} from '@fathom/client-ui-slots'
 import type {
   CommandNode, CompactionSummaryNode, ConversationSnapshot, ConversationTurnDataMap,
   ObservableSnapshot, PendingInteraction, PendingWait, SessionId, ToolCallBlock,
   TurnLocation, WorkspaceId,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { MarkdownFileMentions } from '@pentest-harness/dsh-client-ui-primitives'
-import type { MessageId } from '@pentest-harness/dsh-client-connection/client'
-import type {} from '@pentest-harness/dsh-client-ui-layout/client'
+} from '@fathom/client-runtime/client'
+import type { MarkdownFileMentions } from '@fathom/client-ui-primitives'
+import type { MessageId } from '@fathom/client-connection/client'
+import type {} from '@fathom/client-ui-layout/client'
 import type { ComposerBlock } from '../input/blocks.ts'
 import type {
   ComposerKeyboard, DraftAttachmentId, EditSelection, InputActions, InputNotice, InputState,
@@ -57,7 +57,7 @@ export interface MessageImagesOwnerProps {
 /** Slot-backed renderer used by chat nodes without importing an attachment implementation. */
 export type RenderMessageImages = (owner: Omit<MessageImagesOwnerProps, 'loadImage'>) => ReactNode
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     /**
      * The entire body of one session: taking this seat means rendering that
@@ -366,7 +366,7 @@ export interface ChatFileMentions {
   forClosing(owner: TurnTailOwnerProps): MarkdownFileMentions | undefined
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Prose file-mention provider (ui-deliverables); reach via ctx.get — optional. */
     chatFileMentions: ChatFileMentions

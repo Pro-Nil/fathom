@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-client-hmr`.
- * @module @pentest-harness/dsh-client-hmr/invariant
+ * Package-owned invariant companion for `@fathom/client-hmr`.
+ * @module @fathom/client-hmr/invariant
  */
 
-import type { Context, Fiber } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context, Fiber } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-client-hmr'
+const PACKAGE_NAME = '@fathom/client-hmr'
 
 /** Cordis companion plugin name. */
 export const name = 'client-hmr-invariant'

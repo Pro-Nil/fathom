@@ -4,9 +4,9 @@
  * participates in method lookup, invocation, or type exposure.
  */
 
-import { Service } from '@pentest-harness/cordis'
-import type { Context, Events } from '@pentest-harness/cordis'
-import type { ConnectionHandle } from '@pentest-harness/dsh-client-connection/client'
+import { Service } from '@fathom/cordis'
+import type { Context, Events } from '@fathom/cordis'
+import type { ConnectionHandle } from '@fathom/client-connection/client'
 import type {
   InvocationDescriptor,
   TypertClientRemote,
@@ -15,7 +15,7 @@ import type {
   TypertDisposer,
   TypertRemoteContribution,
   TypertRemoteEvent,
-} from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/typert-protocol'
 
 interface MountToken {
   active: boolean
@@ -63,7 +63,7 @@ interface InstalledMethod {
 /** Typed Remote service augmented by generated direct namespaces. */
 export type ClientRemote = TypertClientRemote
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Generated Remote namespaces selected by the Client assembly. */
     remote: ClientRemote

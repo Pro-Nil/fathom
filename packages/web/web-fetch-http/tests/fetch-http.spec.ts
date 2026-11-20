@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
 import { AddressInfo } from 'node:net'
-import { Context } from '@pentest-harness/cordis'
-import WebRuntime from '@pentest-harness/dsh-web'
-import { HttpFetchProvider, LOCAL_FETCH_PROVIDER_ID } from '@pentest-harness/dsh-web-fetch-http'
-import type { HttpFetchLimits } from '@pentest-harness/dsh-web-fetch-http'
-import * as fetchPlugin from '@pentest-harness/dsh-web-fetch-http'
+import { Context } from '@fathom/cordis'
+import WebRuntime from '@fathom/web'
+import { HttpFetchProvider, LOCAL_FETCH_PROVIDER_ID } from '@fathom/web-fetch-http'
+import type { HttpFetchLimits } from '@fathom/web-fetch-http'
+import * as fetchPlugin from '@fathom/web-fetch-http'
 import { classifyContentType, decoderForCharset, isSameOrigin, parseCharset, validateFetchUrl } from '../src/policy.ts'
 
 const limits: HttpFetchLimits = {

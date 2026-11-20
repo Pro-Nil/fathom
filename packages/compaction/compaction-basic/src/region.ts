@@ -2,7 +2,7 @@
  * Surface retention selection and the shared log-recorded compaction
  * transaction for automatic open-turn and manual idle-session compaction.
  *
- * @module @pentest-harness/dsh-compaction-basic/region
+ * @module @fathom/compaction-basic/region
  */
 
 import { randomUUID } from 'node:crypto'
@@ -13,14 +13,14 @@ import {
   compactCheckpointSource,
   toolPairingBalancedAfter,
   toolPairingBalancedBefore,
-} from '@pentest-harness/dsh-compaction'
-import type { CompactionResult } from '@pentest-harness/dsh-compaction'
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
-import { createUserMessage, errorChain } from '@pentest-harness/dsh-llm'
-import type { Message, UserMessage } from '@pentest-harness/dsh-llm'
-import type { TokenMeasurement, TokenMeter } from '@pentest-harness/dsh-token-meter'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { Agent } from '@pentest-harness/dsh-agent'
+} from '@fathom/compaction'
+import type { CompactionResult } from '@fathom/compaction'
+import type { CommandId } from '@fathom/commands/brand'
+import { createUserMessage, errorChain } from '@fathom/llm'
+import type { Message, UserMessage } from '@fathom/llm'
+import type { TokenMeasurement, TokenMeter } from '@fathom/token-meter'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { Agent } from '@fathom/agent'
 import { frameSummary } from './summarizer.ts'
 import type { SummarizationInput, SummaryResult } from './summarizer.ts'
 

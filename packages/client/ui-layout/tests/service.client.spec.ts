@@ -5,8 +5,8 @@
  * unwired fail-loud, and re-attach overwriting a stale action set.
  */
 import { describe, expect, it, vi } from 'vitest'
-import { LayoutController } from '@pentest-harness/dsh-client-ui-layout/src/client/service.ts'
-import type { PanelActions } from '@pentest-harness/dsh-client-ui-layout/src/client/service.ts'
+import { LayoutController } from '@fathom/client-ui-layout/src/client/service.ts'
+import type { PanelActions } from '@fathom/client-ui-layout/src/client/service.ts'
 
 function fakePanels(): PanelActions {
   return {

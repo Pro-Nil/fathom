@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { TurnEndReason } from '@pentest-harness/dsh-session'
-import { foldConsumedWork } from '@pentest-harness/dsh-agent'
+import { createUserMessage } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import type { TurnEndReason } from '@fathom/session'
+import { foldConsumedWork } from '@fathom/agent'
 
 /** One pending message, as the inbox records it. */
 function message(text: string) {

@@ -3,9 +3,9 @@
 import { useId, useState, type ReactNode } from 'react'
 import {
   CodeBlock, DisclosureRow, IconCodeOutline16, IconInspectOutline12, StateDot,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale } from '@pentest-harness/dsh-client-ui-slots'
-import type { ToolCallViewProps } from '@pentest-harness/dsh-client-ui-tool/client'
+} from '@fathom/client-ui-primitives'
+import type { InjectFace, PropsLocale } from '@fathom/client-ui-slots'
+import type { ToolCallViewProps } from '@fathom/client-ui-tool/client'
 import { cordisDefineCard, type CordisToolState } from './card-model.ts'
 import type { CordisCardFace } from './slots.ts'
 import { cordisVisibleStatus, type CordisVisibleStatus } from './status.ts'

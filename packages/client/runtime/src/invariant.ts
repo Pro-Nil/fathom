@@ -1,6 +1,6 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-client-runtime`.
- * @module @pentest-harness/dsh-client-runtime/invariant
+ * Package-owned invariant companion for `@fathom/client-runtime`.
+ * @module @fathom/client-runtime/invariant
  */
 
 /* jscpd:ignore-start */
@@ -8,11 +8,11 @@
  * `keyof SlotMap & string` is the declare-merge key pattern: SlotMap is empty
  * in this compilation unit (intersection reads `never`) but consumers merge
  * keys in; the rule fires on the empty-map view, not on real redundancy. */
-import type { Context } from '@pentest-harness/cordis'
-import type { SlotMap } from '@pentest-harness/dsh-client-ui-slots'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { SlotMap } from '@fathom/client-ui-slots'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-client-runtime'
+const PACKAGE_NAME = '@fathom/client-runtime'
 
 /** Cordis companion plugin name. */
 export const name = 'client-runtime-invariant'

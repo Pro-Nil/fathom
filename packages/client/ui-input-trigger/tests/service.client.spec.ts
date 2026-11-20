@@ -7,15 +7,15 @@
  * scope-birth roster warm — is InputTriggerController behavior, tested on a real
  * session scope (createScope).
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { createScope, scopeOf } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { InputTriggerController, InputTriggerService } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import { createScope, scopeOf } from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import { InputTriggerController, InputTriggerService } from '@fathom/client-ui-input-trigger/client'
 import type {
   BeginCommandRequest, ClientSessionContext, CommandClaim, InsertReferenceRequest, PickOutcome,
   ReferenceInsert, InputTriggerCandidate, InputTriggerPick, InputTriggerSource, SourceRoster, TriggerChar,
-} from '@pentest-harness/dsh-client-ui-input-trigger/client'
+} from '@fathom/client-ui-input-trigger/client'
 
 const sid = (k: string): SessionId => k as SessionId
 

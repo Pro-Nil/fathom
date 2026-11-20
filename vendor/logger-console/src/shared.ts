@@ -1,6 +1,6 @@
-import { Context, Exporter, Formatter, Logger, Message } from '@pentest-harness/cordis'
-import { Time } from '@pentest-harness/cosmokit'
-import z from '@pentest-harness/schemastery'
+import { Context, Exporter, Formatter, Logger, Message } from '@fathom/cordis'
+import { Time } from '@fathom/cosmokit'
+import z from '@fathom/schemastery'
 
 /** Terminal color support level compatible with supports-color. */
 export type ColorSupportLevel = 0 | 1 | 2 | 3

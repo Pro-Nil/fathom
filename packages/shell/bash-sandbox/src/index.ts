@@ -5,12 +5,12 @@
  * the command never ran: foreground calls throw `SANDBOX_UNAVAILABLE`, while
  * background processes carry `runnerFailed`; other spawn rejections retain
  * local-executor semantics. The tool owns approval and passes a complete per-call policy.
- * @module @pentest-harness/dsh-bash-sandbox
+ * @module @fathom/bash-sandbox
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@pentest-harness/dsh-shell'
-import { SandboxUnavailableError } from '@pentest-harness/dsh-sandbox'
+import { Context } from '@fathom/cordis'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@fathom/shell'
+import { SandboxUnavailableError } from '@fathom/sandbox'
 import type {
   ConfinedArgv,
   ConfinedSandboxMode,
@@ -19,16 +19,16 @@ import type {
   SandboxExecutionPolicy,
   SandboxMode,
   SandboxPolicy,
-} from '@pentest-harness/dsh-sandbox'
-import type {} from '@pentest-harness/dsh-sandbox-policy'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import type { Config as LocalConfig } from '@pentest-harness/dsh-bash-local'
+} from '@fathom/sandbox'
+import type {} from '@fathom/sandbox-policy'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import type { Config as LocalConfig } from '@fathom/bash-local'
 import { classifyDenial, classifyRunnerFailure, isRunnerSpawnFailure, matchesSignature } from './helpers.ts'
 
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@pentest-harness/dsh-sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@fathom/sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The runner
  * choice is likewise the `ctx.sandbox` provider's config, not this executor's.
  */

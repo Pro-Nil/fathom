@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import type { SettingsNamespaceView } from '@pentest-harness/dsh-api-remotes/client'
-import { SettingsSchemaService } from '@pentest-harness/dsh-client-ui-settings/src/client/schema.ts'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import type { SettingsNamespaceView } from '@fathom/api-remotes/client'
+import { SettingsSchemaService } from '@fathom/client-ui-settings/src/client/schema.ts'
 import { PermissionRow, type PermissionRowProps } from '../src/client/PermissionRow.tsx'
 import { en } from '../src/client/locales.ts'
-import { SettingsDescribeMirror } from '@pentest-harness/dsh-client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsDescribeMirror } from '@fathom/client-ui-settings/src/client/settings-mirror.ts'
 import { PermissionPresetSettingsController } from '../src/client/settings-store.ts'
 
 const schema = new SettingsSchemaService(new Context())

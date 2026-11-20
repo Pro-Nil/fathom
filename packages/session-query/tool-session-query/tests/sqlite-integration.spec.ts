@@ -1,20 +1,20 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage, CallId  } from '@pentest-harness/dsh-llm'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage, CallId  } from '@fathom/llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type Session,
-} from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SqliteSessionQueryEngine from '@pentest-harness/dsh-session-query-sqlite'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as ToolSessionQuery from '@pentest-harness/dsh-tool-session-query'
+} from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SqliteSessionQueryEngine from '@fathom/session-query-sqlite'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import * as ToolSessionQuery from '@fathom/tool-session-query'
 
 const temporaryDirectories: string[] = []
 const contexts: Context[] = []
@@ -32,7 +32,7 @@ function fakeAgent(session: Session): Agent {
 
 describe('tool-session-query with the real SQLite provider', () => {
   it('searches live prior-step history and a persisted same-workspace log', { timeout: 20_000 }, async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-tool-session-query-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-tool-session-query-'))
     temporaryDirectories.push(root)
     const ctx = new Context()
     contexts.push(ctx)
@@ -101,7 +101,7 @@ describe('tool-session-query with the real SQLite provider', () => {
   })
 
   it('passes finite fractional epoch-millisecond bounds through SQLite comparisons', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-tool-session-query-fractional-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-tool-session-query-fractional-'))
     temporaryDirectories.push(root)
     const ctx = new Context()
     contexts.push(ctx)

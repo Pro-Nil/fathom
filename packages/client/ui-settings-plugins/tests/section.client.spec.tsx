@@ -7,8 +7,8 @@
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
 import { AgentLoopCard } from '../src/client/AgentLoopCard.tsx'
 import type { AgentLoopCardProps } from '../src/client/AgentLoopCard.tsx'
 import { BashCard } from '../src/client/BashCard.tsx'

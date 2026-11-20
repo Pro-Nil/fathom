@@ -12,10 +12,10 @@
 - text: Reply with the single word LIGHTHOUSE and stop. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - button "Think The user wants me to reply with a single word. Let me comply.":
   - img
   - img

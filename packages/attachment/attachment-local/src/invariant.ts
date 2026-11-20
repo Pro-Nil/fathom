@@ -1,10 +1,10 @@
-/** Package-owned invariant companion for `@pentest-harness/dsh-attachment-local`. @module @pentest-harness/dsh-attachment-local/invariant */
+/** Package-owned invariant companion for `@fathom/attachment-local`. @module @fathom/attachment-local/invariant */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-attachment-local'
+const PACKAGE_NAME = '@fathom/attachment-local'
 /** Cordis companion plugin name. */
 export const name = 'attachment-local-invariant'
 /** Services required before package ownership can be reserved. */

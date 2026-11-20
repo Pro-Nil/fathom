@@ -1,4 +1,4 @@
-# dsh-launch-environment
+# fathom-launch-environment
 
 This run's environment as one immutable snapshot that remembers **which layer supplied each value**. Consumers resolve user-facing values against it instead of `process.env`, because the layers are not equally trusted and a flattened view cannot tell them apart.
 
@@ -6,7 +6,7 @@ This run's environment as one immutable snapshot that remembers **which layer su
 |---|---|---|
 | Inherited process environment | `process` | What the launching shell, CI job, or container passed in — this run's explicit intent |
 | `<invocation cwd>/.env` | `project-env` | The project the harness was launched in, which the product trusts to configure its own agent |
-| `$DSH_HOME/.env` | `user-env` | The user's own machine-level defaults |
+| `$FATHOM_HOME/.env` | `user-env` | The user's own machine-level defaults |
 
 Values do also reach `process.env` — a user's `--config` tree and third-party libraries read it — but that flattened view is not the authority for anything the harness resolves.
 
@@ -19,8 +19,8 @@ Values do also reach `process.env` — a user's `--config` tree and third-party 
 Names match the way the platform matches them: exactly on POSIX, case-insensitively on Windows. A case-sensitive lookup there would rank the wrong layer — a shell's `acme_api_key` and a project `.env`'s `ACME_API_KEY` are one variable to the OS, and treating them as two would let the project win.
 
 ```ts
-import type { Context } from '@pentest-harness/cordis'
-import { launchEnvironmentOf } from '@pentest-harness/dsh-launch-environment'
+import type { Context } from '@fathom/cordis'
+import { launchEnvironmentOf } from '@fathom/launch-environment'
 
 declare const ctx: Context
 const endpoint = launchEnvironmentOf(ctx).get('ACME_BASE_URL')?.value
@@ -30,5 +30,5 @@ const endpoint = launchEnvironmentOf(ctx).get('ACME_BASE_URL')?.value
 
 ## Known Limitations and Deferred Work
 
-- **The snapshot is not a subprocess boundary** — every layer is also materialized into `process.env`, so ordinary project variables reach child processes under [`dsh-subprocess`](../../subprocess/subprocess/README.md)'s scrub. The product launcher's [`.env` contract](../../boot/app-boot/README.md#profiles) rejects bootstrap variables before materialization.
+- **The snapshot is not a subprocess boundary** — every layer is also materialized into `process.env`, so ordinary project variables reach child processes under [`fathom-subprocess`](../../subprocess/subprocess/README.md)'s scrub. The product launcher's [`.env` contract](../../boot/app-boot/README.md#profiles) rejects bootstrap variables before materialization.
 - **No per-workspace layer** — the project layer is the *invoking* directory, fixed at launch. A workspace selected later in the Web UI contributes nothing, deliberately: following it would let a model's own workspace change the harness environment mid-session.

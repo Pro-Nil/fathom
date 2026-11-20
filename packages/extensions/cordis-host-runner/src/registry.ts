@@ -1,10 +1,10 @@
 /**
  * Process-local dynamic Plugin registry and its opaque identity mints.
- * @module @pentest-harness/dsh-cordis-host-runner/registry
+ * @module @fathom/cordis-host-runner/registry
  */
 
-import type { Fiber } from '@pentest-harness/cordis'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { Fiber } from '@fathom/cordis'
+import type { SessionId } from '@fathom/session/types'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   CordisDynamicRunMode, DynamicCordisRenderFailure, DynamicCordisRunAttempt,

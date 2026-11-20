@@ -2,9 +2,9 @@
  * Pure subagent-lineage aggregation over the retained session-list mirror.
  * Ordinary forks terminate propagation so each visible session owns only its
  * uninterrupted subagent subtree.
- * @module @pentest-harness/dsh-client-runtime/client/sessions/subagent-lineage
+ * @module @fathom/client-runtime/client/sessions/subagent-lineage
  */
-import type { SessionId } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionId } from '@fathom/api-remotes/client'
 import type { SessionSummary } from './service.ts'
 
 /** Descendant counts projected for one possible parent session. */

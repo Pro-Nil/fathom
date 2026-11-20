@@ -2,10 +2,10 @@
  * Shared buffering, serialization, adoption, repair, and disposal orchestration
  * for first-party backends. Third-party backends may implement the public
  * persistence seam directly.
- * @module @pentest-harness/dsh-session-persistence/coordinator
+ * @module @fathom/session-persistence/coordinator
  */
 
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   adoptSessionEvent,
   interruptedTurnClosers,
@@ -14,9 +14,9 @@ import {
   SessionPreparation,
   snapshotJsonValue,
   snapshotSessionEvent,
-} from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionId, SessionHeader } from '@pentest-harness/dsh-session'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+} from '@fathom/session'
+import type { Session, SessionEvent, SessionId, SessionHeader } from '@fathom/session'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import type { SessionInspection, SessionLocation } from './index.ts'
 import type { SessionPersistenceRevision } from './revision.ts'
 import { observeQueuedAbort, SessionPreparations } from './preparations.ts'
@@ -1132,7 +1132,7 @@ export class PersistenceCoordinator<TornMarker = unknown> {
     ctx.on('session/disposed', (session) => { this.retire(session) })
 
     // HMR: a hot reload does not replay session/created, so seed existing live
-    // sessions (mirrors dsh-invariants).
+    // sessions (mirrors fathom-invariants).
     for (const session of ctx.sessions.list()) void this.initFor(session)
   }
 

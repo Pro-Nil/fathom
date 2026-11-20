@@ -22,45 +22,45 @@ const workspaceGlobs = [
   { dir: 'apps', depth: 1 },
 ] as const
 const vendoredPackages = new Set([
-  '@pentest-harness/cordis',
-  '@pentest-harness/cosmokit',
-  '@pentest-harness/schemastery',
-  '@pentest-harness/cordis-plugin-loader',
-  '@pentest-harness/cordis-plugin-include',
-  '@pentest-harness/cordis-plugin-group',
-  '@pentest-harness/cordis-plugin-timer',
-  '@pentest-harness/cordis-plugin-hmr',
-  '@pentest-harness/cordis-plugin-logger-console',
+  '@fathom/cordis',
+  '@fathom/cosmokit',
+  '@fathom/schemastery',
+  '@fathom/cordis-plugin-loader',
+  '@fathom/cordis-plugin-include',
+  '@fathom/cordis-plugin-group',
+  '@fathom/cordis-plugin-timer',
+  '@fathom/cordis-plugin-hmr',
+  '@fathom/cordis-plugin-logger-console',
 ])
 const publicLandlockPackages = new Set([
-  '@pentest-harness/node-addon-landlock-run',
-  '@pentest-harness/node-addon-landlock-run-linux-arm64',
-  '@pentest-harness/node-addon-landlock-run-linux-x64',
+  '@fathom/node-addon-landlock-run',
+  '@fathom/node-addon-landlock-run-linux-arm64',
+  '@fathom/node-addon-landlock-run-linux-x64',
 ])
 /** Deliberate source payloads whose exact bytes are part of the package's audit surface. */
 const publicationSourceAllowlist: Readonly<Record<string, readonly string[]>> = {
-  '@pentest-harness/node-addon-landlock-run': ['src/main.c'],
+  '@fathom/node-addon-landlock-run': ['src/main.c'],
 }
-const repositoryUrl = 'git+https://github.com/pentest-harness/pentest-harness.git'
+const repositoryUrl = 'git+https://github.com/fathom/fathom.git'
 /**
  * Source home the published packages point consumers at. It differs from
  * {@link repositoryUrl}, which the Landlock packages keep because npm resolves
  * their trusted publishing against the repository that runs the workflow.
  */
-const publishedRepositoryUrl = 'git+https://github.com/S1N6H/pentest-harness.git'
+const publishedRepositoryUrl = 'git+https://github.com/Pro-Nil/fathom.git'
 /** Private packages that participate in workspace checks but not releases. */
 const experimentalPackageDirectory = /^packages\/experimental\/[^/]+$/
 /** npm namespace reserved for private experimental packages. */
-const experimentalPackageNamePrefix = '@pentest-harness/dsh-experimental-'
+const experimentalPackageNamePrefix = '@fathom/experimental-'
 /** Directories whose packages this repository publishes: one release member each. */
 const releaseMemberDirectory = /^(?:packages\/(?!experimental\/)[^/]+\/[^/]+|apps\/[^/]+|vendor\/[^/]+)$/
 
 const localArtifactDirs = new Set(['node_modules'])
 const appPackageFiles: Readonly<Record<string, readonly string[]>> = {
-  '@pentest-harness/dsh': ['lib/*.js', 'config'],
+  '@fathom/cli': ['lib/*.js', 'config'],
   // The Web build emits sourcemaps for browser debugging; publishing them is
   // what the payload policy forbids, so the bundle ships without them.
-  '@pentest-harness/dsh-web-frontend': ['dist', '!dist/**/*.map'],
+  '@fathom/web-frontend': ['dist', '!dist/**/*.map'],
 }
 
 /** The subset of package.json fields this constraint check cares about. */
@@ -89,7 +89,7 @@ export interface PackageManifest {
   devDependencies?: Record<string, string>
   dependencies?: Record<string, string>
   optionalDependencies?: Record<string, string>
-  dsh?: {
+  fathom?: {
     bundle?: {
       patch?: string
     }
@@ -146,30 +146,30 @@ const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
   // them through its own CSS pipeline, so the sheets are published artifacts.
   // The glob covers whichever sheets a package emits; sourcemaps stay
   // unpublished, as everywhere else in the repository.
-  '@pentest-harness/dsh-client-ui-primitives': ['lib/**/*.css'],
-  '@pentest-harness/dsh-client-web': ['lib/**/*.css'],
-  '@pentest-harness/dsh-client-ui-theme': ['lib/styles'],
+  '@fathom/client-ui-primitives': ['lib/**/*.css'],
+  '@fathom/client-web': ['lib/**/*.css'],
+  '@fathom/client-ui-theme': ['lib/styles'],
   // The CPython side ships as source .py files, published as-is rather than built.
-  '@pentest-harness/dsh-code-runtime-python': ['py/**/*.py'],
+  '@fathom/code-runtime-python': ['py/**/*.py'],
   // The Python runtime uses a distinct closed-resolution bin; the public CLI
   // keeps config-owned bare-package resolution through lib/bin.js.
-  '@pentest-harness/dsh-sdk-jsonrpc-demo': ['lib/packaged-bin.js'],
+  '@fathom/sdk-jsonrpc-demo': ['lib/packaged-bin.js'],
   // The argv-prefix runner entry ships beside the lib as its own bundle;
   // sandbox-local resolves it through the package's ./runner export. tsdown
   // also shares its generated FFI code through a hashed runtime chunk.
-  '@pentest-harness/dsh-sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js'],
+  '@fathom/sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js'],
   // SQLite loads every statement from immutable package resources at runtime.
-  '@pentest-harness/dsh-session-persistence-sqlite': ['resources/sql/**/*.sql'],
-  '@pentest-harness/dsh-skill-badge': ['assets'],
-  '@pentest-harness/dsh-subprocess-local': ['scripts/ensure-spawn-helper.mjs'],
+  '@fathom/session-persistence-sqlite': ['resources/sql/**/*.sql'],
+  '@fathom/skill-badge': ['assets'],
+  '@fathom/subprocess-local': ['scripts/ensure-spawn-helper.mjs'],
 }
 
 function sameStringList(actual: readonly string[] | undefined, expected: readonly string[]): boolean {
   return !!actual && actual.length === expected.length && actual.every((value, index) => value === expected[index])
 }
 
-function expectedDshPackageFiles(manifest: PackageManifest): readonly string[] {
-  const declaredPatch = manifest.dsh?.bundle?.patch
+function expectedFathomPackageFiles(manifest: PackageManifest): readonly string[] {
+  const declaredPatch = manifest.fathom?.bundle?.patch
   const bundleFiles = declaredPatch === undefined ? [] : [declaredPatch.replace(/^\.\//, '')]
   const extras = [
     ...bundleFiles,
@@ -282,7 +282,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     //
     // Access is per release sequence, not per scope: the vendored framework and
     // the Landlock packages publish publicly because outside consumers install
-    // them, while the dsh family stays restricted until its own sequence goes
+    // them, while the fathom family stays restricted until its own sequence goes
     // public. A mixed scope is why no publish path passes `--access` — one flag
     // cannot serve both, so each packed manifest decides
     // ([rationale](../.agents/notes/implemented/process/2026-08-13-public-vendor-and-native-sequences.md)).
@@ -305,7 +305,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     return errors
   }
 
-  if (manifest.name?.startsWith('@pentest-harness/')) {
+  if (manifest.name?.startsWith('@fathom/')) {
     const allowedSources = publicationSourceAllowlist[manifest.name] ?? []
     for (const file of manifest.files ?? []) {
       if (isForbiddenPublicationFile(file) && !allowedSources.includes(file)) {
@@ -314,7 +314,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     }
   }
 
-  if (dir.startsWith('apps/') && manifest.name?.startsWith('@pentest-harness/')) {
+  if (dir.startsWith('apps/') && manifest.name?.startsWith('@fathom/')) {
     const expectedFiles = appPackageFiles[manifest.name]
     if (expectedFiles === undefined) {
       errors.push(`${label}: app package has no publication files policy`)
@@ -332,14 +332,14 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     }
   }
 
-  if (dir.startsWith('packages/') && manifest.name?.startsWith('@pentest-harness/dsh-')) {
-    const peer = manifest.peerDependencies?.['@pentest-harness/cordis']
-    const dev = manifest.devDependencies?.['@pentest-harness/cordis']
+  if (dir.startsWith('packages/') && manifest.name?.startsWith('@fathom/')) {
+    const peer = manifest.peerDependencies?.['@fathom/cordis']
+    const dev = manifest.devDependencies?.['@fathom/cordis']
 
-    if (!peer) errors.push(`${label}: @pentest-harness/cordis must be a peerDependency`)
-    if (!dev) errors.push(`${label}: @pentest-harness/cordis must also be a devDependency`)
+    if (!peer) errors.push(`${label}: @fathom/cordis must be a peerDependency`)
+    if (!dev) errors.push(`${label}: @fathom/cordis must also be a devDependency`)
     if (peer && dev && peer !== dev) {
-      errors.push(`${label}: @pentest-harness/cordis peer (${peer}) and dev (${dev}) ranges must match`)
+      errors.push(`${label}: @fathom/cordis peer (${peer}) and dev (${dev}) ranges must match`)
     }
     if (manifest.version !== repositoryVersion) {
       errors.push(`${label}: package.json version must match root version ${repositoryVersion ?? '(missing)'}`)
@@ -372,7 +372,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     if (invariantExport && (invariantExport.types === undefined || invariantExport.default === undefined)) {
       errors.push(`${label}: package.json exports["./invariant"] must declare both types and default targets`)
     }
-    const expectedFiles = expectedDshPackageFiles(manifest)
+    const expectedFiles = expectedFathomPackageFiles(manifest)
     if (!sameStringList(manifest.files, expectedFiles)) {
       errors.push(`${label}: package.json files must be ${JSON.stringify(expectedFiles)}`)
     }
@@ -408,8 +408,8 @@ function checkHierarchyShape(): string[] {
 }
 
 function checkRepositoryVersion(): string[] {
-  // The root carries the dsh release family's version, so a prerelease such as
-  // 0.0.1-rc.1 is a valid state between `release:dsh` and its publication.
+  // The root carries the fathom release family's version, so a prerelease such as
+  // 0.0.1-rc.1 is a valid state between `release:fathom` and its publication.
   if (repositoryVersion && /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(repositoryVersion)) return []
   return ['package.json: version must be X.Y.Z with an optional prerelease segment']
 }

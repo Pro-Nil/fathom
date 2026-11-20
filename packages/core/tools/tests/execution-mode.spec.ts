@@ -1,15 +1,15 @@
 /** Covers fail-closed per-call classification and model-schema isolation. */
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
 import ToolRuntime, {
   defineContentToolFixture,
   type ToolDefinition,
   type ToolExecutionInput,
   type ToolExecutionMode,
-} from '@pentest-harness/dsh-tools'
+} from '@fathom/tools'
 
 const testToolSignal = new AbortController().signal
 

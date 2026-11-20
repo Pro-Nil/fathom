@@ -14,12 +14,12 @@ import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as ToolFsSearch from '@pentest-harness/dsh-tool-fs-search'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as ToolFsSearch from '@fathom/tool-fs-search'
 
 const testToolSignal = new AbortController().signal
 
@@ -46,7 +46,7 @@ const agent = () => ({ session: { header: { id: 'session-int', cwd: dir } } })
 
 describe('search tools over the real subprocess service + the packaged rg', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-search-int-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-search-int-'))
     await mkdir(join(dir, 'src'), { recursive: true })
     await mkdir(join(dir, '.git'), { recursive: true })
     await mkdir(join(dir, 'spaced dir'), { recursive: true })
@@ -161,7 +161,7 @@ describe('search tools over the real subprocess service + the packaged rg', () =
 
   describe('per-session cwd', () => {
     it('resolves the search in the SESSION workspace, not the process cwd', async () => {
-      const sessionDir = await mkdtemp(join(tmpdir(), 'dsh-search-session-'))
+      const sessionDir = await mkdtemp(join(tmpdir(), 'fathom-search-session-'))
       try {
         await writeFile(join(sessionDir, 'only-here.ts'), 'const sessionFile = true\n')
         const agentObj = { session: { header: { id: 'session-int', cwd: sessionDir } } }

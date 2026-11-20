@@ -14,14 +14,14 @@
  * carry the complete post-change state, never a bare delta — it keeps every
  * unit's transition trivially cheap and every served value self-describing.
  *
- * @module @pentest-harness/dsh-session-projection
+ * @module @fathom/session-projection
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import type { ZodType } from 'zod'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
+import type { Session, SessionEvent } from '@fathom/session'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionProjections: SessionProjectionRegistry
   }

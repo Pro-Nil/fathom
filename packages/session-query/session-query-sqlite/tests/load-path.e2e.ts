@@ -1,17 +1,17 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 /**
  * Keyless real-Loader-path smoke for the combined SQLite session-query service.
  *
- * @module @pentest-harness/dsh-session-query-sqlite/tests/load-path
+ * @module @fathom/session-query-sqlite/tests/load-path
  */
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { SESSION_FORMAT_VERSION, SessionId } from '@pentest-harness/dsh-session'
-import SessionStore from '@pentest-harness/dsh-session'
-import SqliteSessionPersistence from '@pentest-harness/dsh-session-persistence-sqlite'
-import SqliteSessionQueryEngine, * as queryModule from '@pentest-harness/dsh-session-query-sqlite'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { SESSION_FORMAT_VERSION, SessionId } from '@fathom/session'
+import SessionStore from '@fathom/session'
+import SqliteSessionPersistence from '@fathom/session-persistence-sqlite'
+import SqliteSessionQueryEngine, * as queryModule from '@fathom/session-query-sqlite'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -25,12 +25,12 @@ afterEach(async () => {
 })
 
 async function temporaryPath(name: string): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'dsh-session-search-loader-'))
+  const directory = await mkdtemp(join(tmpdir(), 'fathom-session-search-loader-'))
   temporaryDirectories.push(directory)
   return join(directory, name)
 }
 
-describe('dsh-session-query-sqlite real Loader path', () => {
+describe('fathom-session-query-sqlite real Loader path', () => {
   it('unwraps, mounts, and searches the real persistence backend', async () => {
     const persistencePath = await temporaryPath('canonical.db')
     const searchPath = await temporaryPath('derived.db')

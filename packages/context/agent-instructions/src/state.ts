@@ -1,14 +1,14 @@
 /**
  * Session-visible workspace instruction state and dynamic reconciliation.
  *
- * @module @pentest-harness/dsh-agent-instructions/state
+ * @module @fathom/agent-instructions/state
  */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { Message } from '@pentest-harness/dsh-llm'
-import type { Session, UserMessage } from '@pentest-harness/dsh-session'
-import type { FileSystem, FsVersion } from '@pentest-harness/dsh-fs'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { Message } from '@fathom/llm'
+import type { Session, UserMessage } from '@fathom/session'
+import type { FileSystem, FsVersion } from '@fathom/fs'
 import type { ResolvedConfig } from './config.ts'
 import { instructionContentSha1, trimmedInstructionDigest } from './digest.ts'
 import {
@@ -45,7 +45,7 @@ export interface AgentInstructionSource {
   changes: AgentInstructionChange[]
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     'agent-instructions': AgentInstructionSource
   }

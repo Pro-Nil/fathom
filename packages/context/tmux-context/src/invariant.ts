@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tmux-context`.
- * @module @pentest-harness/dsh-tmux-context/invariant
+ * Package-owned invariant companion for `@fathom/tmux-context`.
+ * @module @fathom/tmux-context/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tmux-context'
+const PACKAGE_NAME = '@fathom/tmux-context'
 
 /** Cordis companion plugin name. */
 export const name = 'tmux-context-invariant'

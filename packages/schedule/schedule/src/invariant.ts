@@ -1,14 +1,14 @@
 /**
  * Package-owned strict Schedule stream invariant.
- * @module @pentest-harness/dsh-schedule/invariant
+ * @module @fathom/schedule/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import { foldScheduleEvents, ScheduleLogError } from './domain.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-schedule'
+const PACKAGE_NAME = '@fathom/schedule'
 
 /** Cordis invariant-companion plugin name. */
 export const name = 'tool-schedule-invariant'

@@ -1,7 +1,7 @@
 /** Attachment error and limit copy owned by the conversation input flow. */
 
-import type { ImageAttachmentLimits } from '@pentest-harness/dsh-attachment'
-import type { Translate } from '@pentest-harness/dsh-client-ui-slots'
+import type { ImageAttachmentLimits } from '@fathom/attachment'
+import type { Translate } from '@fathom/client-ui-slots'
 import type { ConversationKey } from './locales.ts'
 
 /**

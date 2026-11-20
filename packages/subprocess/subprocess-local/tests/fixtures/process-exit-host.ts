@@ -1,8 +1,8 @@
 import { access, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import { Context } from '@fathom/cordis'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 
 const [kind, trigger, root] = process.argv.slice(2)
 if ((kind !== 'ordinary' && kind !== 'terminal')

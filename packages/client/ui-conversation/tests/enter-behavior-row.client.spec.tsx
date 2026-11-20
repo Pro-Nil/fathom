@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import { createSnapshotStore, type SessionListState, type WorkspaceListState } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import { createSnapshotStore, type SessionListState, type WorkspaceListState } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
 import { EnterBehaviorRow } from '../src/client/settings/EnterBehaviorRow.tsx'
 import type { EnterBehaviorRowProps } from '../src/client/settings/EnterBehaviorRow.tsx'
 import { ComposerSubmissionPolicy } from '../src/client/input/submission-policy.ts'

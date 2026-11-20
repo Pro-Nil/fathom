@@ -6,10 +6,10 @@
  * compaction cannot change. The plugin owns only the fold; delivery is the
  * seam's.
  *
- * @module @pentest-harness/dsh-session-stats
+ * @module @fathom/session-stats
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { sessionStatsProjectionDefinition } from './projection.ts'
 
 export type * from './types.ts'

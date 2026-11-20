@@ -9,20 +9,20 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
-import { CallId, LlmAdapter, LlmRuntime } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, LlmModelInfo, LlmResolvedModelInfo, Message, StreamChunk } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { RUN_CODE_NAME } from '@pentest-harness/dsh-tools'
-import type { Config as ToolConfig } from '@pentest-harness/dsh-tools'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import LocalAttachmentStore from '@pentest-harness/dsh-attachment-local'
-import { AttachmentError, AttachmentId, AttachmentStore } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@pentest-harness/dsh-attachment'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
+import { Context } from '@fathom/cordis'
+import { CodeRuntime } from '@fathom/code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@fathom/code-runtime'
+import { CallId, LlmAdapter, LlmRuntime } from '@fathom/llm'
+import type { GenerateOptions, LlmModelInfo, LlmResolvedModelInfo, Message, StreamChunk } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { RUN_CODE_NAME } from '@fathom/tools'
+import type { Config as ToolConfig } from '@fathom/tools'
+import LocalFileSystem from '@fathom/fs-local'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import LocalAttachmentStore from '@fathom/attachment-local'
+import { AttachmentError, AttachmentId, AttachmentStore } from '@fathom/attachment'
+import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@fathom/attachment'
+import * as ToolFs from '@fathom/tool-fs'
 import {
   applyReadImageTool,
   formatImageReadOutput,
@@ -80,8 +80,8 @@ let dir: string
 let home: string
 
 beforeEach(async () => {
-  dir = await mkdtemp(join(tmpdir(), 'dsh-read-image-'))
-  home = await mkdtemp(join(tmpdir(), 'dsh-read-image-home-'))
+  dir = await mkdtemp(join(tmpdir(), 'fathom-read-image-'))
+  home = await mkdtemp(join(tmpdir(), 'fathom-read-image-home-'))
 })
 afterEach(async () => {
   await rm(dir, { recursive: true, force: true })
@@ -107,7 +107,7 @@ async function setup(options: SetupOptions = {}) {
   await ctx.plugin(LocalFileSystem, { cwd: dir })
   await ctx.plugin(FsPolicy)
   if (options.attachments !== false) {
-    await ctx.plugin(LocalAttachmentStore, { dshHome: home, ...options.storeConfig })
+    await ctx.plugin(LocalAttachmentStore, { fathomHome: home, ...options.storeConfig })
   }
   if (options.llm !== false) {
     await ctx.plugin(LlmRuntime)
@@ -564,7 +564,7 @@ describe('registration surface', () => {
     await ctx.plugin(ToolRuntime, { mode: 'native' })
     await ctx.plugin(LocalFileSystem, { cwd: dir })
     await ctx.plugin(FsPolicy)
-    const attachmentsFiber = await ctx.plugin(LocalAttachmentStore, { dshHome: home })
+    const attachmentsFiber = await ctx.plugin(LocalAttachmentStore, { fathomHome: home })
     const toolFsFiber = await ctx.plugin(ToolFs)
     const names = () => ctx.tools.schemas().map(schema => schema.name).sort()
     expect(names()).toEqual(['edit', 'read', 'read_image', 'write'])
@@ -575,7 +575,7 @@ describe('registration surface', () => {
     expect(names()).toEqual(['edit', 'read', 'write'])
 
     // Remounting the store restores the conditional registration.
-    const remounted = await ctx.plugin(LocalAttachmentStore, { dshHome: home })
+    const remounted = await ctx.plugin(LocalAttachmentStore, { fathomHome: home })
     expect(names()).toEqual(['edit', 'read', 'read_image', 'write'])
 
     // Disposing the whole plugin withdraws every tool, read_image included.

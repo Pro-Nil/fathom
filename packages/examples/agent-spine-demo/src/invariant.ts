@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-agent-spine-demo`.
- * @module @pentest-harness/dsh-agent-spine-demo/invariant
+ * Package-owned invariant companion for `@fathom/agent-spine-demo`.
+ * @module @fathom/agent-spine-demo/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-spine-demo'
+const PACKAGE_NAME = '@fathom/agent-spine-demo'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-spine-demo-invariant'

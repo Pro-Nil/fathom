@@ -23,7 +23,7 @@
 
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import type { IApiClient } from '@pentest-harness/dsh-api-remotes/client'
+import type { IApiClient } from '@fathom/api-remotes/client'
 import { apiKeyFailure } from './apiKey.ts'
 import { EditorFooter } from './EditorFooter.tsx'
 import { formatCapacity, parseCapacity, validateModelCatalog } from './model-catalog.ts'

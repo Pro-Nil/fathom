@@ -1,8 +1,8 @@
 /** Test-owned workspaces face: the renderer standard-kit observable plus recorded actions. */
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
 import type {
   DirectoryListing, IWorkspaces, SessionId, SnapshotStore, WorkspaceId, WorkspaceListState, WorkspaceView,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import { workspaceListState } from './fixtures.ts'
 import type { Stabilizer } from './fixtures.ts'
 

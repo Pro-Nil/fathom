@@ -5,12 +5,12 @@
  * running job (`session.killJob`).
  */
 import { createElement } from 'react'
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
 import { JobListAction, type JobListActionProps } from './JobListAction.tsx'
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type {} from '@fathom/client-locale/client'
 import { en, NS, type JobKey } from './locales.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Background-job list copy. */
     'job': JobKey

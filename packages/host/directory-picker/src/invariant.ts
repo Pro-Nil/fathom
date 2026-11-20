@@ -1,9 +1,9 @@
-/** Package-owned invariant companion for the directory-picker seam. @module @pentest-harness/dsh-host-directory-picker/invariant */
+/** Package-owned invariant companion for the directory-picker seam. @module @fathom/host-directory-picker/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-host-directory-picker'
+const PACKAGE_NAME = '@fathom/host-directory-picker'
 
 /** Cordis companion plugin name. */
 export const name = 'host-directory-picker-invariant'

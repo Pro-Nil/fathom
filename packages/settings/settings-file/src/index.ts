@@ -4,25 +4,25 @@
  * through the seam, and every write re-reads the document under a
  * cross-process writer lock before patching it as a comment-preserving
  * leaf-level diff.
- * @module @pentest-harness/dsh-settings-file
+ * @module @fathom/settings-file
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { watch as chokidarWatch } from 'chokidar'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join, resolve } from 'node:path'
 import { Document, parseDocument } from 'yaml'
-import { withFileLock, writeFileAtomic } from '@pentest-harness/dsh-atomic-write'
-import { canonicalizeWatchPath, resolveDshHome } from '@pentest-harness/dsh-home-paths'
-import { SettingsProvider, deepEqualJson, type SettingsNamespace } from '@pentest-harness/dsh-settings'
+import { withFileLock, writeFileAtomic } from '@fathom/atomic-write'
+import { canonicalizeWatchPath, resolveFathomHome } from '@fathom/home-paths'
+import { SettingsProvider, deepEqualJson, type SettingsNamespace } from '@fathom/settings'
 
 /** Plugin config: file location and hot-reload behavior. */
 export interface Config {
   /** Settings document path; defaults to `settings.yaml` under the harness home. */
   path?: string
-  /** Harness home used when `path` is omitted; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** Harness home used when `path` is omitted; defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
   /** Watch the document and hot-publish external edits; defaults to true. */
   watch?: boolean
   /** Watcher write-settle window in milliseconds; defaults to 100. */
@@ -53,7 +53,7 @@ interface ResolvedSpec {
  * @returns the resolved file location, format, and watch behavior.
  */
 export function resolveSpec(config: Config): ResolvedSpec {
-  const filename = resolve(config.path ?? join(resolveDshHome(config.dshHome), 'settings.yaml'))
+  const filename = resolve(config.path ?? join(resolveFathomHome(config.fathomHome), 'settings.yaml'))
   const format = FORMATS[extname(filename)]
   if (format === undefined) {
     throw new Error(`settings-file: extension "${extname(filename)}" is not supported (use .yaml, .yml, or .json)`)
@@ -105,7 +105,7 @@ function isEEXIST(error: unknown): boolean {
 export class FileSettingsProvider extends SettingsProvider {
   static Config: z<Config> = z.object({
     path: z.string(),
-    dshHome: z.string(),
+    fathomHome: z.string(),
     watch: z.boolean().default(true),
     debounceMs: z.number().min(0).default(100),
   })

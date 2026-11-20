@@ -1,15 +1,15 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   GoalId,
   type GoalSnapshotChangeMeta,
   type GoalView,
-} from '@pentest-harness/dsh-goal'
-import * as GoalSessionInvariant from '@pentest-harness/dsh-goal-round-driver/invariant'
-import { renderGoalRoundPrompt } from '@pentest-harness/dsh-goal-round-driver'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId, type Session } from '@pentest-harness/dsh-session'
+} from '@fathom/goal'
+import * as GoalSessionInvariant from '@fathom/goal-round-driver/invariant'
+import { renderGoalRoundPrompt } from '@fathom/goal-round-driver'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId, type Session } from '@fathom/session'
 
 const change: GoalSnapshotChangeMeta = {
   kind: 'goal/change',
@@ -95,7 +95,7 @@ describe('goal-round-driver prompt invariants', () => {
       appendRound(session, 2, [{ type: 'text', text: 'counterfeit continuation' }])
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-goal-round-driver',
+      packageName: '@fathom/goal-round-driver',
     }))
   })
 
@@ -110,7 +110,7 @@ describe('goal-round-driver prompt invariants', () => {
         source,
       }), { surfaceOp: 'append' })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
-      packageName: '@pentest-harness/dsh-goal-round-driver',
+      packageName: '@fathom/goal-round-driver',
     }))
   })
 
@@ -122,7 +122,7 @@ describe('goal-round-driver prompt invariants', () => {
 
     await expect(ctx.plugin(GoalSessionInvariant)).rejects.toMatchObject({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-goal-round-driver',
+      packageName: '@fathom/goal-round-driver',
     })
   })
 })

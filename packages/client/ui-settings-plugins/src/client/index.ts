@@ -9,17 +9,17 @@
  * settings scope, which keeps them unaware of one another and of other tabs.
  */
 
-import type {} from '@pentest-harness/dsh-client-connection/client'
+import type {} from '@fathom/client-connection/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type {} from '@fathom/client-locale/client'
 // Type-only: the settings shell's SlotMap merge (the 'settings.section' entry)
 // and the ctx.settingsScope Context merge. Cross-plugin collaboration goes
 // through the service, never a value import (client bundle purity gate).
-import type {} from '@pentest-harness/dsh-client-ui-settings/client'
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import { resolveSlotLabel } from '@pentest-harness/dsh-client-ui-slots'
+import type {} from '@fathom/client-ui-settings/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
+import { resolveSlotLabel } from '@fathom/client-ui-slots'
 // Type-only: the ctx.remote Context merge and the forwarded-event key face.
-import type {} from '@pentest-harness/dsh-api-remotes/client'
+import type {} from '@fathom/api-remotes/client'
 import { AgentLoopCard } from './AgentLoopCard.tsx'
 import { BashCard } from './BashCard.tsx'
 import { ConfigurablePluginsTab } from './ConfigurablePluginsTab.tsx'

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-repeat-tool-reminder`.
- * @module @pentest-harness/dsh-repeat-tool-reminder/invariant
+ * Package-owned invariant companion for `@fathom/repeat-tool-reminder`.
+ * @module @fathom/repeat-tool-reminder/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-repeat-tool-reminder'
+const PACKAGE_NAME = '@fathom/repeat-tool-reminder'
 
 /** Cordis companion plugin name. */
 export const name = 'repeat-tool-reminder-invariant'

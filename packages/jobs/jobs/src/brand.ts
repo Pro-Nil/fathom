@@ -1,16 +1,16 @@
 /**
- * dsh-jobs' owned branded id, carried across the registry, the model-facing
+ * fathom-jobs' owned branded id, carried across the registry, the model-facing
  * control surface, and the client wire.
  *
  * It lives in its own leaf because the package root and `./types` both reach
- * `dsh-agent` through the owner and listener signatures, which a Client program
+ * `fathom-agent` through the owner and listener signatures, which a Client program
  * cannot resolve even as a type. A browser-safe consumer imports the id here;
- * `Branded<B>` itself comes from the zero-dependency `@pentest-harness/dsh-brand`.
+ * `Branded<B>` itself comes from the zero-dependency `@fathom/brand`.
  *
- * @module @pentest-harness/dsh-jobs/brand
+ * @module @fathom/jobs/brand
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /**
  * Identifies a background job. The registry generates `<kind>-N`; predictable

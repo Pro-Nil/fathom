@@ -1,17 +1,17 @@
 /**
  * Execution types for the bash executor seam. Background job semantics belong
- * to `@pentest-harness/dsh-jobs`; this seam exposes only process handles. The
+ * to `@fathom/jobs`; this seam exposes only process handles. The
  * managed-environment and captured-output vocabulary is owned by the
  * subprocess seam and re-exported here so bash consumers keep one import
  * root.
- * @module dsh-shell/types
+ * @module fathom-shell/types
  */
 
-import type { SandboxEnforcement, SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
-import type { CollectedOutput, DshEnvironment } from '@pentest-harness/dsh-subprocess'
+import type { SandboxEnforcement, SandboxExecutionPolicy, SandboxMode } from '@fathom/sandbox'
+import type { CollectedOutput, FathomEnvironment } from '@fathom/subprocess'
 
-export { DSH_ENV_PREFIX } from '@pentest-harness/dsh-subprocess'
-export type { CollectedOutput, DshEnvironment, DshEnvironmentKey } from '@pentest-harness/dsh-subprocess'
+export { FATHOM_ENV_PREFIX } from '@fathom/subprocess'
+export type { CollectedOutput, FathomEnvironment, FathomEnvironmentKey } from '@fathom/subprocess'
 
 /**
  * Sandbox facts for one run, present iff a sandboxing executor handled it.
@@ -60,20 +60,20 @@ export interface ShellExecRequest {
   stdin?: string | undefined
   /**
    * Ordinary environment entries for the command, merged after the credential
-   * scrub. Managed facts belong in {@link dshEnv}, which merges after this
+   * scrub. Managed facts belong in {@link fathomEnv}, which merges after this
    * map, so an entry here can never displace one. Set by in-process plugins
    * (the hooks bridges set `CLAUDE_PROJECT_DIR`, `CLAUDE_PLUGIN_ROOT`, …); the
    * model-facing bash tool does not expose it as a parameter.
    */
   env?: Record<string, string> | undefined
   /**
-   * Harness-owned `DSH_*` variables for this execution (typed to managed
-   * keys). Executors discard ambient `DSH_*` entries before merging this
+   * Harness-owned `FATHOM_*` variables for this execution (typed to managed
+   * keys). Executors discard ambient `FATHOM_*` entries before merging this
    * snapshot last, so an unavailable current fact cannot inherit a stale
    * value from the harness process and a caller {@link env} entry cannot
    * displace a managed one.
    */
-  dshEnv?: DshEnvironment | undefined
+  fathomEnv?: FathomEnvironment | undefined
   /** Fully resolved per-call sandbox policy; sandboxing executors default it. */
   sandboxPolicy?: SandboxExecutionPolicy | undefined
 }
@@ -98,13 +98,13 @@ export interface ShellExecSpec {
   stdin?: string | undefined
   /**
    * Ordinary environment entries carried through from
-   * {@link ShellExecRequest.env}; {@link dshEnv} still merges after them.
+   * {@link ShellExecRequest.env}; {@link fathomEnv} still merges after them.
    * OPTIONAL on the spec for the same reason as `stdin`: absent means no
    * ordinary extra environment.
    */
   env?: Record<string, string> | undefined
-  /** Managed `DSH_*` snapshot (typed to managed keys); merges after {@link env}. */
-  dshEnv?: DshEnvironment | undefined
+  /** Managed `FATHOM_*` snapshot (typed to managed keys); merges after {@link env}. */
+  fathomEnv?: FathomEnvironment | undefined
   /** Resolved sandbox policy; ignored by executors that do not confine. */
   sandboxPolicy: SandboxExecutionPolicy | undefined
 }

@@ -1,10 +1,10 @@
 /**
  * Durable and model-facing Schedule value types.
- * @module @pentest-harness/dsh-schedule
+ * @module @fathom/schedule
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type {} from '@pentest-harness/dsh-session/types'
+import type { Branded } from '@fathom/brand'
+import type {} from '@fathom/session/types'
 
 /** Stable reminder identity that is unique and never reused within one session. */
 export type ScheduleId = Branded<'ScheduleId'>
@@ -210,7 +210,7 @@ export type ScheduleDeleteResult =
 /** Canonical `schedule_delete` value. */
 export type ScheduleDeleteValue = ScheduleDeleteResult | ScheduleToolError
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Versioned Schedule mutation. The owning package validates the complete

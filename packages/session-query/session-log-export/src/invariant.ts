@@ -1,10 +1,10 @@
-/** Package invariant companion for `@pentest-harness/dsh-session-log-export`. */
+/** Package invariant companion for `@fathom/session-log-export`. */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-log-export'
+const PACKAGE_NAME = '@fathom/session-log-export'
 
 export const name = 'session-export-invariant'
 export const inject = ['invariants']

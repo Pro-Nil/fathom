@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-web-search-duckduckgo
+# @fathom/web-search-duckduckgo
 
 A keyless search provider for the `ctx.web` seam. It posts the query to DuckDuckGo's JavaScript-free results page (`https://html.duckduckgo.com/html/`) and returns each organic result's URL, title and snippet. No account, API key or payment is needed, so `web_search` works out of the box.
 

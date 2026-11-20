@@ -23,13 +23,13 @@ const packageDir = fileURLToPath(new URL('..', import.meta.url))
 const repoRoot = fileURLToPath(new URL('../../../..', import.meta.url))
 const nativeDir = join(repoRoot, 'native/landlock-run')
 const sourceLauncher = join(nativeDir, 'packages', `linux-${process.arch}`, 'bin', 'landlock-run')
-const platformPackageName = `@pentest-harness/node-addon-landlock-run-linux-${process.arch}`
+const platformPackageName = `@fathom/node-addon-landlock-run-linux-${process.arch}`
 
 /** The harness closure the consumer needs; native tarballs are packed through their mode-preserving release script. */
 const WORKSPACE_CLOSURE = [
   'packages/sandbox/sandbox-local',
   // sandbox-local's win32 chain rung is a runtime dependency: a packed
-  // consumer resolves it like any other @pentest-harness peer (koffi arrives
+  // consumer resolves it like any other @fathom peer (koffi arrives
   // from the registry).
   'packages/sandbox/sandbox-windows-acl',
   'packages/sandbox/sandbox',
@@ -42,7 +42,7 @@ const WORKSPACE_CLOSURE = [
   'packages/util/timeout',
   'packages/runtime-diagnostics/invariants',
   // The framework and the vendored packages the closure declares outright:
-  // rescoped into @pentest-harness, so the consumer installs this repository's
+  // rescoped into @fathom, so the consumer installs this repository's
   // copies. Schemastery is a hard dependency of three members above, not a
   // peer, so npm resolves it while installing them.
   'vendor/cordis',
@@ -75,9 +75,9 @@ let verdict: {
 
 describe.skipIf(!packable)('sandbox-local: packed-tarball distribution (publish-path rehearsal)', () => {
   beforeAll(async () => {
-    const packDest = mkdtempSync(join(tmpdir(), 'dsh-pack-'))
-    consumerDir = mkdtempSync(join(tmpdir(), 'dsh-packed-consumer-'))
-    workDir = mkdtempSync(join(tmpdir(), 'dsh-packed-work-'))
+    const packDest = mkdtempSync(join(tmpdir(), 'fathom-pack-'))
+    consumerDir = mkdtempSync(join(tmpdir(), 'fathom-packed-consumer-'))
+    workDir = mkdtempSync(join(tmpdir(), 'fathom-packed-work-'))
 
     const nativePackDest = join(packDest, 'native')
     const nativePack = spawnSync('node', ['./scripts/pack-release.mjs', nativePackDest, '--current-platform-only'], {
@@ -108,7 +108,7 @@ describe.skipIf(!packable)('sandbox-local: packed-tarball distribution (publish-
 
     // Peer ranges resolve to the tarballs, the framework peer included. Do not omit optional
     // dependencies because the launcher selects its OS/CPU package through one.
-    writeFileSync(join(consumerDir, 'package.json'), JSON.stringify({ name: 'dsh-packed-consumer', private: true, type: 'module' }))
+    writeFileSync(join(consumerDir, 'package.json'), JSON.stringify({ name: 'fathom-packed-consumer', private: true, type: 'module' }))
     const install = spawnSync('npm', ['install', '--no-audit', '--no-fund', ...tarballs], {
       cwd: consumerDir,
       encoding: 'utf8',
@@ -123,9 +123,9 @@ describe.skipIf(!packable)('sandbox-local: packed-tarball distribution (publish-
     writeFileSync(join(consumerDir, 'consumer.mjs'), `
       import { spawnSync } from 'node:child_process'
       import { existsSync } from 'node:fs'
-      import { Context } from '@pentest-harness/cordis'
-      import { launcherPath } from '@pentest-harness/node-addon-landlock-run'
-      import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
+      import { Context } from '@fathom/cordis'
+      import { launcherPath } from '@fathom/node-addon-landlock-run'
+      import { LocalSandboxProvider } from '@fathom/sandbox-local'
       const ctx = new Context()
       await ctx.plugin(LocalSandboxProvider, {})
       const sandbox = ctx.sandbox

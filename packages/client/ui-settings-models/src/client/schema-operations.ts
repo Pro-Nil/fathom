@@ -1,6 +1,6 @@
 import type {
   SettingsSchemaService,
-} from '@pentest-harness/dsh-client-ui-settings/client'
+} from '@fathom/client-ui-settings/client'
 
 /** Plain schema callbacks exposed to Models stores and presentation components. */
 export type SettingsSchemaOperations = Pick<

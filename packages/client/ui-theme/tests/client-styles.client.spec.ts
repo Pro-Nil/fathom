@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 /** Dynamic ui-theme entry owns the global styles in dependency order. */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
 import { installThemeStyles } from '../src/client/styles.ts'
 
-const PLUGIN_ID = '@pentest-harness/dsh-client-ui-theme'
+const PLUGIN_ID = '@fathom/client-ui-theme'
 
 afterEach(() => {
   document.head.querySelectorAll(`style[data-plugin="${PLUGIN_ID}"]`).forEach((node) => { node.remove() })

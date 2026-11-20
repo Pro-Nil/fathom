@@ -11,7 +11,7 @@
  *
  * ```yaml
  * - id: llm
- *   name: '@pentest-harness/dsh-llm-pi-ai'
+ *   name: '@fathom/llm-pi-ai'
  *   config:
  *     providers:
  *       # Catalog route: everything but the credential comes from pi-ai.
@@ -52,14 +52,14 @@
  *               max: ultra
  * ```
  *
- * @module @pentest-harness/dsh-llm-pi-ai
+ * @module @fathom/llm-pi-ai
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { launchEnvironmentOf } from '@pentest-harness/dsh-launch-environment'
-import { assertUsableApiKey, LlmError } from '@pentest-harness/dsh-llm'
-import type { AdapterRegistrationHandle, DirectoryRegistrationHandle, LlmConfigurableProvider } from '@pentest-harness/dsh-llm'
-import { deepEqualJson, installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import type { Context } from '@fathom/cordis'
+import { launchEnvironmentOf } from '@fathom/launch-environment'
+import { assertUsableApiKey, LlmError } from '@fathom/llm'
+import type { AdapterRegistrationHandle, DirectoryRegistrationHandle, LlmConfigurableProvider } from '@fathom/llm'
+import { deepEqualJson, installSettingsSection, settingsNamespace } from '@fathom/settings'
 import { PiAiAdapter } from './adapter.ts'
 import { authContextFrom, credentialStoreFrom } from './auth.ts'
 import { catalogProviderIds } from './catalog.ts'

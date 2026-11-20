@@ -2,15 +2,15 @@
 // plus the shared estimator's pricing branches.
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createMessage, createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, ToolSchema } from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import TokenMeter from '@pentest-harness/dsh-token-meter'
-import type { ContextBreakdownProjection } from '@pentest-harness/dsh-token-meter/client'
-import { CompactionId } from '@pentest-harness/dsh-compaction'
+import { Context } from '@fathom/cordis'
+import { createMessage, createUserMessage } from '@fathom/llm'
+import type { ContentBlock, ToolSchema } from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import TokenMeter from '@fathom/token-meter'
+import type { ContextBreakdownProjection } from '@fathom/token-meter/client'
+import { CompactionId } from '@fathom/compaction'
 import { contextBreakdownProjectionDefinition } from '../src/breakdown-projection.ts'
 import {
   estimateContent,

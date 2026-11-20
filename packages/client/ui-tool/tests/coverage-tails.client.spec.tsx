@@ -3,15 +3,15 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import type { RunningToolCall, SessionId, SessionListState, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import type { RunningToolCall, SessionId, SessionListState, ToolResultNode } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
 import { BashRow } from '../src/client/tool/toolviews/bash-sample.tsx'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
 
 type BashRowProps = Parameters<typeof BashRow>[0]
 

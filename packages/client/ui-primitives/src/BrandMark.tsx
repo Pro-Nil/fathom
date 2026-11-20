@@ -1,7 +1,8 @@
-// Neutral fallback brand mark: a shield outline with a terminal prompt,
-// shown only where no brand package fills the brand slot. Color rides
-// currentColor (wordmark ink); square, so `size` sets both edges.
+// Neutral fallback brand mark: the Fathom mark as one shape in the
+// surrounding ink, shown only where no brand package fills the brand slot.
+// Square, so `size` sets both edges.
 
+import { FATHOM_MARK_PATH } from './FathomLogo.tsx'
 import type { IconProps } from './icons/props.ts'
 
 /**
@@ -20,13 +21,7 @@ export function BrandMark({ size = 24, className }: IconProps) {
       fill="none"
       aria-hidden="true"
     >
-      <path
-        d="M12 2.5 4 5.5v6c0 4.9 3.4 8.8 8 10 4.6-1.2 8-5.1 8-10v-6l-8-3Zm-3.2 7.3 2.6 2.2-2.6 2.2M12.6 14.6h3"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d={FATHOM_MARK_PATH} fill="currentColor" />
     </svg>
   )
 }

@@ -5,8 +5,8 @@
  * echoing that rpcId, with no resource id in the payload (rpcId suffices).
  */
 
-import type { AskUserQuestionAnswer } from '@pentest-harness/dsh-user-questions/types'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { AskUserQuestionAnswer } from '@fathom/user-questions/types'
+import type { SessionId } from '@fathom/session/types'
 
 /**
  * Question answer payload (the result.value slot of a client-response):

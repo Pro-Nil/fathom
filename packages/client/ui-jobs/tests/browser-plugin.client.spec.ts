@@ -4,12 +4,12 @@
  * removal — HMR safety), the inert node entry, and the invariant companion's
  * ownership reservation.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as applyLocale, inject as localeInject } from '@pentest-harness/dsh-client-locale/client'
+import InvariantRegistry from '@fathom/invariants'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { stubSettingsScope } from '@fathom/client-test-runtime'
+import { apply as applyLocale, inject as localeInject } from '@fathom/client-locale/client'
 import { apply, inject } from '../src/client/index.ts'
 import { apply as applyNode } from '../src/index.ts'
 import * as JobInvariant from '../src/invariant.ts'

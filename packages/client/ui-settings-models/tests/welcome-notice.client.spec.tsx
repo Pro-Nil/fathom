@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import { Context } from '@pentest-harness/cordis'
-import { SettingsSchemaService } from '@pentest-harness/dsh-client-ui-settings/src/client/schema.ts'
-import { SettingsDescribeMirror } from '@pentest-harness/dsh-client-ui-settings/src/client/settings-mirror.ts'
-import { SettingsScopeController } from '@pentest-harness/dsh-client-ui-settings/src/client/settings-scope.ts'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { SettingsSchemaService } from '@fathom/client-ui-settings/src/client/schema.ts'
+import { SettingsDescribeMirror } from '@fathom/client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsScopeController } from '@fathom/client-ui-settings/src/client/settings-scope.ts'
 
 /** Stateless schema service for scope construction in this jsdom fixture. */
 const schemaService = new SettingsSchemaService(new Context())
@@ -88,8 +88,8 @@ function mount(
 describe('WelcomeNotice', () => {
   it('uses the exact owner copy in both GUI locales', () => {
     expect(WELCOME_NOTICE_COPY.en).toEqual({
-      title: 'Welcome to Pentest Harness',
-      body: 'Pentest Harness is a professional security testing workspace for authorized penetration tests, bug bounty research, security labs, and CTF engagements. Test only targets you own or are explicitly authorized to assess.\n\nOpen source, open, reusable, and composable — welcome to the community.',
+      title: 'Welcome to Fathom',
+      body: 'Fathom is a professional security testing workspace for authorized penetration tests, bug bounty research, security labs, and CTF engagements. Test only targets you own or are explicitly authorized to assess.\n\nOpen source, open, reusable, and composable — welcome to the community.',
       continueLabel: 'Continue',
     })
     expect(en.welcomeBody).toBe(WELCOME_NOTICE_COPY.en.body)

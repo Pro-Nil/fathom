@@ -5,9 +5,9 @@
  * settings surface.
  */
 import { useState } from 'react'
-import type { PropsLocale, PropsRuntime, PropsStore } from '@pentest-harness/dsh-client-ui-slots'
-import { IconChevronDownOutline14, Menu } from '@pentest-harness/dsh-client-ui-primitives'
-import type {} from '@pentest-harness/dsh-client-ui-settings/client'
+import type { PropsLocale, PropsRuntime, PropsStore } from '@fathom/client-ui-slots'
+import { IconChevronDownOutline14, Menu } from '@fathom/client-ui-primitives'
+import type {} from '@fathom/client-ui-settings/client'
 import type { createLanguageRowStore } from './settings-store.ts'
 import css from './LanguageRow.module.css'
 

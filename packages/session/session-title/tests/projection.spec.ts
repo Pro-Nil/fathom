@@ -10,11 +10,11 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import SessionTitleService from '@pentest-harness/dsh-session-title'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import SessionTitleService from '@fathom/session-title'
 
 const CONFIG = { fallbackMaxWords: 8, fallbackMaxBytes: 64, maxTitleBytes: 256 }
 

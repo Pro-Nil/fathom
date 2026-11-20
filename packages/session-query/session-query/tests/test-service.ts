@@ -1,4 +1,4 @@
-import SessionQueryEngine from '@pentest-harness/dsh-session-query'
+import SessionQueryEngine from '@fathom/session-query'
 import type {
   SessionEventSearchPage,
   SessionEventSearchRequest,
@@ -6,7 +6,7 @@ import type {
   SessionSearchHit,
   SessionSearchPage,
   SessionSearchRequest,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 
 /** Test-only concrete query service for backend-independent behavior. */
 export class TestSessionQueryEngine extends SessionQueryEngine {

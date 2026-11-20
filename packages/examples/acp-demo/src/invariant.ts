@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-acp-demo`.
- * @module @pentest-harness/dsh-acp-demo/invariant
+ * Package-owned invariant companion for `@fathom/acp-demo`.
+ * @module @fathom/acp-demo/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-acp-demo'
+const PACKAGE_NAME = '@fathom/acp-demo'
 
 /** Cordis companion plugin name. */
 export const name = 'acp-demo-invariant'

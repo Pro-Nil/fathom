@@ -3,14 +3,14 @@
  * appends one authoritative log-only event and does not start model work. The
  * append is eager but unflushed, so acknowledgement reports that the entry is
  * logged, not that it reached disk.
- * @module @pentest-harness/dsh-command-feedback
+ * @module @fathom/command-feedback
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { CommandInvocation, CommandResult } from '@pentest-harness/dsh-commands'
-import type { SessionTelemetryBackend, SessionTelemetrySharingStatus } from '@pentest-harness/dsh-session-telemetry'
-import type { Session } from '@pentest-harness/dsh-session'
-import { getOrCreateAnonymousUserId } from '@pentest-harness/dsh-anonymous-user-id'
+import type { Context } from '@fathom/cordis'
+import type { CommandInvocation, CommandResult } from '@fathom/commands'
+import type { SessionTelemetryBackend, SessionTelemetrySharingStatus } from '@fathom/session-telemetry'
+import type { Session } from '@fathom/session'
+import { getOrCreateAnonymousUserId } from '@fathom/anonymous-user-id'
 
 export const name = 'command-feedback'
 export const inject = ['commands']
@@ -53,7 +53,7 @@ function sharingDisclosure(telemetry: SessionTelemetryBackend | undefined): stri
   return sharingSentence(telemetry.sharing)
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * One recorded human remark about this session. Log-only and independent

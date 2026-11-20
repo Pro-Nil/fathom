@@ -9,10 +9,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { Command } from 'commander'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import type { PatchOptions } from '@pentest-harness/cordis-plugin-include'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import type { PatchOptions } from '@fathom/cordis-plugin-include'
 import { afterEach, describe, expect, it } from 'vitest'
 import { internals, parseCmdline, provideCmdline } from '../src/index.ts'
 
@@ -66,7 +66,7 @@ async function bootFixture(
   resolve: (program: Command) => unknown = resolveDemo,
   options: { objectInject?: boolean; withoutProvider?: boolean } = {},
 ): Promise<Fixture> {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-cmdline-'))
+  const dir = mkdtempSync(join(tmpdir(), 'fathom-cmdline-'))
   const observed: Observed = { exits: [], out: '' }
   writeFileSync(join(dir, 'reader.mjs'), `
 export const name = 'reader'

@@ -8,19 +8,19 @@ import { mkdir, mkdtemp, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import FileSettingsProvider from '@pentest-harness/dsh-settings-file'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import FileSettingsProvider from '@fathom/settings-file'
+import { settingsNamespace } from '@fathom/settings'
 import { describe, expect, it } from 'vitest'
-import AgentPresets, { COMPOSITION_FILE, SETTINGS_NAMESPACE } from '@pentest-harness/dsh-agent-presets'
+import AgentPresets, { COMPOSITION_FILE, SETTINGS_NAMESPACE } from '@fathom/agent-presets'
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
 const ROOTS = [{ path: join(FIXTURES, 'system'), trust: 'system' as const }]
@@ -33,7 +33,7 @@ const NS = settingsNamespace(SETTINGS_NAMESPACE)
 async function harness(
   extraRoots: readonly { path: string; trust: 'system' | 'user' }[] = [],
 ): Promise<{ ctx: Context; settingsFile: string; settingsFiber: { dispose: () => unknown } }> {
-  const home = await mkdtemp(join(tmpdir(), 'dsh-preset-settings-'))
+  const home = await mkdtemp(join(tmpdir(), 'fathom-preset-settings-'))
   const settingsFile = join(home, 'settings.yaml')
   await writeFile(settingsFile, '{}\n')
 
@@ -117,7 +117,7 @@ describe('the default preset as a user setting', () => {
   })
 
   it('clears a user default it has just deleted', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-authored-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-authored-'))
     await mkdir(join(root, 'mine'))
     await writeFile(
       join(root, 'mine', COMPOSITION_FILE),

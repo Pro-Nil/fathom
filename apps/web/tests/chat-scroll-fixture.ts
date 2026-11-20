@@ -7,14 +7,14 @@ import {
   createAssistantMessage,
   createToolResultMessage,
   createUserMessage,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 // Carries the session/title event declaration into this fixture builder.
-import type {} from '@pentest-harness/dsh-session-title'
+import type {} from '@fathom/session-title'
 
 /** Options for one deterministic long-chat fixture. */
 export interface ChatScrollFixtureOptions {

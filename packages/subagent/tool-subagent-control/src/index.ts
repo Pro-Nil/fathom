@@ -4,16 +4,16 @@
  * `ctx.subagents.interrupt()`. They perform no lifecycle routing of their own —
  * residency, cold resume, and interrupt authorization belong to the subagent
  * service — and they live apart from the provider-bound
- * `@pentest-harness/dsh-tool-subagent` instances so multiple delegation tools share
+ * `@fathom/tool-subagent` instances so multiple delegation tools share
  * one control API.
- * @module @pentest-harness/dsh-tool-subagent-control
+ * @module @fathom/tool-subagent-control
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-subagent'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type {} from '@fathom/subagent'
 
 export const name = 'tool-subagent-control'
 export const inject = ['tools', 'subagents']

@@ -1,23 +1,23 @@
 /**
  * Tool registry, model presentation modes, and pre/guard/around/post/result
  * execution pipeline.
- * @module @pentest-harness/dsh-tools
+ * @module @fathom/tools
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { AnonymousEntries, NamedEntries, ScopedLayers, scopeOf, scopeTarget } from '@pentest-harness/dsh-scope'
-import type { ScopeKey, ScopeLayer, Scoped } from '@pentest-harness/dsh-scope'
-import type { CallId, ContentBlock, ToolSchema } from '@pentest-harness/dsh-llm'
-import { assertNever, deepFreeze, HarnessError } from '@pentest-harness/dsh-llm'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type { JsonValue, UserMessage } from '@pentest-harness/dsh-session'
-import type { ToolProviderResult } from '@pentest-harness/dsh-system-prompt'
-import type { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { AnonymousEntries, NamedEntries, ScopedLayers, scopeOf, scopeTarget } from '@fathom/scope'
+import type { ScopeKey, ScopeLayer, Scoped } from '@fathom/scope'
+import type { CallId, ContentBlock, ToolSchema } from '@fathom/llm'
+import { assertNever, deepFreeze, HarnessError } from '@fathom/llm'
+import type { Agent } from '@fathom/agent'
+import { snapshotJsonValue } from '@fathom/session'
+import type { JsonValue, UserMessage } from '@fathom/session'
+import type { ToolProviderResult } from '@fathom/system-prompt'
+import type { CodeRuntime } from '@fathom/code-runtime'
 // Type-only: makes `ctx.get('approval')` resolve to the ApprovalService
 // augmentation. The seam stays optional at runtime — see `serviceAsk`.
-import type {} from '@pentest-harness/dsh-user-approval'
+import type {} from '@fathom/user-approval'
 import type { ToolCallView, ToolResultView } from './presentation.ts'
 import { assertSupportedJsonSchema, validateJsonSchemaValue } from './json-schema.ts'
 import type { JsonSchemaNode } from './json-schema.ts'
@@ -38,7 +38,7 @@ import { renderToolsSdkPy } from './py-types.ts'
  * at. The `satisfies` clause pins this table's key set to that union, which
  * the flavor table is checked against too, so any of the three left out is a
  * typecheck failure. What no check reaches is the prose that names the values
- * instead of deriving them: the seam's `dsh-code-runtime` README pair, its
+ * instead of deriving them: the seam's `fathom-code-runtime` README pair, its
  * `CodeRuntime.language` JSDoc, and `docs/subsystems/code-runtime.md`
  * with its zh pair, plus this package's own README pair and the
  * {@link Config.mode} JSDoc.
@@ -98,7 +98,7 @@ export {
   type JsonSchemaScalar,
 } from './json-schema.ts'
 
-export type { JsonValue } from '@pentest-harness/dsh-session'
+export type { JsonValue } from '@fathom/session'
 export type { CodeDispatchEventData, CodeDispatchStartEventData } from './types.ts'
 
 export { CodeRunFailedError, RUN_CODE_NAME } from './code-mode.ts'
@@ -107,7 +107,7 @@ export { jsonSchemaToPy, renderToolsSdkPy } from './py-types.ts'
 export { defineContentToolFixture, type ContentToolFixtureOptions } from './testing.ts'
 
 // The render-intent vocabulary a tool declares via `presentCall`/`presentResult`
-// lives in its own UI-facing module; re-export it so `@pentest-harness/dsh-tools`
+// lives in its own UI-facing module; re-export it so `@fathom/tools`
 // stays the single public API for tool producers and UI adapters.
 export type {
   ToolCallKind,
@@ -134,7 +134,7 @@ export type {
   WebSource,
 } from './presentation.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     tools: ToolRuntime
   }
@@ -145,7 +145,7 @@ declare module '@pentest-harness/cordis' {
      * approval support turns `ask` into denial. Async gates must observe
      * `exec.signal`; the registry rechecks cancellation after they settle but
      * never abandons their promise.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent's calls.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent's calls.
      * @param exec - the pending call (name, parsed arguments, caller agent).
      * @mode waterfall
      */
@@ -156,7 +156,7 @@ declare module '@pentest-harness/cordis' {
      * identity remains immutable. The registry re-fuses the original caller
      * signal before the body, so replacement cannot detach caller cancellation;
      * wrappers must still restore their signal and reach quiescence.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent's calls.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent's calls.
      * @param exec - the allowed call about to dispatch (name, parsed arguments, caller agent, signal).
      * @mode waterfall
      */
@@ -167,7 +167,7 @@ declare module '@pentest-harness/cordis' {
      * listeners must observe `exec.signal`; after they settle, caller
      * cancellation replaces only a successful accepted outcome with the code
      * selected by whether the tool body was invoked.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent's calls.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent's calls.
      * @param exec - the call that just ran (name, parsed arguments, caller agent).
      * @param result - the dispatch outcome a listener may accept, replace, or block.
      * @mode waterfall
@@ -182,14 +182,14 @@ declare module '@pentest-harness/cordis' {
      * logged copy is affected — the program already received the complete
      * value, and the model sees neither. A throwing listener is contained:
      * the bridge falls back to logging the original settled content.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent's dispatches.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent's dispatches.
      * @param dispatch - the parent execution, sub-call identity, and the settled content to log.
      * @mode waterfall
      */
     'tools/code-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: CodeDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>
     /**
      * Observe the frozen, lossless-JSON final outcome. Listener failures are contained.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): keyed by `exec.agent`.
+     * Scope-filtered dispatch (`@fathom/scope`): keyed by `exec.agent`.
      * @param exec - the execution object that traversed the pipeline.
      * @param result - a deep-frozen snapshot of the final returned result.
      * @mode emit
@@ -247,7 +247,7 @@ export interface ToolDefinition extends ToolSchema {
   finalizeContent?(exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): ContentBlock[] | undefined
   /**
    * Cooperative tool-call timeout budget in milliseconds. Omit for no deadline.
-   * Enforced by `@pentest-harness/dsh-tool-call-timeout-policy` (a `tools/execute` wrapper); it
+   * Enforced by `@fathom/tool-call-timeout-policy` (a `tools/execute` wrapper); it
    * is NEVER sent to the model — `schemas()` whitelists only name/description/
    * parameters. Declaring it asserts this tool forwards `exec.signal` to a
    * cooperative implementation that can reach quiescence when the signal aborts.
@@ -463,7 +463,7 @@ export interface ToolRuntimeScheduler {
  * Scheduler entry point omitted from the generated named service API.
  * @internal
  */
-export const TOOL_RUNTIME_SCHEDULER: unique symbol = Symbol('@pentest-harness/dsh-tools.scheduler')
+export const TOOL_RUNTIME_SCHEDULER: unique symbol = Symbol('@fathom/tools.scheduler')
 
 /** Canonical error code for cancellation after a tool body was invoked. */
 export const TOOL_ABORTED = 'ABORTED'
@@ -792,7 +792,7 @@ export class ToolRuntime extends Service {
     maxParallelSubCalls: z.natural().min(1).default(10),
   })
 
-  /** Internal staged view consumed by `dsh-agent-loop`'s parallel scheduler. */
+  /** Internal staged view consumed by `fathom-agent-loop`'s parallel scheduler. */
   readonly [TOOL_RUNTIME_SCHEDULER]: ToolRuntimeScheduler = {
     prepare: exec => this.prepareScheduledExecution(exec),
     dispatch: exec => this.dispatchScheduledExecution(exec),
@@ -885,7 +885,7 @@ export class ToolRuntime extends Service {
         // otherwise resolve an inherited Object.prototype member as a renderer.
         const render = SDK_RENDERERS[runtime.language]
         /* v8 ignore next -- requireCodeRuntime rejects an unknown language before this runs. */
-        if (render === undefined) throw new Error(`dsh-tools: no SDK renderer for ${runtime.language}`)
+        if (render === undefined) throw new Error(`fathom-tools: no SDK renderer for ${runtime.language}`)
         return render(this.sdkSchemas(context.scope))
       },
     }
@@ -1019,11 +1019,11 @@ export class ToolRuntime extends Service {
   private requireCodeRuntime(mode: ToolPresentationMode): CodeRuntime {
     const runtime = this.ctx.get('codeRuntime')
     if (!runtime) {
-      throw new Error(`dsh-tools: mode "${mode}" requires a code runtime — load a ctx.codeRuntime implementation (e.g. @pentest-harness/dsh-code-runtime-worker-thread) or set tools mode to "native"`)
+      throw new Error(`fathom-tools: mode "${mode}" requires a code runtime — load a ctx.codeRuntime implementation (e.g. @fathom/code-runtime-worker-thread) or set tools mode to "native"`)
     }
     if (!Object.hasOwn(SDK_RENDERERS, runtime.language)) {
       const known = Object.keys(SDK_RENDERERS).map(name => JSON.stringify(name)).join(', ')
-      throw new Error(`dsh-tools: no SDK renderer registered for runtime language ${JSON.stringify(runtime.language)} (known: ${known})`)
+      throw new Error(`fathom-tools: no SDK renderer registered for runtime language ${JSON.stringify(runtime.language)} (known: ${known})`)
     }
     return runtime
   }
@@ -1314,7 +1314,7 @@ export class ToolRuntime extends Service {
    *
    * Resolved through {@link modeFor}, NOT `defaultMode`: an agent given `code`
    * by an agent preset under a native deployment is the composition
-   * `dsh-agent-tool-presentation` exists for, and reading the deployment default would
+   * `fathom-agent-tool-presentation` exists for, and reading the deployment default would
    * leave exactly that agent uncollapsed — announcing one surface while
    * executing another, which is the bypass this collapse closes.
    * @param name - the tool name as registered.
@@ -1864,7 +1864,7 @@ export class ToolRuntime extends Service {
 
 /** Mint a same-process correlation token whose identity is its value. */
 function createExecutionToken(): ToolExecutionToken {
-  return Symbol('dsh.tool.execution') as ToolExecutionToken
+  return Symbol('fathom.tool.execution') as ToolExecutionToken
 }
 
 function toolErrorResult(error: unknown): ToolExecutionResult {

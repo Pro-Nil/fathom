@@ -9,9 +9,9 @@
 
 import { tmpdir } from 'node:os'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { SandboxPolicy } from '@pentest-harness/dsh-sandbox'
-import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
+import { Context } from '@fathom/cordis'
+import type { SandboxPolicy } from '@fathom/sandbox'
+import { LocalSandboxProvider } from '@fathom/sandbox-local'
 
 const RO: SandboxPolicy = { mode: 'read-only', workspaceRoot: '/ws' }
 const WW: SandboxPolicy = { mode: 'workspace-write', workspaceRoot: '/ws' }

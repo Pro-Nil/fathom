@@ -1,6 +1,6 @@
 // Latency/throughput folds shared by the settled turn footer and StatsLine.
 
-import type { AssistantMessageNode, ConversationNode } from '@pentest-harness/dsh-client-runtime/client'
+import type { AssistantMessageNode, ConversationNode } from '@fathom/client-runtime/client'
 
 /** Latency and decode-throughput readings for one turn's footer. */
 export interface TurnMetrics {

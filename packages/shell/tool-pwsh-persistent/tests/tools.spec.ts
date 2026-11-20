@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import TerminalSessionService from '@pentest-harness/dsh-terminal'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import TerminalSessionService from '@fathom/terminal'
 import type {
   TerminalBackend,
   TerminalBackendSession,
@@ -14,10 +14,10 @@ import type {
   TerminalSessionStatus,
   TerminalSignal,
   TerminalWaitReason,
-} from '@pentest-harness/dsh-terminal'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRegistry from '@pentest-harness/dsh-tools'
-import * as ToolPwshPersistent from '@pentest-harness/dsh-tool-pwsh-persistent'
+} from '@fathom/terminal'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRegistry from '@fathom/tools'
+import * as ToolPwshPersistent from '@fathom/tool-pwsh-persistent'
 
 const contexts: Context[] = []
 let callNumber = 0
@@ -102,11 +102,11 @@ type StubMode =
   | 'exit-after-send'
   | 'prompt-collision'
 
-const START_PATTERN = /__DSH_PERSISTENT_PWSH_START_[^_]+(?:-[^_]+)*__/
-const END_PATTERN = /__DSH_PERSISTENT_PWSH_END_[^:]+:/
+const START_PATTERN = /__FATHOM_PERSISTENT_PWSH_START_[^_]+(?:-[^_]+)*__/
+const END_PATTERN = /__FATHOM_PERSISTENT_PWSH_END_[^:]+:/
 
 class StubTerminalSession implements TerminalBackendSession {
-  readonly motd = '__DSH_PERSISTENT_PWSH_PROMPT__ '
+  readonly motd = '__FATHOM_PERSISTENT_PWSH_PROMPT__ '
   readonly pid = 123
   statusValue: TerminalSessionStatus = { kind: 'running' }
   scrollback = this.motd
@@ -360,8 +360,8 @@ describe('tool-pwsh-persistent', () => {
     stub.sessions[0]!.mode = 'with-echo'
     const result = text(await call(ctx, owner, 'Write-Output hi'))
     expect(result).toBe('hello from stub')
-    expect(result).not.toContain('__DSH_PERSISTENT_PWSH_START_')
-    expect(result).not.toContain('__DSH_PERSISTENT_PWSH_END_')
+    expect(result).not.toContain('__FATHOM_PERSISTENT_PWSH_START_')
+    expect(result).not.toContain('__FATHOM_PERSISTENT_PWSH_END_')
     expect(result).not.toContain('Invoke-Expression')
   })
 
@@ -407,13 +407,13 @@ describe('tool-pwsh-persistent', () => {
     session.mode = 'prompt-only'
     const promptFallback = text(await call(ctx, owner, 'bad {'))
     expect(promptFallback).toContain('pwsh: synt')
-    expect(promptFallback).not.toContain('DSH_PERSISTENT_PWSH_PROMPT')
+    expect(promptFallback).not.toContain('FATHOM_PERSISTENT_PWSH_PROMPT')
 
     session.mode = 'prompt-crlf'
     session.scrollback = ''
     const crlfPromptFallback = text(await call(ctx, owner, 'bad {'))
     expect(crlfPromptFallback).toContain('pwsh: synt')
-    expect(crlfPromptFallback).not.toContain('DSH_PERSISTENT_PWSH_PROMPT')
+    expect(crlfPromptFallback).not.toContain('FATHOM_PERSISTENT_PWSH_PROMPT')
 
     session.mode = 'end-only'
     session.scrollback = ''
@@ -508,8 +508,8 @@ describe('tool-pwsh-persistent', () => {
     const result = text(await call(ctx, owner, 'bad {'))
     expect(result).toContain('partial syntax output')
     expect(result).toContain('pwsh: syntax error')
-    expect(result).not.toContain('DSH_PERSISTENT_PWSH_PROMPT')
-    expect(result).not.toContain('DSH_PERSISTENT_PWSH_START')
+    expect(result).not.toContain('FATHOM_PERSISTENT_PWSH_PROMPT')
+    expect(result).not.toContain('FATHOM_PERSISTENT_PWSH_START')
   })
 
   it('does not attribute old scrollback truncation to a complete current command', async () => {

@@ -4,23 +4,23 @@
  * matchers, snake_case payloads without a trailing newline, no hook environment
  * or command substitution, and no pre-tool approval or rewrite path; only
  * blocking decisions are honored. Shared execution and parsing live in
- * `dsh-hook-protocol`; see the
+ * `fathom-hook-protocol`; see the
  * [hook-bridges Agent Note](../../../../.agents/notes/implemented/feature/2026-06-30-hook-bridges.md).
- * @module @pentest-harness/dsh-hooks-codex
+ * @module @fathom/hooks-codex
  */
 
 // Each dialect bridge keeps its complete dependency list visible at the entry
 // point; a cross-package facade for imports alone would add indirection.
 /* jscpd:ignore-start */
 import { readFileSync } from 'node:fs'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, MessageSource } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-persistence'
-import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { ContentBlock, MessageSource } from '@fathom/llm'
+import type { UserMessage } from '@fathom/session'
+import type {} from '@fathom/session-persistence'
+import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@fathom/tools'
 import {
   appendHookInvoked,
   appendHookResult,
@@ -33,7 +33,7 @@ import {
   type HookOutput,
   type MatcherGroup,
   type MergedHookOutcome,
-} from '@pentest-harness/dsh-hook-protocol'
+} from '@fathom/hook-protocol'
 import { parseCodexConfig, type CodexHookConfig } from './config.ts'
 /* jscpd:ignore-end */
 

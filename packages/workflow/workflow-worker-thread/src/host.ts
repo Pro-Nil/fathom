@@ -3,20 +3,20 @@
  * cancellation-grace expiry owns settlement and closes message admission.
  * Pending starts share one abort signal; published children share idempotent
  * cleanup, and quiescence waits for both while synthesizing any missing end events.
- * @module @pentest-harness/dsh-workflow-worker-thread/host
+ * @module @fathom/workflow-worker-thread/host
  */
 
 import { tmpdir } from 'node:os'
 import { Worker } from 'node:worker_threads'
 import type { WorkerOptions } from 'node:worker_threads'
 import { fileURLToPath } from 'node:url'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { assertNever } from '@pentest-harness/dsh-llm'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentRun } from '@pentest-harness/dsh-subagent'
-import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowMeta, WorkflowResult, WorkflowRun, WorkflowRunId } from '@pentest-harness/dsh-workflow'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { assertNever } from '@fathom/llm'
+import { snapshotJsonValue } from '@fathom/session'
+import type SubagentRuntime from '@fathom/subagent'
+import type { SubagentRun } from '@fathom/subagent'
+import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowMeta, WorkflowResult, WorkflowRun, WorkflowRunId } from '@fathom/workflow'
 import { renderThrown } from './realm.ts'
 import type { ExecutionObserver } from './runtime.ts'
 import { HostToWorkerType, WorkerToHostType } from './protocol.ts'

@@ -1,13 +1,13 @@
 /** The `bash` settings section layered over the executor's composition entry. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Fiber } from '@pentest-harness/cordis'
-import { SettingsProvider } from '@pentest-harness/dsh-settings'
-import type { SettingsNamespace } from '@pentest-harness/dsh-settings'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import { SHELL_SETTINGS_NAMESPACE } from '@pentest-harness/dsh-shell'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
+import { Context } from '@fathom/cordis'
+import type { Fiber } from '@fathom/cordis'
+import { SettingsProvider } from '@fathom/settings'
+import type { SettingsNamespace } from '@fathom/settings'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import { SHELL_SETTINGS_NAMESPACE } from '@fathom/shell'
+import { LocalBashExecutor } from '@fathom/bash-local'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

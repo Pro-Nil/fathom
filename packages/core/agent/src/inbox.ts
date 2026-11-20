@@ -1,11 +1,11 @@
 /**
  * Incremental projection of durable agent inbox events.
  *
- * @module @pentest-harness/dsh-agent/inbox
+ * @module @fathom/agent/inbox
  */
 
-import type { MessageId } from '@pentest-harness/dsh-llm'
-import type { Session, SessionEventMap, UserMessage } from '@pentest-harness/dsh-session'
+import type { MessageId } from '@fathom/llm'
+import type { Session, SessionEventMap, UserMessage } from '@fathom/session'
 import type { InboxTarget } from './types.ts'
 
 /** Mutable state privately owned by an {@link Inbox}. */

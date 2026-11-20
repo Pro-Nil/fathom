@@ -2,9 +2,9 @@
 /** Section, setup-card, and hand-written editor behavior over a scripted wire face. */
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import Schema from '@pentest-harness/schemastery'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import type { RpcResponse, SettingsNamespaceView } from '@pentest-harness/dsh-api-remotes/client'
+import Schema from '@fathom/schemastery'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import type { RpcResponse, SettingsNamespaceView } from '@fathom/api-remotes/client'
 import {
   ModelsSection, needsSetup, providerCopy, providerTargetLabel, removeProviderProfile,
 } from '../src/client/ModelsSection.tsx'
@@ -14,7 +14,7 @@ import {
   formatCapacity, modelDrafts, parseCapacity, validateModelCatalog,
 } from '../src/client/model-catalog.ts'
 import { apiKeyFailure } from '../src/client/apiKey.ts'
-import { SettingsDescribeMirror } from '@pentest-harness/dsh-client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsDescribeMirror } from '@fathom/client-ui-settings/src/client/settings-mirror.ts'
 import { deriveKeyRef, ModelsSettingsStore } from '../src/client/store.ts'
 import type { ProviderRow } from '../src/client/store.ts'
 import { en } from '../src/client/locales.ts'

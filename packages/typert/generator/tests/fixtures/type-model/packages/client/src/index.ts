@@ -1,4 +1,4 @@
-import { Service } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
 import type HostDefault from '@fixture/host'
 import type * as Host from '@fixture/host'
 import type { AgentPhase } from '@fixture/host'
@@ -30,7 +30,7 @@ export class ClientBridge extends Service {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     clientBridge: ClientBridge
   }

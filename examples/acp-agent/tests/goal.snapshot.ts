@@ -8,9 +8,9 @@ import {
   type AgentUnderTest,
   type InputScript,
   type NormalizeContext,
-} from '@pentest-harness/dsh-acp-snapshot'
-import { foldGoal } from '@pentest-harness/dsh-goal'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+} from '@fathom/acp-snapshot'
+import { foldGoal } from '@fathom/goal'
+import type { SessionEvent } from '@fathom/session'
 import { describe, expect, it } from 'vitest'
 
 // This lifecycle proof has goal-specific timestamp normalization and semantic
@@ -21,7 +21,7 @@ const overrideFile = join(scenarioDir, 'replay.override.json')
 const stdoutExpected = join(scenarioDir, 'stdout.expected.jsonl')
 const sessionExpected = join(scenarioDir, 'session.expected.jsonl')
 const wrapupDir = join(dirname(fileURLToPath(import.meta.url)), 'goal-snapshots/goal-wrapup')
-const refreshing = process.env.DSH_SNAPSHOT === 'refresh'
+const refreshing = process.env.FATHOM_SNAPSHOT === 'refresh'
 
 const agent: AgentUnderTest = {
   binScript: fileURLToPath(new URL('../../../packages/examples/acp-demo/src/bin.ts', import.meta.url)),

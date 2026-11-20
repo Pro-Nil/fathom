@@ -1,7 +1,7 @@
 /** Registration/capability behavior of the native backend (the seam's cordis half). */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import NativeDirectoryPicker from '../src/index.ts'
 
 describe('NativeDirectoryPicker', () => {

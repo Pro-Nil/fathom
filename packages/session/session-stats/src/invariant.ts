@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-stats`.
- * @module @pentest-harness/dsh-session-stats/invariant
+ * Package-owned invariant companion for `@fathom/session-stats`.
+ * @module @fathom/session-stats/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-stats'
+const PACKAGE_NAME = '@fathom/session-stats'
 
 /** Cordis companion plugin name. */
 export const name = 'session-stats-invariant'
@@ -20,7 +20,7 @@ export const inject = ['invariants']
  * snapshot and change-feed emission, and the event relations the fold relies
  * on (`step/end` exactly once per entered step, monotonic host-assigned turn
  * numbers, chunk and tool events carrying their step coordinates and call
- * ids) are owned and runtime-checked by dsh-agent-loop and the session
+ * ids) are owned and runtime-checked by fathom-agent-loop and the session
  * surface, not here.
  */
 const install: InvariantInstaller = () => {}

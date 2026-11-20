@@ -5,8 +5,8 @@
  * RpcReceipt carrier receipt as the HTTP response body; the final outcome arrives in the resolved frame.
  */
 
-import type { ApprovalRequestId } from '@pentest-harness/dsh-user-approval/types'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { ApprovalRequestId } from '@fathom/user-approval/types'
+import type { SessionId } from '@fathom/session/types'
 
 /**
  * Approval answer payload (the result.value slot of a client-response). outcome accepts only

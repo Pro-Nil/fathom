@@ -7,7 +7,7 @@ import {
   indexSubagentDescendants, type PendingInteractionStatus, type SessionId, type SessionListState,
   type SessionSearchResultItem, type SessionSummary, type SubagentDescendantSummary,
   type WorkspaceId, type WorkspaceView,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 
 /** Group key for Sessions outside every Workspace. */
 export const UNGROUPED_KEY = ''

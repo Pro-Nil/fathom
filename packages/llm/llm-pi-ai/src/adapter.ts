@@ -23,7 +23,7 @@
  * so a configuration change rebuilds the collection without forgetting who is
  * signed in.
  *
- * @module dsh-llm-pi-ai/adapter
+ * @module fathom-llm-pi-ai/adapter
  */
 
 import { createModels, getSupportedThinkingLevels } from '@earendil-works/pi-ai'
@@ -44,7 +44,7 @@ import {
   LlmAdapter,
   LlmError,
   ReasoningEffortId,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 import type {
   GenerateOptions,
   LlmModelInfo,
@@ -54,9 +54,9 @@ import type {
   ReasoningEffortId as ReasoningEffortIdType,
   ResolvedRetryPolicy,
   StreamChunk,
-} from '@pentest-harness/dsh-llm'
-import type { AttachmentStore } from '@pentest-harness/dsh-attachment'
-import { idleWatchdog, timeoutOf } from '@pentest-harness/dsh-timeout'
+} from '@fathom/llm'
+import type { AttachmentStore } from '@fathom/attachment'
+import { idleWatchdog, timeoutOf } from '@fathom/timeout'
 import type { ResolvedPiAiProviderProfile } from './config.ts'
 import { toPiContext } from './context.ts'
 import { toStreamChunks } from './stream.ts'

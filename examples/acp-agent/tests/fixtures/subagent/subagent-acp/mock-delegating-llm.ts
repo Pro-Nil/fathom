@@ -1,6 +1,6 @@
-import type { Context } from '@pentest-harness/cordis'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { CallId, LlmAdapter } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { CallId, LlmAdapter } from '@fathom/llm'
 
 /**
  * Test adapter for the `mock-delegate` model: the first request calls the

@@ -7,12 +7,12 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type {
   ChatConversationViewNode, ConversationNode,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type { ChatNodeViewProps } from '../src/client/contract/slots.ts'
 import {
   formatMessageClock, msUntilNextLocalMidnight, startOfLocalDay,
@@ -655,16 +655,16 @@ describe('MessageItem arms', () => {
         content: [{ type: 'text', text: 'Current runtime context.\n\nsandbox\n\nworkspace' }],
         source: {
           kind: 'plugin',
-          plugin: '@pentest-harness/dsh-system-prompt',
+          plugin: '@fathom/system-prompt',
           form: 'snapshot',
           sections: [{ name: 'sandbox:policy', text: 'workspace-write' }, { name: 'workspace', text: '/repo' }],
         },
-        provenance: { role: 'inject', label: '@pentest-harness/dsh-system-prompt' },
+        provenance: { role: 'inject', label: '@fathom/system-prompt' },
         form: 'snapshot',
       } as never}
       />,
     )
-    fireEvent.click(view.getByRole('button', { name: /^Context injection\s*@pentest-harness\/dsh-system-prompt$/ }))
+    fireEvent.click(view.getByRole('button', { name: /^Context injection\s*@fathom\/system-prompt$/ }))
     const rows = [...view.container.querySelectorAll('[data-context-sections] div')].map(node => node.textContent)
     expect(rows).toEqual(['sandbox:policyworkspace-write', 'workspace/repo'])
   })

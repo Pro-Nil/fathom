@@ -1,6 +1,6 @@
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
-import type { MuxFrame } from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
+import type { ContentBlock } from '@fathom/llm/types'
+import type { MuxFrame } from '@fathom/api-remotes/client'
+import type { SessionEvent } from '@fathom/session/types'
 import type { QueuedMessage } from './conversation.ts'
 
 const QUEUE_PREVIEW_CHARS = 200

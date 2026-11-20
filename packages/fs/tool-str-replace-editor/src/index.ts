@@ -1,18 +1,18 @@
 /**
  * Model-facing `str_replace_editor` over the Harness filesystem seam.
- * @module @pentest-harness/dsh-tool-str-replace-editor
+ * @module @fathom/tool-str-replace-editor
  */
 
 import { isAbsolute } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { FsError } from '@pentest-harness/dsh-fs'
-import type { FsInfo, FsTarget, FsWriteIntent } from '@pentest-harness/dsh-fs'
-import { sandboxDenialMarker } from '@pentest-harness/dsh-sandbox'
-import type { SandboxExecutionPolicy } from '@pentest-harness/dsh-sandbox'
-import type { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { ToolCallView, ToolRunContext } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { FsError } from '@fathom/fs'
+import type { FsInfo, FsTarget, FsWriteIntent } from '@fathom/fs'
+import { sandboxDenialMarker } from '@fathom/sandbox'
+import type { SandboxExecutionPolicy } from '@fathom/sandbox'
+import type { SandboxPolicyService } from '@fathom/sandbox-policy'
+import { defineTool } from '@fathom/tools'
+import type { ToolCallView, ToolRunContext } from '@fathom/tools'
 
 const TRUNCATED_MESSAGE = '<response clipped><NOTE>To save on context only part of this file has been shown to you. You should retry this tool after you have searched inside the file with `grep -n` in order to find the line numbers of what you are looking for.</NOTE>'
 

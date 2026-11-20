@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { RUN_CODE_NAME, defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import { Session, SessionId, type UserMessage } from '@pentest-harness/dsh-session'
-import AgentRegistry, { agentEvents, type Agent } from '@pentest-harness/dsh-agent'
-import { createScope } from '@pentest-harness/dsh-scope'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { RUN_CODE_NAME, defineContentToolFixture } from '@fathom/tools'
+import { Session, SessionId, type UserMessage } from '@fathom/session'
+import AgentRegistry, { agentEvents, type Agent } from '@fathom/agent'
+import { createScope } from '@fathom/scope'
 import UserQuestionService, {
   UserQuestionError, type AskUserQuestionRequest,
-} from '@pentest-harness/dsh-user-questions'
-import CommandRuntime from '@pentest-harness/dsh-commands'
-import { CodeRuntime, type CodeRunRequest, type CodeRunResult } from '@pentest-harness/dsh-code-runtime'
+} from '@fathom/user-questions'
+import CommandRuntime from '@fathom/commands'
+import { CodeRuntime, type CodeRunRequest, type CodeRunResult } from '@fathom/code-runtime'
 import PlanModeController, { EXIT_PLAN_MODE, foldPlanMode, resolveConfig } from '../src/index.ts'
 import type { PlanModeConfig } from '../src/index.ts'
 
@@ -18,7 +18,7 @@ const TEST_PLAN_SECTION = 'Test plan mode instructions.'
 const PLAN_CONFIG = { section: TEST_PLAN_SECTION } satisfies PlanModeConfig
 
 /**
- * Drives the REAL plugin: mounts `dsh-plan-mode` beside real `SystemPrompt` and
+ * Drives the REAL plugin: mounts `fathom-plan-mode` beside real `SystemPrompt` and
  * `ToolRuntime` services, with fake Agents carrying real `Session`s and a
  * real scoped `agent.ctx` minted through `createScope`.
  * Request boundaries are simulated by dispatching the real pre-step waterfall

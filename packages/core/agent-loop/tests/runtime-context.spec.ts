@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import { createUserMessage } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
 import { RuntimeContextProjection } from '../src/runtime-context.ts'
 
-const SOURCE = '@pentest-harness/system-prompt'
+const SOURCE = '@fathom/runtime-context'
 
 function contextMessage(text: string) {
   return createUserMessage({

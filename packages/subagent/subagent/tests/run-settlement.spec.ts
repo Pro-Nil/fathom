@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 import {
   settleRun,
   settleRunResult,

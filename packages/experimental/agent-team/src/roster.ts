@@ -1,12 +1,12 @@
 /** Team membership, continuable-child provisioning, and roster-owned teardown. */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { MessageId } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { foldSubagentDescriptor } from '@pentest-harness/dsh-subagent'
-import type { ContinuableStart } from '@pentest-harness/dsh-subagent'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { MessageId } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import { foldSubagentDescriptor } from '@fathom/subagent'
+import type { ContinuableStart } from '@fathom/subagent'
 import { errorMessage, TeamError } from './error.ts'
 import type { TeamFoldState } from './fold.ts'
 import type { TeamJournal } from './journal.ts'

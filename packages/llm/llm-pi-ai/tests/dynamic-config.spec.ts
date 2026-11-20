@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import LlmRuntime, { LlmAdapter } from '@pentest-harness/dsh-llm'
-import { credentialRef } from '@pentest-harness/dsh-credentials'
-import { LocalCredentialProvider } from '@pentest-harness/dsh-credentials-local'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
-import { FileSettingsProvider } from '@pentest-harness/dsh-settings-file'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import AuthorizationService from '@pentest-harness/dsh-authorization'
+import LlmRuntime, { LlmAdapter } from '@fathom/llm'
+import { credentialRef } from '@fathom/credentials'
+import { LocalCredentialProvider } from '@fathom/credentials-local'
+import { settingsNamespace } from '@fathom/settings'
+import { FileSettingsProvider } from '@fathom/settings-file'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import AuthorizationService from '@fathom/authorization'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 
@@ -32,7 +32,7 @@ afterEach(async () => {
 })
 
 async function home(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-pi-dynamic-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-pi-dynamic-'))
   cleanups.push(() => rm(dir, { recursive: true, force: true }))
   return dir
 }

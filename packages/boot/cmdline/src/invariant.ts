@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-cmdline`.
- * @module @pentest-harness/dsh-cmdline/invariant
+ * Package-owned invariant companion for `@fathom/cmdline`.
+ * @module @fathom/cmdline/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-cmdline'
+const PACKAGE_NAME = '@fathom/cmdline'
 
 /** Cordis companion plugin name. */
 export const name = 'cmdline-invariant'

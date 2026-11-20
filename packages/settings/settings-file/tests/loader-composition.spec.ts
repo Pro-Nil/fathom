@@ -11,11 +11,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import z from '@pentest-harness/schemastery'
-import { settingsNamespace, type SettingsScope } from '@pentest-harness/dsh-settings'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import z from '@fathom/schemastery'
+import { settingsNamespace, type SettingsScope } from '@fathom/settings'
 import FileSettingsProvider from '../src/index.ts'
 
 interface ThemeConfig {
@@ -49,7 +49,7 @@ async function loadComposition(
   options?: { withSettings?: boolean },
 ): Promise<{ ctx: Context; state: ConsumerState; settingsPath: string }> {
   const withSettings = options?.withSettings ?? true
-  root = await mkdtemp(join(tmpdir(), 'dsh-settings-composition-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-settings-composition-'))
   const settingsPath = join(root, 'settings.yaml')
   await writeFile(settingsPath, 'ui-theme:\n  theme: light\n')
 
@@ -79,7 +79,7 @@ async function loadComposition(
     ...withSettings
       ? [
         '- id: settings',
-        "  name: '@pentest-harness/dsh-settings-file'",
+        "  name: '@fathom/settings-file'",
         '  config:',
         `    path: ${JSON.stringify(settingsPath)}`,
         '    debounceMs: 10',
@@ -96,7 +96,7 @@ async function loadComposition(
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-settings-file', FileSettingsProvider],
+    ['@fathom/settings-file', FileSettingsProvider],
     ['test-settings-consumer', consumer],
   ])
   ctx.loader.internal = {

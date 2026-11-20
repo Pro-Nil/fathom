@@ -2,16 +2,16 @@
 # the base cordis.yml, so this overlay adds only the local tool-result spill
 # storage those scenarios exercise.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: spill-local
-            name: '@pentest-harness/dsh-spill-local'
+            name: '@fathom/spill-local'
             config:
-              root: !!js process.env.DSH_SNAPSHOT_SPILL_ROOT ?? './.spill'
+              root: !!js process.env.FATHOM_SNAPSHOT_SPILL_ROOT ?? './.spill'
           - id: spill-policy
-            name: '@pentest-harness/dsh-spill-policy'
+            name: '@fathom/spill-policy'
             config:
-              maxInlineBytes: !!js process.env.DSH_SNAPSHOT && 800 || 50000
+              maxInlineBytes: !!js process.env.FATHOM_SNAPSHOT && 800 || 50000

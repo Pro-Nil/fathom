@@ -8,11 +8,11 @@
  * price is derived from THIS fold's nodes by the replace producer. A
  * projection replacement without a claim deliberately folds with zero delta.
  *
- * @module @pentest-harness/dsh-token-meter/surface-fold
+ * @module @fathom/token-meter/surface-fold
  */
 
-import { deriveEventMessage } from '@pentest-harness/dsh-session'
-import type { SurfaceEvent } from '@pentest-harness/dsh-session'
+import { deriveEventMessage } from '@fathom/session'
+import type { SurfaceEvent } from '@fathom/session'
 import type { TokenSurfaceNode } from './types.ts'
 import { estimateMessage } from './estimate.ts'
 

@@ -11,9 +11,9 @@
 
 import { Fragment, memo, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import type { AssistantBlock } from '@pentest-harness/dsh-client-runtime/client'
-import { JsonBlock, MarkdownText } from '@pentest-harness/dsh-client-ui-primitives'
-import type { MarkdownFileMentions } from '@pentest-harness/dsh-client-ui-primitives'
+import type { AssistantBlock } from '@fathom/client-runtime/client'
+import { JsonBlock, MarkdownText } from '@fathom/client-ui-primitives'
+import type { MarkdownFileMentions } from '@fathom/client-ui-primitives'
 import type { ChatNodeOwnerProps, ChatViewSlotProps } from '../contract/slots.ts'
 import { ReasoningRow } from './ReasoningRow.tsx'
 import css from './AssistantMarkdown.module.css'

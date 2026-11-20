@@ -1,7 +1,7 @@
 /** Client-safe event declarations owned by the agent-preset domain. */
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { SessionId } from '@fathom/session/types'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * One session committed a different agent preset to its durable log.

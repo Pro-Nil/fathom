@@ -1,10 +1,10 @@
 /**
  * Agent-scoped model selection shared by runtime entry points.
- * @module @pentest-harness/dsh-agent/model-selection
+ * @module @fathom/agent/model-selection
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { LlmCallConfig, ReasoningEffortId } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { LlmCallConfig, ReasoningEffortId } from '@fathom/llm'
 
 /** Complete provider, model, and optional reasoning effort selected for one live Agent. */
 export interface ModelSelection {

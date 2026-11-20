@@ -1,12 +1,12 @@
 /** Deterministic provider for model-visible foreground and Job diagnostic snapshots. */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import {
   NO_START_CAPABILITIES,
   type ResolvedSubagentStartRequest,
   type SubagentProvider,
-} from '@pentest-harness/dsh-subagent'
-import { SessionId } from '@pentest-harness/dsh-session'
+} from '@fathom/subagent'
+import { SessionId } from '@fathom/session'
 
 export const name = 'subagent-result-diagnostic'
 export const inject = ['subagents']

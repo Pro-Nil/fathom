@@ -1,11 +1,11 @@
 /** Default Agent model settings layered over a real settings provider. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import AgentDefaultModelConfig, { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '../src/index.ts'
-import { SettingsProvider } from '@pentest-harness/dsh-settings'
-import type { SettingsNamespace } from '@pentest-harness/dsh-settings'
-import { ReasoningEffortId } from '@pentest-harness/dsh-llm'
+import { SettingsProvider } from '@fathom/settings'
+import type { SettingsNamespace } from '@fathom/settings'
+import { ReasoningEffortId } from '@fathom/llm'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

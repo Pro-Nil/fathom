@@ -1,5 +1,5 @@
-import type { Context } from '@pentest-harness/cordis'
-import { LlmAdapter, type StreamChunk } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import { LlmAdapter, type StreamChunk } from '@fathom/llm'
 
 /** Deterministic one-step adapter for the time-context Loader fixture. */
 class TimeContextMockAdapter extends LlmAdapter {

@@ -9,13 +9,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import { LocalFileSystem } from '@pentest-harness/dsh-fs-local'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import { LocalFileSystem } from '@fathom/fs-local'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import * as ToolFs from '@fathom/tool-fs'
 
 const testToolSignal = new AbortController().signal
 
@@ -48,9 +48,9 @@ afterEach(async () => {
 // --------------------------------------------------------------------------
 // DEFAULT deployment: the policy gate plugin is loaded.
 // --------------------------------------------------------------------------
-describe('default deployment (with dsh-fs-observation-policy)', () => {
+describe('default deployment (with fathom-fs-observation-policy)', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-tool-fs-'))
     ctx = new Context()
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
@@ -310,9 +310,9 @@ describe('default deployment (with dsh-fs-observation-policy)', () => {
 // --------------------------------------------------------------------------
 // BARE deployment: the tool suite WITHOUT the policy gate.
 // --------------------------------------------------------------------------
-describe('bare provider (no dsh-fs-observation-policy)', () => {
+describe('bare provider (no fathom-fs-observation-policy)', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-bare-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-tool-fs-bare-'))
     ctx = new Context()
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
@@ -375,12 +375,12 @@ describe('bare provider (no dsh-fs-observation-policy)', () => {
 
 // Per-session cwd: a relative file_path resolves against the calling session's workspace
 // (`exec.agent.session.header.cwd`), not the backend's config.cwd, so the
-// caller-selected session workspace wins, matching dsh-tool-bash.
+// caller-selected session workspace wins, matching fathom-tool-bash.
 describe('per-session cwd', () => {
   let sessionDir: string
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-cfg-'))
-    sessionDir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-session-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-tool-fs-cfg-'))
+    sessionDir = await mkdtemp(join(tmpdir(), 'fathom-tool-fs-session-'))
     ctx = new Context()
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
@@ -425,7 +425,7 @@ describe('per-session cwd', () => {
 // --------------------------------------------------------------------------
 describe('signal, concurrency, and the fs/observed contract', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-fs-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-tool-fs-'))
     ctx = new Context()
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)

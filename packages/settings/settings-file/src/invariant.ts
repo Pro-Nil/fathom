@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-settings-file`.
- * @module @pentest-harness/dsh-settings-file/invariant
+ * Package-owned invariant companion for `@fathom/settings-file`.
+ * @module @fathom/settings-file/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-settings-file'
+const PACKAGE_NAME = '@fathom/settings-file'
 
 /** Cordis companion plugin name. */
 export const name = 'settings-file-invariant'
@@ -17,7 +17,7 @@ export const inject = ['invariants']
 /**
  * No runtime invariant: this provider's contracts are file round-trip,
  * watcher timing, and atomic-write behavior — IO effects proven by package
- * tests; the in-process commit relation is owned by `@pentest-harness/dsh-settings`.
+ * tests; the in-process commit relation is owned by `@fathom/settings`.
  */
 const install: InvariantInstaller = () => {}
 

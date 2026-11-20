@@ -1,19 +1,19 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-storage-domain`: every
+ * Package-owned invariant companion for `@fathom/storage-domain`: every
  * `domain/changed` event must agree with the emitting domain's authoritative
  * in-memory state (the owned event-stream ↔ mutable-data relationship of this
  * package). Writes emit strictly after mutating memory and the write chain
  * serializes them, so at emission time the event's snapshot equals the
  * current read — any divergence means a write path skipped the chain or
  * emitted a stale value.
- * @module @pentest-harness/dsh-storage-domain/invariant
+ * @module @fathom/storage-domain/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { DomainChanged } from './events.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-storage-domain'
+const PACKAGE_NAME = '@fathom/storage-domain'
 
 /** Cordis companion plugin name. */
 export const name = 'storage-domain-invariant'

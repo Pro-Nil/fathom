@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import * as HookInvariant from '@pentest-harness/dsh-hook-protocol/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import * as HookInvariant from '@fathom/hook-protocol/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

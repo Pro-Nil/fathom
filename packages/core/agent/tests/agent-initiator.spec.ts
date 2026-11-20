@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { runInNewContext } from 'node:vm'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { SessionId } from '@pentest-harness/dsh-session'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import { SessionId } from '@fathom/session'
 
 function agent(id: string): Agent {
   return { id: SessionId(id) } as Agent

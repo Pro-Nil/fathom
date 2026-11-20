@@ -1,7 +1,7 @@
 /**
  * Public file-reference discovery records. This module contains types only so
  * generated Remote clients can consume it without Host runtime code.
- * @module @pentest-harness/dsh-file-reference/types
+ * @module @fathom/file-reference/types
  */
 
 /** One path-only completion candidate inside the target session cwd. */

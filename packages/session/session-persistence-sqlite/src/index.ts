@@ -1,17 +1,17 @@
 /**
  * Opt-in SQLite persistence provider. Logical sessions remain unchanged;
  * the physical backend packs eligible chunk runs into schema-17 rows.
- * @module @pentest-harness/dsh-session-persistence-sqlite
+ * @module @fathom/session-persistence-sqlite
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import type {
   SessionEvent,
   SessionHeader,
   SessionId,
   SessionPreparation,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import {
   DEFAULT_PREPARED_SESSION_CACHE_SIZE,
   DEFAULT_WRITE_BATCH_MAX_DELAY_MS,
@@ -21,7 +21,7 @@ import {
   type SessionInspection,
   type SessionLocation,
   type SessionPersistenceSnapshot,
-} from '@pentest-harness/dsh-session-persistence'
+} from '@fathom/session-persistence'
 import type { JournalMode } from './schema.ts'
 import { SqliteStore } from './store.ts'
 

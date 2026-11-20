@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-tool-ask-user
+# @fathom/tool-ask-user
 
 Model-facing `ask_user_question` tool over `ctx.userQuestions`. It lets the model ask the human a concise question when it needs confirmation, a choice, or missing information before continuing.
 
@@ -25,7 +25,7 @@ This is the Consumer package for the user-questions seam. It does not render UI 
 
 #### What the model sees
 
-The model sees the generated [`ask_user_question` schema](../../../docs/tool-catalog.md#pentest-harnessdsh-tool-ask-user), including question ids, prompts, headings, options, and multi-select flags.
+The model sees the generated [`ask_user_question` schema](../../../docs/tool-catalog.md#fathomtool-ask-user), including question ids, prompts, headings, options, and multi-select flags.
 
 #### Token effect
 

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@pentest-harness/dsh-session'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import * as SandboxPolicyInvariant from '@pentest-harness/dsh-sandbox-policy/invariant'
+import { Context } from '@fathom/cordis'
+import SessionStore, { type Session, type SessionEvent } from '@fathom/session'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import * as SandboxPolicyInvariant from '@fathom/sandbox-policy/invariant'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()
@@ -36,7 +36,7 @@ describe('sandbox-policy invariants', () => {
   it('rejects and attributes an unknown durable sandbox mode', async () => {
     const ctx = await setup()
     expect(() => { ctx.emit('session/event', {} as Session, modeEvent('host-root')) })
-      .toThrow(new InvariantError('@pentest-harness/dsh-sandbox-policy', 'sandbox/mode carries unknown mode "host-root"'))
+      .toThrow(new InvariantError('@fathom/sandbox-policy', 'sandbox/mode carries unknown mode "host-root"'))
   })
 
   it('rejects an unknown mode already present on late registration', async () => {
@@ -47,7 +47,7 @@ describe('sandbox-policy invariants', () => {
 
     await expect(ctx.plugin(SandboxPolicyInvariant).then(() => undefined)).rejects.toMatchObject({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-sandbox-policy',
+      packageName: '@fathom/sandbox-policy',
     })
   })
 })

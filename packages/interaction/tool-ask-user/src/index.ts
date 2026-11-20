@@ -3,12 +3,12 @@
  * The tool pauses until a UI provider returns a human answer, then feeds that
  * answer back into the agent loop as an ordinary tool result.
  *
- * @module @pentest-harness/dsh-tool-ask-user
+ * @module @fathom/tool-ask-user
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import '@pentest-harness/dsh-user-questions'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import '@fathom/user-questions'
 
 export const name = 'tool-ask-user'
 export const inject = ['tools', 'userQuestions']

@@ -6,14 +6,14 @@
 // framework-free. Visual: figma 772:51905 / 772:52972 / 772:53419.
 
 import { useId, useState } from 'react'
-import type { Context } from '@pentest-harness/cordis'
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { Context } from '@fathom/cordis'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 // The domain's client-namespace pure-type outlet: one import edge delivers
 // the `todos` projection-key merge (single source, no consumer-side restated
 // declare) and the payload type. Type-only by construction — the outlet is
 // free of host value imports, so no host Context merge enters this program.
-import type { TodoItem } from '@pentest-harness/dsh-tool-todo/client'
-import { IconChecklistOutline14, IconChevronDownOutline14, IconChevronUpOutline14 } from '@pentest-harness/dsh-client-ui-primitives'
+import type { TodoItem } from '@fathom/tool-todo/client'
+import { IconChecklistOutline14, IconChevronDownOutline14, IconChevronUpOutline14 } from '@fathom/client-ui-primitives'
 import { NS } from '../locales.ts'
 import css from './TodoPanel.module.css'
 
@@ -24,7 +24,7 @@ export interface TodoPanelProps {
   t: TodoDockProps['t']
 }
 
-/** Local exhaustiveness helper — client packages do not depend on `dsh-llm`. */
+/** Local exhaustiveness helper — client packages do not depend on `fathom-llm`. */
 /* v8 ignore next 3 -- closed-union backstop; only reached if status is forged */
 function assertNever(value: never): never {
   throw new Error(`unreachable todo status: ${String(value)}`)

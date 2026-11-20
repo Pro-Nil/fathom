@@ -1,10 +1,10 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   TypertRemoteService,
   Remote,
   RemoteScope,
   remoteMethods,
-} from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/typert-protocol'
 
 class Goals extends TypertRemoteService {
   constructor(ctx: Context) {

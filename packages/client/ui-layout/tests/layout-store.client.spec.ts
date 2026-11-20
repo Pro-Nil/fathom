@@ -6,13 +6,13 @@
  * real engine instance (same create path as production).
  */
 import { beforeEach, describe, expect, it } from 'vitest'
-import { createLayoutStore } from '@pentest-harness/dsh-client-ui-layout/src/client/stores.ts'
+import { createLayoutStore } from '@fathom/client-ui-layout/src/client/stores.ts'
 import {
   ASIDE_MIN, DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
   SIDEBAR_DEFAULT, SIDEBAR_MAX, SIDEBAR_MIN,
-} from '@pentest-harness/dsh-client-ui-layout/src/client/columns.ts'
+} from '@fathom/client-ui-layout/src/client/columns.ts'
 
-const PERSIST_KEY = 'dsh.layout.panels'
+const PERSIST_KEY = 'fathom.layout.panels'
 
 beforeEach(() => { localStorage.clear() })
 

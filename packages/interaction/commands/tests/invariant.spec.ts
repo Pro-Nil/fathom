@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import * as CommandInvariant from '@pentest-harness/dsh-commands/invariant'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId, type Session } from '@pentest-harness/dsh-session'
-import { CommandId } from '@pentest-harness/dsh-commands'
+import { Context } from '@fathom/cordis'
+import * as CommandInvariant from '@fathom/commands/invariant'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId, type Session } from '@fathom/session'
+import { CommandId } from '@fathom/commands'
 
 async function mount(installCompanion = true): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()
@@ -50,7 +50,7 @@ describe('command lifecycle invariants', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-commands',
+      packageName: '@fathom/commands',
     }))
   })
 
@@ -68,7 +68,7 @@ describe('command lifecycle invariants', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-commands',
+      packageName: '@fathom/commands',
     }))
   })
 
@@ -83,7 +83,7 @@ describe('command lifecycle invariants', () => {
 
     await expect(ctx.plugin(CommandInvariant)).rejects.toMatchObject({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-commands',
+      packageName: '@fathom/commands',
     })
   })
 })

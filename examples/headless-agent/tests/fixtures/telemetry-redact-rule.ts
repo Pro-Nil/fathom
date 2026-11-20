@@ -1,4 +1,4 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 
 /**
  * Deployment-style redaction rule for the telemetry e2e: scrubs the fixture

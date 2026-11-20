@@ -15,14 +15,14 @@
  * absent `ctx.shell`, or a failed query is a no-op, never an error: an executor
  * rejection is contained and logged as a warning so the turn continues.
  *
- * @module @pentest-harness/dsh-tmux-context
+ * @module @fathom/tmux-context
  */
 
-import type { Context, LoggerService } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import type { ShellExecutor, ShellRunResult } from '@pentest-harness/dsh-shell'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import type { Context, LoggerService } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import type { ShellExecutor, ShellRunResult } from '@fathom/shell'
+import { createUserMessage } from '@fathom/llm'
 
 /** Cordis plugin name used by loader diagnostics. */
 export const name = 'tmux-context'

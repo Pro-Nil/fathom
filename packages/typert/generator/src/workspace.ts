@@ -1,6 +1,6 @@
 /**
  * Workspace-level discovery and model-driven Typert generation.
- * @module @pentest-harness/dsh-typert-generator/workspace
+ * @module @fathom/typert-generator/workspace
  */
 
 import { readFileSync } from 'node:fs'

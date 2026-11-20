@@ -1,6 +1,6 @@
 /** Model and UI rendering for persistent terminal tool results. */
 
-import { TextRetainer } from '@pentest-harness/dsh-output-retention'
+import { TextRetainer } from '@fathom/output-retention'
 
 interface RenderedSessionStatusRunning {
   kind: 'running'

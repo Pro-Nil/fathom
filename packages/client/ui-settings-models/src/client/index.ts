@@ -6,15 +6,15 @@
  * Export discipline:
  * packages/client/AGENTS.md.
  */
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import type { ConnectionHandle } from '@pentest-harness/dsh-api-remotes/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
+import type { ConnectionHandle } from '@fathom/api-remotes/client'
 // Type-only: pulls the shell's SlotMap merge (the 'settings.section' entry).
-import type {} from '@pentest-harness/dsh-client-ui-settings/client'
+import type {} from '@fathom/client-ui-settings/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type {} from '@fathom/client-locale/client'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (settings/credentials invalidations ride the allowlist) into this program.
-import type {} from '@pentest-harness/dsh-api-remotes/client'
+import type {} from '@fathom/api-remotes/client'
 import { ModelsSection } from './ModelsSection.tsx'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import { WelcomeNotice } from './WelcomeNotice.tsx'
@@ -28,7 +28,7 @@ import { WELCOME_NOTICE_SETTINGS_NAMESPACE } from '../onboarding-copy.ts'
 export type { ModelsSectionInjected, ModelsSectionProps } from './ModelsSection.tsx'
 export type { ModelsKey } from './locales.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The Models page + product-onboarding copy. */
     'settings.models': ModelsKey

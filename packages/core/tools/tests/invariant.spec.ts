@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@pentest-harness/dsh-tools'
-import * as ToolsInvariant from '@pentest-harness/dsh-tools/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import { scopeTarget } from '@fathom/scope'
+import { CallId } from '@fathom/llm'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@fathom/tools'
+import * as ToolsInvariant from '@fathom/tools/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 const testToolSignal = new AbortController().signal
 

@@ -1,8 +1,8 @@
 /** Deterministic provider-independent image normalization. */
 
 import sharp, { type Sharp } from 'sharp'
-import { AttachmentError } from '@pentest-harness/dsh-attachment'
-import type { ImageMediaType } from '@pentest-harness/dsh-attachment'
+import { AttachmentError } from '@fathom/attachment'
+import type { ImageMediaType } from '@fathom/attachment'
 import { encodeFirstWithinLimit, isExhaustedEncoding } from './encoding.ts'
 import { detectImage, encodedAlphaIsCompatible } from './image.ts'
 import type { DetectedImage } from './image.ts'

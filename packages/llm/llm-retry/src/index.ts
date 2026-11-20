@@ -2,15 +2,15 @@
  * Provider-routed model-request retry policy on the agent loop's request
  * recovery extension point. Each scheduled retry is durable before its cancellable wait.
  *
- * @module @pentest-harness/dsh-llm-retry
+ * @module @fathom/llm-retry
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context, Events } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, RequestErrorAction } from '@pentest-harness/dsh-agent'
-import type { LlmFailure, ResolvedRetryPolicy } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context, Events } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, RequestErrorAction } from '@fathom/agent'
+import type { LlmFailure, ResolvedRetryPolicy } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 import { RetryId } from './brand.ts'
 import type { LlmRetryEventData } from './types.ts'
 

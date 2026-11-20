@@ -4,13 +4,13 @@ import { afterEach, describe, expect, it } from 'vitest'
 import type {
   ChatConversationViewNode, ChatSnapshot, ConversationEventInput,
   ConversationNodeDefinition, ConversationViewDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { ConversationNodeAssembler } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import { commandDefinition } from '@pentest-harness/dsh-client-ui-conversation/src/client/conversation-nodes/command.ts'
-import { chatViewDefinition } from '@pentest-harness/dsh-client-ui-conversation/src/client/conversation-nodes/chat-snapshot-builder.ts'
+} from '@fathom/client-runtime/client'
+import { ConversationNodeAssembler } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
+import type { SessionEvent } from '@fathom/session/types'
+import { commandDefinition } from '@fathom/client-ui-conversation/src/client/conversation-nodes/command.ts'
+import { chatViewDefinition } from '@fathom/client-ui-conversation/src/client/conversation-nodes/chat-snapshot-builder.ts'
 import { GoalCommandInputView } from '../src/client/GoalCommandInputView.tsx'
 import {
   goalCommandInputDefinition, goalCommandText,

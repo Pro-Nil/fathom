@@ -1,6 +1,6 @@
 /**
  * Keyless real-server e2e: drives the real `typescript-language-server` through the full
- * `ctx.lsp` → `dsh-lsp-stdio` stack over the base protocol, exercising all four operations. No API
+ * `ctx.lsp` → `fathom-lsp-stdio` stack over the base protocol, exercising all four operations. No API
  * key needed — the server is a local dev dependency. This establishes one compatibility floor
  * (TypeScript), not a cross-language claim.
  */
@@ -9,11 +9,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { mkdtemp, mkdir, rm, writeFile, realpath } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import Lsp, { type LspQueryRequest, type LspQueryResult } from '@pentest-harness/dsh-lsp'
-import * as LspLocal from '@pentest-harness/dsh-lsp-stdio'
+import { Context } from '@fathom/cordis'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import LocalFileSystem from '@fathom/fs-local'
+import Lsp, { type LspQueryRequest, type LspQueryResult } from '@fathom/lsp'
+import * as LspLocal from '@fathom/lsp-stdio'
 
 // The server binary is a dev dependency of this package; resolve its pnpm-hoisted .bin path.
 const serverBin = join(

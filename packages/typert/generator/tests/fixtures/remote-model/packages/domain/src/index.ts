@@ -1,4 +1,4 @@
-import type { TypertContext, TypertLookup } from '@pentest-harness/dsh-typert-protocol'
+import type { TypertContext, TypertLookup } from '@fathom/typert-protocol'
 import type { AgentId } from './types.ts'
 
 /** Host-only live Agent object. */
@@ -6,7 +6,7 @@ export class Agent {
   constructor(readonly id: AgentId) {}
 }
 
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   interface TypertLookupMap {
     agent: TypertLookup<Agent, AgentId>
   }

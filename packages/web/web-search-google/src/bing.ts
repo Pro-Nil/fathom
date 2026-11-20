@@ -8,11 +8,11 @@
  * cookie-less scripted client a page of unrelated results (a query for
  * "nuclei templates github" came back as YouTube help pages), which would
  * mislead the agent far worse than an error that moves on to the next engine.
- * @module @pentest-harness/dsh-web-search-google/bing
+ * @module @fathom/web-search-google/bing
  */
 
-import { WebError } from '@pentest-harness/dsh-web'
-import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
+import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@fathom/web'
 import type { ScratchPageRunner } from './provider.ts'
 
 /** Stable id this provider registers under. */

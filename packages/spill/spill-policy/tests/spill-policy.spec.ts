@@ -9,19 +9,19 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { createUserMessage, CallId } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import type { ToolDefinition } from '@pentest-harness/dsh-tools'
-import type { PostToolDecision, ToolExecution, ToolExecutionToken } from '@pentest-harness/dsh-tools'
-import { SpillLocator, SpillStore } from '@pentest-harness/dsh-spill'
-import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
-import * as SpillPolicy from '@pentest-harness/dsh-spill-policy'
-import { WorkerThreadCodeRuntime } from '@pentest-harness/dsh-code-runtime-worker-thread'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { createUserMessage, CallId } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@fathom/tools'
+import type { ToolDefinition } from '@fathom/tools'
+import type { PostToolDecision, ToolExecution, ToolExecutionToken } from '@fathom/tools'
+import { SpillLocator, SpillStore } from '@fathom/spill'
+import type { SaveTextSpill, SpillRef } from '@fathom/spill'
+import * as SpillPolicy from '@fathom/spill-policy'
+import { WorkerThreadCodeRuntime } from '@fathom/code-runtime-worker-thread'
 
 const testToolSignal = new AbortController().signal
 

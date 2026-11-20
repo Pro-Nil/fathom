@@ -1,5 +1,5 @@
-import { Context } from '@pentest-harness/cordis'
-import Schema from '@pentest-harness/schemastery'
+import { Context } from '@fathom/cordis'
+import Schema from '@fathom/schemastery'
 import { describe, expect, it } from 'vitest'
 import type { SchemaNode } from '../src/client/schema.ts'
 import { SettingsSchemaService } from '../src/client/schema.ts'

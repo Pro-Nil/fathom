@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-settings`.
- * @module @pentest-harness/dsh-settings/invariant
+ * Package-owned invariant companion for `@fathom/settings`.
+ * @module @fathom/settings/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import { deepEqualJson } from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-settings'
+const PACKAGE_NAME = '@fathom/settings'
 
 /** Cordis companion plugin name. */
 export const name = 'settings-invariant'

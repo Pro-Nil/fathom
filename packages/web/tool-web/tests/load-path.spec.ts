@@ -6,14 +6,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import WebRuntime from '@pentest-harness/dsh-web'
-import * as toolWeb from '@pentest-harness/dsh-tool-web'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import WebRuntime from '@fathom/web'
+import * as toolWeb from '@fathom/tool-web'
 
-describe('dsh-tool-web real-load-path guard', () => {
+describe('fathom-tool-web real-load-path guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {
     expect('default' in toolWeb).toBe(false)
 

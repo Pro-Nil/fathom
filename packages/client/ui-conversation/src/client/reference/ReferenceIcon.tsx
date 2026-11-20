@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import {
   IconBrowseOutline16, IconFolderClose16,
-} from '@pentest-harness/dsh-client-ui-primitives'
+} from '@fathom/client-ui-primitives'
 
 /** Reference domains with distinct composer and transcript glyphs. */
 export type ReferenceIconKind = 'session' | 'file' | 'folder'

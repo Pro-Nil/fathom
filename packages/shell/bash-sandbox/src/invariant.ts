@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-bash-sandbox`.
- * @module @pentest-harness/dsh-bash-sandbox/invariant
+ * Package-owned invariant companion for `@fathom/bash-sandbox`.
+ * @module @fathom/bash-sandbox/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-bash-sandbox'
+const PACKAGE_NAME = '@fathom/bash-sandbox'
 
 /** Cordis companion plugin name. */
 export const name = 'bash-sandbox-invariant'

@@ -1,4 +1,4 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 /**
  * Loop-level tool-order determinism: the request/header event — and therefore the frozen
  * request the adapter receives — carries the assembly's canonical tool order (system-prompt's
@@ -8,15 +8,15 @@ import { createUserMessage } from '@pentest-harness/dsh-llm'
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId, foldRequestHeader } from '@pentest-harness/dsh-session'
-import SystemPrompt, { TOOL_ORDER_REST } from '@pentest-harness/dsh-system-prompt'
-import type { Config as SystemPromptConfig } from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SessionId, foldRequestHeader } from '@fathom/session'
+import SystemPrompt, { TOOL_ORDER_REST } from '@fathom/system-prompt'
+import type { Config as SystemPromptConfig } from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import AgentLoop from '@fathom/agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
 
 async function harness(adapter: MockAdapter, toolOrder?: SystemPromptConfig['toolOrder']) {

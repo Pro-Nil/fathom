@@ -7,19 +7,19 @@
  */
 
 import { describe, expect, it, beforeEach, afterEach } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, dirname, isAbsolute, join, normalize } from 'node:path'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SaveTextSpill } from '@pentest-harness/dsh-spill'
-import LocalSpillStore, { encodeSegment, privateRoot, saveTextFile, sessionDir } from '@pentest-harness/dsh-spill-local'
+import { CallId } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { SaveTextSpill } from '@fathom/spill'
+import LocalSpillStore, { encodeSegment, privateRoot, saveTextFile, sessionDir } from '@fathom/spill-local'
 
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'dsh-spill-test-'))
+  root = mkdtempSync(join(tmpdir(), 'fathom-spill-test-'))
 })
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })

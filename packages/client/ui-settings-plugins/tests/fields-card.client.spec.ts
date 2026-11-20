@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+import { stubSettingsScope } from '@fathom/client-test-runtime'
 import {
   FIELD_CARDS, FieldsCardController, booleanField, multilineField, numberListField,
 } from '../src/client/fields-card-controller.ts'

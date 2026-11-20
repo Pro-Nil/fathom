@@ -4,9 +4,9 @@
 
 | Package | Role | ctx key |
 |---|---|---|
-| [`pty`](terminal/README.md) (`@pentest-harness/dsh-terminal`) | Backend registry, branded ids, exact-Agent ownership, session operations, and awaited cleanup | `ctx.terminals` |
-| `terminal-bash` (`@pentest-harness/dsh-terminal-bash`) | Shell backend over `ctx.subprocess.spawnTerminal`: readiness detection, bounded terminal state, sandbox policy, and session operations | registers on `ctx.terminals` |
-| `tool-terminal` (`@pentest-harness/dsh-tool-terminal`) | Six model-facing tools and generic task integration for background sends | registers on `ctx.tools` |
+| [`pty`](terminal/README.md) (`@fathom/terminal`) | Backend registry, branded ids, exact-Agent ownership, session operations, and awaited cleanup | `ctx.terminals` |
+| `terminal-bash` (`@fathom/terminal-bash`) | Shell backend over `ctx.subprocess.spawnTerminal`: readiness detection, bounded terminal state, sandbox policy, and session operations | registers on `ctx.terminals` |
+| `tool-terminal` (`@fathom/tool-terminal`) | Six model-facing tools and generic task integration for background sends | registers on `ctx.tools` |
 
 The design and deferred boundaries live in the [persistent PTY Agent Note](../../.agents/notes/implemented/feature/2026-07-16-persistent-pty-sessions.md).
 

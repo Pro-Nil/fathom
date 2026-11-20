@@ -1,4 +1,4 @@
-import { defineProperty } from '@pentest-harness/cosmokit'
+import { defineProperty } from '@fathom/cosmokit'
 import type { Context, Service } from './index.ts'
 
 /** Ordered collection of disposable values with O(1) deletion by value. */

@@ -8,22 +8,22 @@
 // and a file sub-row click opens the host path. Running parents
 // (runningCalls) nest their so-far dispatches the same way.
 
-import { Context } from '@pentest-harness/cordis'
-import { stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { stubSettingsScope } from '@fathom/client-test-runtime'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import {
   ConversationEventRegistry, ConversationViewRegistry, createSnapshotStore,
   EMPTY_CONVERSATION_VIEWS, SlotRegistry,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState,
   ToolCallBlock, ToolResultNode, WorkspaceListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { createSlotRenderer } from '@pentest-harness/dsh-client-test-runtime'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { apply as applyConversation, inject as injectConversation } from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-runtime/client'
+import { createSlotRenderer } from '@fathom/client-test-runtime'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { apply as applyConversation, inject as injectConversation } from '@fathom/client-ui-conversation/client'
 import { apply as applyTool, inject as injectTool } from '../src/client/apply.ts'
 import { toolChatSnapshot } from './tool-details-render.client.tsx'
 

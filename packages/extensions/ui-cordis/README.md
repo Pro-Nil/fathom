@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-client-ui-cordis
+# @fathom/client-ui-cordis
 
 Cordis dynamic-plugin surfaces, browser half: a frame-wide panel that operates every definition the host holds, and a read-only `cordis_define` card that records what a session defined.
 

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-folders`.
- * @module @pentest-harness/dsh-session-folders/invariant
+ * Package-owned invariant companion for `@fathom/session-folders`.
+ * @module @fathom/session-folders/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-folders'
+const PACKAGE_NAME = '@fathom/session-folders'
 
 /** Cordis companion plugin name. */
 export const name = 'session-folders-invariant'

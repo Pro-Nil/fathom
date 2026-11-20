@@ -2,8 +2,8 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
-import type { MessageImagesProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+import { AttachmentId } from '@fathom/attachment'
+import type { MessageImagesProps } from '@fathom/client-ui-conversation/client'
 import { ImageGallery, MessageImage } from '../src/MessageImage.tsx'
 import type { MessageImageLabels } from '../src/MessageImage.tsx'
 import { MessageImages } from '../src/client/MessageImages.tsx'

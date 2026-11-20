@@ -1,8 +1,8 @@
 /** Public Agent Teams identities, durable records, and service request values. */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Branded } from '@fathom/brand'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
 
 /** Identifies the implicit team rooted at one top-level Session. */
 export type TeamId = Branded<'TeamId'>
@@ -115,7 +115,7 @@ export interface TeamMessageSource {
   readonly senderName: string
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     'team-message': TeamMessageSource
   }
@@ -200,7 +200,7 @@ export interface TeamWaitResult {
   readonly timedOut: boolean
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /** Whole teammate lifecycle value, stored only in the Team Lead Session. */
     'team/member': { version: 1; teamId: TeamId; member: TeamMemberSnapshot }

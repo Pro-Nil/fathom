@@ -2,11 +2,11 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { AgentHandle } from '@pentest-harness/dsh-agent'
-import { CallId, createUserMessage } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-agent-presets'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { AgentHandle } from '@fathom/agent'
+import { CallId, createUserMessage } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type {} from '@fathom/agent-presets'
+import type {} from '@fathom/system-prompt'
 import { assertFixtureInventory, launchWebScaffold, type WebScaffold } from './scaffold.ts'
 
 const SNAPSHOT_DIR = fileURLToPath(new URL('./snapshots/minimal-preset', import.meta.url))
@@ -57,7 +57,7 @@ describe('minimal agent preset', () => {
     if (requestHeader === undefined) throw new Error('the minimal agent issued no model request')
     expect(agentHandle.agent.session.events.some(event => event.type === 'user/message'
       && event.data.source.kind === 'plugin'
-      && event.data.source.plugin === '@pentest-harness/dsh-system-prompt')).toBe(false)
+      && event.data.source.plugin === '@fathom/system-prompt')).toBe(false)
     const presetFileSystem = scaffold.ctx.agentPresets.serviceFor(agentHandle.agent, 'fs')
     expect(presetFileSystem).toBeDefined()
     expect(presetFileSystem?.sandboxMode).toBeUndefined()
@@ -70,14 +70,14 @@ describe('minimal agent preset', () => {
       signal,
       callId: CallId('minimal-bash-state-setup'),
       name: 'bash',
-      arguments: { command: `cd ${JSON.stringify(stateDir)} && export DSH_MINIMAL_STATE=PERSISTED` },
+      arguments: { command: `cd ${JSON.stringify(stateDir)} && export FATHOM_MINIMAL_STATE=PERSISTED` },
       agent: agentHandle.agent,
     })
     const bash = await scaffold.ctx.tools.execute({
       signal,
       callId: CallId('minimal-bash-state-read'),
       name: 'bash',
-      arguments: { command: 'printf \'%s:%s\n\' "$DSH_MINIMAL_STATE" "$PWD"' },
+      arguments: { command: 'printf \'%s:%s\n\' "$FATHOM_MINIMAL_STATE" "$PWD"' },
       agent: agentHandle.agent,
     })
     const seedPath = join(scaffold.workspaceCwd, 'preset-smoke.txt')

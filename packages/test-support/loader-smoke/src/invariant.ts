@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-loader-smoke`.
- * @module @pentest-harness/dsh-loader-smoke/invariant
+ * Package-owned invariant companion for `@fathom/loader-smoke`.
+ * @module @fathom/loader-smoke/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-loader-smoke'
+const PACKAGE_NAME = '@fathom/loader-smoke'
 
 /** Cordis companion plugin name. */
 export const name = 'loader-smoke-invariant'

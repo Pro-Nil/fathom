@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-client-ui-settings-plugin-inventory
+# @fathom/client-ui-settings-plugin-inventory
 
 Read-only **Plugin list** tab for Web Settings. The browser plugin registers one localized `settings.plugins.tab` contribution with id `all`; the Plugins section owns the navigation entry and tab chrome. It performs no Remote read during plugin activation. Selecting the tab for the first time mounts it and lazily calls `ctx.remote.pluginInventory.list()` through [`api-remotes`](../../api/remotes/README.md).
 

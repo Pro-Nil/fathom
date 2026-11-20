@@ -1,7 +1,7 @@
 /** Host registry and HTTP adapter for generic Connection RPC channels. */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { WebRoute } from '@pentest-harness/dsh-host-webserver'
+import { Context, Service } from '@fathom/cordis'
+import type { WebRoute } from '@fathom/host-webserver'
 import {
   clientRequestSchema,
   RpcId,
@@ -10,7 +10,7 @@ import {
   type RpcErrorDetailsMap,
   type RpcId as RpcIdType,
   type ServerResponse as RpcServerResponse,
-} from '@pentest-harness/dsh-host-apiproxy/api'
+} from '@fathom/host-apiproxy/api'
 import { bridge, type FetchHandler } from './http-bridge.ts'
 import { isTrustedApiRequest } from './api-request-trust.ts'
 import { API_PATH } from './api-path.ts'
@@ -32,7 +32,7 @@ interface ConnectionRpcInterceptor {
   readonly options: ConnectionRpcHandlerOptions
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Host Connection transport and RPC registrations. */
     connection: HostConnectionHandle

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Avalonia.Controls;
 using Avalonia.Platform;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// Everything that differs between Windows and Linux: notifications, the
@@ -22,6 +22,7 @@ internal static class Platform
     /// <summary>One-time registration: toast identity on Windows, a menu launcher on Linux.</summary>
     public static void Register()
     {
+        MigrateLegacyEntries();
 #if WINDOWS
         try { Toasts.Register(Path.Combine(AppContext.BaseDirectory, "app.png")); }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException) { }
@@ -31,7 +32,7 @@ internal static class Platform
     }
 
     /// <summary>
-    /// Write ~/.local/share/applications/pentest-harness.desktop (and its icon)
+    /// Write ~/.local/share/applications/fathom.desktop (and its icon)
     /// so the app shows in the desktop's application menu.
     /// </summary>
     private static void InstallLinuxLauncher()
@@ -41,12 +42,12 @@ internal static class Platform
             var data = Environment.GetEnvironmentVariable("XDG_DATA_HOME") is { Length: > 0 } xdg ? xdg : Path.Combine(Home, ".local", "share");
             var icons = Path.Combine(data, "icons", "hicolor", "256x256", "apps");
             Directory.CreateDirectory(icons);
-            var icon = Path.Combine(icons, "pentest-harness.png");
+            var icon = Path.Combine(icons, "fathom.png");
             using (var source = Embedded.Open("app.png"))
             using (var target = File.Create(icon)) source.CopyTo(target);
             var apps = Path.Combine(data, "applications");
             Directory.CreateDirectory(apps);
-            File.WriteAllText(Path.Combine(apps, "pentest-harness.desktop"), DesktopEntry(icon, tray: false));
+            File.WriteAllText(Path.Combine(apps, "fathom.desktop"), DesktopEntry(icon, tray: false));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
     }
@@ -56,13 +57,13 @@ internal static class Platform
     private static string DesktopEntry(string icon, bool tray) => string.Join('\n',
         "[Desktop Entry]",
         "Type=Application",
-        "Name=Pentest Harness",
-        "Comment=Pentest Harness desktop app",
+        "Name=Fathom",
+        "Comment=Fathom desktop app",
         $"Exec=\"{Environment.ProcessPath}\"{(tray ? " --tray" : "")}",
         $"Icon={icon}",
         "Terminal=false",
         "Categories=Development;Security;",
-        "StartupWMClass=PentestHarness",
+        "StartupWMClass=Fathom",
         "") ;
 
     // ── notifications ───────────────────────────────────────────────────
@@ -86,7 +87,7 @@ internal static class Platform
         }
 #else
         var icon = Path.Combine(AppContext.BaseDirectory, "app.png");
-        return Run("notify-send", ["--app-name=Pentest Harness", $"--icon={icon}", $"--urgency={(urgent ? "critical" : "normal")}", "--hint=string:x-canonical-private-synchronous:" + tag, title, body]);
+        return Run("notify-send", ["--app-name=Fathom", $"--icon={icon}", $"--urgency={(urgent ? "critical" : "normal")}", "--hint=string:x-canonical-private-synchronous:" + tag, title, body]);
 #endif
     }
 
@@ -127,11 +128,42 @@ internal static class Platform
     // ── start at login ──────────────────────────────────────────────────
 
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string RunValue = "PentestHarness";
+    private const string RunValue = "Fathom";
 
     private static string AutostartFile => Path.Combine(
         Environment.GetEnvironmentVariable("XDG_CONFIG_HOME") is { Length: > 0 } xdg ? xdg : Path.Combine(Home, ".config"),
-        "autostart", "pentest-harness.desktop");
+        "autostart", "fathom.desktop");
+
+    /// <summary>
+    /// Carry a pre-rename start-at-login entry over to the new name (pointing
+    /// at this executable), and drop the old Linux menu entry, which the new
+    /// launcher replaces.
+    /// </summary>
+    private static void MigrateLegacyEntries()
+    {
+        try
+        {
+#if WINDOWS
+            using var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RunKey);
+            if (key.GetValue(LegacyName.RunValue) is string)
+            {
+                key.DeleteValue(LegacyName.RunValue, false);
+                key.SetValue(RunValue, $"\"{Environment.ProcessPath}\" --tray");
+            }
+#else
+            var oldAutostart = Path.Combine(Path.GetDirectoryName(AutostartFile)!, LegacyName.DesktopFile);
+            if (File.Exists(oldAutostart))
+            {
+                File.Delete(oldAutostart);
+                SetStartsAtLogin(true);
+            }
+            var data = Environment.GetEnvironmentVariable("XDG_DATA_HOME") is { Length: > 0 } xdg ? xdg : Path.Combine(Home, ".local", "share");
+            File.Delete(Path.Combine(data, "applications", LegacyName.DesktopFile));
+            File.Delete(Path.Combine(data, "icons", "hicolor", "256x256", "apps", LegacyName.Checkout + ".png"));
+#endif
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException) { }
+    }
 
     public static bool StartsAtLogin()
     {

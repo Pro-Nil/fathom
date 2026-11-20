@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { appendFile, mkdir, mkdtemp, open, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import type { FileHandle } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import { logPath, scanLog, sessionDir, toHeaderLine, type JsonlCompression } from '../src/format.ts'
 import {
   compressZstdFrame, createZstdFrameDecoder, decompressZstdFrame, decompressZstdPrefix, scanZstdFrames,
@@ -34,7 +34,7 @@ type HeaderRead = (
   position: number | null,
 ) => Promise<{ bytesRead: number; buffer: Buffer }>
 
-async function freshRoot(prefix = 'dsh-jsonl-zstd-'): Promise<string> {
+async function freshRoot(prefix = 'fathom-jsonl-zstd-'): Promise<string> {
   const root = await mkdtemp(join(tmpdir(), prefix))
   roots.push(root)
   return root
@@ -113,7 +113,7 @@ afterEach(async () => {
 })
 
 runPersistenceContract('jsonl-zstd', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-jsonl-zstd-contract-'))
+  const root = await mkdtemp(join(tmpdir(), 'fathom-jsonl-zstd-contract-'))
   const ctx = new Context()
   await ctx.plugin(SessionStore)
   const fiber = await ctx.plugin(JsonlSessionPersistence, { root })
@@ -127,7 +127,7 @@ runPersistenceContract('jsonl-zstd', async () => {
 })
 
 runCoordinatorContract('jsonl-zstd', async (): Promise<CoordinatorFixture> => {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-jsonl-zstd-coordinator-'))
+  const root = await mkdtemp(join(tmpdir(), 'fathom-jsonl-zstd-coordinator-'))
   return {
     mount: async ctx => ctx.plugin(JsonlSessionPersistence, { root }),
     corruptTail: async (id, cwd) => {
@@ -697,7 +697,7 @@ describe('JsonlSessionPersistence: default Zstandard encoding', () => {
 
 describe('JsonlSessionPersistence: encoding selection', () => {
   it('rejects roots owned by the opposite encoding in both directions', async () => {
-    const rawRoot = await freshRoot('dsh-jsonl-raw-mismatch-')
+    const rawRoot = await freshRoot('fathom-jsonl-raw-mismatch-')
     const raw = await mount(rawRoot, 'none')
     const rawHeader = meta('raw-log')
     await raw.sessionPersistence.create(rawHeader)
@@ -705,7 +705,7 @@ describe('JsonlSessionPersistence: encoding selection', () => {
     const defaultBackend = await mount(rawRoot)
     await expect(defaultBackend.sessionPersistence.list()).rejects.toThrow(/configured for compression "zstd"/)
 
-    const zstdRoot = await freshRoot('dsh-jsonl-zstd-mismatch-')
+    const zstdRoot = await freshRoot('fathom-jsonl-zstd-mismatch-')
     const zstd = await mount(zstdRoot)
     const zstdHeader = meta('zstd-log')
     await zstd.sessionPersistence.create(zstdHeader)

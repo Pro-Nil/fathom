@@ -1,17 +1,17 @@
 /** Test-owned sessions face: the SlotRegistry host contract over declarative fixtures. */
-import type { Context } from '@pentest-harness/cordis'
-import type { AttachmentIdType } from '@pentest-harness/dsh-attachment'
-import { createScope, scopeOf, SessionProvideChannel } from '@pentest-harness/dsh-client-runtime/client'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import type { Context } from '@fathom/cordis'
+import type { AttachmentIdType } from '@fathom/attachment'
+import { createScope, scopeOf, SessionProvideChannel } from '@fathom/client-runtime/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
 import type {
   AgentContext, ConversationSnapshot, ISessions, ObservableSnapshot, ProjectionsFace, SessionFace, SessionId,
   SessionListState, SessionProvideDescriptor, SessionSearchResultItem, SessionSummary, SnapshotStore,
   SubagentAddress,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 // The double reports the wire schema's own search bound, like the production
 // service — a transport-varying limit would be a fiction no client can see.
-import { SESSION_SEARCH_RESULT_LIMIT } from '@pentest-harness/dsh-host-apiproxy/api'
-import type { HostObservable, SessionMaybeProvideInfo, SessionProvideInfo } from '@pentest-harness/dsh-client-ui-slots'
+import { SESSION_SEARCH_RESULT_LIMIT } from '@fathom/host-apiproxy/api'
+import type { HostObservable, SessionMaybeProvideInfo, SessionProvideInfo } from '@fathom/client-ui-slots'
 import { conversationSnapshot } from './fixtures.ts'
 import type { SessionFixture, Stabilizer } from './fixtures.ts'
 

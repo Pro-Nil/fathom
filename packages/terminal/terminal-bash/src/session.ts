@@ -5,8 +5,8 @@ import type {
   SubprocessOutcome,
   SubprocessTerminalForeground,
   SubprocessTerminalHandle,
-} from '@pentest-harness/dsh-subprocess'
-import { TerminalError } from '@pentest-harness/dsh-terminal'
+} from '@fathom/subprocess'
+import { TerminalError } from '@fathom/terminal'
 import type {
   TerminalBackendSession,
   TerminalReadRequest,
@@ -19,7 +19,7 @@ import type {
   TerminalSignal,
   TerminalSignalResult,
   TerminalWaitReason,
-} from '@pentest-harness/dsh-terminal'
+} from '@fathom/terminal'
 import type { ResolvedConfig } from './config.ts'
 import { CONTROLLED_PROMPT, TerminalSanitizer } from './sanitize.ts'
 

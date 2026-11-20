@@ -8,8 +8,8 @@ import { useId } from 'react'
 import type { ReactNode, RefObject } from 'react'
 import {
   BrandMark, IconChevronDownOutline14, IconFolderClose16, IconFolderOpen16,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import { workspaceTitleOf } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-ui-primitives'
+import { workspaceTitleOf } from '@fathom/client-runtime/client'
 import type { ConversationSlotProps } from '../contract/slots.ts'
 import css from './HeroShell.module.css'
 

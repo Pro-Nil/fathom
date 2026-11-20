@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentStatus } from '@pentest-harness/dsh-agent'
-import CommandRuntime from '@pentest-harness/dsh-commands'
-import GoalService from '@pentest-harness/dsh-goal'
-import type { GoalRef } from '@pentest-harness/dsh-goal'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import * as commandGoal from '@pentest-harness/dsh-command-goal'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentStatus } from '@fathom/agent'
+import CommandRuntime from '@fathom/commands'
+import GoalService from '@fathom/goal'
+import type { GoalRef } from '@fathom/goal'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import * as commandGoal from '@fathom/command-goal'
 
 interface Harness {
   readonly ctx: Context
@@ -85,7 +85,7 @@ function ref(goal: NonNullable<ReturnType<GoalService['get']>>): GoalRef {
   return { id: goal.id, revision: goal.revision }
 }
 
-describe('@pentest-harness/dsh-command-goal registration', () => {
+describe('@fathom/command-goal registration', () => {
   it('registers one global command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandGoal.name).toBe('command-goal')

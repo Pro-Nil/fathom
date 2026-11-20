@@ -1,4 +1,4 @@
-/** Durable attachment vocabulary. @module @pentest-harness/dsh-attachment/types */
+/** Durable attachment vocabulary. @module @fathom/attachment/types */
 
 import type { AttachmentId, ImageVariantId } from './brand.ts'
 

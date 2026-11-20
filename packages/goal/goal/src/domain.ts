@@ -2,12 +2,12 @@
  * Host-side vocabulary of the goal domain: live views, durable change
  * payloads, message attribution, replay folds, and the scoped `goal/changed`
  * event. Kept separate from ./types.ts (the pure client-safe outlet) because
- * these declarations pull dsh-agent, dsh-llm, and cordis into the program —
+ * these declarations pull fathom-agent, fathom-llm, and cordis into the program —
  * the one-program-per-side layout forbids that on client aggregates.
- * @module @pentest-harness/dsh-goal
+ * @module @fathom/goal
  */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Agent } from '@fathom/agent'
 import type { GoalId, GoalRef, GoalSnapshot, GoalView } from './types.ts'
 
 /** Goal state-changing verbs recorded in the durable source change. */
@@ -52,13 +52,13 @@ export interface GoalMessageSource {
   readonly round: number
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     goal: GoalMessageSource
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Complete post-mutation goal state or clear tombstone.
@@ -101,16 +101,16 @@ export type GoalErrorCode =
   | 'GOAL_INVALID_EDIT'
   | 'GOAL_INVALID_TRANSITION'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Goal mutation accepted by one live agent. The matching `goal/change`
      * session event has already committed. Listener failures are contained.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent.
      * @param payload.agent - agent whose session owns the goal.
      * @param payload.change - fresh current projection or clear tombstone.
      * @mode emit
      */
-    'goal/changed'(this: import('@pentest-harness/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void
+    'goal/changed'(this: import('@fathom/scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void
   }
 }

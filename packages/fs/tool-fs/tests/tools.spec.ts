@@ -4,14 +4,14 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve, sep } from 'node:path'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt, { renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type ToolResult } from '@pentest-harness/dsh-tools'
-import { FileSystem, FsError, FsTargetKey, FsVersion } from '@pentest-harness/dsh-fs'
+import { CallId } from '@fathom/llm'
+import SystemPrompt, { renderPrompt } from '@fathom/system-prompt'
+import ToolRuntime, { type ToolResult } from '@fathom/tools'
+import { FileSystem, FsError, FsTargetKey, FsVersion } from '@fathom/fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -21,16 +21,16 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@pentest-harness/dsh-fs'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
+} from '@fathom/fs'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import * as ToolFs from '@fathom/tool-fs'
 import { STREAM_MIN_SIZE } from '../src/read.ts'
 import { formatReadOutput } from '../src/read-render.ts'
 import type { FileReadOutcome } from '../src/read-render.ts'
 import { sessionCwd } from '../src/session-cwd.ts'
-import ApprovalService from '@pentest-harness/dsh-user-approval'
-import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
-import SandboxPolicyService from '@pentest-harness/dsh-sandbox-policy'
+import ApprovalService from '@fathom/user-approval'
+import type { SandboxExecutionPolicy, SandboxMode } from '@fathom/sandbox'
+import SandboxPolicyService from '@fathom/sandbox-policy'
 
 const testToolSignal = new AbortController().signal
 
@@ -136,7 +136,7 @@ describe('session cwd resolution', () => {
     expect(sessionCwd(execution(cwd) as never, 'file.txt')).toBe(cwd)
     expect(sessionCwd(execution(throughParent) as never, 'file.txt')).toBe(realpathSync.native(throughParent))
 
-    const root = mkdtempSync(join(tmpdir(), 'dsh-tool-fs-session-cwd-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-tool-fs-session-cwd-'))
     const physical = join(root, 'physical')
     const link = join(root, 'link')
     try {

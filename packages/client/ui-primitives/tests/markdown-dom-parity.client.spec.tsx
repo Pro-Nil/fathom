@@ -17,7 +17,7 @@
 //   diff -r <recorded fixtures> <this branch's fixtures>   # byte-identical
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { MarkdownText } from '@pentest-harness/dsh-client-ui-primitives'
+import { MarkdownText } from '@fathom/client-ui-primitives'
 
 afterEach(cleanup)
 

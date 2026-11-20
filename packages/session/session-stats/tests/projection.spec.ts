@@ -11,14 +11,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import * as SessionStatsPlugin from '@pentest-harness/dsh-session-stats'
-import { sessionStatsProjectionDefinition } from '@pentest-harness/dsh-session-stats/src/projection.ts'
-import type { SessionStatsProjection } from '@pentest-harness/dsh-session-stats/types'
+import { Context } from '@fathom/cordis'
+import { createMessage } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import * as SessionStatsPlugin from '@fathom/session-stats'
+import { sessionStatsProjectionDefinition } from '@fathom/session-stats/src/projection.ts'
+import type { SessionStatsProjection } from '@fathom/session-stats/types'
 
 async function harness(withStatsPlugin: boolean): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()

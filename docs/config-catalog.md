@@ -9,9 +9,9 @@ This file is GENERATED from source (`scripts/gen-config-catalog.ts`) and verifie
 
 A `Requires:` line lists the service keys the plugin `inject`s: its `cordis.yml` tree must also load providers for those services. Scope is the harness tier (`packages/`); the vendored cordis plugins a config tree may also load (`hmr`, the console logger, …) are pinned upstream source ([vendoring policy](../vendor/README.md)) and not catalogued here.
 
-<a id="pentest-harnessdsh-acp"></a>
+<a id="fathomacp"></a>
 
-## `@pentest-harness/dsh-acp`
+## `@fathom/acp`
 
 Requires: `agents`
 
@@ -31,9 +31,9 @@ Depends on: `Stream` (`@agentclientprotocol/sdk`)
 
 Source: [`packages/acp/acp/src/index.ts:71`](../packages/acp/acp/src/index.ts)
 
-<a id="pentest-harnessdsh-acp-demo"></a>
+<a id="fathomacp-demo"></a>
 
-## `@pentest-harness/dsh-acp-demo`
+## `@fathom/acp-demo`
 
 ```ts config-catalog
 /**
@@ -53,12 +53,12 @@ export interface Config {
   maxParallelToolCalls?: number
   /** Deployment persona (the system-prompt plugin's `persona` config). */
   persona?: string
-  /** Explicit model-facing tool order (the system-prompt plugin's `toolOrder` config; see dsh-system-prompt). */
+  /** Explicit model-facing tool order (the system-prompt plugin's `toolOrder` config; see fathom-system-prompt). */
   toolOrder?: string[]
-  /** Tool-registry config — its presentation `mode` (forwarded through agent-spine-demo; see dsh-tools). */
+  /** Tool-registry config — its presentation `mode` (forwarded through agent-spine-demo; see fathom-tools). */
   tools?: ToolsConfig
-  /** Pentest Harness home directory exposed to bash and used for local skill discovery. */
-  dshHome?: string
+  /** Fathom home directory exposed to bash and used for local skill discovery. */
+  fathomHome?: string
   /** Fallback session-title limits forwarded through agent-spine-demo. */
   sessionTitle?: NonNullable<agentCore.Config['sessionTitle']>
   /** Directory for JSONL sessions and the derived query index. Defaults to `./.sessions`. */
@@ -82,13 +82,13 @@ export interface Config {
 }
 ```
 
-Depends on: [`agentCore`](../packages/examples/agent-spine-demo/src/index.ts) · [`JsonlCompression`](../packages/session/session-persistence-jsonl/src/index.ts) · [`ToolsConfig`](#pentest-harnessdsh-tools)
+Depends on: [`agentCore`](../packages/examples/agent-spine-demo/src/index.ts) · [`JsonlCompression`](../packages/session/session-persistence-jsonl/src/index.ts) · [`ToolsConfig`](#fathomtools)
 
 Source: [`packages/examples/acp-demo/src/index.ts:39`](../packages/examples/acp-demo/src/index.ts)
 
-<a id="pentest-harnessdsh-agent-default-model"></a>
+<a id="fathomagent-default-model"></a>
 
-## `@pentest-harness/dsh-agent-default-model`
+## `@fathom/agent-default-model`
 
 ```ts config-catalog
 /** Composition entry for the default model selection. */
@@ -102,15 +102,15 @@ export interface Config {
 
 Source: [`packages/core/agent-default-model/src/index.ts:41`](../packages/core/agent-default-model/src/index.ts)
 
-<a id="pentest-harnessdsh-agent-instructions"></a>
+<a id="fathomagent-instructions"></a>
 
-## `@pentest-harness/dsh-agent-instructions`
+## `@fathom/agent-instructions`
 
 ```ts config-catalog
 /** User-facing workspace instruction loader configuration. */
 export interface Config {
-  /** Harness home containing the fixed user-global `AGENTS.md`; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** Harness home containing the fixed user-global `AGENTS.md`; defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
   /** Directory entries that identify the project root while walking upward from the session cwd. */
   projectRootMarkers?: string[]
   /** UTF-8 byte cap for one rendered baseline or dynamic batch; non-positive or non-finite disables loading. */
@@ -132,9 +132,9 @@ export interface Config {
 
 Source: [`packages/context/agent-instructions/src/config.ts:18`](../packages/context/agent-instructions/src/config.ts)
 
-<a id="pentest-harnessdsh-agent-loop"></a>
+<a id="fathomagent-loop"></a>
 
-## `@pentest-harness/dsh-agent-loop`
+## `@fathom/agent-loop`
 
 Requires: `agents` · `sessions` · `llm` · `tools` · `systemPrompt`
 
@@ -164,9 +164,9 @@ Depends on: [`AgentOptions`](subsystems/core.md) · [`SessionId`](subsystems/cor
 
 Source: [`packages/core/agent-loop/src/index.ts:255`](../packages/core/agent-loop/src/index.ts)
 
-<a id="pentest-harnessdsh-agent-presets"></a>
+<a id="fathomagent-presets"></a>
 
-## `@pentest-harness/dsh-agent-presets`
+## `@fathom/agent-presets`
 
 Requires: `loader`
 
@@ -202,9 +202,9 @@ export type PresetTrust = 'system' | 'user'
 
 Source: [`packages/preset/agent-presets/src/preset.ts:52`](../packages/preset/agent-presets/src/preset.ts)
 
-<a id="pentest-harnessdsh-agent-spine-demo"></a>
+<a id="fathomagent-spine-demo"></a>
 
-## `@pentest-harness/dsh-agent-spine-demo`
+## `@fathom/agent-spine-demo`
 
 ```ts config-catalog
 /**
@@ -214,7 +214,7 @@ Source: [`packages/preset/agent-presets/src/preset.ts:52`](../packages/preset/ag
  * `persona`, and `toolOrder` to the system-prompt plugin (the fixed opener,
  * dynamic-context policy, deployment persona, and explicit model-facing tool
  * order), the `tools` object to the tool registry (its presentation `mode`),
- * `dshHome` to bash environment and local skill discovery, `sessionTitle` to
+ * `fathomHome` to bash environment and local skill discovery, `sessionTitle` to
  * the fallback title service, `skills` to the
  * skill registry/local provider/tool consumer, `workspaceContext` to the
  * agent-instructions loader, `jobs` to the process-local job provider, and
@@ -231,7 +231,7 @@ Source: [`packages/preset/agent-presets/src/preset.ts:52`](../packages/preset/ag
  * `bash` name.
  */
 export interface Config {
-  /** The agent-loop `agents` list (see dsh-agent-loop's `Config`). */
+  /** The agent-loop `agents` list (see fathom-agent-loop's `Config`). */
   agents?: AgentLoopConfig['agents']
   /** Agent-loop concurrency cap; `1` is serial. */
   maxParallelToolCalls?: AgentLoopConfig['maxParallelToolCalls']
@@ -239,14 +239,14 @@ export interface Config {
   includeHarnessIdentity?: SystemPromptConfig['includeHarnessIdentity']
   /** Whether model history includes dynamic runtime-context snapshots (default true). */
   includeRuntimeContext?: SystemPromptConfig['includeRuntimeContext']
-  /** The deployment persona (see dsh-system-prompt's `Config`). */
+  /** The deployment persona (see fathom-system-prompt's `Config`). */
   persona?: SystemPromptConfig['persona']
-  /** The explicit model-facing tool order (see dsh-system-prompt's `Config`). */
+  /** The explicit model-facing tool order (see fathom-system-prompt's `Config`). */
   toolOrder?: SystemPromptConfig['toolOrder']
-  /** The tool registry's config — its presentation `mode` (see dsh-tools' `Config`). */
+  /** The tool registry's config — its presentation `mode` (see fathom-tools' `Config`). */
   tools?: ToolsConfig
-  /** Pentest Harness home directory shared by shell context and local skill discovery. */
-  dshHome?: string
+  /** Fathom home directory shared by shell context and local skill discovery. */
+  fathomHome?: string
   /** Deterministic fallback and accepted-title limits; omission uses the bundle's example policy. */
   sessionTitle?: SessionTitleConfig
   /** Workspace-context loader controls with an explicit byte budget; set `false` for hermetic prompts. */
@@ -290,13 +290,13 @@ export interface GoalConfig {
 }
 ```
 
-Depends on: [`AgentLoopConfig`](#pentest-harnessdsh-agent-loop) · [`GoalDomainConfig`](#pentest-harnessdsh-goal) · [`InvariantConfig`](#pentest-harnessdsh-invariants) · [`JobsConfig`](#pentest-harnessdsh-jobs-local) · [`SessionTitleConfig`](#pentest-harnessdsh-session-title) · [`SkillFileSystem`](../packages/skill/skill-filesystem/src/index.ts) · [`SkillRegistryConfig`](#pentest-harnessdsh-skill) · [`SystemPromptConfig`](#pentest-harnessdsh-system-prompt) · [`toolBash`](../packages/shell/tool-bash/src/index.ts) · [`toolGoal`](../packages/goal/tool-goal/src/index.ts) · [`toolJobs`](../packages/jobs/tool-jobs/src/index.ts) · [`ToolsConfig`](#pentest-harnessdsh-tools) · [`toolSkill`](../packages/skill/tool-skill/src/index.ts) · [`workspaceContext`](../packages/context/agent-instructions/src/index.ts)
+Depends on: [`AgentLoopConfig`](#fathomagent-loop) · [`GoalDomainConfig`](#fathomgoal) · [`InvariantConfig`](#fathominvariants) · [`JobsConfig`](#fathomjobs-local) · [`SessionTitleConfig`](#fathomsession-title) · [`SkillFileSystem`](../packages/skill/skill-filesystem/src/index.ts) · [`SkillRegistryConfig`](#fathomskill) · [`SystemPromptConfig`](#fathomsystem-prompt) · [`toolBash`](../packages/shell/tool-bash/src/index.ts) · [`toolGoal`](../packages/goal/tool-goal/src/index.ts) · [`toolJobs`](../packages/jobs/tool-jobs/src/index.ts) · [`ToolsConfig`](#fathomtools) · [`toolSkill`](../packages/skill/tool-skill/src/index.ts) · [`workspaceContext`](../packages/context/agent-instructions/src/index.ts)
 
 Source: [`packages/examples/agent-spine-demo/src/index.ts:92`](../packages/examples/agent-spine-demo/src/index.ts)
 
-<a id="pentest-harnessdsh-agent-tool-presentation"></a>
+<a id="fathomagent-tool-presentation"></a>
 
-## `@pentest-harness/dsh-agent-tool-presentation`
+## `@fathom/agent-tool-presentation`
 
 Requires: `tools`
 
@@ -318,15 +318,15 @@ Depends on: [`ToolPresentationMode`](subsystems/tools.md)
 
 Source: [`packages/core/agent-tool-presentation/src/index.ts:38`](../packages/core/agent-tool-presentation/src/index.ts)
 
-<a id="pentest-harnessdsh-attachment-local"></a>
+<a id="fathomattachment-local"></a>
 
-## `@pentest-harness/dsh-attachment-local`
+## `@fathom/attachment-local`
 
 ```ts config-catalog
 /** Local attachment backend configuration. */
 export interface Config {
-  /** Explicit harness home; omitted follows `DSH_HOME`, then `~/.dsh`. */
-  dshHome?: string
+  /** Explicit harness home; omitted follows `FATHOM_HOME`, then `~/.fathom`. */
+  fathomHome?: string
   /** Maximum encoded bytes accepted for one submitted image. Default: 20 MiB. */
   maxImageBytes?: number
   /** Maximum image count accepted in one submitted message. Default: 20. */
@@ -348,9 +348,9 @@ export interface Config {
 
 Source: [`packages/attachment/attachment-local/src/index.ts:51`](../packages/attachment/attachment-local/src/index.ts)
 
-<a id="pentest-harnessdsh-bash-local"></a>
+<a id="fathombash-local"></a>
 
-## `@pentest-harness/dsh-bash-local`
+## `@fathom/bash-local`
 
 Requires: `subprocess`
 
@@ -378,9 +378,9 @@ export interface Config {
 
 Source: [`packages/shell/bash-local/src/index.ts:42`](../packages/shell/bash-local/src/index.ts)
 
-<a id="pentest-harnessdsh-bash-sandbox"></a>
+<a id="fathombash-sandbox"></a>
 
-## `@pentest-harness/dsh-bash-sandbox`
+## `@fathom/bash-sandbox`
 
 Requires: `subprocess` · `sandbox` · `sandboxPolicy`
 
@@ -388,20 +388,20 @@ Requires: `subprocess` · `sandbox` · `sandboxPolicy`
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@pentest-harness/dsh-sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@fathom/sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The runner
  * choice is likewise the `ctx.sandbox` provider's config, not this executor's.
  */
 export type Config = LocalConfig
 ```
 
-Depends on: [`LocalConfig`](#pentest-harnessdsh-bash-local)
+Depends on: [`LocalConfig`](#fathombash-local)
 
 Source: [`packages/shell/bash-sandbox/src/index.ts:35`](../packages/shell/bash-sandbox/src/index.ts)
 
-<a id="pentest-harnessdsh-browser"></a>
+<a id="fathombrowser"></a>
 
-## `@pentest-harness/dsh-browser`
+## `@fathom/browser`
 
 ```ts config-catalog
 /** Plugin config. */
@@ -415,7 +415,7 @@ export interface BrowserRuntimeConfig {
   executablePath?: string
   /** Run without a native window (default). The live view still shows the page. */
   headless?: boolean
-  /** Persistent profile directory. Defaults to `~/.dsh/browser/profile`. */
+  /** Persistent profile directory. Defaults to `~/.fathom/browser/profile`. */
   profileDir?: string
   /** Initial viewport width (CSS px). The live view resizes it to fit its pane. */
   width?: number
@@ -430,9 +430,9 @@ export interface BrowserRuntimeConfig {
 
 Source: [`packages/browser/browser/src/index.ts:35`](../packages/browser/browser/src/index.ts)
 
-<a id="pentest-harnessdsh-client-connection"></a>
+<a id="fathomclient-connection"></a>
 
-## `@pentest-harness/dsh-client-connection`
+## `@fathom/client-connection`
 
 Requires: `webServer`
 
@@ -444,7 +444,7 @@ export interface ConnectionConfig {
    * port-less `host` matching any port. The /api trust fence refuses any
    * request whose Host is neither loopback nor listed here, so a
    * non-loopback (`0.0.0.0`) deployment must declare the names it is reached
-   * by (the dsh CLI derives the machine's LAN IP literals itself). An entry
+   * by (the fathom CLI derives the machine's LAN IP literals itself). An entry
    * that is not a bare, canonical authority fails the plugin load.
    */
   trustedHosts?: string[]
@@ -455,9 +455,9 @@ export interface ConnectionConfig {
 
 Source: [`packages/client/connection/src/index.ts:50`](../packages/client/connection/src/index.ts)
 
-<a id="pentest-harnessdsh-client-hmr"></a>
+<a id="fathomclient-hmr"></a>
 
-## `@pentest-harness/dsh-client-hmr`
+## `@fathom/client-hmr`
 
 Requires: `clientModules` · `webServer`
 
@@ -471,9 +471,9 @@ export interface Config {
 
 Source: [`packages/client/hmr/src/index.ts:31`](../packages/client/hmr/src/index.ts)
 
-<a id="pentest-harnessdsh-code-runtime-worker-thread"></a>
+<a id="fathomcode-runtime-worker-thread"></a>
 
-## `@pentest-harness/dsh-code-runtime-worker-thread`
+## `@fathom/code-runtime-worker-thread`
 
 ```ts config-catalog
 /** Plugin config: every execution cap, changeable from `cordis.yml` (no hardcoded tunables). */
@@ -508,9 +508,9 @@ export interface Config {
 
 Source: [`packages/code-runtime/code-runtime-worker-thread/src/index.ts:25`](../packages/code-runtime/code-runtime-worker-thread/src/index.ts)
 
-<a id="pentest-harnessdsh-compaction-basic"></a>
+<a id="fathomcompaction-basic"></a>
 
-## `@pentest-harness/dsh-compaction-basic`
+## `@fathom/compaction-basic`
 
 Requires: `llm` · `tokenMeter` · `sessions`
 
@@ -560,9 +560,9 @@ export interface ModelCompactPolicyConfig extends CompactionPolicyConfig {
 
 Source: [`packages/compaction/compaction-basic/src/index.ts:127`](../packages/compaction/compaction-basic/src/index.ts)
 
-<a id="pentest-harnessdsh-compaction-tool-result-pruner"></a>
+<a id="fathomcompaction-tool-result-pruner"></a>
 
-## `@pentest-harness/dsh-compaction-tool-result-pruner`
+## `@fathom/compaction-tool-result-pruner`
 
 Requires: `tokenMeter`
 
@@ -586,9 +586,9 @@ export interface ToolResultPruneConfig {
 
 Source: [`packages/compaction/compaction-tool-result-pruner/src/index.ts:55`](../packages/compaction/compaction-tool-result-pruner/src/index.ts)
 
-<a id="pentest-harnessdsh-cordis-host-runner"></a>
+<a id="fathomcordis-host-runner"></a>
 
-## `@pentest-harness/dsh-cordis-host-runner`
+## `@fathom/cordis-host-runner`
 
 Requires: `tools`
 
@@ -602,17 +602,17 @@ export interface Config {
 
 Source: [`packages/extensions/cordis-host-runner/src/index.ts:88`](../packages/extensions/cordis-host-runner/src/index.ts)
 
-<a id="pentest-harnessdsh-credentials-local"></a>
+<a id="fathomcredentials-local"></a>
 
-## `@pentest-harness/dsh-credentials-local`
+## `@fathom/credentials-local`
 
 ```ts config-catalog
 /** Plugin config: file location and hot-reload behavior. */
 export interface Config {
   /** Credentials document path; defaults to `.credentials.yaml` under the harness home. */
   path?: string
-  /** Harness home used when `path` is omitted; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** Harness home used when `path` is omitted; defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
   /** Watch the document and hot-publish external edits; defaults to true. */
   watch?: boolean
   /** Watcher write-settle window in milliseconds; defaults to 100. */
@@ -622,9 +622,9 @@ export interface Config {
 
 Source: [`packages/credentials/credentials-local/src/index.ts:64`](../packages/credentials/credentials-local/src/index.ts)
 
-<a id="pentest-harnessdsh-e2b"></a>
+<a id="fathome2b"></a>
 
-## `@pentest-harness/dsh-e2b`
+## `@fathom/e2b`
 
 ```ts config-catalog
 /** Configuration for the shared E2B sandbox owner. */
@@ -640,9 +640,9 @@ export interface Config {
 
 Source: [`packages/e2b/e2b/src/index.ts:43`](../packages/e2b/e2b/src/index.ts)
 
-<a id="pentest-harnessdsh-experimental-agent-team"></a>
+<a id="fathomexperimental-agent-team"></a>
 
-## `@pentest-harness/dsh-experimental-agent-team`
+## `@fathom/experimental-agent-team`
 
 Requires: `agents` · `sessions` · `sessionPersistence` · `subagents`
 
@@ -664,9 +664,9 @@ export interface Config {
 
 Source: [`packages/experimental/agent-team/src/types.ts:125`](../packages/experimental/agent-team/src/types.ts)
 
-<a id="pentest-harnessdsh-experimental-tool-agent-team"></a>
+<a id="fathomexperimental-tool-agent-team"></a>
 
-## `@pentest-harness/dsh-experimental-tool-agent-team`
+## `@fathom/experimental-tool-agent-team`
 
 Requires: `agents` · `agentTeams` · `tools` · `systemPrompt`
 
@@ -682,9 +682,9 @@ export interface Config {
 
 Source: [`packages/experimental/tool-agent-team/src/index.ts:17`](../packages/experimental/tool-agent-team/src/index.ts)
 
-<a id="pentest-harnessdsh-file-reference-local"></a>
+<a id="fathomfile-reference-local"></a>
 
-## `@pentest-harness/dsh-file-reference-local`
+## `@fathom/file-reference-local`
 
 Requires: `agents`
 
@@ -702,9 +702,9 @@ export interface Config {
 
 Source: [`packages/context/file-reference-local/src/index.ts:35`](../packages/context/file-reference-local/src/index.ts)
 
-<a id="pentest-harnessdsh-fs-local"></a>
+<a id="fathomfs-local"></a>
 
-## `@pentest-harness/dsh-fs-local`
+## `@fathom/fs-local`
 
 ```ts config-catalog
 /** Configuration for the local filesystem backend. */
@@ -721,9 +721,9 @@ export interface Config {
 
 Source: [`packages/fs/fs-local/src/index.ts:41`](../packages/fs/fs-local/src/index.ts)
 
-<a id="pentest-harnessdsh-fs-sandbox"></a>
+<a id="fathomfs-sandbox"></a>
 
-## `@pentest-harness/dsh-fs-sandbox`
+## `@fathom/fs-sandbox`
 
 Requires: `sandboxPolicy`
 
@@ -737,13 +737,13 @@ Requires: `sandboxPolicy`
 export type Config = LocalConfig
 ```
 
-Depends on: [`LocalConfig`](#pentest-harnessdsh-fs-local)
+Depends on: [`LocalConfig`](#fathomfs-local)
 
 Source: [`packages/fs/fs-sandbox/src/index.ts:49`](../packages/fs/fs-sandbox/src/index.ts)
 
-<a id="pentest-harnessdsh-goal"></a>
+<a id="fathomgoal"></a>
 
-## `@pentest-harness/dsh-goal`
+## `@fathom/goal`
 
 Requires: `agents`
 
@@ -757,9 +757,9 @@ export interface Config {
 
 Source: [`packages/goal/goal/src/index.ts:116`](../packages/goal/goal/src/index.ts)
 
-<a id="pentest-harnessdsh-headless"></a>
+<a id="fathomheadless"></a>
 
-## `@pentest-harness/dsh-headless`
+## `@fathom/headless`
 
 Requires: `agentDefaultModel` · `agents` · `sessions`
 
@@ -773,9 +773,9 @@ export interface Config {
 
 Source: [`packages/bundle/headless/src/index.ts:31`](../packages/bundle/headless/src/index.ts)
 
-<a id="pentest-harnessdsh-hooks-claude-code"></a>
+<a id="fathomhooks-claude-code"></a>
 
-## `@pentest-harness/dsh-hooks-claude-code`
+## `@fathom/hooks-claude-code`
 
 Requires: `shell`
 
@@ -811,9 +811,9 @@ export interface Config {
 
 Source: [`packages/hooks/hooks-claude-code/src/index.ts:45`](../packages/hooks/hooks-claude-code/src/index.ts)
 
-<a id="pentest-harnessdsh-hooks-codex"></a>
+<a id="fathomhooks-codex"></a>
 
-## `@pentest-harness/dsh-hooks-codex`
+## `@fathom/hooks-codex`
 
 Requires: `shell`
 
@@ -838,9 +838,9 @@ export interface Config {
 
 Source: [`packages/hooks/hooks-codex/src/index.ts:44`](../packages/hooks/hooks-codex/src/index.ts)
 
-<a id="pentest-harnessdsh-host-apiproxy"></a>
+<a id="fathomhost-apiproxy"></a>
 
-## `@pentest-harness/dsh-host-apiproxy`
+## `@fathom/host-apiproxy`
 
 Requires: `agentDefaultModel` · `agents` · `attachments` · `directoryPicker` · `llm` · `sessions` · `subagents` · `sessionQuery` · `tools` · `userQuestions` · `workspaceRegistry`
 
@@ -872,9 +872,9 @@ export interface Config {
 
 Source: [`packages/host/apiproxy/src/index.ts:41`](../packages/host/apiproxy/src/index.ts)
 
-<a id="pentest-harnessdsh-host-directory-picker-browse"></a>
+<a id="fathomhost-directory-picker-browse"></a>
 
-## `@pentest-harness/dsh-host-directory-picker-browse`
+## `@fathom/host-directory-picker-browse`
 
 ```ts config-catalog
 /** Validated plugin configuration. */
@@ -886,9 +886,9 @@ export interface Config {
 
 Source: [`packages/host/directory-picker-browse/src/index.ts:181`](../packages/host/directory-picker-browse/src/index.ts)
 
-<a id="pentest-harnessdsh-host-frontend-static"></a>
+<a id="fathomhost-frontend-static"></a>
 
-## `@pentest-harness/dsh-host-frontend-static`
+## `@fathom/host-frontend-static`
 
 Requires: `webServer`
 
@@ -902,9 +902,9 @@ export interface Config {
 
 Source: [`packages/host/frontend-static/src/index.ts:28`](../packages/host/frontend-static/src/index.ts)
 
-<a id="pentest-harnessdsh-host-webserver"></a>
+<a id="fathomhost-webserver"></a>
 
-## `@pentest-harness/dsh-host-webserver`
+## `@fathom/host-webserver`
 
 ```ts config-catalog
 /** Gateway config: the listen address. */
@@ -918,9 +918,9 @@ export interface Config {
 
 Source: [`packages/host/webserver/src/index.ts:59`](../packages/host/webserver/src/index.ts)
 
-<a id="pentest-harnessdsh-invariants"></a>
+<a id="fathominvariants"></a>
 
-## `@pentest-harness/dsh-invariants`
+## `@fathom/invariants`
 
 ```ts config-catalog
 /** Runtime invariant selection configured on the service plugin. */
@@ -936,9 +936,9 @@ export interface Config {
 
 Source: [`packages/runtime-diagnostics/invariants/src/index.ts:15`](../packages/runtime-diagnostics/invariants/src/index.ts)
 
-<a id="pentest-harnessdsh-jobs-local"></a>
+<a id="fathomjobs-local"></a>
 
-## `@pentest-harness/dsh-jobs-local`
+## `@fathom/jobs-local`
 
 ```ts config-catalog
 /** Configuration for the process-local job registry. */
@@ -953,9 +953,9 @@ export interface Config {
 
 Source: [`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local/src/index.ts)
 
-<a id="pentest-harnessdsh-llm-pi-ai"></a>
+<a id="fathomllm-pi-ai"></a>
 
-## `@pentest-harness/dsh-llm-pi-ai`
+## `@fathom/llm-pi-ai`
 
 Requires: `llm`
 
@@ -1227,21 +1227,21 @@ Depends on: `Api` (`@earendil-works/pi-ai`) · `CacheRetention` (`@earendil-work
 
 Source: [`packages/llm/llm-pi-ai/src/config.ts:223`](../packages/llm/llm-pi-ai/src/config.ts)
 
-<a id="pentest-harnessdsh-llm-replay"></a>
+<a id="fathomllm-replay"></a>
 
-## `@pentest-harness/dsh-llm-replay`
+## `@fathom/llm-replay`
 
 Requires: `llm`
 
 ```ts config-catalog
-/** Plugin config: the {@link ReplayConfig} inputs, each defaulting to its `DSH_SNAPSHOT_*` env var in `apply`. */
+/** Plugin config: the {@link ReplayConfig} inputs, each defaulting to its `FATHOM_SNAPSHOT_*` env var in `apply`. */
 export interface Config {
-  /** Override the fixture path; defaults to `$DSH_SNAPSHOT_FILE`. */
+  /** Override the fixture path; defaults to `$FATHOM_SNAPSHOT_FILE`. */
   file?: string
-  /** Override the sidecar path; defaults to `$DSH_SNAPSHOT_OVERRIDE`. */
+  /** Override the sidecar path; defaults to `$FATHOM_SNAPSHOT_OVERRIDE`. */
   overrideFile?: string
   /**
-   * Override the child-log paths; defaults to `$DSH_SNAPSHOT_CHILD_FILES` (a
+   * Override the child-log paths; defaults to `$FATHOM_SNAPSHOT_CHILD_FILES` (a
    * path-separator-delimited list). Each is a recorded subagent session log for
    * a nested-agent scenario; absent/empty for a single-session scenario.
    */
@@ -1295,9 +1295,9 @@ Depends on: [`ModelModality`](../packages/llm/llm/src/index.ts) · [`RetryPolicy
 
 Source: [`packages/test-support/llm-replay/src/index.ts:809`](../packages/test-support/llm-replay/src/index.ts)
 
-<a id="pentest-harnessdsh-llm-retry"></a>
+<a id="fathomllm-retry"></a>
 
-## `@pentest-harness/dsh-llm-retry`
+## `@fathom/llm-retry`
 
 Requires: `agents`
 
@@ -1308,9 +1308,9 @@ export type Config = Readonly<Record<string, never>>
 
 Source: [`packages/llm/llm-retry/src/index.ts:24`](../packages/llm/llm-retry/src/index.ts)
 
-<a id="pentest-harnessdsh-lsp-stdio"></a>
+<a id="fathomlsp-stdio"></a>
 
-## `@pentest-harness/dsh-lsp-stdio`
+## `@fathom/lsp-stdio`
 
 Requires: `fs` · `lsp` · `subprocess`
 
@@ -1350,9 +1350,9 @@ export interface LspLocalServerConfig {
 
 Source: [`packages/lsp/lsp-stdio/src/index.ts:82`](../packages/lsp/lsp-stdio/src/index.ts)
 
-<a id="pentest-harnessdsh-mcp-client"></a>
+<a id="fathommcp-client"></a>
 
-## `@pentest-harness/dsh-mcp-client`
+## `@fathom/mcp-client`
 
 Requires: `tools`
 
@@ -1423,9 +1423,9 @@ export interface ReconnectConfig {
 
 Source: [`packages/mcp/mcp-client/src/index.ts:98`](../packages/mcp/mcp-client/src/index.ts)
 
-<a id="pentest-harnessdsh-message-feedback"></a>
+<a id="fathommessage-feedback"></a>
 
-## `@pentest-harness/dsh-message-feedback`
+## `@fathom/message-feedback`
 
 Requires: `storageDomain` · `sessionPersistence` · `sessions`
 
@@ -1439,25 +1439,25 @@ export interface Config {
 
 Source: [`packages/feedback/message-feedback/src/index.ts:49`](../packages/feedback/message-feedback/src/index.ts)
 
-<a id="pentest-harnessdsh-pentest-toolkit"></a>
+<a id="fathompentest-toolkit"></a>
 
-## `@pentest-harness/dsh-pentest-toolkit`
+## `@fathom/pentest-toolkit`
 
 Requires: `tools` · `systemPrompt`
 
 ```ts config-catalog
 /** Plugin config. */
 export interface Config {
-  /** Toolkit folder (binaries, launchers, state). Defaults to `~/.dsh/tools`. */
+  /** Toolkit folder (binaries, launchers, state). Defaults to `~/.fathom/tools`. */
   home?: string
 }
 ```
 
 Source: [`packages/pentest/pentest-toolkit/src/index.ts:41`](../packages/pentest/pentest-toolkit/src/index.ts)
 
-<a id="pentest-harnessdsh-permission-presets"></a>
+<a id="fathompermission-presets"></a>
 
-## `@pentest-harness/dsh-permission-presets`
+## `@fathom/permission-presets`
 
 Requires: `shell` · `approval` · `sessions`
 
@@ -1494,9 +1494,9 @@ Depends on: [`ApprovalPolicy`](subsystems/approval.md) · [`SandboxMode`](subsys
 
 Source: [`packages/interaction/permission-presets/src/index.ts:156`](../packages/interaction/permission-presets/src/index.ts)
 
-<a id="pentest-harnessdsh-persona"></a>
+<a id="fathompersona"></a>
 
-## `@pentest-harness/dsh-persona`
+## `@fathom/persona`
 
 Requires: `systemPrompt`
 
@@ -1523,9 +1523,9 @@ export interface Config {
 
 Source: [`packages/preset/persona/src/index.ts:35`](../packages/preset/persona/src/index.ts)
 
-<a id="pentest-harnessdsh-plan-mode"></a>
+<a id="fathomplan-mode"></a>
 
-## `@pentest-harness/dsh-plan-mode`
+## `@fathom/plan-mode`
 
 Requires: `tools` · `systemPrompt`
 
@@ -1539,9 +1539,9 @@ export interface PlanModeConfig {
 
 Source: [`packages/plan/plan-mode/src/index.ts:70`](../packages/plan/plan-mode/src/index.ts)
 
-<a id="pentest-harnessdsh-pwsh-local"></a>
+<a id="fathompwsh-local"></a>
 
-## `@pentest-harness/dsh-pwsh-local`
+## `@fathom/pwsh-local`
 
 Requires: `subprocess`
 
@@ -1572,9 +1572,9 @@ export interface Config {
 
 Source: [`packages/shell/pwsh-local/src/index.ts:58`](../packages/shell/pwsh-local/src/index.ts)
 
-<a id="pentest-harnessdsh-pwsh-sandbox"></a>
+<a id="fathompwsh-sandbox"></a>
 
-## `@pentest-harness/dsh-pwsh-sandbox`
+## `@fathom/pwsh-sandbox`
 
 Requires: `subprocess` · `sandbox` · `sandboxPolicy`
 
@@ -1582,7 +1582,7 @@ Requires: `subprocess` · `sandbox` · `sandboxPolicy`
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@pentest-harness/dsh-sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@fathom/sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The
  * runner choice is likewise the `ctx.sandbox` provider's config, not this
  * executor's.
@@ -1590,13 +1590,13 @@ Requires: `subprocess` · `sandbox` · `sandboxPolicy`
 export type Config = LocalConfig
 ```
 
-Depends on: [`LocalConfig`](#pentest-harnessdsh-pwsh-local)
+Depends on: [`LocalConfig`](#fathompwsh-local)
 
 Source: [`packages/shell/pwsh-sandbox/src/index.ts:40`](../packages/shell/pwsh-sandbox/src/index.ts)
 
-<a id="pentest-harnessdsh-repeat-tool-reminder"></a>
+<a id="fathomrepeat-tool-reminder"></a>
 
-## `@pentest-harness/dsh-repeat-tool-reminder`
+## `@fathom/repeat-tool-reminder`
 
 ```ts config-catalog
 /**
@@ -1639,9 +1639,9 @@ export interface Config {
 
 Source: [`packages/guard/repeat-tool-reminder/src/index.ts:29`](../packages/guard/repeat-tool-reminder/src/index.ts)
 
-<a id="pentest-harnessdsh-sandbox-local"></a>
+<a id="fathomsandbox-local"></a>
 
-## `@pentest-harness/dsh-sandbox-local`
+## `@fathom/sandbox-local`
 
 ```ts config-catalog
 /** Plugin config. All optional — `static Config` supplies the defaults. */
@@ -1671,9 +1671,9 @@ export interface Config {
 
 Source: [`packages/sandbox/sandbox-local/src/index.ts:44`](../packages/sandbox/sandbox-local/src/index.ts)
 
-<a id="pentest-harnessdsh-sandbox-policy"></a>
+<a id="fathomsandbox-policy"></a>
 
-## `@pentest-harness/dsh-sandbox-policy`
+## `@fathom/sandbox-policy`
 
 ```ts config-catalog
 /**
@@ -1698,9 +1698,9 @@ Depends on: [`SandboxMode`](subsystems/sandbox.md)
 
 Source: [`packages/sandbox/sandbox-policy/src/index.ts:67`](../packages/sandbox/sandbox-policy/src/index.ts)
 
-<a id="pentest-harnessdsh-sdk-jsonrpc-server"></a>
+<a id="fathomsdk-jsonrpc-server"></a>
 
-## `@pentest-harness/dsh-sdk-jsonrpc-server`
+## `@fathom/sdk-jsonrpc-server`
 
 Requires: `agents`
 
@@ -1722,9 +1722,9 @@ Depends on: `Readable` (`node:stream`) · `Writable` (`node:stream`)
 
 Source: [`packages/sdk/server/src/index.ts:25`](../packages/sdk/server/src/index.ts)
 
-<a id="pentest-harnessdsh-session-folders"></a>
+<a id="fathomsession-folders"></a>
 
-## `@pentest-harness/dsh-session-folders`
+## `@fathom/session-folders`
 
 ```ts config-catalog
 /** Plugin configuration. */
@@ -1746,9 +1746,9 @@ export interface SessionFolderSettings {
 
 Source: [`packages/workspace/session-folders/src/index.ts:52`](../packages/workspace/session-folders/src/index.ts)
 
-<a id="pentest-harnessdsh-session-persistence-jsonl"></a>
+<a id="fathomsession-persistence-jsonl"></a>
 
-## `@pentest-harness/dsh-session-persistence-jsonl`
+## `@fathom/session-persistence-jsonl`
 
 Requires: `sessions`
 
@@ -1785,9 +1785,9 @@ export type JsonlCompression = 'zstd' | 'none'
 
 Source: [`packages/session/session-persistence-jsonl/src/index.ts:60`](../packages/session/session-persistence-jsonl/src/index.ts)
 
-<a id="pentest-harnessdsh-session-persistence-sqlite"></a>
+<a id="fathomsession-persistence-sqlite"></a>
 
-## `@pentest-harness/dsh-session-persistence-sqlite`
+## `@fathom/session-persistence-sqlite`
 
 Requires: `sessions`
 
@@ -1812,9 +1812,9 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 
 Source: [`packages/session/session-persistence-sqlite/src/index.ts:36`](../packages/session/session-persistence-sqlite/src/index.ts)
 
-<a id="pentest-harnessdsh-session-projection-cache"></a>
+<a id="fathomsession-projection-cache"></a>
 
-## `@pentest-harness/dsh-session-projection-cache`
+## `@fathom/session-projection-cache`
 
 Requires: `storageDomain` · `sessionProjections` · `sessionPersistence` · `sessions`
 
@@ -1835,9 +1835,9 @@ export interface Config {
 
 Source: [`packages/session/session-projection-cache/src/index.ts:42`](../packages/session/session-projection-cache/src/index.ts)
 
-<a id="pentest-harnessdsh-session-query-sqlite"></a>
+<a id="fathomsession-query-sqlite"></a>
 
-## `@pentest-harness/dsh-session-query-sqlite`
+## `@fathom/session-query-sqlite`
 
 Requires: `sessions`
 
@@ -1881,9 +1881,9 @@ Depends on: [`SessionQueryConfig`](../packages/session-query/session-query/src/i
 
 Source: [`packages/session-query/session-query-sqlite/src/index.ts:89`](../packages/session-query/session-query-sqlite/src/index.ts)
 
-<a id="pentest-harnessdsh-session-reference"></a>
+<a id="fathomsession-reference"></a>
 
-## `@pentest-harness/dsh-session-reference`
+## `@fathom/session-reference`
 
 Requires: `sessionQuery`
 
@@ -1901,16 +1901,16 @@ export interface Config {
 
 Source: [`packages/context/session-reference/src/config.ts:11`](../packages/context/session-reference/src/config.ts)
 
-<a id="pentest-harnessdsh-session-telemetry-otel"></a>
+<a id="fathomsession-telemetry-otel"></a>
 
-## `@pentest-harness/dsh-session-telemetry-otel`
+## `@fathom/session-telemetry-otel`
 
 Requires: `sessions`
 
 ```ts config-catalog
 /**
  * Plugin configuration: one sharing policy, two verbatim SDK option objects,
- * and one DSH-owned shutdown bound. Uploading modes validate their endpoint
+ * and one FATHOM-owned shutdown bound. Uploading modes validate their endpoint
  * and shutdown deadline at plugin load; `DISABLED` reads neither.
  */
 export interface Config {
@@ -1947,9 +1947,9 @@ Depends on: `BatchLogRecordProcessorOptions` (`@opentelemetry/sdk-logs`) · `OTL
 
 Source: [`packages/session/session-telemetry-otel/src/index.ts:91`](../packages/session/session-telemetry-otel/src/index.ts)
 
-<a id="pentest-harnessdsh-session-title"></a>
+<a id="fathomsession-title"></a>
 
-## `@pentest-harness/dsh-session-title`
+## `@fathom/session-title`
 
 Requires: `sessions`
 
@@ -1967,9 +1967,9 @@ export interface Config {
 
 Source: [`packages/session/session-title/src/index.ts:79`](../packages/session/session-title/src/index.ts)
 
-<a id="pentest-harnessdsh-session-title-all-prompts-llm"></a>
+<a id="fathomsession-title-all-prompts-llm"></a>
 
-## `@pentest-harness/dsh-session-title-all-prompts-llm`
+## `@fathom/session-title-all-prompts-llm`
 
 Requires: `sessionTitle` · `llm` · `sessions`
 
@@ -1982,9 +1982,9 @@ Depends on: [`SessionTitleLlmConfig`](../packages/session/session-title-llm/src/
 
 Source: [`packages/session/session-title-all-prompts-llm/src/index.ts:15`](../packages/session/session-title-all-prompts-llm/src/index.ts)
 
-<a id="pentest-harnessdsh-session-title-first-prompt-llm"></a>
+<a id="fathomsession-title-first-prompt-llm"></a>
 
-## `@pentest-harness/dsh-session-title-first-prompt-llm`
+## `@fathom/session-title-first-prompt-llm`
 
 Requires: `sessionTitle` · `llm` · `sessions`
 
@@ -1997,17 +1997,17 @@ Depends on: [`SessionTitleLlmConfig`](../packages/session/session-title-llm/src/
 
 Source: [`packages/session/session-title-first-prompt-llm/src/index.ts:15`](../packages/session/session-title-first-prompt-llm/src/index.ts)
 
-<a id="pentest-harnessdsh-settings-file"></a>
+<a id="fathomsettings-file"></a>
 
-## `@pentest-harness/dsh-settings-file`
+## `@fathom/settings-file`
 
 ```ts config-catalog
 /** Plugin config: file location and hot-reload behavior. */
 export interface Config {
   /** Settings document path; defaults to `settings.yaml` under the harness home. */
   path?: string
-  /** Harness home used when `path` is omitted; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** Harness home used when `path` is omitted; defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
   /** Watch the document and hot-publish external edits; defaults to true. */
   watch?: boolean
   /** Watcher write-settle window in milliseconds; defaults to 100. */
@@ -2017,23 +2017,23 @@ export interface Config {
 
 Source: [`packages/settings/settings-file/src/index.ts:21`](../packages/settings/settings-file/src/index.ts)
 
-<a id="pentest-harnessdsh-shell-env"></a>
+<a id="fathomshell-env"></a>
 
-## `@pentest-harness/dsh-shell-env`
+## `@fathom/shell-env`
 
 ```ts config-catalog
 /** Plugin config (all optional — the built-in facts resolve without defaults). */
 export interface Config {
-  /** Pentest Harness home directory exposed as `DSH_HOME`; defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
+  /** Fathom home directory exposed as `FATHOM_HOME`; defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
 }
 ```
 
 Source: [`packages/shell/shell-env/src/index.ts:29`](../packages/shell/shell-env/src/index.ts)
 
-<a id="pentest-harnessdsh-skill"></a>
+<a id="fathomskill"></a>
 
-## `@pentest-harness/dsh-skill`
+## `@fathom/skill`
 
 ```ts config-catalog
 /** Skill registry configuration. */
@@ -2045,9 +2045,9 @@ export interface Config {
 
 Source: [`packages/skill/skill/src/index.ts:279`](../packages/skill/skill/src/index.ts)
 
-<a id="pentest-harnessdsh-skill-filesystem"></a>
+<a id="fathomskill-filesystem"></a>
 
-## `@pentest-harness/dsh-skill-filesystem`
+## `@fathom/skill-filesystem`
 
 Requires: `skills`
 
@@ -2058,9 +2058,9 @@ export interface Config {
   providerName?: string
   /** Whether project and user roots are included around custom roots. */
   includeDefaultRoots?: boolean
-  /** Pentest Harness config root. Defaults to `$DSH_HOME` or `~/.dsh`. */
-  dshHome?: string
-  /** Shared agent config root. Defaults to `$DSH_AGENTS_HOME` or `~/.agents`. */
+  /** Fathom config root. Defaults to `$FATHOM_HOME` or `~/.fathom`. */
+  fathomHome?: string
+  /** Shared agent config root. Defaults to `$FATHOM_AGENTS_HOME` or `~/.agents`. */
   agentsHome?: string
   /** Additional skill roots scanned after project roots and before user roots. */
   customSkillDirs?: string[]
@@ -2076,16 +2076,16 @@ export interface Config {
   watchMaxProjects?: number
   /** Whether watched symbolic links follow their target files. */
   watchFollowSymlinks?: boolean
-  /** Bundled skill root; defaults to `$DSH_BUNDLED_SKILL_DIR` when default roots are included, otherwise mounts none. */
+  /** Bundled skill root; defaults to `$FATHOM_BUNDLED_SKILL_DIR` when default roots are included, otherwise mounts none. */
   bundledSkillDir?: string
 }
 ```
 
 Source: [`packages/skill/skill-filesystem/src/index.ts:49`](../packages/skill/skill-filesystem/src/index.ts)
 
-<a id="pentest-harnessdsh-spill-local"></a>
+<a id="fathomspill-local"></a>
 
-## `@pentest-harness/dsh-spill-local`
+## `@fathom/spill-local`
 
 ```ts config-catalog
 /** Plugin config (all optional — `static Config` supplies the defaults). */
@@ -2101,9 +2101,9 @@ export interface Config {
 
 Source: [`packages/spill/spill-local/src/index.ts:22`](../packages/spill/spill-local/src/index.ts)
 
-<a id="pentest-harnessdsh-spill-policy"></a>
+<a id="fathomspill-policy"></a>
 
-## `@pentest-harness/dsh-spill-policy`
+## `@fathom/spill-policy`
 
 Requires: `tools`
 
@@ -2123,9 +2123,9 @@ export interface Config {
 
 Source: [`packages/spill/spill-policy/src/index.ts:61`](../packages/spill/spill-policy/src/index.ts)
 
-<a id="pentest-harnessdsh-storage-domain"></a>
+<a id="fathomstorage-domain"></a>
 
-## `@pentest-harness/dsh-storage-domain`
+## `@fathom/storage-domain`
 
 Requires: `storage`
 
@@ -2146,9 +2146,9 @@ export interface Config {
 
 Source: [`packages/storage/storage-domain/src/index.ts:52`](../packages/storage/storage-domain/src/index.ts)
 
-<a id="pentest-harnessdsh-storage-json"></a>
+<a id="fathomstorage-json"></a>
 
-## `@pentest-harness/dsh-storage-json`
+## `@fathom/storage-json`
 
 Requires: `storage`
 
@@ -2167,9 +2167,9 @@ export interface Config {
 
 Source: [`packages/storage/storage-json/src/index.ts:27`](../packages/storage/storage-json/src/index.ts)
 
-<a id="pentest-harnessdsh-storage-sqlite"></a>
+<a id="fathomstorage-sqlite"></a>
 
-## `@pentest-harness/dsh-storage-sqlite`
+## `@fathom/storage-sqlite`
 
 Requires: `storage`
 
@@ -2207,9 +2207,9 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 
 Source: [`packages/storage/storage-sqlite/src/index.ts:24`](../packages/storage/storage-sqlite/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-acp"></a>
+<a id="fathomsubagent-acp"></a>
 
-## `@pentest-harness/dsh-subagent-acp`
+## `@fathom/subagent-acp`
 
 Requires: `subagents` · `subprocess`
 
@@ -2260,9 +2260,9 @@ export type PermissionPolicy = 'allow' | 'reject'
 
 Source: [`packages/subagent/subagent-acp/src/index.ts:27`](../packages/subagent/subagent-acp/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-claude-code"></a>
+<a id="fathomsubagent-claude-code"></a>
 
-## `@pentest-harness/dsh-subagent-claude-code`
+## `@fathom/subagent-claude-code`
 
 Requires: `subagents` · `subprocess`
 
@@ -2293,9 +2293,9 @@ export type ClaudeCodePermissionMode = typeof CLAUDE_CODE_PERMISSION_MODES[numbe
 
 Source: [`packages/subagent/subagent-claude-code/src/index.ts:38`](../packages/subagent/subagent-claude-code/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-codex"></a>
+<a id="fathomsubagent-codex"></a>
 
-## `@pentest-harness/dsh-subagent-codex`
+## `@fathom/subagent-codex`
 
 Requires: `subagents` · `subprocess`
 
@@ -2324,16 +2324,16 @@ export type CodexPermissionMode =
 
 Source: [`packages/subagent/subagent-codex/src/index.ts:36`](../packages/subagent/subagent-codex/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-dsh-sdk"></a>
+<a id="fathomsubagent-fathom-sdk"></a>
 
-## `@pentest-harness/dsh-subagent-dsh-sdk`
+## `@fathom/subagent-fathom-sdk`
 
 Requires: `subagents`
 
 ```ts config-catalog
 /** Config: how to spawn and drive the child SDK runtime process. */
 export interface Config {
-  /** Provider name on `ctx.subagents` (default `dsh-sdk`). */
+  /** Provider name on `ctx.subagents` (default `fathom-sdk`). */
   providerName: string
   /** The executable to spawn for each run (the child runtime bin or packaged exe). */
   command: string
@@ -2356,7 +2356,7 @@ export interface Config {
   maxTokens?: number
   /**
    * Extra environment variables for the child process — e.g. the child
-   * runtime's own `OPENAI_API_KEY`, or `DSH_CORDIS_CONFIG` naming its
+   * runtime's own `OPENAI_API_KEY`, or `FATHOM_CORDIS_CONFIG` naming its
    * config. Forwarded on top of a credential-scrubbed copy of the parent
    * env, so an explicit key here reaches the child while ambient secrets do
    * not leak implicitly.
@@ -2375,11 +2375,11 @@ export interface Config {
 }
 ```
 
-Source: [`packages/subagent/subagent-dsh-sdk/src/index.ts:29`](../packages/subagent/subagent-dsh-sdk/src/index.ts)
+Source: [`packages/subagent/subagent-fathom-sdk/src/index.ts:29`](../packages/subagent/subagent-fathom-sdk/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-fork-in-process"></a>
+<a id="fathomsubagent-fork-in-process"></a>
 
-## `@pentest-harness/dsh-subagent-fork-in-process`
+## `@fathom/subagent-fork-in-process`
 
 Requires: `subagents`
 
@@ -2393,9 +2393,9 @@ export interface Config {
 
 Source: [`packages/subagent/subagent-fork-in-process/src/index.ts:31`](../packages/subagent/subagent-fork-in-process/src/index.ts)
 
-<a id="pentest-harnessdsh-subagent-spawn-in-process"></a>
+<a id="fathomsubagent-spawn-in-process"></a>
 
-## `@pentest-harness/dsh-subagent-spawn-in-process`
+## `@fathom/subagent-spawn-in-process`
 
 Requires: `subagents`
 
@@ -2409,9 +2409,9 @@ export interface Config {
 
 Source: [`packages/subagent/subagent-spawn-in-process/src/index.ts:25`](../packages/subagent/subagent-spawn-in-process/src/index.ts)
 
-<a id="pentest-harnessdsh-subprocess-e2b"></a>
+<a id="fathomsubprocess-e2b"></a>
 
-## `@pentest-harness/dsh-subprocess-e2b`
+## `@fathom/subprocess-e2b`
 
 Requires: `e2b`
 
@@ -2425,14 +2425,14 @@ export interface Config {
 
 Source: [`packages/e2b/subprocess-e2b/src/index.ts:25`](../packages/e2b/subprocess-e2b/src/index.ts)
 
-<a id="pentest-harnessdsh-system-prompt"></a>
+<a id="fathomsystem-prompt"></a>
 
-## `@pentest-harness/dsh-system-prompt`
+## `@fathom/system-prompt`
 
 ```ts config-catalog
 /** Plugin config: the deployment-authored fragment of the system prompt (see {@link Config.persona} for its contract). */
 export interface Config {
-  /** Include the fixed Pentest Harness identity before the deployment persona (default true). */
+  /** Include the fixed Fathom identity before the deployment persona (default true). */
   includeHarnessIdentity?: boolean
   /** Include dynamic runtime-context snapshots in model history (default true). */
   includeRuntimeContext?: boolean
@@ -2452,9 +2452,9 @@ export interface Config {
 
 Source: [`packages/core/system-prompt/src/index.ts:201`](../packages/core/system-prompt/src/index.ts)
 
-<a id="pentest-harnessdsh-terminal-bash"></a>
+<a id="fathomterminal-bash"></a>
 
-## `@pentest-harness/dsh-terminal-bash`
+## `@fathom/terminal-bash`
 
 Requires: `terminals` · `sandboxPolicy` · `subprocess`
 
@@ -2502,9 +2502,9 @@ export type ShellDialect = 'bash' | 'pwsh'
 
 Source: [`packages/terminal/terminal-bash/src/config.ts:11`](../packages/terminal/terminal-bash/src/config.ts)
 
-<a id="pentest-harnessdsh-time-context"></a>
+<a id="fathomtime-context"></a>
 
-## `@pentest-harness/dsh-time-context`
+## `@fathom/time-context`
 
 Requires: `agents`
 
@@ -2520,9 +2520,9 @@ export interface Config {
 
 Source: [`packages/context/time-context/src/index.ts:27`](../packages/context/time-context/src/index.ts)
 
-<a id="pentest-harnessdsh-tmux-context"></a>
+<a id="fathomtmux-context"></a>
 
-## `@pentest-harness/dsh-tmux-context`
+## `@fathom/tmux-context`
 
 Requires: `agents`
 
@@ -2536,9 +2536,9 @@ export interface Config {
 
 Source: [`packages/context/tmux-context/src/index.ts:34`](../packages/context/tmux-context/src/index.ts)
 
-<a id="pentest-harnessdsh-token-meter"></a>
+<a id="fathomtoken-meter"></a>
 
-## `@pentest-harness/dsh-token-meter`
+## `@fathom/token-meter`
 
 ```ts config-catalog
 /** Token-meter plugin configuration; the fixed estimator has no settings. */
@@ -2547,9 +2547,9 @@ export type TokenMeterConfig = Record<string, never>
 
 Source: [`packages/llm/token-meter/src/types.ts:12`](../packages/llm/token-meter/src/types.ts)
 
-<a id="pentest-harnessdsh-tool-bash"></a>
+<a id="fathomtool-bash"></a>
 
-## `@pentest-harness/dsh-tool-bash`
+## `@fathom/tool-bash`
 
 Requires: `tools` · `shell` · `systemPrompt` · `shellEnv`
 
@@ -2563,9 +2563,9 @@ export interface Config {
 
 Source: [`packages/shell/tool-bash/src/index.ts:35`](../packages/shell/tool-bash/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-bash-persistent"></a>
+<a id="fathomtool-bash-persistent"></a>
 
-## `@pentest-harness/dsh-tool-bash-persistent`
+## `@fathom/tool-bash-persistent`
 
 Requires: `tools` · `terminals`
 
@@ -2585,9 +2585,9 @@ export interface Config {
 
 Source: [`packages/shell/tool-bash-persistent/src/index.ts:432`](../packages/shell/tool-bash-persistent/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-browser"></a>
+<a id="fathomtool-browser"></a>
 
-## `@pentest-harness/dsh-tool-browser`
+## `@fathom/tool-browser`
 
 Requires: `tools` · `systemPrompt` · `browser`
 
@@ -2601,9 +2601,9 @@ export interface Config {
 
 Source: [`packages/browser/tool-browser/src/index.ts:27`](../packages/browser/tool-browser/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-fs"></a>
+<a id="fathomtool-fs"></a>
 
-## `@pentest-harness/dsh-tool-fs`
+## `@fathom/tool-fs`
 
 Requires: `tools` · `fs` · `systemPrompt`
 
@@ -2623,9 +2623,9 @@ export interface Config {
 
 Source: [`packages/fs/tool-fs/src/index.ts:25`](../packages/fs/tool-fs/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-fs-search"></a>
+<a id="fathomtool-fs-search"></a>
 
-## `@pentest-harness/dsh-tool-fs-search`
+## `@fathom/tool-fs-search`
 
 Requires: `tools` · `systemPrompt` · `subprocess`
 
@@ -2650,7 +2650,7 @@ export interface Config {
   stderrMaxBytes?: number
   /**
    * Cooperative tool-call timeout budget (ms) on both tools, enforced by
-   * `@pentest-harness/dsh-tool-call-timeout-policy` through `exec.signal`.
+   * `@fathom/tool-call-timeout-policy` through `exec.signal`.
    */
   timeoutMs?: number
 }
@@ -2658,9 +2658,9 @@ export interface Config {
 
 Source: [`packages/fs/tool-fs-search/src/index.ts:73`](../packages/fs/tool-fs-search/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-goal"></a>
+<a id="fathomtool-goal"></a>
 
-## `@pentest-harness/dsh-tool-goal`
+## `@fathom/tool-goal`
 
 Requires: `agents` · `goals` · `tools` · `systemPrompt`
 
@@ -2674,9 +2674,9 @@ export interface Config {
 
 Source: [`packages/goal/tool-goal/src/index.ts:26`](../packages/goal/tool-goal/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-jobs"></a>
+<a id="fathomtool-jobs"></a>
 
-## `@pentest-harness/dsh-tool-jobs`
+## `@fathom/tool-jobs`
 
 Requires: `tools` · `jobs` · `systemPrompt`
 
@@ -2708,9 +2708,9 @@ export type CompletionDelivery = 'quiet' | 'wakeup'
 
 Source: [`packages/jobs/tool-jobs/src/index.ts:32`](../packages/jobs/tool-jobs/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-lsp"></a>
+<a id="fathomtool-lsp"></a>
 
-## `@pentest-harness/dsh-tool-lsp`
+## `@fathom/tool-lsp`
 
 Requires: `tools` · `lsp` · `systemPrompt`
 
@@ -2728,9 +2728,9 @@ export interface Config {
 
 Source: [`packages/lsp/tool-lsp/src/index.ts:58`](../packages/lsp/tool-lsp/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-pwsh"></a>
+<a id="fathomtool-pwsh"></a>
 
-## `@pentest-harness/dsh-tool-pwsh`
+## `@fathom/tool-pwsh`
 
 Requires: `tools` · `shell` · `systemPrompt` · `shellEnv`
 
@@ -2744,9 +2744,9 @@ export interface Config {
 
 Source: [`packages/shell/tool-pwsh/src/index.ts:52`](../packages/shell/tool-pwsh/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-pwsh-persistent"></a>
+<a id="fathomtool-pwsh-persistent"></a>
 
-## `@pentest-harness/dsh-tool-pwsh-persistent`
+## `@fathom/tool-pwsh-persistent`
 
 Requires: `tools` · `terminals`
 
@@ -2766,9 +2766,9 @@ export interface Config {
 
 Source: [`packages/shell/tool-pwsh-persistent/src/index.ts:472`](../packages/shell/tool-pwsh-persistent/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-ralph"></a>
+<a id="fathomtool-ralph"></a>
 
-## `@pentest-harness/dsh-tool-ralph`
+## `@fathom/tool-ralph`
 
 Requires: `tools` · `workflowEngine` · `subagents` · `systemPrompt`
 
@@ -2788,9 +2788,9 @@ export interface Config {
 
 Source: [`packages/workflow/tool-ralph/src/index.ts:23`](../packages/workflow/tool-ralph/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-session-query"></a>
+<a id="fathomtool-session-query"></a>
 
-## `@pentest-harness/dsh-tool-session-query`
+## `@fathom/tool-session-query`
 
 Requires: `tools` · `systemPrompt` · `sessionQuery`
 
@@ -2806,9 +2806,9 @@ export interface Config {
 
 Source: [`packages/session-query/tool-session-query/src/index.ts:29`](../packages/session-query/tool-session-query/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-skill"></a>
+<a id="fathomtool-skill"></a>
 
-## `@pentest-harness/dsh-tool-skill`
+## `@fathom/tool-skill`
 
 Requires: `agents` · `tools` · `skills`
 
@@ -2822,9 +2822,9 @@ export interface Config {
 
 Source: [`packages/skill/tool-skill/src/index.ts:61`](../packages/skill/tool-skill/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-str-replace-editor"></a>
+<a id="fathomtool-str-replace-editor"></a>
 
-## `@pentest-harness/dsh-tool-str-replace-editor`
+## `@fathom/tool-str-replace-editor`
 
 Requires: `tools` · `fs`
 
@@ -2840,9 +2840,9 @@ export interface Config {
 
 Source: [`packages/fs/tool-str-replace-editor/src/index.ts:497`](../packages/fs/tool-str-replace-editor/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-subagent"></a>
+<a id="fathomtool-subagent"></a>
 
-## `@pentest-harness/dsh-tool-subagent`
+## `@fathom/tool-subagent`
 
 Requires: `tools` · `subagents` · `systemPrompt`
 
@@ -2905,9 +2905,9 @@ Depends on: [`AgentOptions`](subsystems/core.md)
 
 Source: [`packages/subagent/tool-subagent/src/index.ts:29`](../packages/subagent/tool-subagent/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-subagent-report"></a>
+<a id="fathomtool-subagent-report"></a>
 
-## `@pentest-harness/dsh-tool-subagent-report`
+## `@fathom/tool-subagent-report`
 
 Requires: `subagents` · `tools` · `systemPrompt`
 
@@ -2927,9 +2927,9 @@ Depends on: [`SubagentReportDelivery`](subsystems/subagent.md)
 
 Source: [`packages/subagent/tool-subagent-report/src/index.ts:27`](../packages/subagent/tool-subagent-report/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-terminal"></a>
+<a id="fathomtool-terminal"></a>
 
-## `@pentest-harness/dsh-tool-terminal`
+## `@fathom/tool-terminal`
 
 Requires: `terminals` · `tools` · `systemPrompt`
 
@@ -2945,9 +2945,9 @@ export interface Config {
 
 Source: [`packages/terminal/tool-terminal/src/index.ts:35`](../packages/terminal/tool-terminal/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-todo"></a>
+<a id="fathomtool-todo"></a>
 
-## `@pentest-harness/dsh-tool-todo`
+## `@fathom/tool-todo`
 
 Requires: `tools`
 
@@ -2967,9 +2967,9 @@ export interface Config {
 
 Source: [`packages/todo/tool-todo/src/index.ts:29`](../packages/todo/tool-todo/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-web"></a>
+<a id="fathomtool-web"></a>
 
-## `@pentest-harness/dsh-tool-web`
+## `@fathom/tool-web`
 
 Requires: `tools` · `web` · `systemPrompt`
 
@@ -2995,9 +2995,9 @@ export interface Config {
 
 Source: [`packages/web/tool-web/src/index.ts:37`](../packages/web/tool-web/src/index.ts)
 
-<a id="pentest-harnessdsh-tool-workflow"></a>
+<a id="fathomtool-workflow"></a>
 
-## `@pentest-harness/dsh-tool-workflow`
+## `@fathom/tool-workflow`
 
 Requires: `tools` · `workflowEngine` · `systemPrompt`
 
@@ -3013,9 +3013,9 @@ export interface Config {
 
 Source: [`packages/workflow/tool-workflow/src/index.ts:33`](../packages/workflow/tool-workflow/src/index.ts)
 
-<a id="pentest-harnessdsh-tools"></a>
+<a id="fathomtools"></a>
 
-## `@pentest-harness/dsh-tools`
+## `@fathom/tools`
 
 Requires: `systemPrompt`
 
@@ -3049,9 +3049,9 @@ export type ToolPresentationMode = 'native' | 'code' | 'both'
 
 Source: [`packages/core/tools/src/index.ts:654`](../packages/core/tools/src/index.ts)
 
-<a id="pentest-harnessdsh-typert-loader"></a>
+<a id="fathomtypert-loader"></a>
 
-## `@pentest-harness/dsh-typert-loader`
+## `@fathom/typert-loader`
 
 Requires: `typert` · `loader`
 
@@ -3065,9 +3065,9 @@ export interface Config {
 
 Source: [`packages/typert/loader/src/index.ts:47`](../packages/typert/loader/src/index.ts)
 
-<a id="pentest-harnessdsh-user-approval"></a>
+<a id="fathomuser-approval"></a>
 
-## `@pentest-harness/dsh-user-approval`
+## `@fathom/user-approval`
 
 ```ts config-catalog
 /** Plugin config. All optional — `static Config` supplies the defaults. */
@@ -3096,9 +3096,9 @@ export type ApprovalPolicy = 'ask' | 'never'
 
 Source: [`packages/interaction/user-approval/src/index.ts:177`](../packages/interaction/user-approval/src/index.ts)
 
-<a id="pentest-harnessdsh-web"></a>
+<a id="fathomweb"></a>
 
-## `@pentest-harness/dsh-web`
+## `@fathom/web`
 
 ```ts config-catalog
 /**
@@ -3125,9 +3125,9 @@ export interface WebRuntimeConfig {
 
 Source: [`packages/web/web/src/index.ts:56`](../packages/web/web/src/index.ts)
 
-<a id="pentest-harnessdsh-web-app"></a>
+<a id="fathomweb-app"></a>
 
-## `@pentest-harness/dsh-web-app`
+## `@fathom/web-app`
 
 Requires: `webServer`
 
@@ -3140,7 +3140,7 @@ export interface Config {
   printUrl: boolean
   /**
    * Register the model-visible surface context (the `app:web-surface` prompt
-   * section and the `DSH_WEB_URL` bash variable). A one-shot non-interactive
+   * section and the `FATHOM_WEB_URL` bash variable). A one-shot non-interactive
    * layer can turn it off when its user is not in the GUI, so the
    * orientation text would be false.
    */
@@ -3152,9 +3152,9 @@ export interface Config {
 
 Source: [`packages/bundle/web-app/src/index.ts:42`](../packages/bundle/web-app/src/index.ts)
 
-<a id="pentest-harnessdsh-web-fetch-http"></a>
+<a id="fathomweb-fetch-http"></a>
 
-## `@pentest-harness/dsh-web-fetch-http`
+## `@fathom/web-fetch-http`
 
 Requires: `web`
 
@@ -3178,9 +3178,9 @@ export interface Config {
 
 Source: [`packages/web/web-fetch-http/src/index.ts:34`](../packages/web/web-fetch-http/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-duckduckgo"></a>
+<a id="fathomweb-search-duckduckgo"></a>
 
-## `@pentest-harness/dsh-web-search-duckduckgo`
+## `@fathom/web-search-duckduckgo`
 
 Requires: `web`
 
@@ -3196,9 +3196,9 @@ export interface Config {
 
 Source: [`packages/web/web-search-duckduckgo/src/index.ts:31`](../packages/web/web-search-duckduckgo/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-exa"></a>
+<a id="fathomweb-search-exa"></a>
 
-## `@pentest-harness/dsh-web-search-exa`
+## `@fathom/web-search-exa`
 
 Requires: `web`
 
@@ -3220,9 +3220,9 @@ export interface Config {
 
 Source: [`packages/web/web-search-exa/src/index.ts:38`](../packages/web/web-search-exa/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-google"></a>
+<a id="fathomweb-search-google"></a>
 
-## `@pentest-harness/dsh-web-search-google`
+## `@fathom/web-search-google`
 
 Requires: `web`
 
@@ -3250,9 +3250,9 @@ export interface Config {
 
 Source: [`packages/web/web-search-google/src/index.ts:59`](../packages/web/web-search-google/src/index.ts)
 
-<a id="pentest-harnessdsh-web-search-perplexity"></a>
+<a id="fathomweb-search-perplexity"></a>
 
-## `@pentest-harness/dsh-web-search-perplexity`
+## `@fathom/web-search-perplexity`
 
 Requires: `web`
 
@@ -3274,9 +3274,9 @@ export interface Config {
 
 Source: [`packages/web/web-search-perplexity/src/index.ts:32`](../packages/web/web-search-perplexity/src/index.ts)
 
-<a id="pentest-harnessdsh-workflow-worker-thread"></a>
+<a id="fathomworkflow-worker-thread"></a>
 
-## `@pentest-harness/dsh-workflow-worker-thread`
+## `@fathom/workflow-worker-thread`
 
 Requires: `subagents`
 
@@ -3308,133 +3308,133 @@ Source: [`packages/workflow/workflow-worker-thread/src/index.ts:32`](../packages
 
 These load from a `cordis.yml` entry with no `config:` block; they declare no configuration API.
 
-- `@pentest-harness/dsh-agent` ([`packages/core/agent/src/index.ts`](../packages/core/agent/src/index.ts))
-- `@pentest-harness/dsh-api-gateway` — requires `typert` ([`packages/api/gateway/src/index.ts`](../packages/api/gateway/src/index.ts))
-- `@pentest-harness/dsh-api-remotes` ([`packages/api/remotes/src/index.ts`](../packages/api/remotes/src/index.ts))
-- `@pentest-harness/dsh-authorization` — requires `credentials` ([`packages/credentials/authorization/src/index.ts`](../packages/credentials/authorization/src/index.ts))
-- `@pentest-harness/dsh-client-locale` ([`packages/client/locale/src/index.ts`](../packages/client/locale/src/index.ts))
-- `@pentest-harness/dsh-client-modules` — requires `webServer` · `loader` ([`packages/client/modules/src/index.ts`](../packages/client/modules/src/index.ts))
-- `@pentest-harness/dsh-client-runtime` ([`packages/client/runtime/src/index.ts`](../packages/client/runtime/src/index.ts))
-- `@pentest-harness/dsh-client-ui-agent-preset` ([`packages/client/ui-agent-preset/src/index.ts`](../packages/client/ui-agent-preset/src/index.ts))
-- `@pentest-harness/dsh-client-ui-attachment` ([`packages/client/ui-attachment/src/index.ts`](../packages/client/ui-attachment/src/index.ts))
-- `@pentest-harness/dsh-client-ui-brand-official` ([`packages/client/ui-brand-official/src/index.ts`](../packages/client/ui-brand-official/src/index.ts))
-- `@pentest-harness/dsh-client-ui-browser` ([`packages/client/ui-browser/src/index.ts`](../packages/client/ui-browser/src/index.ts))
-- `@pentest-harness/dsh-client-ui-commands` ([`packages/client/ui-commands/src/index.ts`](../packages/client/ui-commands/src/index.ts))
-- `@pentest-harness/dsh-client-ui-conversation` ([`packages/client/ui-conversation/src/index.ts`](../packages/client/ui-conversation/src/index.ts))
-- `@pentest-harness/dsh-client-ui-cordis` ([`packages/extensions/ui-cordis/src/index.ts`](../packages/extensions/ui-cordis/src/index.ts))
-- `@pentest-harness/dsh-client-ui-deliverables` — requires `systemPrompt` ([`packages/client/ui-deliverables/src/index.ts`](../packages/client/ui-deliverables/src/index.ts))
-- `@pentest-harness/dsh-client-ui-directory-picker-browse` ([`packages/client/ui-directory-picker-browse/src/index.ts`](../packages/client/ui-directory-picker-browse/src/index.ts))
-- `@pentest-harness/dsh-client-ui-directory-picker-native` ([`packages/client/ui-directory-picker-native/src/index.ts`](../packages/client/ui-directory-picker-native/src/index.ts))
-- `@pentest-harness/dsh-client-ui-goal` ([`packages/client/ui-goal/src/index.ts`](../packages/client/ui-goal/src/index.ts))
-- `@pentest-harness/dsh-client-ui-input-trigger` ([`packages/client/ui-input-trigger/src/index.ts`](../packages/client/ui-input-trigger/src/index.ts))
-- `@pentest-harness/dsh-client-ui-jobs` ([`packages/client/ui-jobs/src/index.ts`](../packages/client/ui-jobs/src/index.ts))
-- `@pentest-harness/dsh-client-ui-layout` ([`packages/client/ui-layout/src/index.ts`](../packages/client/ui-layout/src/index.ts))
-- `@pentest-harness/dsh-client-ui-message-feedback` ([`packages/client/ui-message-feedback/src/index.ts`](../packages/client/ui-message-feedback/src/index.ts))
-- `@pentest-harness/dsh-client-ui-model-selection` ([`packages/client/ui-model-selection/src/index.ts`](../packages/client/ui-model-selection/src/index.ts))
-- `@pentest-harness/dsh-client-ui-permission-presets` ([`packages/client/ui-permission-presets/src/index.ts`](../packages/client/ui-permission-presets/src/index.ts))
-- `@pentest-harness/dsh-client-ui-plan` ([`packages/client/ui-plan/src/index.ts`](../packages/client/ui-plan/src/index.ts))
-- `@pentest-harness/dsh-client-ui-reference` ([`packages/client/ui-reference/src/index.ts`](../packages/client/ui-reference/src/index.ts))
-- `@pentest-harness/dsh-client-ui-renderer` ([`packages/client/ui-renderer/src/index.ts`](../packages/client/ui-renderer/src/index.ts))
-- `@pentest-harness/dsh-client-ui-settings` ([`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts))
-- `@pentest-harness/dsh-client-ui-settings-general` ([`packages/client/ui-settings-general/src/index.ts`](../packages/client/ui-settings-general/src/index.ts))
-- `@pentest-harness/dsh-client-ui-settings-models` ([`packages/client/ui-settings-models/src/index.ts`](../packages/client/ui-settings-models/src/index.ts))
-- `@pentest-harness/dsh-client-ui-settings-plugin-inventory` ([`packages/client/ui-settings-plugin-inventory/src/index.ts`](../packages/client/ui-settings-plugin-inventory/src/index.ts))
-- `@pentest-harness/dsh-client-ui-settings-plugins` ([`packages/client/ui-settings-plugins/src/index.ts`](../packages/client/ui-settings-plugins/src/index.ts))
-- `@pentest-harness/dsh-client-ui-sidebar` ([`packages/client/ui-sidebar/src/index.ts`](../packages/client/ui-sidebar/src/index.ts))
-- `@pentest-harness/dsh-client-ui-skill` ([`packages/client/ui-skill/src/index.ts`](../packages/client/ui-skill/src/index.ts))
-- `@pentest-harness/dsh-client-ui-subagent` ([`packages/client/ui-subagent/src/index.ts`](../packages/client/ui-subagent/src/index.ts))
-- `@pentest-harness/dsh-client-ui-theme` ([`packages/client/ui-theme/src/index.ts`](../packages/client/ui-theme/src/index.ts))
-- `@pentest-harness/dsh-client-ui-tool` ([`packages/client/ui-tool/src/index.ts`](../packages/client/ui-tool/src/index.ts))
-- `@pentest-harness/dsh-client-ui-trajectory` ([`packages/client/ui-trajectory/src/index.ts`](../packages/client/ui-trajectory/src/index.ts))
-- `@pentest-harness/dsh-client-ui-user-questions` ([`packages/client/ui-user-questions/src/index.ts`](../packages/client/ui-user-questions/src/index.ts))
-- `@pentest-harness/dsh-client-ui-workflow` ([`packages/client/ui-workflow/src/index.ts`](../packages/client/ui-workflow/src/index.ts))
-- `@pentest-harness/dsh-client-ui-workflow-run` ([`packages/client/ui-workflow-run/src/index.ts`](../packages/client/ui-workflow-run/src/index.ts))
-- `@pentest-harness/dsh-client-ui-workspace` ([`packages/client/ui-workspace/src/index.ts`](../packages/client/ui-workspace/src/index.ts))
-- `@pentest-harness/dsh-command-compact` — requires `commands` · `compaction` ([`packages/compaction/command-compact/src/index.ts`](../packages/compaction/command-compact/src/index.ts))
-- `@pentest-harness/dsh-command-feedback` — requires `commands` ([`packages/feedback/command-feedback/src/index.ts`](../packages/feedback/command-feedback/src/index.ts))
-- `@pentest-harness/dsh-command-goal` — requires `commands` · `goals` ([`packages/goal/command-goal/src/index.ts`](../packages/goal/command-goal/src/index.ts))
-- `@pentest-harness/dsh-commands` ([`packages/interaction/commands/src/index.ts`](../packages/interaction/commands/src/index.ts))
-- `@pentest-harness/dsh-cordis-client-runner` ([`packages/extensions/cordis-client-runner/src/index.ts`](../packages/extensions/cordis-client-runner/src/index.ts))
-- `@pentest-harness/dsh-fs-e2b` — requires `e2b` ([`packages/e2b/fs-e2b/src/index.ts`](../packages/e2b/fs-e2b/src/index.ts))
-- `@pentest-harness/dsh-fs-observation-policy` ([`packages/fs/fs-observation-policy/src/index.ts`](../packages/fs/fs-observation-policy/src/index.ts))
-- `@pentest-harness/dsh-goal-round-driver` — requires `agents` · `goals` · `sessions` ([`packages/goal/goal-round-driver/src/index.ts`](../packages/goal/goal-round-driver/src/index.ts))
-- `@pentest-harness/dsh-host-directory-picker-auto` — requires `webServer` · `loader` ([`packages/host/directory-picker-auto/src/index.ts`](../packages/host/directory-picker-auto/src/index.ts))
-- `@pentest-harness/dsh-host-directory-picker-native` ([`packages/host/directory-picker-native/src/index.ts`](../packages/host/directory-picker-native/src/index.ts))
-- `@pentest-harness/dsh-host-plugin-inventory` — requires `loader` ([`packages/host/plugin-inventory/src/index.ts`](../packages/host/plugin-inventory/src/index.ts))
-- `@pentest-harness/dsh-llm` ([`packages/llm/llm/src/index.ts`](../packages/llm/llm/src/index.ts))
-- `@pentest-harness/dsh-lsp` ([`packages/lsp/lsp/src/index.ts`](../packages/lsp/lsp/src/index.ts))
-- `@pentest-harness/dsh-schedule` — requires `agents` · `sessions` · `tools` · `sessionPersistence` ([`packages/schedule/schedule/src/index.ts`](../packages/schedule/schedule/src/index.ts))
-- `@pentest-harness/dsh-session` ([`packages/core/session/src/index.ts`](../packages/core/session/src/index.ts))
-- `@pentest-harness/dsh-session-checkpoint-policy` — requires `llm` · `sessionPersistence` · `sessions` · `tools` ([`packages/session/session-checkpoint-policy/src/index.ts`](../packages/session/session-checkpoint-policy/src/index.ts))
-- `@pentest-harness/dsh-session-log-export` — requires `commands` ([`packages/session-query/session-log-export/src/index.ts`](../packages/session-query/session-log-export/src/index.ts))
-- `@pentest-harness/dsh-session-projection` ([`packages/session/session-projection/src/index.ts`](../packages/session/session-projection/src/index.ts))
-- `@pentest-harness/dsh-session-stats` — requires `sessionProjections` ([`packages/session/session-stats/src/index.ts`](../packages/session/session-stats/src/index.ts))
-- `@pentest-harness/dsh-skill-badge` — requires `skills` ([`packages/skill/skill-badge/src/index.ts`](../packages/skill/skill-badge/src/index.ts))
-- `@pentest-harness/dsh-storage` ([`packages/storage/storage/src/index.ts`](../packages/storage/storage/src/index.ts))
-- `@pentest-harness/dsh-subagent` ([`packages/subagent/subagent/src/index.ts`](../packages/subagent/subagent/src/index.ts))
-- `@pentest-harness/dsh-subprocess-local` ([`packages/subprocess/subprocess-local/src/index.ts`](../packages/subprocess/subprocess-local/src/index.ts))
-- `@pentest-harness/dsh-terminal` ([`packages/terminal/terminal/src/index.ts`](../packages/terminal/terminal/src/index.ts))
-- `@pentest-harness/dsh-tool-ask-user` — requires `tools` · `userQuestions` ([`packages/interaction/tool-ask-user/src/index.ts`](../packages/interaction/tool-ask-user/src/index.ts))
-- `@pentest-harness/dsh-tool-call-timeout-policy` — requires `tools` ([`packages/guard/timeout-policy/src/index.ts`](../packages/guard/timeout-policy/src/index.ts))
-- `@pentest-harness/dsh-tool-cordis` — requires `tools` · `systemPrompt` · `dynamicCordisRunner` · `cordisInspect` ([`packages/extensions/tool-cordis/src/index.ts`](../packages/extensions/tool-cordis/src/index.ts))
-- `@pentest-harness/dsh-tool-subagent-control` — requires `tools` · `subagents` ([`packages/subagent/tool-subagent-control/src/index.ts`](../packages/subagent/tool-subagent-control/src/index.ts))
-- `@pentest-harness/dsh-user-questions` ([`packages/interaction/user-questions/src/index.ts`](../packages/interaction/user-questions/src/index.ts))
-- `@pentest-harness/dsh-workspace` — requires `storageDomain` · `sessionPersistence` ([`packages/workspace/workspace/src/index.ts`](../packages/workspace/workspace/src/index.ts))
+- `@fathom/agent` ([`packages/core/agent/src/index.ts`](../packages/core/agent/src/index.ts))
+- `@fathom/api-gateway` — requires `typert` ([`packages/api/gateway/src/index.ts`](../packages/api/gateway/src/index.ts))
+- `@fathom/api-remotes` ([`packages/api/remotes/src/index.ts`](../packages/api/remotes/src/index.ts))
+- `@fathom/authorization` — requires `credentials` ([`packages/credentials/authorization/src/index.ts`](../packages/credentials/authorization/src/index.ts))
+- `@fathom/client-locale` ([`packages/client/locale/src/index.ts`](../packages/client/locale/src/index.ts))
+- `@fathom/client-modules` — requires `webServer` · `loader` ([`packages/client/modules/src/index.ts`](../packages/client/modules/src/index.ts))
+- `@fathom/client-runtime` ([`packages/client/runtime/src/index.ts`](../packages/client/runtime/src/index.ts))
+- `@fathom/client-ui-agent-preset` ([`packages/client/ui-agent-preset/src/index.ts`](../packages/client/ui-agent-preset/src/index.ts))
+- `@fathom/client-ui-attachment` ([`packages/client/ui-attachment/src/index.ts`](../packages/client/ui-attachment/src/index.ts))
+- `@fathom/client-ui-brand-official` ([`packages/client/ui-brand-official/src/index.ts`](../packages/client/ui-brand-official/src/index.ts))
+- `@fathom/client-ui-browser` ([`packages/client/ui-browser/src/index.ts`](../packages/client/ui-browser/src/index.ts))
+- `@fathom/client-ui-commands` ([`packages/client/ui-commands/src/index.ts`](../packages/client/ui-commands/src/index.ts))
+- `@fathom/client-ui-conversation` ([`packages/client/ui-conversation/src/index.ts`](../packages/client/ui-conversation/src/index.ts))
+- `@fathom/client-ui-cordis` ([`packages/extensions/ui-cordis/src/index.ts`](../packages/extensions/ui-cordis/src/index.ts))
+- `@fathom/client-ui-deliverables` — requires `systemPrompt` ([`packages/client/ui-deliverables/src/index.ts`](../packages/client/ui-deliverables/src/index.ts))
+- `@fathom/client-ui-directory-picker-browse` ([`packages/client/ui-directory-picker-browse/src/index.ts`](../packages/client/ui-directory-picker-browse/src/index.ts))
+- `@fathom/client-ui-directory-picker-native` ([`packages/client/ui-directory-picker-native/src/index.ts`](../packages/client/ui-directory-picker-native/src/index.ts))
+- `@fathom/client-ui-goal` ([`packages/client/ui-goal/src/index.ts`](../packages/client/ui-goal/src/index.ts))
+- `@fathom/client-ui-input-trigger` ([`packages/client/ui-input-trigger/src/index.ts`](../packages/client/ui-input-trigger/src/index.ts))
+- `@fathom/client-ui-jobs` ([`packages/client/ui-jobs/src/index.ts`](../packages/client/ui-jobs/src/index.ts))
+- `@fathom/client-ui-layout` ([`packages/client/ui-layout/src/index.ts`](../packages/client/ui-layout/src/index.ts))
+- `@fathom/client-ui-message-feedback` ([`packages/client/ui-message-feedback/src/index.ts`](../packages/client/ui-message-feedback/src/index.ts))
+- `@fathom/client-ui-model-selection` ([`packages/client/ui-model-selection/src/index.ts`](../packages/client/ui-model-selection/src/index.ts))
+- `@fathom/client-ui-permission-presets` ([`packages/client/ui-permission-presets/src/index.ts`](../packages/client/ui-permission-presets/src/index.ts))
+- `@fathom/client-ui-plan` ([`packages/client/ui-plan/src/index.ts`](../packages/client/ui-plan/src/index.ts))
+- `@fathom/client-ui-reference` ([`packages/client/ui-reference/src/index.ts`](../packages/client/ui-reference/src/index.ts))
+- `@fathom/client-ui-renderer` ([`packages/client/ui-renderer/src/index.ts`](../packages/client/ui-renderer/src/index.ts))
+- `@fathom/client-ui-settings` ([`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts))
+- `@fathom/client-ui-settings-general` ([`packages/client/ui-settings-general/src/index.ts`](../packages/client/ui-settings-general/src/index.ts))
+- `@fathom/client-ui-settings-models` ([`packages/client/ui-settings-models/src/index.ts`](../packages/client/ui-settings-models/src/index.ts))
+- `@fathom/client-ui-settings-plugin-inventory` ([`packages/client/ui-settings-plugin-inventory/src/index.ts`](../packages/client/ui-settings-plugin-inventory/src/index.ts))
+- `@fathom/client-ui-settings-plugins` ([`packages/client/ui-settings-plugins/src/index.ts`](../packages/client/ui-settings-plugins/src/index.ts))
+- `@fathom/client-ui-sidebar` ([`packages/client/ui-sidebar/src/index.ts`](../packages/client/ui-sidebar/src/index.ts))
+- `@fathom/client-ui-skill` ([`packages/client/ui-skill/src/index.ts`](../packages/client/ui-skill/src/index.ts))
+- `@fathom/client-ui-subagent` ([`packages/client/ui-subagent/src/index.ts`](../packages/client/ui-subagent/src/index.ts))
+- `@fathom/client-ui-theme` ([`packages/client/ui-theme/src/index.ts`](../packages/client/ui-theme/src/index.ts))
+- `@fathom/client-ui-tool` ([`packages/client/ui-tool/src/index.ts`](../packages/client/ui-tool/src/index.ts))
+- `@fathom/client-ui-trajectory` ([`packages/client/ui-trajectory/src/index.ts`](../packages/client/ui-trajectory/src/index.ts))
+- `@fathom/client-ui-user-questions` ([`packages/client/ui-user-questions/src/index.ts`](../packages/client/ui-user-questions/src/index.ts))
+- `@fathom/client-ui-workflow` ([`packages/client/ui-workflow/src/index.ts`](../packages/client/ui-workflow/src/index.ts))
+- `@fathom/client-ui-workflow-run` ([`packages/client/ui-workflow-run/src/index.ts`](../packages/client/ui-workflow-run/src/index.ts))
+- `@fathom/client-ui-workspace` ([`packages/client/ui-workspace/src/index.ts`](../packages/client/ui-workspace/src/index.ts))
+- `@fathom/command-compact` — requires `commands` · `compaction` ([`packages/compaction/command-compact/src/index.ts`](../packages/compaction/command-compact/src/index.ts))
+- `@fathom/command-feedback` — requires `commands` ([`packages/feedback/command-feedback/src/index.ts`](../packages/feedback/command-feedback/src/index.ts))
+- `@fathom/command-goal` — requires `commands` · `goals` ([`packages/goal/command-goal/src/index.ts`](../packages/goal/command-goal/src/index.ts))
+- `@fathom/commands` ([`packages/interaction/commands/src/index.ts`](../packages/interaction/commands/src/index.ts))
+- `@fathom/cordis-client-runner` ([`packages/extensions/cordis-client-runner/src/index.ts`](../packages/extensions/cordis-client-runner/src/index.ts))
+- `@fathom/fs-e2b` — requires `e2b` ([`packages/e2b/fs-e2b/src/index.ts`](../packages/e2b/fs-e2b/src/index.ts))
+- `@fathom/fs-observation-policy` ([`packages/fs/fs-observation-policy/src/index.ts`](../packages/fs/fs-observation-policy/src/index.ts))
+- `@fathom/goal-round-driver` — requires `agents` · `goals` · `sessions` ([`packages/goal/goal-round-driver/src/index.ts`](../packages/goal/goal-round-driver/src/index.ts))
+- `@fathom/host-directory-picker-auto` — requires `webServer` · `loader` ([`packages/host/directory-picker-auto/src/index.ts`](../packages/host/directory-picker-auto/src/index.ts))
+- `@fathom/host-directory-picker-native` ([`packages/host/directory-picker-native/src/index.ts`](../packages/host/directory-picker-native/src/index.ts))
+- `@fathom/host-plugin-inventory` — requires `loader` ([`packages/host/plugin-inventory/src/index.ts`](../packages/host/plugin-inventory/src/index.ts))
+- `@fathom/llm` ([`packages/llm/llm/src/index.ts`](../packages/llm/llm/src/index.ts))
+- `@fathom/lsp` ([`packages/lsp/lsp/src/index.ts`](../packages/lsp/lsp/src/index.ts))
+- `@fathom/schedule` — requires `agents` · `sessions` · `tools` · `sessionPersistence` ([`packages/schedule/schedule/src/index.ts`](../packages/schedule/schedule/src/index.ts))
+- `@fathom/session` ([`packages/core/session/src/index.ts`](../packages/core/session/src/index.ts))
+- `@fathom/session-checkpoint-policy` — requires `llm` · `sessionPersistence` · `sessions` · `tools` ([`packages/session/session-checkpoint-policy/src/index.ts`](../packages/session/session-checkpoint-policy/src/index.ts))
+- `@fathom/session-log-export` — requires `commands` ([`packages/session-query/session-log-export/src/index.ts`](../packages/session-query/session-log-export/src/index.ts))
+- `@fathom/session-projection` ([`packages/session/session-projection/src/index.ts`](../packages/session/session-projection/src/index.ts))
+- `@fathom/session-stats` — requires `sessionProjections` ([`packages/session/session-stats/src/index.ts`](../packages/session/session-stats/src/index.ts))
+- `@fathom/skill-badge` — requires `skills` ([`packages/skill/skill-badge/src/index.ts`](../packages/skill/skill-badge/src/index.ts))
+- `@fathom/storage` ([`packages/storage/storage/src/index.ts`](../packages/storage/storage/src/index.ts))
+- `@fathom/subagent` ([`packages/subagent/subagent/src/index.ts`](../packages/subagent/subagent/src/index.ts))
+- `@fathom/subprocess-local` ([`packages/subprocess/subprocess-local/src/index.ts`](../packages/subprocess/subprocess-local/src/index.ts))
+- `@fathom/terminal` ([`packages/terminal/terminal/src/index.ts`](../packages/terminal/terminal/src/index.ts))
+- `@fathom/tool-ask-user` — requires `tools` · `userQuestions` ([`packages/interaction/tool-ask-user/src/index.ts`](../packages/interaction/tool-ask-user/src/index.ts))
+- `@fathom/tool-call-timeout-policy` — requires `tools` ([`packages/guard/timeout-policy/src/index.ts`](../packages/guard/timeout-policy/src/index.ts))
+- `@fathom/tool-cordis` — requires `tools` · `systemPrompt` · `dynamicCordisRunner` · `cordisInspect` ([`packages/extensions/tool-cordis/src/index.ts`](../packages/extensions/tool-cordis/src/index.ts))
+- `@fathom/tool-subagent-control` — requires `tools` · `subagents` ([`packages/subagent/tool-subagent-control/src/index.ts`](../packages/subagent/tool-subagent-control/src/index.ts))
+- `@fathom/user-questions` ([`packages/interaction/user-questions/src/index.ts`](../packages/interaction/user-questions/src/index.ts))
+- `@fathom/workspace` — requires `storageDomain` · `sessionPersistence` ([`packages/workspace/workspace/src/index.ts`](../packages/workspace/workspace/src/index.ts))
 
 ## Seam packages (not directly loadable)
 
 Abstract service classes — a deployment loads a concrete implementation package instead ([capability seams](../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)).
 
-- `@pentest-harness/dsh-attachment` — abstract `AttachmentStore` ([`packages/attachment/attachment/src/index.ts`](../packages/attachment/attachment/src/index.ts))
-- `@pentest-harness/dsh-code-runtime` — abstract `CodeRuntime` ([`packages/code-runtime/code-runtime/src/index.ts`](../packages/code-runtime/code-runtime/src/index.ts))
-- `@pentest-harness/dsh-compaction` — abstract `CompactionEngine` ([`packages/compaction/compaction/src/index.ts`](../packages/compaction/compaction/src/index.ts))
-- `@pentest-harness/dsh-credentials` — abstract `CredentialProvider` ([`packages/credentials/credentials/src/index.ts`](../packages/credentials/credentials/src/index.ts))
-- `@pentest-harness/dsh-file-reference` — abstract `FileReferenceService` ([`packages/context/file-reference/src/index.ts`](../packages/context/file-reference/src/index.ts))
-- `@pentest-harness/dsh-fs` — abstract `FileSystem` ([`packages/fs/fs/src/index.ts`](../packages/fs/fs/src/index.ts))
-- `@pentest-harness/dsh-host-directory-picker` — abstract `DirectoryPicker` ([`packages/host/directory-picker/src/index.ts`](../packages/host/directory-picker/src/index.ts))
-- `@pentest-harness/dsh-jobs` — abstract `JobRegistry` ([`packages/jobs/jobs/src/index.ts`](../packages/jobs/jobs/src/index.ts))
-- `@pentest-harness/dsh-sandbox` — abstract `SandboxProvider` ([`packages/sandbox/sandbox/src/index.ts`](../packages/sandbox/sandbox/src/index.ts))
-- `@pentest-harness/dsh-session-persistence` — abstract `SessionPersistence` ([`packages/session/session-persistence/src/index.ts`](../packages/session/session-persistence/src/index.ts))
-- `@pentest-harness/dsh-session-query` — abstract `SessionQueryEngine` ([`packages/session-query/session-query/src/index.ts`](../packages/session-query/session-query/src/index.ts))
-- `@pentest-harness/dsh-settings` — abstract `SettingsProvider` ([`packages/settings/settings/src/index.ts`](../packages/settings/settings/src/index.ts))
-- `@pentest-harness/dsh-shell` — abstract `ShellExecutor` ([`packages/shell/shell/src/index.ts`](../packages/shell/shell/src/index.ts))
-- `@pentest-harness/dsh-spill` — abstract `SpillStore` ([`packages/spill/spill/src/index.ts`](../packages/spill/spill/src/index.ts))
-- `@pentest-harness/dsh-subprocess` — abstract `SubprocessRuntime` ([`packages/subprocess/subprocess/src/index.ts`](../packages/subprocess/subprocess/src/index.ts))
-- `@pentest-harness/dsh-workflow` — abstract `WorkflowEngine` ([`packages/workflow/workflow/src/index.ts`](../packages/workflow/workflow/src/index.ts))
+- `@fathom/attachment` — abstract `AttachmentStore` ([`packages/attachment/attachment/src/index.ts`](../packages/attachment/attachment/src/index.ts))
+- `@fathom/code-runtime` — abstract `CodeRuntime` ([`packages/code-runtime/code-runtime/src/index.ts`](../packages/code-runtime/code-runtime/src/index.ts))
+- `@fathom/compaction` — abstract `CompactionEngine` ([`packages/compaction/compaction/src/index.ts`](../packages/compaction/compaction/src/index.ts))
+- `@fathom/credentials` — abstract `CredentialProvider` ([`packages/credentials/credentials/src/index.ts`](../packages/credentials/credentials/src/index.ts))
+- `@fathom/file-reference` — abstract `FileReferenceService` ([`packages/context/file-reference/src/index.ts`](../packages/context/file-reference/src/index.ts))
+- `@fathom/fs` — abstract `FileSystem` ([`packages/fs/fs/src/index.ts`](../packages/fs/fs/src/index.ts))
+- `@fathom/host-directory-picker` — abstract `DirectoryPicker` ([`packages/host/directory-picker/src/index.ts`](../packages/host/directory-picker/src/index.ts))
+- `@fathom/jobs` — abstract `JobRegistry` ([`packages/jobs/jobs/src/index.ts`](../packages/jobs/jobs/src/index.ts))
+- `@fathom/sandbox` — abstract `SandboxProvider` ([`packages/sandbox/sandbox/src/index.ts`](../packages/sandbox/sandbox/src/index.ts))
+- `@fathom/session-persistence` — abstract `SessionPersistence` ([`packages/session/session-persistence/src/index.ts`](../packages/session/session-persistence/src/index.ts))
+- `@fathom/session-query` — abstract `SessionQueryEngine` ([`packages/session-query/session-query/src/index.ts`](../packages/session-query/session-query/src/index.ts))
+- `@fathom/settings` — abstract `SettingsProvider` ([`packages/settings/settings/src/index.ts`](../packages/settings/settings/src/index.ts))
+- `@fathom/shell` — abstract `ShellExecutor` ([`packages/shell/shell/src/index.ts`](../packages/shell/shell/src/index.ts))
+- `@fathom/spill` — abstract `SpillStore` ([`packages/spill/spill/src/index.ts`](../packages/spill/spill/src/index.ts))
+- `@fathom/subprocess` — abstract `SubprocessRuntime` ([`packages/subprocess/subprocess/src/index.ts`](../packages/subprocess/subprocess/src/index.ts))
+- `@fathom/workflow` — abstract `WorkflowEngine` ([`packages/workflow/workflow/src/index.ts`](../packages/workflow/workflow/src/index.ts))
 
 ## Library packages (no plugin entry)
 
 Imported as libraries by other packages; a `cordis.yml` cannot load them.
 
-- `@pentest-harness/dsh-acp-snapshot` ([`packages/test-support/acp-snapshot/src/index.ts`](../packages/test-support/acp-snapshot/src/index.ts))
-- `@pentest-harness/dsh-agent-loop-testkit` ([`packages/test-support/agent-loop-testkit/src/index.ts`](../packages/test-support/agent-loop-testkit/src/index.ts))
-- `@pentest-harness/dsh-anonymous-user-id` ([`packages/identity/anonymous-user-id/src/index.ts`](../packages/identity/anonymous-user-id/src/index.ts))
-- `@pentest-harness/dsh-app-boot` ([`packages/boot/app-boot/src/index.ts`](../packages/boot/app-boot/src/index.ts))
-- `@pentest-harness/dsh-atomic-write` ([`packages/util/atomic-write/src/index.ts`](../packages/util/atomic-write/src/index.ts))
-- `@pentest-harness/dsh-base` ([`packages/bundle/base/src/index.ts`](../packages/bundle/base/src/index.ts))
-- `@pentest-harness/dsh-brand` ([`packages/util/brand/src/index.ts`](../packages/util/brand/src/index.ts))
-- `@pentest-harness/dsh-client-test-runtime` ([`packages/test-support/client-runtime/src/index.ts`](../packages/test-support/client-runtime/src/index.ts))
-- `@pentest-harness/dsh-client-ui-primitives` ([`packages/client/ui-primitives/src/index.ts`](../packages/client/ui-primitives/src/index.ts))
-- `@pentest-harness/dsh-client-ui-slots` ([`packages/client/ui-slots/src/index.ts`](../packages/client/ui-slots/src/index.ts))
-- `@pentest-harness/dsh-client-web` ([`packages/client/web/src/index.ts`](../packages/client/web/src/index.ts))
-- `@pentest-harness/dsh-cmdline` ([`packages/boot/cmdline/src/index.ts`](../packages/boot/cmdline/src/index.ts))
-- `@pentest-harness/dsh-code-runtime-python` ([`packages/code-runtime/code-runtime-python/src/index.ts`](../packages/code-runtime/code-runtime-python/src/index.ts))
-- `@pentest-harness/dsh-home-paths` ([`packages/util/home-paths/src/index.ts`](../packages/util/home-paths/src/index.ts))
-- `@pentest-harness/dsh-hook-protocol` ([`packages/hooks/hook-protocol/src/index.ts`](../packages/hooks/hook-protocol/src/index.ts))
-- `@pentest-harness/dsh-launch-environment` ([`packages/util/launch-environment/src/index.ts`](../packages/util/launch-environment/src/index.ts))
-- `@pentest-harness/dsh-llm-mock-server` ([`packages/test-support/llm-mock-server/src/index.ts`](../packages/test-support/llm-mock-server/src/index.ts))
-- `@pentest-harness/dsh-loader-smoke` ([`packages/test-support/loader-smoke/src/index.ts`](../packages/test-support/loader-smoke/src/index.ts))
-- `@pentest-harness/dsh-native-command` ([`packages/util/native-command/src/index.ts`](../packages/util/native-command/src/index.ts))
-- `@pentest-harness/dsh-output-retention` ([`packages/util/output-retention/src/index.ts`](../packages/util/output-retention/src/index.ts))
-- `@pentest-harness/dsh-sandbox-windows-acl` ([`packages/sandbox/sandbox-windows-acl/src/index.ts`](../packages/sandbox/sandbox-windows-acl/src/index.ts))
-- `@pentest-harness/dsh-scope` ([`packages/core/scope/src/index.ts`](../packages/core/scope/src/index.ts))
-- `@pentest-harness/dsh-sdk-client` ([`packages/sdk/client/src/index.ts`](../packages/sdk/client/src/index.ts))
-- `@pentest-harness/dsh-sdk-jsonrpc-demo` ([`packages/examples/jsonrpc-demo/src/index.ts`](../packages/examples/jsonrpc-demo/src/index.ts))
-- `@pentest-harness/dsh-sdk-protocol` ([`packages/sdk/protocol/src/index.ts`](../packages/sdk/protocol/src/index.ts))
-- `@pentest-harness/dsh-session-telemetry` ([`packages/session/session-telemetry/src/index.ts`](../packages/session/session-telemetry/src/index.ts))
-- `@pentest-harness/dsh-session-title-llm` ([`packages/session/session-title-llm/src/index.ts`](../packages/session/session-title-llm/src/index.ts))
-- `@pentest-harness/dsh-subagent-in-process-driver` ([`packages/subagent/subagent-in-process-driver/src/index.ts`](../packages/subagent/subagent-in-process-driver/src/index.ts))
-- `@pentest-harness/dsh-timeout` ([`packages/util/timeout/src/index.ts`](../packages/util/timeout/src/index.ts))
-- `@pentest-harness/dsh-typert-generator` ([`packages/typert/generator/src/index.ts`](../packages/typert/generator/src/index.ts))
-- `@pentest-harness/dsh-typert-protocol` ([`packages/typert/protocol/src/index.ts`](../packages/typert/protocol/src/index.ts))
-- `@pentest-harness/dsh-typert-registry` ([`packages/typert/registry/src/index.ts`](../packages/typert/registry/src/index.ts))
+- `@fathom/acp-snapshot` ([`packages/test-support/acp-snapshot/src/index.ts`](../packages/test-support/acp-snapshot/src/index.ts))
+- `@fathom/agent-loop-testkit` ([`packages/test-support/agent-loop-testkit/src/index.ts`](../packages/test-support/agent-loop-testkit/src/index.ts))
+- `@fathom/anonymous-user-id` ([`packages/identity/anonymous-user-id/src/index.ts`](../packages/identity/anonymous-user-id/src/index.ts))
+- `@fathom/app-boot` ([`packages/boot/app-boot/src/index.ts`](../packages/boot/app-boot/src/index.ts))
+- `@fathom/atomic-write` ([`packages/util/atomic-write/src/index.ts`](../packages/util/atomic-write/src/index.ts))
+- `@fathom/base` ([`packages/bundle/base/src/index.ts`](../packages/bundle/base/src/index.ts))
+- `@fathom/brand` ([`packages/util/brand/src/index.ts`](../packages/util/brand/src/index.ts))
+- `@fathom/client-test-runtime` ([`packages/test-support/client-runtime/src/index.ts`](../packages/test-support/client-runtime/src/index.ts))
+- `@fathom/client-ui-primitives` ([`packages/client/ui-primitives/src/index.ts`](../packages/client/ui-primitives/src/index.ts))
+- `@fathom/client-ui-slots` ([`packages/client/ui-slots/src/index.ts`](../packages/client/ui-slots/src/index.ts))
+- `@fathom/client-web` ([`packages/client/web/src/index.ts`](../packages/client/web/src/index.ts))
+- `@fathom/cmdline` ([`packages/boot/cmdline/src/index.ts`](../packages/boot/cmdline/src/index.ts))
+- `@fathom/code-runtime-python` ([`packages/code-runtime/code-runtime-python/src/index.ts`](../packages/code-runtime/code-runtime-python/src/index.ts))
+- `@fathom/home-paths` ([`packages/util/home-paths/src/index.ts`](../packages/util/home-paths/src/index.ts))
+- `@fathom/hook-protocol` ([`packages/hooks/hook-protocol/src/index.ts`](../packages/hooks/hook-protocol/src/index.ts))
+- `@fathom/launch-environment` ([`packages/util/launch-environment/src/index.ts`](../packages/util/launch-environment/src/index.ts))
+- `@fathom/llm-mock-server` ([`packages/test-support/llm-mock-server/src/index.ts`](../packages/test-support/llm-mock-server/src/index.ts))
+- `@fathom/loader-smoke` ([`packages/test-support/loader-smoke/src/index.ts`](../packages/test-support/loader-smoke/src/index.ts))
+- `@fathom/native-command` ([`packages/util/native-command/src/index.ts`](../packages/util/native-command/src/index.ts))
+- `@fathom/output-retention` ([`packages/util/output-retention/src/index.ts`](../packages/util/output-retention/src/index.ts))
+- `@fathom/sandbox-windows-acl` ([`packages/sandbox/sandbox-windows-acl/src/index.ts`](../packages/sandbox/sandbox-windows-acl/src/index.ts))
+- `@fathom/scope` ([`packages/core/scope/src/index.ts`](../packages/core/scope/src/index.ts))
+- `@fathom/sdk-client` ([`packages/sdk/client/src/index.ts`](../packages/sdk/client/src/index.ts))
+- `@fathom/sdk-jsonrpc-demo` ([`packages/examples/jsonrpc-demo/src/index.ts`](../packages/examples/jsonrpc-demo/src/index.ts))
+- `@fathom/sdk-protocol` ([`packages/sdk/protocol/src/index.ts`](../packages/sdk/protocol/src/index.ts))
+- `@fathom/session-telemetry` ([`packages/session/session-telemetry/src/index.ts`](../packages/session/session-telemetry/src/index.ts))
+- `@fathom/session-title-llm` ([`packages/session/session-title-llm/src/index.ts`](../packages/session/session-title-llm/src/index.ts))
+- `@fathom/subagent-in-process-driver` ([`packages/subagent/subagent-in-process-driver/src/index.ts`](../packages/subagent/subagent-in-process-driver/src/index.ts))
+- `@fathom/timeout` ([`packages/util/timeout/src/index.ts`](../packages/util/timeout/src/index.ts))
+- `@fathom/typert-generator` ([`packages/typert/generator/src/index.ts`](../packages/typert/generator/src/index.ts))
+- `@fathom/typert-protocol` ([`packages/typert/protocol/src/index.ts`](../packages/typert/protocol/src/index.ts))
+- `@fathom/typert-registry` ([`packages/typert/registry/src/index.ts`](../packages/typert/registry/src/index.ts))

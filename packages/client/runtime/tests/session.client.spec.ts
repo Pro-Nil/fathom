@@ -7,9 +7,9 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type {} from '@pentest-harness/dsh-commands/types'
-import type { SessionId } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionEvent } from '@fathom/session/types'
+import type {} from '@fathom/commands/types'
+import type { SessionId } from '@fathom/api-remotes/client'
 import { Session } from '../src/client/sessions/session.ts'
 import type {
   ChatConversationViewNode, ChatLocationNodeIndex, ChatNodeStore, ChatSnapshot,

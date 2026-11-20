@@ -1,11 +1,11 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationNodeDefinition, UnknownSurfaceNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { isAppendSurfaceEvent } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
+import { isAppendSurfaceEvent } from '@fathom/client-runtime/client'
 import { chatNode } from './common.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Generic presentation of an unclaimed append-surface event. */
     unknown: UnknownSurfaceNode

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type { AsideOwnerProps, OverlayOwnerProps } from '@pentest-harness/dsh-client-ui-layout/client'
-import type { PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type {} from '@fathom/client-ui-conversation/client'
+import type { AsideOwnerProps, OverlayOwnerProps } from '@fathom/client-ui-layout/client'
+import type { PropsRuntime } from '@fathom/client-ui-slots'
 import css from './BrowserPanel.module.css'
 
 /** Address of the live view the host's browser plugin serves. */
@@ -52,7 +52,7 @@ export function BrowserPanel(props: PropsRuntime<'aside'> & AsideOwnerProps) {
           <button type="button" title="Reconnect the view" aria-label="Reconnect the view" onClick={() => { setNonce(nonce + 1) }}>
             <Icon d={ICONS.reload} />
           </button>
-          <button type="button" title="Open in a new window" aria-label="Open in a new window" onClick={() => { window.open(src, 'dsh-browser', 'popup,width=1280,height=860') }}>
+          <button type="button" title="Open in a new window" aria-label="Open in a new window" onClick={() => { window.open(src, 'fathom-browser', 'popup,width=1280,height=860') }}>
             <Icon d={ICONS.popout} />
           </button>
           <button type="button" title={maximized ? 'Restore' : 'Maximize'} aria-label={maximized ? 'Restore' : 'Maximize'} onClick={toggleMaximized}>

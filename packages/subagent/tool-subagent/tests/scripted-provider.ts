@@ -1,8 +1,8 @@
 /** Package-local scripted child boundary for deterministic tool-subagent tests. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import type {
   SubagentCapabilities,
   SubagentProvider,
@@ -10,7 +10,7 @@ import type {
   SubagentRun,
   SubagentStartRequest,
   SubagentStopReason,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 
 const DEFAULT_CAPABILITIES: SubagentCapabilities = {
   outputSchema: true,

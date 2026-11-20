@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 /**
- * dsh — command-line entry. Dynamic imports per mode keep unrelated modes out
+ * fathom — command-line entry. Dynamic imports per mode keep unrelated modes out
  * of each dispatch path; the adapter prints and exits for
  * `--help`/`--version`/a parse error, so only a valid mode reaches the switch.
- * @module @pentest-harness/dsh/bin
+ * @module @fathom/cli/bin
  */
 
 /* v8 ignore file -- built-bin acceptance exercises this self-executing dispatch. */
 
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { loadLayeredEnv } from '@pentest-harness/dsh-app-boot'
-import { parseDshArgs } from './args.ts'
+import { loadLayeredEnv } from '@fathom/app-boot'
+import { migrateLegacyHome } from '@fathom/home-paths'
+import { parseFathomArgs } from './args.ts'
 
 // Both the source tree (apps/cli/src) and the bundled bin (apps/cli/lib) sit
 // one directory under apps/cli, so the checked-in manifest resolves with the
@@ -24,13 +25,24 @@ function readVersion(): string {
   return typeof manifest.version === 'string' ? manifest.version : '0.0.0'
 }
 
-const invocation = parseDshArgs(process.argv.slice(2), readVersion())
+const invocation = parseFathomArgs(process.argv.slice(2), readVersion())
+
+// Bring a pre-rename installation (the old home directory, old package names
+// in profiles) forward before anything reads the home. A move that fails (a
+// file still open on Windows) leaves the old home in use; it is retried on
+// the next start.
+try {
+  const migration = migrateLegacyHome()
+  if (migration.moved !== undefined) process.stderr.write(`fathom: moved ${migration.moved.from} to ${migration.moved.to}\n`)
+} catch (error) {
+  process.stderr.write(`fathom: could not move the old home yet (${(error as Error).message}); using it where it is\n`)
+}
 
 switch (invocation.mode) {
   case 'profile': {
     const { runProfile } = await import('./profile-boot.ts')
     await runProfile({
-      environment: loadLayeredEnv('dsh'),
+      environment: loadLayeredEnv('fathom'),
       profile: invocation.profile,
       patchFiles: invocation.patches,
       args: invocation.args,
@@ -49,5 +61,5 @@ switch (invocation.mode) {
   }
   default:
     invocation satisfies never
-    throw new Error(`dsh: unhandled invocation mode ${JSON.stringify(invocation)}`)
+    throw new Error(`fathom: unhandled invocation mode ${JSON.stringify(invocation)}`)
 }

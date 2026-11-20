@@ -5,7 +5,7 @@ using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>The Avalonia application: theme, main window and tray icon.</summary>
 internal sealed class App : Application
@@ -20,7 +20,7 @@ internal sealed class App : Application
     {
         Styles.Add(new FluentTheme());
         RequestedThemeVariant = ThemeVariant.Dark;
-        Name = "Pentest Harness";
+        Name = "Fathom";
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -36,7 +36,7 @@ internal sealed class App : Application
             var tray = new TrayIcon
             {
                 Icon = new WindowIcon(Embedded.Open("app.png")),
-                ToolTipText = "Pentest Harness",
+                ToolTipText = "Fathom",
                 Menu = window.BuildNativeMenu(),
                 IsVisible = true,
             };

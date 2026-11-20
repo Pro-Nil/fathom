@@ -13,13 +13,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import HttpServer from '@pentest-harness/dsh-host-webserver'
-import type { DirectoryPicker } from '@pentest-harness/dsh-host-directory-picker'
-import BrowseDirectoryPicker from '@pentest-harness/dsh-host-directory-picker-browse'
-import NativeDirectoryPicker from '@pentest-harness/dsh-host-directory-picker-native'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import HttpServer from '@fathom/host-webserver'
+import type { DirectoryPicker } from '@fathom/host-directory-picker'
+import BrowseDirectoryPicker from '@fathom/host-directory-picker-browse'
+import NativeDirectoryPicker from '@fathom/host-directory-picker-native'
 import * as DirectoryPickerAuto from '../src/index.ts'
 
 const renameControl = vi.hoisted(() => ({
@@ -45,11 +45,11 @@ vi.mock('node:fs/promises', async (importOriginal) => {
   }
 })
 
-const AUTO = '@pentest-harness/dsh-host-directory-picker-auto'
-const NATIVE = '@pentest-harness/dsh-host-directory-picker-native'
-const BROWSE = '@pentest-harness/dsh-host-directory-picker-browse'
-const NATIVE_SURFACE = '@pentest-harness/dsh-client-ui-directory-picker-native'
-const BROWSE_SURFACE = '@pentest-harness/dsh-client-ui-directory-picker-browse'
+const AUTO = '@fathom/host-directory-picker-auto'
+const NATIVE = '@fathom/host-directory-picker-native'
+const BROWSE = '@fathom/host-directory-picker-browse'
+const NATIVE_SURFACE = '@fathom/client-ui-directory-picker-native'
+const BROWSE_SURFACE = '@fathom/client-ui-directory-picker-browse'
 
 /**
  * Loader-visible stand-in for a client surface package: the surfaces belong to
@@ -92,10 +92,10 @@ async function loadComposition(
   bindHost: '127.0.0.1' | '0.0.0.0',
   options: { failSurface?: boolean } = {},
 ): Promise<{ ctx: Context; configPath: string }> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-directory-picker-auto-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-directory-picker-auto-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@pentest-harness/dsh-host-webserver'",
+    "- name: '@fathom/host-webserver'",
     '  config:',
     `    host: '${bindHost}'`,
     '    port: 0',
@@ -108,7 +108,7 @@ async function loadComposition(
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-host-webserver', HttpServer],
+    ['@fathom/host-webserver', HttpServer],
     [AUTO, DirectoryPickerAuto],
     [NATIVE, NativeDirectoryPicker],
     [BROWSE, BrowseDirectoryPicker],
@@ -144,7 +144,7 @@ function entryNames(ctx: Context): string[] {
  * probe resolves identically on hosts with and without zenity/kdialog.
  */
 function stubAttendedHost(): void {
-  fakeBin = mkdtempSync(join(tmpdir(), 'dsh-picker-bin-'))
+  fakeBin = mkdtempSync(join(tmpdir(), 'fathom-picker-bin-'))
   const zenity = join(fakeBin, 'zenity')
   writeFileSync(zenity, '#!/bin/sh\n')
   chmodSync(zenity, 0o755)

@@ -1,6 +1,6 @@
 import type {
   ConversationLocation, ConversationNodeContext,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ChatNode, ChatNodeDataMap, ChatNodeKind,
 } from '../contract/chat-nodes.ts'

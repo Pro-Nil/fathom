@@ -8,13 +8,13 @@
  * Abort records synthetic error results for skipped calls so replay stays
  * valid. A terminal scheduler failure preserves already-recorded `tool/call`
  * events without fabricating results.
- * @module dsh-agent-loop/tool-calls
+ * @module fathom-agent-loop/tool-calls
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { assertNever, createToolResultMessage, type ToolCallBlock } from '@pentest-harness/dsh-llm'
-import type { Session, UserMessage } from '@pentest-harness/dsh-session'
-import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { assertNever, createToolResultMessage, type ToolCallBlock } from '@fathom/llm'
+import type { Session, UserMessage } from '@fathom/session'
+import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@fathom/tools'
 
 /** One tool call after argument parsing, ready to schedule. */
 interface PlannedCall {

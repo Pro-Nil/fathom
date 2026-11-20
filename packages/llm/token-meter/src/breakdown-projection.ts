@@ -6,14 +6,14 @@
  */
 
 import { z } from 'zod'
-import { canonicalHeader } from '@pentest-harness/dsh-session'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
+import { canonicalHeader } from '@fathom/session'
+import type { ProjectionDefinition } from '@fathom/session-projection'
 import { estimateSystemTokens, estimateToolsTokens } from './estimate.ts'
 import { foldSurfaceProjection } from './surface-projection.ts'
 // Import for the `contextBreakdown` SessionProjectionStateMap key merge.
 import type {} from './projection.ts'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     contextBreakdown: ContextBreakdownState
   }

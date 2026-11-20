@@ -3,16 +3,16 @@ import { randomUUID } from 'node:crypto'
 import { mkdtemp } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { agentEvents } from '@pentest-harness/dsh-agent'
-import { TOOL_ORDER_REST } from '@pentest-harness/dsh-system-prompt'
-import type { Message } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { agentEvents } from '@fathom/agent'
+import { TOOL_ORDER_REST } from '@fathom/system-prompt'
+import type { Message } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import * as acpAgent from '../src/index.ts'
 
 /**
- * In-process unit coverage for the @pentest-harness/dsh-acp-demo composition:
+ * In-process unit coverage for the @fathom/acp-demo composition:
  * mounting it brings up the agent-spine-demo spine + JSONL persistence + the ACP
  * bridge in one `ctx.plugin`. It loads no Loader-only plugin (no hmr), so it
  * mounts in a plain Context.
@@ -31,15 +31,15 @@ async function mount(config: acpAgent.Config, withBash = false): Promise<Context
       start() { throw new Error('composition test does not execute bash') },
     })
   }
-  config.persistenceRoot ??= await mkdtemp(join(tmpdir(), 'dsh-acp-demo-persistence-'))
+  config.persistenceRoot ??= await mkdtemp(join(tmpdir(), 'fathom-acp-demo-persistence-'))
   await ctx.plugin(acpAgent, config)
   return ctx
 }
 
 async function isolatedSkillsConfig(catalogDescriptionMaxLength?: number): Promise<NonNullable<acpAgent.Config['skills']>> {
-  const home = await mkdtemp(join(tmpdir(), 'dsh-acp-demo-skills-'))
+  const home = await mkdtemp(join(tmpdir(), 'fathom-acp-demo-skills-'))
   return {
-    filesystem: { dshHome: join(home, '.dsh'), agentsHome: join(home, '.agents') },
+    filesystem: { fathomHome: join(home, '.fathom'), agentsHome: join(home, '.agents') },
     ...catalogDescriptionMaxLength !== undefined ? { tool: { catalogDescriptionMaxLength } } : {},
   }
 }
@@ -60,34 +60,34 @@ async function composePrefix(ctx: Context): Promise<Message[]> {
 }
 
 async function withIsolatedSkillHomes<T>(run: () => Promise<T>): Promise<T> {
-  const oldDshHome = process.env.DSH_HOME
-  const oldAgentsHome = process.env.DSH_AGENTS_HOME
-  const home = await mkdtemp(join(tmpdir(), 'dsh-acp-demo-default-skills-'))
-  process.env.DSH_HOME = join(home, '.dsh')
-  process.env.DSH_AGENTS_HOME = join(home, '.agents')
+  const oldFathomHome = process.env.FATHOM_HOME
+  const oldAgentsHome = process.env.FATHOM_AGENTS_HOME
+  const home = await mkdtemp(join(tmpdir(), 'fathom-acp-demo-default-skills-'))
+  process.env.FATHOM_HOME = join(home, '.fathom')
+  process.env.FATHOM_AGENTS_HOME = join(home, '.agents')
   try {
     return await run()
   } finally {
-    if (oldDshHome === undefined) {
-      delete process.env.DSH_HOME
+    if (oldFathomHome === undefined) {
+      delete process.env.FATHOM_HOME
     } else {
-      process.env.DSH_HOME = oldDshHome
+      process.env.FATHOM_HOME = oldFathomHome
     }
     if (oldAgentsHome === undefined) {
-      delete process.env.DSH_AGENTS_HOME
+      delete process.env.FATHOM_AGENTS_HOME
     } else {
-      process.env.DSH_AGENTS_HOME = oldAgentsHome
+      process.env.FATHOM_AGENTS_HOME = oldAgentsHome
     }
   }
 }
 
-describe('dsh-acp-demo composition', () => {
+describe('fathom-acp-demo composition', () => {
   it('brings up the spine + persistence + the ACP bridge', async () => {
     const ctx = await mount({
       provider: 'mock',
       model: 'mock',
       persona: 'hi',
-      persistenceRoot: await mkdtemp(join(tmpdir(), 'dsh-acp-demo-test-')),
+      persistenceRoot: await mkdtemp(join(tmpdir(), 'fathom-acp-demo-test-')),
       persistenceCompression: 'none',
       skills: await isolatedSkillsConfig(),
       workspaceContext: false,
@@ -143,7 +143,7 @@ describe('dsh-acp-demo composition', () => {
       provider: 'mock',
       model: 'mock',
       persona: 'hi',
-      persistenceRoot: await mkdtemp(join(tmpdir(), 'dsh-acp-demo-workspace-context-')),
+      persistenceRoot: await mkdtemp(join(tmpdir(), 'fathom-acp-demo-workspace-context-')),
       workspaceContext: false,
     })
     expect(ctx.get('agents')).toBeDefined()
@@ -161,9 +161,9 @@ describe('dsh-acp-demo composition', () => {
     })
   })
 
-  it('forwards skill config and dshHome into agent-spine-demo', async () => {
+  it('forwards skill config and fathomHome into agent-spine-demo', async () => {
     const skills = await isolatedSkillsConfig(6)
-    const ctx = await mount({ provider: 'mock', model: 'mock', persona: 'hi', dshHome: skills.filesystem!.dshHome!, skills, workspaceContext: false })
+    const ctx = await mount({ provider: 'mock', model: 'mock', persona: 'hi', fathomHome: skills.filesystem!.fathomHome!, skills, workspaceContext: false })
     ctx.skills.register({ name: 'acp-skill', description: 'ACP skill', source: 'runtime', content: 'body' })
     expect(JSON.stringify(await composePrefix(ctx))).toContain('- `acp-skill`: ACP...')
     await ctx.fiber.dispose()
@@ -174,7 +174,7 @@ describe('dsh-acp-demo composition', () => {
       provider: 'mock',
       model: 'mock',
       maxParallelToolCalls: 3,
-      persistenceRoot: await mkdtemp(join(tmpdir(), 'dsh-acp-demo-test-parallel-')),
+      persistenceRoot: await mkdtemp(join(tmpdir(), 'fathom-acp-demo-test-parallel-')),
       skills: await isolatedSkillsConfig(),
       workspaceContext: false,
     })
@@ -232,7 +232,7 @@ describe('dsh-acp-demo composition', () => {
       provider: 'mock',
       model: 'mock',
       toolOrder: ['zulu', TOOL_ORDER_REST],
-      persistenceRoot: await mkdtemp(join(tmpdir(), 'dsh-acp-demo-test-tool-order-')),
+      persistenceRoot: await mkdtemp(join(tmpdir(), 'fathom-acp-demo-test-tool-order-')),
       workspaceContext: false,
     })
     // The bundle's own bash tools pend on the absent `ctx.shell` executor in

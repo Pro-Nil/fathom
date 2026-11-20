@@ -1,15 +1,15 @@
 /**
  * Durable agent session-event vocabulary shared with type-only consumers.
  *
- * @module @pentest-harness/dsh-agent/types
+ * @module @fathom/agent/types
  */
 
-import type { UserMessage } from '@pentest-harness/dsh-llm/types'
+import type { UserMessage } from '@fathom/llm/types'
 
 /** One of the two ordered pending-message lists owned by an agent. */
 export type InboxTarget = 'next-turn' | 'next-step'
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * One normalized mutation of an agent's durable pending-message lists.

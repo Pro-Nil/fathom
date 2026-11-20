@@ -1,10 +1,10 @@
 /**
  * Pure translation between the harness lifecycle and the automation-only ACP wire.
- * @module @pentest-harness/dsh-acp/codec
+ * @module @fathom/acp/codec
  */
 
 import type { StopReason } from '@agentclientprotocol/sdk'
-import type { TurnEndReason } from '@pentest-harness/dsh-session'
+import type { TurnEndReason } from '@fathom/session'
 
 /**
  * Map a harness turn ending to ACP's terminal reason vocabulary.

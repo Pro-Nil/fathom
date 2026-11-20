@@ -7,14 +7,14 @@
 
 import { randomBytes } from 'node:crypto'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { unzipSync, strFromU8 } from 'fflate'
-import type { ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionLineageNode } from '@pentest-harness/dsh-session-query'
-import type { SessionRawArtifact } from '@pentest-harness/dsh-session-persistence'
-import ApiProxyService, { createApiProxy, toFetchHandler } from '@pentest-harness/dsh-host-apiproxy'
+import type { ImageAttachmentRef } from '@fathom/attachment'
+import UserQuestionService from '@fathom/user-questions'
+import type { SessionHeader, SessionId } from '@fathom/session'
+import type { SessionLineageNode } from '@fathom/session-query'
+import type { SessionRawArtifact } from '@fathom/session-persistence'
+import ApiProxyService, { createApiProxy, toFetchHandler } from '@fathom/host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 
@@ -161,7 +161,7 @@ describe('session.export download endpoint', () => {
     )
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toBe('application/zip')
-    expect(response.headers.get('content-disposition')).toContain('dsh-session-session-root.zip')
+    expect(response.headers.get('content-disposition')).toContain('fathom-session-session-root.zip')
     const files = unzipSync(await responseBytes(response))
     expect(Object.keys(files)).toEqual(['session.jsonl'])
     expect(strFromU8(files['session.jsonl'] as Uint8Array)).toBe(artifact('session-root').content)
@@ -176,7 +176,7 @@ describe('session.export download endpoint', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toBe('application/zip')
-    expect(response.headers.get('content-disposition')).toContain('dsh-session-session-root.zip')
+    expect(response.headers.get('content-disposition')).toContain('fathom-session-session-root.zip')
     expect(response.body).toBeNull()
     expect(readRaw).toHaveBeenCalledOnce()
   })

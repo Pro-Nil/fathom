@@ -1,4 +1,4 @@
-import { Service } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
 
 /** Service whose public annotations are intentionally absent. */
 export class WritableService extends Service {
@@ -9,7 +9,7 @@ export class WritableService extends Service {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     writable: WritableService
   }

@@ -2,15 +2,15 @@
  * JSON storage backend: one human-readable file per unit under a configured
  * root, published by atomic whole-file rewrite. Registers as backend `json`
  * on the storage hub.
- * @module @pentest-harness/dsh-storage-json
+ * @module @fathom/storage-json
  */
 
 import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@pentest-harness/dsh-storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@pentest-harness/dsh-storage'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@fathom/storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@fathom/storage'
 import { openJsonUnit } from './unit.ts'
 
 /** Cordis plugin name. */

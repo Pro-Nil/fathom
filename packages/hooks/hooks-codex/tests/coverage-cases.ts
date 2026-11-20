@@ -1,25 +1,25 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, chmodSync, existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as HooksCodex from '@pentest-harness/dsh-hooks-codex'
+import { Context } from '@fathom/cordis'
+import { SessionId, type SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import { defineContentToolFixture } from '@fathom/tools'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as HooksCodex from '@fathom/hooks-codex'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 const testToolSignal = new AbortController().signal
 
 const dirs: string[] = []
 afterEach(() => { for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true }) })
-function dir(): string { const d = mkdtempSync(join(tmpdir(), 'dsh-hx-cov-')); dirs.push(d); return d }
+function dir(): string { const d = mkdtempSync(join(tmpdir(), 'fathom-hx-cov-')); dirs.push(d); return d }
 function sh(d: string, name: string, body: string): string {
   const p = join(d, name); writeFileSync(p, body); chmodSync(p, 0o755); return p
 }
@@ -458,7 +458,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       const ctx = await harness(join(d, 'hooks.json'), new MockAdapter([]))
       let ran = false
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { ran = true; return [{ type: 'text', text: 'x' }] } }))
-      const { CallId } = await import('@pentest-harness/dsh-llm')
+      const { CallId } = await import('@fathom/llm')
       const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('c1'), name: 'Bash', arguments: { command: 'x' } })
       expect(ran).toBe(false) // denied
       expect(result.isError).toBe(true)
@@ -469,7 +469,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       hooks(d, { PostToolUse: [{ hooks: [{ type: 'command', command: sh(d, 'pc.sh', '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"x"}}\'\n') }] }] })
       const ctx = await harness(join(d, 'hooks.json'), new MockAdapter([]))
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { return [{ type: 'text', text: 'ok' }] } }))
-      const { CallId } = await import('@pentest-harness/dsh-llm')
+      const { CallId } = await import('@fathom/llm')
       const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('c1'), name: 'Bash', arguments: { command: 'x' } })
       expect(result.isError).toBeFalsy()
       expect(result.additionalContexts?.[0]?.content.some(b => b.type === 'text' && b.text === 'x')).toBe(true)
@@ -630,7 +630,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       await ctx.plugin(HooksCodex, { configPath: join(serverDir, 'hooks.json'), model: 'm' })
       ctx.llm.registerAdapter(['mock'], adapter)
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { return [{ type: 'text', text: 'ok' }] } }))
-      const { SessionId } = await import('@pentest-harness/dsh-session')
+      const { SessionId } = await import('@fathom/session')
       const handle = await ctx.agents.create({ sessionId: SessionId('s1'), meta: { cwd: sessionDir }, agentOptions: { provider: 'mock', model: 'mock' } })
       handle.agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'user' } }))
       await waitForIdle(ctx, handle.agent)

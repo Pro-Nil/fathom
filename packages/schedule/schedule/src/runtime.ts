@@ -1,11 +1,11 @@
 /**
  * Disposable live timer projection for one exact root agent.
- * @module @pentest-harness/dsh-schedule
+ * @module @fathom/schedule
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
 import type { EveryScheduleRecord, OneShotScheduleRecord } from './types.ts'
 import {
   foldScheduleEvents,

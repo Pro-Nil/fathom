@@ -1,15 +1,15 @@
 /**
  * Session-query service error containment and model-safe translation.
  *
- * @module @pentest-harness/dsh-tool-session-query/service-boundary
+ * @module @fathom/tool-session-query/service-boundary
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
 import {
   SessionQueryError,
   type SessionQueryErrorCode,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 
 interface ModelSafeServiceFailure {
   readonly code: SessionQueryErrorCode | 'SESSION_QUERY_TOOL_FAILED'

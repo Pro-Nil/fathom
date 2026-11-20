@@ -1,5 +1,5 @@
-import { composeError, Context } from '@pentest-harness/cordis'
-import { isNonNullable, type Dict } from '@pentest-harness/cosmokit'
+import { composeError, Context } from '@fathom/cordis'
+import { isNonNullable, type Dict } from '@fathom/cosmokit'
 import { Entry, type EntryOptions } from './entry.ts'
 import { EntryGroup } from './group.ts'
 

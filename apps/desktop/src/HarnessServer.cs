@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// Owns the harness web server process. If something already listens on the

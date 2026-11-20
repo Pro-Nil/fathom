@@ -3,11 +3,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import CommandRuntime from '@pentest-harness/dsh-commands'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import type { Agent } from '@fathom/agent'
+import CommandRuntime from '@fathom/commands'
 import {
   CompactionId,
   CompactionEngine,
@@ -15,9 +15,9 @@ import {
   type CompactionResult,
   type CompactionTrigger,
   type ManualCompactAgentContext,
-} from '@pentest-harness/dsh-compaction'
-import * as commandCompact from '@pentest-harness/dsh-command-compact'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
+} from '@fathom/compaction'
+import * as commandCompact from '@fathom/command-compact'
+import { Session, SessionId } from '@fathom/session'
 
 const COMPACTION_ID = CompactionId('loader-command-compact-test')
 
@@ -81,12 +81,12 @@ afterEach(async () => {
 
 describe('command-compact real Loader composition', () => {
   it('discovers and executes /compact through the assembled command plane', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-command-compact-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'fathom-command-compact-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-commands'",
+      "- name: '@fathom/commands'",
       "- name: '@test/compact-backend'",
-      "- name: '@pentest-harness/dsh-command-compact'",
+      "- name: '@fathom/command-compact'",
       '',
     ].join('\n'))
 
@@ -95,9 +95,9 @@ describe('command-compact real Loader composition', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@pentest-harness/dsh-commands', CommandRuntime],
+      ['@fathom/commands', CommandRuntime],
       ['@test/compact-backend', LoaderCompactionEngine],
-      ['@pentest-harness/dsh-command-compact', commandCompact],
+      ['@fathom/command-compact', commandCompact],
     ])
     context.loader.internal = {
       version: 'v2',

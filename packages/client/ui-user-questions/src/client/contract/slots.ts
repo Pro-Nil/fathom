@@ -6,12 +6,12 @@
  * cancelled error encoding, receipt checks — lives HERE, with the package
  * that consumes it.
  */
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 // Also pulls ui-conversation's SlotMap merge (the 'conversation.composer'
 // entry) into every program that sees this contract, so PropsRuntime resolves.
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type { PendingWait } from '@pentest-harness/dsh-client-runtime/client'
-import type { QuestionResponsePayload } from '@pentest-harness/dsh-api-remotes/client'
+import type {} from '@fathom/client-ui-conversation/client'
+import type { PendingWait } from '@fathom/client-runtime/client'
+import type { QuestionResponsePayload } from '@fathom/api-remotes/client'
 
 /** The pending question carrier the owner dispatches into the composer slot. */
 export type QuestionWait = PendingWait<'question'>

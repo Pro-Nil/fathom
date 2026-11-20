@@ -1,15 +1,15 @@
-/** Package-owned durable clock-context invariants. @module @pentest-harness/dsh-time-context/invariant */
+/** Package-owned durable clock-context invariants. @module @fathom/time-context/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,
 } from './request-zone.ts'
 import { createTimestampFormatter, formatTimestamp } from './timestamp.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-time-context'
+const PACKAGE_NAME = '@fathom/time-context'
 const SOURCE_NAME = 'time-context'
 const READING = new RegExp(
   '^Time sampled while preparing turn (\\d+), step (\\d+): '

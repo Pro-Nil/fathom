@@ -1,5 +1,5 @@
 /**
- * Integration tests: the REAL `@pentest-harness/dsh-pwsh-local` executor plus the
+ * Integration tests: the REAL `@fathom/pwsh-local` executor plus the
  * `pwsh` tool, exercised through `ctx.tools.execute()` with a real PowerShell
  * process. These verify the world — actual commands run, stdout/stderr come
  * back, exit codes render, timeouts abort, background jobs settle through the
@@ -14,16 +14,16 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED } from '@pentest-harness/dsh-tools'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import { PwshLocalExecutor, resolvePwshPath } from '@pentest-harness/dsh-pwsh-local'
-import * as ToolPwsh from '@pentest-harness/dsh-tool-pwsh'
-import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED } from '@fathom/tools'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as ToolTasks from '@fathom/tool-jobs'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import { PwshLocalExecutor, resolvePwshPath } from '@fathom/pwsh-local'
+import * as ToolPwsh from '@fathom/tool-pwsh'
+import * as BashEnvPlugin from '@fathom/shell-env'
 
 const testToolSignal = new AbortController().signal
 
@@ -54,7 +54,7 @@ function text(result: { content: { type: string; text?: string }[] }): string {
 
 describe.skipIf(!hasPwsh)('pwsh tool over the real pwsh executor', () => {
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'dsh-tool-pwsh-'))
+    dir = await mkdtemp(join(tmpdir(), 'fathom-tool-pwsh-'))
     await writeFile(join(dir, 'greeting.txt'), 'hello pwsh\n')
 
     ctx = new Context()

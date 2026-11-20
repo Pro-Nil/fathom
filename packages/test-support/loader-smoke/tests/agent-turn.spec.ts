@@ -1,5 +1,5 @@
-import type { Context } from '@pentest-harness/cordis'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { SessionEvent } from '@fathom/session'
 import { describe, expect, it, vi } from 'vitest'
 import { runFixtureTurn } from '../src/agent-turn.ts'
 

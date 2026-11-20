@@ -1,5 +1,5 @@
 /** Test-owned Remote face: `$on` subscriptions driven by the internal forwarded-event plumbing. */
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 
 /**
  * Remote service test double for the forwarded-event path. Feature specs need

@@ -1,18 +1,18 @@
 /**
  * Pure types of the todo domain: the ONE home of the `todos` projection-key
  * declaration plus its payload types, free of this package's host-side value
- * imports (dsh-tools, zod). Two namespace projections serve it — `./types`
+ * imports (fathom-tools, zod). Two namespace projections serve it — `./types`
  * for host consumers, `./client/types` (the browser half-entry's re-export)
  * for client aggregates — with zero content duplication.
  *
- * @module @pentest-harness/dsh-tool-todo/types
+ * @module @fathom/tool-todo/types
  */
 
-import type { TodoItem } from '@pentest-harness/dsh-session/types'
+import type { TodoItem } from '@fathom/session/types'
 
-export type { TodoItem } from '@pentest-harness/dsh-session/types'
+export type { TodoItem } from '@fathom/session/types'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     todos: TodoItem[] | null
   }

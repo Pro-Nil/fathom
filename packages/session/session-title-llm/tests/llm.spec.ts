@@ -1,17 +1,17 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, CallId, isAgentLoopRequest, LlmAdapter  } from '@pentest-harness/dsh-llm'
-import type { FinishReason, GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import { SessionTitleProviderId } from '@pentest-harness/dsh-session-title'
-import type { SessionTitleProviderRequest } from '@pentest-harness/dsh-session-title'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import LlmRuntime, { createUserMessage, CallId, isAgentLoopRequest, LlmAdapter  } from '@fathom/llm'
+import type { FinishReason, GenerateOptions, StreamChunk } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import { SessionTitleProviderId } from '@fathom/session-title'
+import type { SessionTitleProviderRequest } from '@fathom/session-title'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import {
   generateSessionTitleWithLlm,
   resolveSessionTitleLlmConfig,
   SESSION_TITLE_TIMEOUT_CODE,
-} from '@pentest-harness/dsh-session-title-llm'
-import type { SessionTitleLlmConfig } from '@pentest-harness/dsh-session-title-llm'
+} from '@fathom/session-title-llm'
+import type { SessionTitleLlmConfig } from '@fathom/session-title-llm'
 
 class RecordingAdapter extends LlmAdapter {
   readonly requests: GenerateOptions[] = []

@@ -1,4 +1,4 @@
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   export interface TypertLookup<Host, Wire> {
     readonly host: Host
     readonly wire: Wire

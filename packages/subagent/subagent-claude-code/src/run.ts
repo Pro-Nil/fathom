@@ -3,7 +3,7 @@
  * real CLI process under the shared subprocess owner, map only strict SDK
  * success to completion, and dispose to whole-tree quiescence.
  *
- * @module @pentest-harness/dsh-subagent-claude-code/run
+ * @module @fathom/subagent-claude-code/run
  */
 
 import { randomUUID } from 'node:crypto'
@@ -15,8 +15,8 @@ import {
   type SDKResultMessage,
   type SpawnOptions,
 } from '@anthropic-ai/claude-agent-sdk'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import {
   settleRunResult,
   subprocessRunHandle,
@@ -24,13 +24,13 @@ import {
   type SubagentRun,
   type SubagentStartRequest,
   type SubagentStopReason,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import {
   scrubbedParentEnv,
   type SubprocessHandle,
   type SubprocessOutcome,
   type SubprocessSpawnSpec,
-} from '@pentest-harness/dsh-subprocess'
+} from '@fathom/subprocess'
 import {
   claudeSpawnSpec,
   ManagedClaudeCodeProcess,

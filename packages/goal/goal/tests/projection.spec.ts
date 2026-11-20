@@ -9,16 +9,16 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentStatus } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-session'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import GoalService, { applyGoalProjection, foldGoal } from '@pentest-harness/dsh-goal'
-import type { GoalRef } from '@pentest-harness/dsh-goal'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentStatus } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { UserMessage } from '@fathom/session'
+import SessionStore from '@fathom/session'
+import type { Session } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import GoalService, { applyGoalProjection, foldGoal } from '@fathom/goal'
+import type { GoalRef } from '@fathom/goal'
 
 interface Bench {
   ctx: Context

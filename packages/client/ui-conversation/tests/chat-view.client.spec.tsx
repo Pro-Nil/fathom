@@ -10,17 +10,17 @@ import type {
   AssistantMessageNode, CommandNode, CompactionSummaryNode, ConversationNode, ConversationSnapshot,
   ModelRetryNode, RunningToolCall, SessionId, SessionListState, ToolCallBlock, ToolResultNode, TurnErrorNode,
   TurnMaxTokensNode, UserMessageNode, WorkspaceListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+} from '@fathom/client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS, PendingWait,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { RpcId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/client-runtime/client'
+import { RpcId } from '@fathom/client-connection/client'
 import type {
   ChatNode, ChatNodeOwnerProps, ChatNodeViewProps, ChatViewSlotProps, SelectionTarget, UseChatNodeTurnData,
-} from '@pentest-harness/dsh-client-ui-conversation/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+} from '@fathom/client-ui-conversation/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { createChatStore } from '../src/client/stores.ts'
 import { ChatView } from '../src/client/chat/ChatView.tsx'
 import { en } from '../src/client/locales.ts'

@@ -2,17 +2,17 @@
 # a config patch cannot target an entry behind a nested include, then restates
 # the goal overlay while replacing the live model with keyless replay.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: goal
-            name: '@pentest-harness/dsh-goal'
+            name: '@fathom/goal'
           - id: tool-goal
-            name: '@pentest-harness/dsh-tool-goal'
+            name: '@fathom/tool-goal'
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'

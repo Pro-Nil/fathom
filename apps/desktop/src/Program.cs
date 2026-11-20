@@ -2,7 +2,7 @@ using System.IO.Pipes;
 using Avalonia;
 using Avalonia.Threading;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 internal static class Program
 {
@@ -13,8 +13,8 @@ internal static class Program
     /// (`--quit`) or "quit-keep" (`--quit --keep-harness`, used when updating
     /// the app: the harness keeps running and the next launch takes it back).
     /// </summary>
-    private static readonly string PipeName = $"PentestHarness.Desktop.{Environment.UserName}"
-        + (Environment.GetEnvironmentVariable("PENTEST_HARNESS_APP_DIR") is { Length: > 0 } dir ? "." + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(dir)))[..8] : "");
+    private static readonly string PipeName = $"Fathom.Desktop.{Environment.UserName}"
+        + (Environment.GetEnvironmentVariable("FATHOM_APP_DIR") is { Length: > 0 } dir ? "." + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(dir)))[..8] : "");
 
     [STAThread]
     private static int Main(string[] args)
@@ -40,7 +40,7 @@ internal static class Program
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .With(new X11PlatformOptions { WmClass = "PentestHarness" })
+            .With(new X11PlatformOptions { WmClass = "Fathom" })
             .LogToTrace();
 
     private static bool TrySend(string command)

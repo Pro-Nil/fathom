@@ -12,8 +12,8 @@
  * route regardless of what any client disables.
  */
 
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId, SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import type { SessionId, SnapshotStore } from '@fathom/client-runtime/client'
 
 /** Why one session's composer is inert. */
 export interface ComposerBlock {

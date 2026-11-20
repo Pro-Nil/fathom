@@ -6,11 +6,11 @@
 // entries. Tool composition belongs to ui-tool and its machinery spec.
 
 import { describe, expect, it, vi } from 'vitest'
-import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import { resolveSlotLabel } from '@pentest-harness/dsh-client-ui-slots'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { apply, inject } from '@pentest-harness/dsh-client-ui-conversation/client'
+import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@fathom/client-test-runtime'
+import { resolveSlotLabel } from '@fathom/client-ui-slots'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import { apply, inject } from '@fathom/client-ui-conversation/client'
 
 // The service reads its initial locale from the browser; these specs assert
 // the shipped Chinese copy, so they state the browser they assume.

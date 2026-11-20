@@ -1,10 +1,10 @@
 /**
  * Compiler-independent Typert protocol shared by business packages, generated
  * Remote artifacts, the Host Gateway, and Client API implementations.
- * @module @pentest-harness/dsh-typert-protocol/types
+ * @module @fathom/typert-protocol/types
  */
 
-import type { Context, Events } from '@pentest-harness/cordis'
+import type { Context, Events } from '@fathom/cordis'
 
 declare const LOOKUP_HOST: unique symbol
 declare const LOOKUP_WIRE: unique symbol
@@ -484,7 +484,7 @@ export interface TypertRegistryContract {
   readonly contexts: TypertContextRegistry
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     typert: TypertRegistryContract
   }

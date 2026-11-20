@@ -1,3 +1,3 @@
-import { Group } from '@pentest-harness/cordis-plugin-loader'
+import { Group } from '@fathom/cordis-plugin-loader'
 
 export default Group

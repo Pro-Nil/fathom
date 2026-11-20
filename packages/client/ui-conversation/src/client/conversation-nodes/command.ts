@@ -1,16 +1,16 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   CommandNode, CompactionSummaryNode, ConversationMatch, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { isReplacementSurfaceEvent } from '@pentest-harness/dsh-client-runtime/client'
-import type { CompactionCheckpointSource } from '@pentest-harness/dsh-compaction/checkpoint'
-import type {} from '@pentest-harness/dsh-compaction/types'
-import type {} from '@pentest-harness/dsh-commands/types'
+} from '@fathom/client-runtime/client'
+import { isReplacementSurfaceEvent } from '@fathom/client-runtime/client'
+import type { CompactionCheckpointSource } from '@fathom/compaction/checkpoint'
+import type {} from '@fathom/compaction/types'
+import type {} from '@fathom/commands/types'
 import type { ManualCompactionChatData } from '../contract/chat-nodes.ts'
 import { chatNode } from './common.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Ordinary slash-command lifecycle. */
     command: CommandNode

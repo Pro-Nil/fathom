@@ -4,11 +4,11 @@
  * any request was built under by taking the latest canonical snapshot; the
  * loop uses the same equality helper to avoid logging unchanged headers.
  *
- * @module dsh-session/request-header
+ * @module fathom-session/request-header
  */
 
-import { callConfigEquals } from '@pentest-harness/dsh-llm'
-import type { ToolSchema } from '@pentest-harness/dsh-llm'
+import { callConfigEquals } from '@fathom/llm'
+import type { ToolSchema } from '@fathom/llm'
 import type { EpochHeader, SessionEvent } from './types.ts'
 
 /**

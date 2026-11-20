@@ -3,17 +3,17 @@
  * the derived LLM message history. Persistence is a plugin concern (subscribe
  * to `session/event`, drain on `session/flush`).
  *
- * @module @pentest-harness/dsh-session
+ * @module @fathom/session
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { isAbsolute } from 'node:path'
-import { deepFreeze } from '@pentest-harness/dsh-llm'
-import { scopeOf, scopeTarget } from '@pentest-harness/dsh-scope'
-import type { Scoped } from '@pentest-harness/dsh-scope'
-import type { Message } from '@pentest-harness/dsh-llm'
+import { deepFreeze } from '@fathom/llm'
+import { scopeOf, scopeTarget } from '@fathom/scope'
+import type { Scoped } from '@fathom/scope'
+import type { Message } from '@fathom/llm'
 import { SESSION_FORMAT_VERSION, SessionId } from './types.ts'
-import type { TypertLookup } from '@pentest-harness/dsh-typert-protocol'
+import type { TypertLookup } from '@fathom/typert-protocol'
 import type { CreateSessionOptions, EpochHeader, PrepareSessionOptions, RequestContext, SessionEvent, SessionEventMap, SessionEventType, SessionHeader, SurfaceIntent, SurfaceEventType } from './types.ts'
 import { snapshotJsonValue } from './json.ts'
 import { deriveEventMessage, SurfaceManager } from './surface.ts'
@@ -23,7 +23,7 @@ import { foldRequestHeader } from './request-header.ts'
 export * from './types.ts'
 export { SessionPreparation } from './preparation.ts'
 export type { SessionPreparationOptions } from './preparation.ts'
-export type { AssistantMessage, ToolResultMessage, UserMessage } from '@pentest-harness/dsh-llm'
+export type { AssistantMessage, ToolResultMessage, UserMessage } from '@fathom/llm'
 export { isJsonValue, snapshotJsonValue } from './json.ts'
 export type { JsonValue } from './json.ts'
 export { interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from './repair.ts'
@@ -34,7 +34,7 @@ export { deriveEventMessage, foldSurface, isAppendSurfaceEvent, isReplacementSur
 export { canonicalHeader, foldRequestHeader, headerEquals } from './request-header.ts'
 export { KNOWN_SESSION_EVENT_TYPES } from './known-event-types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessions: SessionStore
   }
@@ -45,10 +45,10 @@ declare module '@pentest-harness/cordis' {
      * back with a paired disposal; detach requested during dispatch is deferred.
      * A returned-promise rejection is logged but cannot retroactively veto this
      * synchronous boundary.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners
      * receive only sessions entered through that agent's context.
      * @param session - the session just entered and announced.
-     * @dshScopeScan unsupported
+     * @fathomScopeScan unsupported
      * @mode emit
      */
     'session/created'(this: Scoped<Session>, session: Session): void
@@ -56,9 +56,9 @@ declare module '@pentest-harness/cordis' {
      * Emitted once when an announced session leaves the store, including
      * publication rollback, but never for an entry whose creation announcement
      * did not begin. Listener failures are logged and contained.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`) reuses the owner scope.
+     * Scope-filtered dispatch (`@fathom/scope`) reuses the owner scope.
      * @param session - the session that is no longer live in the store.
-     * @dshScopeScan unsupported
+     * @fathomScopeScan unsupported
      * @mode emit
      */
     'session/disposed'(this: Scoped<Session>, session: Session): void
@@ -66,27 +66,27 @@ declare module '@pentest-harness/cordis' {
      * Post-commit, fire-and-forget append feed. The listener snapshot resolves
      * before the log push, but callbacks run after it; observer failures are
      * logged and contained without making the committed append fail.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners
      * receive only events from sessions entered through that agent's context.
      * @param session - the session whose log grew.
      * @param event - the appended event, exactly as recorded.
-     * @dshScopeScan unsupported
+     * @fathomScopeScan unsupported
      * @mode emit
      */
     'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void
     /**
      * Awaited parallel durability checkpoint: every listener runs and the
      * caller awaits all of them, with no waterfall veto. Scope-filtered dispatch
-     * (`@pentest-harness/dsh-scope`) reuses the session's owner scope.
+     * (`@fathom/scope`) reuses the session's owner scope.
      * @param session - the session whose buffered events must reach durable storage.
-     * @dshScopeScan unsupported
+     * @fathomScopeScan unsupported
      * @mode parallel
      */
     'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void
   }
 }
 
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   interface TypertLookupMap {
     session: TypertLookup<Session, SessionId>
   }
@@ -799,8 +799,8 @@ export class SessionStore extends Service {
       typeCtx.typert.lookups.register('session', {
         parameter: 'session',
         wire: 'sessionId',
-        hostTypeSymbol: '@pentest-harness/dsh-session#Session',
-        wireTypeSymbol: '@pentest-harness/dsh-session/types#SessionId',
+        hostTypeSymbol: '@fathom/session#Session',
+        wireTypeSymbol: '@fathom/session/types#SessionId',
         resolve: sessionId => this.get(sessionId),
       })
     })
@@ -818,7 +818,7 @@ export class SessionStore extends Service {
    * loop's final events are published before the store attachment ends), do NOT use this
    * — fold the session lifecycle into the agent's own effect via
    * {@link prepare} + {@link enter} + {@link announce} (see
-   * `dsh-agent-loop`'s creation transaction).
+   * `fathom-agent-loop`'s creation transaction).
    *
    * @param id - the session id; omitted, the store mints `session-<n>`.
    * @param options - seed events and/or creation metadata for the header.

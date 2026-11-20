@@ -1,9 +1,9 @@
 /**
- * Shared boot glue for the app bins (`dsh`, `dsh-acp-demo`): load the gitignored
+ * Shared boot glue for the app bins (`fathom`, `fathom-acp-demo`): load the gitignored
  * `.env`, install the fail-loud Loader guards, resolve the config path (snapshot-aware), load the
- * optional user patch layers from the Harness home (`~/.dsh`), expose its path resolver to
+ * optional user patch layers from the Harness home (`~/.fathom`), expose its path resolver to
  * config expressions, and drive the Cordis Loader against a leaf `cordis.yml` until the tree settles.
- * @module @pentest-harness/dsh-app-boot
+ * @module @fathom/app-boot
  */
 
 import { pathToFileURL } from 'node:url'
@@ -11,20 +11,20 @@ import { readFileSync } from 'node:fs'
 import { parseEnv } from 'node:util'
 import { basename, dirname, isAbsolute, resolve } from 'node:path'
 import * as yaml from 'js-yaml'
-import { Context, type FiberState } from '@pentest-harness/cordis'
-import Loader, { type Entry, type EntryOptions } from '@pentest-harness/cordis-plugin-loader'
-import Include, { applyEntryPatches, entryListSchema, type PatchOptions } from '@pentest-harness/cordis-plugin-include'
-import Group from '@pentest-harness/cordis-plugin-group'
-import { dshHomePath, resolveDshHome } from '@pentest-harness/dsh-home-paths'
-import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@pentest-harness/dsh-launch-environment'
-import type {} from '@pentest-harness/cordis-plugin-hmr'
+import { Context, type FiberState } from '@fathom/cordis'
+import Loader, { type Entry, type EntryOptions } from '@fathom/cordis-plugin-loader'
+import Include, { applyEntryPatches, entryListSchema, type PatchOptions } from '@fathom/cordis-plugin-include'
+import Group from '@fathom/cordis-plugin-group'
+import { fathomHomePath, resolveFathomHome } from '@fathom/home-paths'
+import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@fathom/launch-environment'
+import type {} from '@fathom/cordis-plugin-hmr'
 // Side-effect type import: resolves `ctx.get('systemPrompt')` to the service.
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type {} from '@fathom/system-prompt'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Harness-home path resolver available to Loader `!!js` config expressions. */
-    dshHomePath?: typeof dshHomePath
+    fathomHomePath?: typeof fathomHomePath
   }
 }
 
@@ -41,9 +41,9 @@ export {
   resolveBundleDir,
   resolveProfileDir,
   writeProfileManifest,
-  type DshBundleManifest,
-  type DshManifestSection,
-  type DshProfileManifest,
+  type FathomBundleManifest,
+  type FathomManifestSection,
+  type FathomProfileManifest,
   type Profile,
   type ProfileLayer,
   type ProfileManifest,
@@ -53,7 +53,7 @@ export {
  * Resolve the config to boot. Replay swaps a `cordis.yml` basename for
  * `cordis.snapshot.yml` in the same directory; every other mode keeps the path.
  * @param configPath - the requested config path (absolute, or relative to `cwd`).
- * @param snapshotMode - the bin's `$DSH_SNAPSHOT` value; only `'replay'` swaps the
+ * @param snapshotMode - the bin's `$FATHOM_SNAPSHOT` value; only `'replay'` swaps the
  *   basename.
  * @param cwd - the base a relative `configPath` resolves against.
  * @returns the absolute path of the config to boot.
@@ -114,7 +114,7 @@ const BOOTSTRAP_NAMES = new Set([
 ])
 
 /** Name prefixes no discovered file may set. */
-const BOOTSTRAP_PREFIXES = ['DSH_', 'XDG_', 'DYLD_', 'BASH_FUNC_']
+const BOOTSTRAP_PREFIXES = ['FATHOM_', 'XDG_', 'DYLD_', 'BASH_FUNC_']
 
 /**
  * Whether a variable may come only from the inherited process environment
@@ -178,7 +178,7 @@ export function loadLayeredEnv(
   binName: string, cwd: string = process.cwd(),
   warn: (line: string) => void = line => void process.stderr.write(line),
 ): LaunchEnvironmentSnapshot {
-  const home = resolveDshHome()
+  const home = resolveFathomHome()
   const inherited = { ...process.env } as Record<string, string>
   // Parse both layers first: a rejection must not leave one file applied.
   const project = readEnvLayer(binName, cwd, warn)
@@ -266,7 +266,7 @@ export async function watchUserPatches(
 
 /**
  * Load an optional patch-list file: a top-level YAML array of loader patch
- * entries (`@pentest-harness/cordis-plugin-include`'s `PatchOptions`): id-targeted config
+ * entries (`@fathom/cordis-plugin-include`'s `PatchOptions`): id-targeted config
  * overrides and `insert` lists, with `!!js` expressions allowed. A missing
  * file means "no layer"; an unreadable, unparsable, or non-array file throws —
  * a present patch file that cannot apply is a misconfiguration and must fail
@@ -306,7 +306,7 @@ export function loadOverlayPatches(binName: string, file: string): PatchOptions[
 }
 /**
  * Parse one loader patch list: a top-level YAML array of
- * `@pentest-harness/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
+ * `@fathom/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
  * `insert` lists, `!!js` expressions allowed). Every invalid field or value throws,
  * because a patch file that cannot be applied at all is a misconfiguration; a
  * single patch whose target row is absent stays a per-entry Loader warning, so
@@ -504,7 +504,7 @@ export async function mountRootInclude(
     }
   // `cordis:group` alongside it: a group row is how a composition gives one
   // `isolate` realm to a provider and its consumers together, and an agent
-  // preset living outside this workspace cannot resolve `@pentest-harness/cordis-plugin-group`
+  // preset living outside this workspace cannot resolve `@fathom/cordis-plugin-group`
   // by name. Both builtins load through the ambient module pipeline, so neither
   // depends on the included tree's own specifier resolution.
   ctx.loader.builtins.group = Group
@@ -767,7 +767,7 @@ export async function boot(
   let stage = 'host preparation failed'
   try {
     ctx.baseUrl = pathToFileURL(dirname(absoluteConfigPath)).href + '/'
-    ctx.provide('dshHomePath', dshHomePath)
+    ctx.provide('fathomHomePath', fathomHomePath)
     await ctx.plugin(Loader)
     await prepare?.(ctx)
     stage = 'plugin tree failed to load'
@@ -807,7 +807,7 @@ export const HARNESS_SOURCE_SECTION = 'harness:source'
 /**
  * Add a global prompt section naming the on-disk harness source checkout while
  * explicitly distinguishing it from the task workspace and current working
- * directory. The self-referential `dsh-tool-cordis` toolset reads and edits this
+ * directory. The self-referential `fathom-tool-cordis` toolset reads and edits this
  * checkout. Call once on the settled boot context ({@link boot}); the section
  * orders just after the harness identity opener (`-100`) and before the deployment
  * persona (`0`). A booted tree with no `systemPrompt` service has no prompt to
@@ -824,6 +824,6 @@ export function addHarnessSourceSection(ctx: Context, sourceRoot: string): (() =
   return systemPrompt.section({
     name: HARNESS_SOURCE_SECTION,
     order: -99,
-    text: `The Pentest Harness implementation checkout is at ${sourceRoot}. The checkout location and current working directory are separate values and may differ; never infer the working directory from this path. Use pwd to determine the current working directory. Use this checkout only to inspect or extend DSH itself.`,
+    text: `The Fathom implementation checkout is at ${sourceRoot}. The checkout location and current working directory are separate values and may differ; never infer the working directory from this path. Use pwd to determine the current working directory. Use this checkout only to inspect or extend FATHOM itself.`,
   })
 }

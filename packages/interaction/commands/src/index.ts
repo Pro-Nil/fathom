@@ -1,17 +1,17 @@
 /**
  * Plugin-owned human-command registry shared by interactive UI adapters.
- * @module @pentest-harness/dsh-commands
+ * @module @fathom/commands
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { AttachmentError, admitEncodedImages } from '@pentest-harness/dsh-attachment'
-import type { EncodedImageAttachment } from '@pentest-harness/dsh-attachment/types'
-import type { ImageBlock } from '@pentest-harness/dsh-llm'
-import { NamedEntries, ScopedLayers } from '@pentest-harness/dsh-scope'
-import type { ScopeKey, ScopeLayer } from '@pentest-harness/dsh-scope'
-import type { Session, SessionEvent, SessionEventMap } from '@pentest-harness/dsh-session'
-import { TypertRemoteService, Remote } from '@pentest-harness/dsh-typert-protocol'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { AttachmentError, admitEncodedImages } from '@fathom/attachment'
+import type { EncodedImageAttachment } from '@fathom/attachment/types'
+import type { ImageBlock } from '@fathom/llm'
+import { NamedEntries, ScopedLayers } from '@fathom/scope'
+import type { ScopeKey, ScopeLayer } from '@fathom/scope'
+import type { Session, SessionEvent, SessionEventMap } from '@fathom/session'
+import { TypertRemoteService, Remote } from '@fathom/typert-protocol'
 import { CommandId } from './brand.ts'
 import type {
   CommandDescriptor,
@@ -101,7 +101,7 @@ class CommandLayer implements ScopeLayer {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     commands: CommandRuntime
   }

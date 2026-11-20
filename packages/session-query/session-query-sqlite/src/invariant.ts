@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-query-sqlite`.
- * @module @pentest-harness/dsh-session-query-sqlite/invariant
+ * Package-owned invariant companion for `@fathom/session-query-sqlite`.
+ * @module @fathom/session-query-sqlite/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-query-sqlite'
+const PACKAGE_NAME = '@fathom/session-query-sqlite'
 
 /** Cordis companion plugin name. */
 export const name = 'session-query-sqlite-invariant'

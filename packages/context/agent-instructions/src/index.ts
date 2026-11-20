@@ -6,15 +6,15 @@
  * Plugin lifecycle reads use the optional `ctx.fs` provider, so providerless products
  * mount it as a no-op.
  *
- * @module @pentest-harness/dsh-agent-instructions
+ * @module @fathom/agent-instructions
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { isDeepStrictEqual } from 'node:util'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { Session, UserMessage } from '@pentest-harness/dsh-session'
-import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@pentest-harness/dsh-tools'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { Session, UserMessage } from '@fathom/session'
+import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@fathom/tools'
 import { Config, resolveConfig, workspaceBaselineIdentity, type ResolvedConfig } from './config.ts'
 import { findProjectRoot, loadBaselineInstructionSet } from './files.ts'
 import {
@@ -136,7 +136,7 @@ export function apply(ctx: Context, config: Config): void {
       const replacePreviousBaseline = baselinePresent && !keepVisibleBaseline
       const instructions = await loadBaselineInstructionSet({
         cwd,
-        dshHome: resolved.dshHome,
+        fathomHome: resolved.fathomHome,
         projectRootMarkers: resolved.projectRootMarkers,
         maxBytes: resolved.maxBytes,
         maxSourceBytes: resolved.maxSourceBytes,

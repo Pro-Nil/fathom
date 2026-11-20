@@ -1,10 +1,10 @@
 /**
  * Generic-task adaptation for background bash process handles.
  *
- * @module @pentest-harness/dsh-tool-bash/background
+ * @module @fathom/tool-bash/background
  */
 
-import type { ShellProcess } from '@pentest-harness/dsh-shell'
+import type { ShellProcess } from '@fathom/shell'
 
 /**
  * Map a settled background process onto the generic task-outcome vocabulary:

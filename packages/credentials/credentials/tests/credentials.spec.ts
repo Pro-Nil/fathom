@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { credentialRef, isCredentialKeySegment } from '../src/index.ts'
 import type { CredentialRef } from '../src/index.ts'
 import { MemoryCredentials } from './memory.ts'

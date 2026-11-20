@@ -17,10 +17,10 @@
 - text: Explain event sourcing in one sentence. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - button "Think The user is asking for a one-sentence description of event sourcing. This is a straightforward knowledge question that doesn't require any skill loading or tool calls.":
   - img
   - img

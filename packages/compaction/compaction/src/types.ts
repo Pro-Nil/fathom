@@ -4,16 +4,16 @@
  * surface events; a separate replacement `user/message` carries the summary.
  * Backend packages own configuration and retention policy; see
  * `.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md`.
- * @module @pentest-harness/dsh-compaction/types
+ * @module @fathom/compaction/types
  */
 
-import type { ContentBlock, TokenUsage } from '@pentest-harness/dsh-llm'
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
+import type { ContentBlock, TokenUsage } from '@fathom/llm'
+import type { CommandId } from '@fathom/commands/brand'
 import type { CompactionId } from './brand.ts'
 
 export type { CompactionId }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Marks the start of a compaction — log-only, holds the lock until

@@ -1,9 +1,9 @@
 /**
  * Strict Schedule decoding, replay, time validation, and framing.
- * @module @pentest-harness/dsh-schedule
+ * @module @fathom/schedule
  */
 
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 import type {
   AfterScheduleRecord,
   AtInput,

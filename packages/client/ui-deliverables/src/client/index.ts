@@ -7,17 +7,17 @@
  * composing this plugin out of cordis.yml removes both surfaces entirely;
  * the owning view renders an empty chain and inert prose at zero cost.
  */
-import type { ConnectionHandle } from '@pentest-harness/dsh-client-connection/client'
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import type { ChatFileMentions } from '@pentest-harness/dsh-client-ui-conversation/client'
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type { ConnectionHandle } from '@fathom/client-connection/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
+import type { ChatFileMentions } from '@fathom/client-ui-conversation/client'
+import type {} from '@fathom/client-locale/client'
 import { ProducedFiles } from './ProducedFiles.tsx'
 import { en, NS, type DeliverablesKey } from './locales.ts'
 import {
   deliverablesDefinition, producedFileMentions, selectProducedFiles,
 } from './turn-deliverables.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Produced-files row copy. */
     'deliverables': DeliverablesKey

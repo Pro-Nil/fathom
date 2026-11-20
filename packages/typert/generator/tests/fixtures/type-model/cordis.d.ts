@@ -1,4 +1,4 @@
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   export class Service { protected readonly __service?: never }
 
   export interface Context {}

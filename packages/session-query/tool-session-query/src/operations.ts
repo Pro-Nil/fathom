@@ -1,20 +1,20 @@
 /**
  * Tool operation orchestration over session-query service capabilities.
  *
- * @module @pentest-harness/dsh-tool-session-query/operations
+ * @module @fathom/tool-session-query/operations
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
 import {
   SessionQueryError,
   type SessionEventSearchPage,
   type SessionEventSurface,
   type SessionRecord,
   type SessionSearchCursor,
-} from '@pentest-harness/dsh-session-query'
-import type { ToolRunContext } from '@pentest-harness/dsh-tools'
+} from '@fathom/session-query'
+import type { ToolRunContext } from '@fathom/tools'
 import { toolInput } from './input.ts'
 import { presentation } from './presentation.ts'
 import { serviceBoundary } from './service-boundary.ts'

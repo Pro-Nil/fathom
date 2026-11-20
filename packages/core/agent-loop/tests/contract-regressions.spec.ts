@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, CallId, LlmError, MessageSource, ProviderRequestId, StreamChunk  } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionEvent, SessionId, TurnEndReason, type UserMessage } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture, type PostToolDecision } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, CallId, LlmError, MessageSource, ProviderRequestId, StreamChunk  } from '@fathom/llm'
+import SessionStore, { Session, SessionEvent, SessionId, TurnEndReason, type UserMessage } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture, type PostToolDecision } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
 import { ReactLoopAgent } from '../src/agent.ts'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
+import InvariantRegistry from '@fathom/invariants'
+import * as SessionInvariant from '@fathom/session/invariant'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 async function mountInvariants(ctx: Context): Promise<void> {
@@ -810,7 +810,7 @@ describe('turn and step boundary recovery', () => {
     expect(adapter.requests).toHaveLength(1)
     expect(errors.map(error => error.message)).toEqual([
       'reject first step-end',
-      'invariant violated by "@pentest-harness/dsh-session": turn/end 1 while step 1 is still open',
+      'invariant violated by "@fathom/session": turn/end 1 while step 1 is still open',
     ])
     expect(boundaryCounts(agent)).toMatchObject({
       turnStart: 1,

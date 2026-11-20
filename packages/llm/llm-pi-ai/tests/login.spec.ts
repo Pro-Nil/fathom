@@ -2,11 +2,11 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AuthorizationService from '@pentest-harness/dsh-authorization'
-import type { AuthorizationInteraction, AuthorizationNotice, AuthorizationPrompt } from '@pentest-harness/dsh-authorization'
-import LocalCredentialProvider from '@pentest-harness/dsh-credentials-local'
-import type { CredentialKey } from '@pentest-harness/dsh-credentials'
+import { Context } from '@fathom/cordis'
+import AuthorizationService from '@fathom/authorization'
+import type { AuthorizationInteraction, AuthorizationNotice, AuthorizationPrompt } from '@fathom/authorization'
+import LocalCredentialProvider from '@fathom/credentials-local'
+import type { CredentialKey } from '@fathom/credentials'
 import type { AuthEvent, AuthInteraction, AuthPrompt, AuthType, Credential } from '@earendil-works/pi-ai'
 
 const login = vi.hoisted(() => vi.fn())
@@ -27,7 +27,7 @@ const dirs: string[] = []
 
 /** A context with the record store, the seam, and every pi-ai login flow. */
 async function harness(): Promise<Context> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-pi-login-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-pi-login-'))
   dirs.push(dir)
   const ctx = new Context()
   await ctx.plugin(LocalCredentialProvider, { path: join(dir, '.credentials.yaml'), watch: false })

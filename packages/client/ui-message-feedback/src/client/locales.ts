@@ -3,7 +3,7 @@
 /** The feedback namespace key union. */
 export type MessageFeedbackKey = keyof typeof en
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The per-message feedback controls' copy. */
     feedback: MessageFeedbackKey

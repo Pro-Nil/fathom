@@ -1,21 +1,21 @@
 /**
  * Model argument schemas, normalization, and filter construction.
  *
- * @module @pentest-harness/dsh-tool-session-query/input
+ * @module @fathom/tool-session-query/input
  */
 
 import {
   SessionId,
   type SessionEventType,
   type SessionId as SessionIdValue,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import {
   SessionQueryError,
   type SessionAvailability,
   type SessionEventMetadataFilter,
   type SessionEventSurface,
   type SessionResultFilter,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 
 interface SessionSearchArgs {
   query: string

@@ -7,11 +7,11 @@
  * must stub); runtime-internal entry points (history staging, wire-frame
  * dispatch) stay on the class, invisible out here.
  */
-import type { AttachmentIdType, ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
+import type { AttachmentIdType, ImageAttachmentRef } from '@fathom/attachment'
 import type {
   MessageId, PromptContentPart, QueueAction, RpcResult, SessionId,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { RemoteResult } from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/api-remotes/client'
+import type { RemoteResult } from '@fathom/typert-protocol'
 import type { ConversationSnapshot } from '../sessions/conversation.ts'
 import type { ObservableSnapshot } from './store.ts'
 

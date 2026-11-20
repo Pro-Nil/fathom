@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { createUserMessage, CallId  } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import { STRUCTURED_OUTPUT_TOOL } from '@pentest-harness/dsh-subagent-in-process-driver'
-import * as spawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import WorkerThreadWorkflowEngine from '@pentest-harness/dsh-workflow-worker-thread'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { createUserMessage, CallId  } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import SubagentRuntime from '@fathom/subagent'
+import { STRUCTURED_OUTPUT_TOOL } from '@fathom/subagent-in-process-driver'
+import * as spawn from '@fathom/subagent-spawn-in-process'
+import WorkerThreadWorkflowEngine from '@fathom/workflow-worker-thread'
 import { MockAdapter, maxTokensResponse, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as toolRalph from '../src/index.ts'
 
@@ -34,7 +34,7 @@ async function mountRalph(script: MockScript, config: toolRalph.Config) {
   return { ctx, adapter, parentHandle, parent: parentHandle.agent }
 }
 
-describe('dsh-tool-ralph over the real spawn and worker-thread stack', () => {
+describe('fathom-tool-ralph over the real spawn and worker-thread stack', () => {
   it('uses distinct empty-seed children, shared cwd, and only the prior bounded handoff', async () => {
     const firstReport = {
       status: 'continue',

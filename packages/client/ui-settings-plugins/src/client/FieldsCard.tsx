@@ -1,6 +1,6 @@
 /** A descriptor-driven plugin card: one control per described field. */
 
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import { ToggleField, ValueField } from './fields.tsx'
 import { PluginCard } from './PluginCard.tsx'
 import type { FieldsCardFace } from './fields-card-controller.ts'

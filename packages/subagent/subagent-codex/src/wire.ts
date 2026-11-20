@@ -4,13 +4,13 @@
  * product methods, current thread/turn association, unattended approval
  * responses, and terminal-answer selection.
  *
- * @module @pentest-harness/dsh-subagent-codex/wire
+ * @module @fathom/subagent-codex/wire
  */
 
 import type { Readable, Writable } from 'node:stream'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SubagentResult } from '@pentest-harness/dsh-subagent'
-import { JsonRpcLineTransport } from '@pentest-harness/dsh-sdk-protocol'
+import type { ContentBlock } from '@fathom/llm'
+import type { SubagentResult } from '@fathom/subagent'
+import { JsonRpcLineTransport } from '@fathom/sdk-protocol'
 import type { CodexPermissionMode } from './run.ts'
 
 type JsonObject = Record<string, unknown>
@@ -287,8 +287,8 @@ export class CodexAppServerWire {
   async initialize(signal: AbortSignal): Promise<void> {
     object(await this.guarded(this.transport.request('initialize', {
       clientInfo: {
-        name: 'pentest-harness',
-        title: 'Pentest Harness',
+        name: 'fathom',
+        title: 'Fathom',
         version: '0.0.1',
       },
       capabilities: {

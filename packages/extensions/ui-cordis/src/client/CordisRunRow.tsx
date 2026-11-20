@@ -3,9 +3,9 @@
 import { useEffect } from 'react'
 import {
   IconCodeOutline16, IconInspectOutline12, StateDot,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import type { ToolCallViewProps } from '@pentest-harness/dsh-client-ui-tool/client'
+} from '@fathom/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRenderSlots } from '@fathom/client-ui-slots'
+import type { ToolCallViewProps } from '@fathom/client-ui-tool/client'
 import { cordisRunCard } from './card-model.ts'
 import { cordisToolViewKey } from './run-card-index.ts'
 import type { CordisRunCardFace } from './slots.ts'

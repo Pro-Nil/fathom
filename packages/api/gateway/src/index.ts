@@ -1,11 +1,11 @@
 /**
  * Live Typert Remote dispatch over Cordis Services and registered providers.
  * Transport, request correlation, and response envelopes belong to Connection.
- * @module @pentest-harness/dsh-api-gateway
+ * @module @fathom/api-gateway
  */
 
-import { Context, Service, symbols } from '@pentest-harness/cordis'
-import type { ConnectionRpcHandler } from '@pentest-harness/dsh-client-connection'
+import { Context, Service, symbols } from '@fathom/cordis'
+import type { ConnectionRpcHandler } from '@fathom/client-connection'
 import {
   remoteMethods,
   TypertLookupFailure,
@@ -13,7 +13,7 @@ import {
   type InvocationParameterDescriptor,
   type TypertCodec,
   type TypertGatewayBinding,
-} from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/typert-protocol'
 import type {
   InvokeRemoteRequest,
   TypertGateway,

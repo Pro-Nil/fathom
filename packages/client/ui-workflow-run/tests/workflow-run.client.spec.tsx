@@ -1,16 +1,16 @@
 // @vitest-environment jsdom
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   ConversationEventRegistry, ConversationNodeAssembler, SlotRegistry,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ChatConversationViewNode, ConversationEventInput, ConversationMatch, ConversationNodeDefinition,
   ConversationViewDefinition, SessionId, SessionListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { apply as applyLocale, inject as localeInject } from '@pentest-harness/dsh-client-locale/client'
-import { makeTranslate, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+} from '@fathom/client-runtime/client'
+import { apply as applyLocale, inject as localeInject } from '@fathom/client-locale/client'
+import { makeTranslate, stubSettingsScope } from '@fathom/client-test-runtime'
 import {
   WorkflowRunPanel, type WorkflowRunInjected, type WorkflowRunPanelProps,
 } from '../src/client/WorkflowRunPanel.tsx'
@@ -881,6 +881,6 @@ describe('plugin lifecycle', () => {
       register: (pkg: string) => { registered.push(pkg); return () => {} },
     } as never)
     await applyInvariant(ctx)
-    expect(registered).toEqual(['@pentest-harness/dsh-client-ui-workflow-run'])
+    expect(registered).toEqual(['@fathom/client-ui-workflow-run'])
   })
 })

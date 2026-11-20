@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentCancelCause, InboxTarget } from '@pentest-harness/dsh-agent'
-import type { UserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentCancelCause, InboxTarget } from '@fathom/agent'
+import type { UserMessage } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
 import {
   ScheduleId,
   createAfterScheduleRecord,

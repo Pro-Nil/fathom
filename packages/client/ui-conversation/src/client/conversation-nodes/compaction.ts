@@ -1,12 +1,12 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   CompactionSummaryNode, ConversationMatch, ConversationNodeContext, ConversationNodeDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-compaction/types'
+} from '@fathom/client-runtime/client'
+import type {} from '@fathom/compaction/types'
 import { chatNode } from './common.ts'
 import { compactSource, compactSummary, updateCompactionState } from './command.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Automatic compaction checkpoint marker. */
     compaction: CompactionSummaryNode

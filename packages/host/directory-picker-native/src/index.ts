@@ -6,11 +6,11 @@
  * koffi-driven COM conversation on the child's main thread). Only viable when
  * the operator sits at the host's screen; remote deployments compose the
  * browse backend instead.
- * @module @pentest-harness/dsh-host-directory-picker-native
+ * @module @fathom/host-directory-picker-native
  */
 
-import { DirectoryPicker } from '@pentest-harness/dsh-host-directory-picker'
-import type { DirectoryPickerCapability } from '@pentest-harness/dsh-host-directory-picker'
+import { DirectoryPicker } from '@fathom/host-directory-picker'
+import type { DirectoryPickerCapability } from '@fathom/host-directory-picker'
 import { pickNativeDirectory } from './native-picker.ts'
 
 export type { DirectoryPickerInternals, DirectoryPickerRunner } from './native-picker.ts'

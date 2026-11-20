@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-lsp
+# @fathom/lsp
 
 The **LSP capability seam**: an abstract `LspService` (`ctx.lsp`) defining WHAT semantic code navigation the harness has — go to definition, find references, find implementations, hover — over language-server providers, without binding the model contract to local subprocesses.
 
@@ -6,9 +6,9 @@ This package owns the Service Definition role of the LSP capability:
 
 | Package | Role |
 |---|---|
-| `@pentest-harness/dsh-lsp` (this) | Service Definition: the service, provider registry keyed by branded id + extension mapping, per-query selection, request/result vocabulary, the `LspError` taxonomy |
-| `@pentest-harness/dsh-lsp-stdio` | Service Provider: a generic local backend that registers configured stdio language-server providers |
-| `@pentest-harness/dsh-tool-lsp` | Consumer: the model-facing `lsp` tool over `ctx.lsp` |
+| `@fathom/lsp` (this) | Service Definition: the service, provider registry keyed by branded id + extension mapping, per-query selection, request/result vocabulary, the `LspError` taxonomy |
+| `@fathom/lsp-stdio` | Service Provider: a generic local backend that registers configured stdio language-server providers |
+| `@fathom/tool-lsp` | Consumer: the model-facing `lsp` tool over `ctx.lsp` |
 
 The seam exposes exactly four semantic operations — `goToDefinition`, `findReferences`, `goToImplementation`, `hover` — and no generic JSON-RPC escape hatch, so no protocol payload or unreviewed command/mutation reaches a provider through `ctx.lsp`.
 
@@ -21,7 +21,7 @@ The seam exposes exactly four semantic operations — `goToDefinition`, `findRef
 
 Selection is per query and order-independent: a provider owns a set of extensions exclusively, so registration and HMR order never change routing. Extension keys normalize to lowercase, leading-dot form; the `languageId` only synchronizes the transient document, never participates in selection. The first version has no glob, language-id, or explicit route selector.
 
-Providers register **capabilities**, not tools. `dsh-tool-lsp` is the only owner of the model-facing name, description, prompt guidance, schema, and presentation.
+Providers register **capabilities**, not tools. `fathom-tool-lsp` is the only owner of the model-facing name, description, prompt guidance, schema, and presentation.
 
 ## Vocabulary
 
@@ -29,11 +29,11 @@ Providers register **capabilities**, not tools. `dsh-tool-lsp` is the only owner
 
 ## Model Experience
 
-Indirectly, through `dsh-tool-lsp`, which owns the model-facing `lsp` schema, prompt, and rendered results while this registry contributes no prompt or schema itself.
+Indirectly, through `fathom-tool-lsp`, which owns the model-facing `lsp` schema, prompt, and rendered results while this registry contributes no prompt or schema itself.
 
 #### KV Cache effect
 
-No direct invalidation; `dsh-tool-lsp` owns request-prefix changes.
+No direct invalidation; `fathom-tool-lsp` owns request-prefix changes.
 
 ## Known Limitations and Deferred Work
 

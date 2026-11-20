@@ -1,11 +1,11 @@
 /** Host BFF policy for resolving Remote Agent and Session identities. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent, AgentOptions, AgentSetup } from '@pentest-harness/dsh-agent'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-persistence'
-import { TypertLookupFailure } from '@pentest-harness/dsh-typert-protocol'
-import type {} from '@pentest-harness/dsh-typert-registry'
+import type { Context } from '@fathom/cordis'
+import type { Agent, AgentOptions, AgentSetup } from '@fathom/agent'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@fathom/session'
+import type {} from '@fathom/session-persistence'
+import { TypertLookupFailure } from '@fathom/typert-protocol'
+import type {} from '@fathom/typert-registry'
 
 /** Caller-facing failures preserved by the Gateway's RPC adapter. */
 export type ApiRemoteLookupError =
@@ -97,7 +97,7 @@ export async function inspectApiRemoteSession(
 ): Promise<{ meta: SessionHeader; events: SessionEvent[] }> {
   const persistence = ctx.get('sessionPersistence')
   if (persistence === undefined) {
-    throw new Error('session persistence is not configured (load a dsh-session-persistence backend)')
+    throw new Error('session persistence is not configured (load a fathom-session-persistence backend)')
   }
   const meta = (await persistence.list()).find(candidate => candidate.id === sessionId)
   if (meta === undefined || meta.cwd === undefined) {

@@ -1,10 +1,10 @@
-/** Package-owned durable todo-snapshot invariants. @module @pentest-harness/dsh-tool-todo/invariant */
+/** Package-owned durable todo-snapshot invariants. @module @fathom/tool-todo/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-todo'
+const PACKAGE_NAME = '@fathom/tool-todo'
 const TODO_STATUSES = new Set(['pending', 'in_progress', 'completed'])
 
 /** Cordis companion plugin name. */

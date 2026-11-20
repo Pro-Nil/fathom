@@ -2,17 +2,17 @@
  * Cross-session snapshot preparation. Hosts adapt mentions into structured
  * references; this service owns exact reads, projection, budgets, and durable context.
  *
- * @module @pentest-harness/dsh-session-reference
+ * @module @fathom/session-reference
  */
 
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { Remote, TypertRemoteService } from '@pentest-harness/dsh-typert-protocol'
-import { createUserMessage, freezeMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, UserMessage } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionSurfaceSnapshot, SessionTitleObservationResult } from '@pentest-harness/dsh-session-query'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { Remote, TypertRemoteService } from '@fathom/typert-protocol'
+import { createUserMessage, freezeMessage } from '@fathom/llm'
+import type { ContentBlock, UserMessage } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
+import type { SessionSurfaceSnapshot, SessionTitleObservationResult } from '@fathom/session-query'
 import {
   DEFAULT_CANDIDATE_LIMIT,
   DEFAULT_MAX_REFERENCE_BYTES,
@@ -55,7 +55,7 @@ user explicitly repeats them.
 `
 const PROMPT_SUFFIX = '\n</referenced-sessions>'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionReferenceResolver: SessionReferenceResolver
   }

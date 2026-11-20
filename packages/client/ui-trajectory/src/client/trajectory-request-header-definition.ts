@@ -1,8 +1,8 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationMatch, ConversationNodeDefinition, ConversationPromptSnapshot,
   RequestPromptChange,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 import type { TrajectoryRequestHeaderState } from './trajectory-contract.ts'
 

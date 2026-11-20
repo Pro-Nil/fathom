@@ -1,9 +1,9 @@
-/** Package-owned invariant companion for the subprocess seam. @module @pentest-harness/dsh-subprocess/invariant */
+/** Package-owned invariant companion for the subprocess seam. @module @fathom/subprocess/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subprocess'
+const PACKAGE_NAME = '@fathom/subprocess'
 
 /** Cordis companion plugin name. */
 export const name = 'subprocess-invariant'

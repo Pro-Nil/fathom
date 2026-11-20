@@ -2,14 +2,14 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { SharedBrowser } from '@pentest-harness/dsh-browser'
+import { SharedBrowser } from '@fathom/browser'
 import { HandoffGuard, MAX_FAILED_LOGINS, inspectPage } from '../src/handoff.ts'
 
 const page = (html: string): string => `data:text/html,${encodeURIComponent(html)}`
 
 // Real browser: the harness's own Chromium, headless, on a throwaway profile.
 describe('HandoffGuard (real Chromium)', () => {
-  const profileDir = mkdtempSync(join(tmpdir(), 'dsh-handoff-test-'))
+  const profileDir = mkdtempSync(join(tmpdir(), 'fathom-handoff-test-'))
   const browser = new SharedBrowser({ channel: 'chromium', headless: true, profileDir, width: 800, height: 600, searchUrl: 'https://duckduckgo.com/?q=%s' })
   afterAll(async () => {
     await browser.dispose()

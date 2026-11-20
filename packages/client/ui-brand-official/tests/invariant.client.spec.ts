@@ -1,5 +1,5 @@
-import { Context } from '@pentest-harness/cordis'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import InvariantRegistry from '@fathom/invariants'
 import { describe, expect, it } from 'vitest'
 import * as BrandInvariant from '../src/invariant.ts'
 import { apply as nodeApply } from '../src/index.ts'

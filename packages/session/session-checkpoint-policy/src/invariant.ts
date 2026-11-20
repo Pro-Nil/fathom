@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-checkpoint-policy`.
- * @module @pentest-harness/dsh-session-checkpoint-policy/invariant
+ * Package-owned invariant companion for `@fathom/session-checkpoint-policy`.
+ * @module @fathom/session-checkpoint-policy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-checkpoint-policy'
+const PACKAGE_NAME = '@fathom/session-checkpoint-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'session-checkpoint-policy-invariant'

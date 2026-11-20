@@ -13,11 +13,11 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, waitFor, within } from '@testing-library/react'
-import type { ISession, SessionId, WorkspaceId } from '@pentest-harness/dsh-client-runtime/client'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotTestRuntime, usePinnedBrowserLanguages } from '@pentest-harness/dsh-client-test-runtime'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { apply, inject } from '@pentest-harness/dsh-client-ui-workspace/client'
+import type { ISession, SessionId, WorkspaceId } from '@fathom/client-runtime/client'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { SlotTestRuntime, usePinnedBrowserLanguages } from '@fathom/client-test-runtime'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { apply, inject } from '@fathom/client-ui-workspace/client'
 
 // The service reads its initial locale from the browser; these specs assert
 // the shipped Chinese copy, so they state the browser they assume.

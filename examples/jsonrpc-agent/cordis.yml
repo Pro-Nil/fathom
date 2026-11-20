@@ -1,16 +1,16 @@
-# Unattended coding-agent deployment for the bundled dsh-jsonrpc-agent runtime.
+# Unattended coding-agent deployment for the bundled fathom-jsonrpc-agent runtime.
 # stdout is reserved for JSON-RPC; do not add a console logger or terminal UI.
 
 - id: sdk-jsonrpc-server
-  name: '@pentest-harness/dsh-sdk-jsonrpc-server'
+  name: '@fathom/sdk-jsonrpc-server'
   config:
-    maxTokensAsSuccess: !!js "process.env.DSH_MAX_TOKENS_AS_SUCCESS === undefined ? true : JSON.parse(process.env.DSH_MAX_TOKENS_AS_SUCCESS)"
+    maxTokensAsSuccess: !!js "process.env.FATHOM_MAX_TOKENS_AS_SUCCESS === undefined ? true : JSON.parse(process.env.FATHOM_MAX_TOKENS_AS_SUCCESS)"
 
 # The Acme adapter. Shipped default: full thinking at max effort on every
 # request; exact-model resolution materializes request defaults before logging.
 # The model arrives per session over JSON-RPC, so it is not pinned here.
 - id: llm-pi-ai
-  name: '@pentest-harness/dsh-llm-pi-ai'
+  name: '@fathom/llm-pi-ai'
   config:
     providers:
       acme-official:
@@ -25,18 +25,18 @@
 
 # Managed child-process groups for the bash executor (spawn/kill/output plumbing).
 - id: subprocess
-  name: '@pentest-harness/dsh-subprocess-local'
+  name: '@fathom/subprocess-local'
 
 - id: bash
-  name: '@pentest-harness/dsh-bash-local'
+  name: '@fathom/bash-local'
   config:
-    cwd: !!js process.env.DSH_CWD ?? process.cwd()
+    cwd: !!js process.env.FATHOM_CWD ?? process.cwd()
     timeoutMs: 60000
 
 - id: agent-spine
-  name: '@pentest-harness/dsh-agent-spine-demo'
+  name: '@fathom/agent-spine-demo'
   config:
-    persona: !!js process.env.DSH_SYSTEM_PROMPT ?? 'You are a coding agent.'
+    persona: !!js process.env.FATHOM_SYSTEM_PROMPT ?? 'You are a coding agent.'
     workspaceContext: false
     skills:
       enabled: false
@@ -45,51 +45,51 @@
     toolJobs: false
 
 - id: sessions
-  name: '@pentest-harness/dsh-session-persistence-jsonl'
+  name: '@fathom/session-persistence-jsonl'
   config:
-    root: !!js process.env.DSH_SESSION_ROOT ?? './.sessions'
+    root: !!js process.env.FATHOM_SESSION_ROOT ?? './.sessions'
     # Snapshot runs read the raw JSONL back; production keeps zstd frames.
-    compression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
+    compression: !!js "process.env.FATHOM_SNAPSHOT === undefined ? 'zstd' : 'none'"
 
 - id: session-checkpoints
-  name: '@pentest-harness/dsh-session-checkpoint-policy'
+  name: '@fathom/session-checkpoint-policy'
 
 - id: subagent
-  name: '@pentest-harness/dsh-subagent'
+  name: '@fathom/subagent'
 
 - id: subagent-spawn-in-process
-  name: '@pentest-harness/dsh-subagent-spawn-in-process'
+  name: '@fathom/subagent-spawn-in-process'
   config:
     providerName: spawn
 
 - id: tool-subagent
-  name: '@pentest-harness/dsh-tool-subagent'
+  name: '@fathom/tool-subagent'
   config:
     provider: spawn
     toolName: subagent
     enableRunInBackground: false
 
 - id: tool-todo
-  name: '@pentest-harness/dsh-tool-todo'
+  name: '@fathom/tool-todo'
   config:
     allowParallelInProgress: true
 
 - id: fs-local
-  name: '@pentest-harness/dsh-fs-local'
+  name: '@fathom/fs-local'
   config:
-    cwd: !!js process.env.DSH_CWD ?? process.cwd()
+    cwd: !!js process.env.FATHOM_CWD ?? process.cwd()
 
 - id: fs-observation-policy
-  name: '@pentest-harness/dsh-fs-observation-policy'
+  name: '@fathom/fs-observation-policy'
 
 - id: tool-fs
-  name: '@pentest-harness/dsh-tool-fs'
+  name: '@fathom/tool-fs'
 
 - id: token-meter
-  name: '@pentest-harness/dsh-token-meter'
+  name: '@fathom/token-meter'
 
 - id: compaction-basic
-  name: '@pentest-harness/dsh-compaction-basic'
+  name: '@fathom/compaction-basic'
   config:
     thresholdRatio: 0.8
     retainRatio: 0.16

@@ -1,5 +1,5 @@
 /**
- * End-to-end tests for dsh-mcp-client. Exercises the REAL MCP protocol against:
+ * End-to-end tests for fathom-mcp-client. Exercises the REAL MCP protocol against:
  * 1. A self-written fixture server over stdio (controlled edge cases)
  * 2. @modelcontextprotocol/server-everything (official integration test server)
  * 3. @modelcontextprotocol/server-filesystem (real filesystem operations)
@@ -14,19 +14,19 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import { z } from 'zod'
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
-import LocalAttachmentStore from '@pentest-harness/dsh-attachment-local'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import { CallId, LlmAdapter, LlmRuntime } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@pentest-harness/dsh-llm'
-import { apply } from '@pentest-harness/dsh-mcp-client/src/index.ts'
-import { publicToolName } from '@pentest-harness/dsh-mcp-client/src/tools.ts'
-import type { Config } from '@pentest-harness/dsh-mcp-client'
+import LocalAttachmentStore from '@fathom/attachment-local'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import { CallId, LlmAdapter, LlmRuntime } from '@fathom/llm'
+import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@fathom/llm'
+import { apply } from '@fathom/mcp-client/src/index.ts'
+import { publicToolName } from '@fathom/mcp-client/src/tools.ts'
+import type { Config } from '@fathom/mcp-client'
 
 const testToolSignal = new AbortController().signal
 
@@ -56,9 +56,9 @@ class ImageAdapter extends LlmAdapter {
   }
 }
 
-async function mountImageRegistry(dshHome: string): Promise<Context> {
+async function mountImageRegistry(fathomHome: string): Promise<Context> {
   const ctx = await mountRegistry()
-  await ctx.plugin(LocalAttachmentStore, { dshHome })
+  await ctx.plugin(LocalAttachmentStore, { fathomHome })
   await ctx.plugin(LlmRuntime)
   ctx.llm.registerAdapter(['visual'], new ImageAdapter())
   return ctx

@@ -1,18 +1,18 @@
 /**
- * `@pentest-harness/dsh-browser`: one shared browser for the agent and the
+ * `@fathom/browser`: one shared browser for the agent and the
  * user. Provides `ctx.browser`, a persistent Chromium session (the harness's
  * own Chromium build by default, downloaded on first use) driven through Playwright. When the web server is mounted it
  * also serves a live view at `/browser/view` (WebSocket `/browser/ws`) that
  * streams the active tab and forwards the user's pointer and keyboard input,
  * so the user can watch the agent and take over.
- * @module @pentest-harness/dsh-browser
+ * @module @fathom/browser
  */
 
 import type { IncomingMessage } from 'node:http'
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-host-webserver'
-import { dshHomePath } from '@pentest-harness/dsh-home-paths'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/host-webserver'
+import { fathomHomePath } from '@fathom/home-paths'
 import { WebSocketServer } from 'ws'
 import { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser } from './runtime.ts'
 import { VIEWER_PAGE } from './viewer-page.ts'
@@ -20,7 +20,7 @@ import { VIEWER_PAGE } from './viewer-page.ts'
 export { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser, normalizeUrl, resolveAddress, toPlaywrightChord } from './runtime.ts'
 export type { BrowserLaunchOptions, BrowserScope, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     browser: BrowserRuntime
   }
@@ -42,7 +42,7 @@ export interface BrowserRuntimeConfig {
   executablePath?: string
   /** Run without a native window (default). The live view still shows the page. */
   headless?: boolean
-  /** Persistent profile directory. Defaults to `~/.dsh/browser/profile`. */
+  /** Persistent profile directory. Defaults to `~/.fathom/browser/profile`. */
   profileDir?: string
   /** Initial viewport width (CSS px). The live view resizes it to fit its pane. */
   width?: number
@@ -104,7 +104,7 @@ export default class BrowserRuntime extends Service {
       channel: config.channel ?? BUNDLED_CHANNEL,
       ...config.executablePath !== undefined && config.executablePath.length > 0 ? { executablePath: config.executablePath } : {},
       headless: config.headless ?? true,
-      profileDir: config.profileDir ?? dshHomePath('browser', 'profile'),
+      profileDir: config.profileDir ?? fathomHomePath('browser', 'profile'),
       width: config.width ?? 1280,
       height: config.height ?? 800,
       searchUrl: config.searchUrl ?? DEFAULT_SEARCH_URL,

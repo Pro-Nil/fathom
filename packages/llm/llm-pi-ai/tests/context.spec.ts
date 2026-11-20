@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { AttachmentId, ImageVariantId } from '@pentest-harness/dsh-attachment'
+import { AttachmentId, ImageVariantId } from '@fathom/attachment'
 import type {
   AttachmentStore,
   ImageAttachmentRef,
   ImageRequestPolicy,
   RequestImageAttachment,
-} from '@pentest-harness/dsh-attachment'
-import { CallId, createMessage, createUserMessage, OFFLOADED_IMAGE_TEXT } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, GenerateOptions, Message } from '@pentest-harness/dsh-llm'
+} from '@fathom/attachment'
+import { CallId, createMessage, createUserMessage, OFFLOADED_IMAGE_TEXT } from '@fathom/llm'
+import type { ContentBlock, GenerateOptions, Message } from '@fathom/llm'
 import { toPiContext } from '../src/context.ts'
 import { toPiAssistant } from '../src/replay.ts'
 

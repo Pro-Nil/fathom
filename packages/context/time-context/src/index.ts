@@ -2,14 +2,14 @@
  * Opt-in request clock context. Eligible steps add durable,
  * source-attributed time readings to the request history.
  *
- * @module @pentest-harness/dsh-time-context
+ * @module @fathom/time-context
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { UserMessage } from '@fathom/llm'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,

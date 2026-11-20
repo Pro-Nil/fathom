@@ -39,10 +39,10 @@ import clsx from 'clsx'
 import {
   Button, IconCheckOutline16, IconChevronRightOutline14, IconEditOutline16, IconFolderClose16, IconFolderOpen16,
   IconPlusOutline16, Modal,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { DirectoryEntry, DirectoryListing } from '@pentest-harness/dsh-client-runtime/client'
-import { DirectoryBrowseError } from '@pentest-harness/dsh-client-runtime/client'
-import type { Translate } from '@pentest-harness/dsh-client-locale/client'
+} from '@fathom/client-ui-primitives'
+import type { DirectoryEntry, DirectoryListing } from '@fathom/client-runtime/client'
+import { DirectoryBrowseError } from '@fathom/client-runtime/client'
+import type { Translate } from '@fathom/client-locale/client'
 import css from './DirectoryBrowser.module.css'
 
 /** Owner-supplied browser props: browse calls, pick semantics, and copy. */

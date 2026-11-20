@@ -16,8 +16,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { DiscoveredModelView, IApiClient } from '@pentest-harness/dsh-api-remotes/client'
-import { Button, Modal } from '@pentest-harness/dsh-client-ui-primitives'
+import type { DiscoveredModelView, IApiClient } from '@fathom/api-remotes/client'
+import { Button, Modal } from '@fathom/client-ui-primitives'
 import { formatCapacity, parseCapacity } from './model-catalog.ts'
 import type { ModelCatalogDraft } from './model-catalog.ts'
 import { messageOf } from './store.ts'

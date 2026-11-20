@@ -1,22 +1,22 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId , createMessage, createToolResultMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import { CallId , createMessage, createToolResultMessage } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
 import SessionStore, {
   Session,
   SessionId,
-} from '@pentest-harness/dsh-session'
-import type { SurfaceEvent } from '@pentest-harness/dsh-session'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import TokenMeter from '@pentest-harness/dsh-token-meter'
+} from '@fathom/session'
+import type { SurfaceEvent } from '@fathom/session'
+import * as SessionInvariant from '@fathom/session/invariant'
+import InvariantRegistry from '@fathom/invariants'
+import TokenMeter from '@fathom/token-meter'
 import ToolResultPruner, {
   codePointLength,
   DEFAULTS,
   PRUNE_MARKER,
   resolveConfig,
-} from '@pentest-harness/dsh-compaction-tool-result-pruner'
-import type { ToolResultPruneConfig } from '@pentest-harness/dsh-compaction-tool-result-pruner'
+} from '@fathom/compaction-tool-result-pruner'
+import type { ToolResultPruneConfig } from '@fathom/compaction-tool-result-pruner'
 
 const MODEL = 'test-model'
 const SMALL: ToolResultPruneConfig = {

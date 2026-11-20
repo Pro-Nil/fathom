@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
+import { Context } from '@fathom/cordis'
+import { AttachmentId } from '@fathom/attachment'
 import LlmRuntime, {
   errorChain,
   GenerateOptions,
@@ -15,14 +15,14 @@ import LlmRuntime, {
   StreamChunk,
   createMessage,
   createUserMessage,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 import type {
   LlmModelContext,
   LlmModelInfo,
   LlmModelReasoningInfo,
   LlmProviderInfo,
   LlmResolvedModelInfo,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 
 class ScriptedAdapter extends LlmAdapter {
   constructor(private script: StreamChunk[]) {
@@ -1230,7 +1230,7 @@ describe('LlmRuntime', () => {
   })
 
   it('LlmError extends the shared HarnessError base', async () => {
-    const { HarnessError, isHarnessError } = await import('@pentest-harness/dsh-llm')
+    const { HarnessError, isHarnessError } = await import('@fathom/llm')
     const cause = new Error('root cause')
     const err = new LlmError('boom', 'AUTH', { cause })
     expect(err).toBeInstanceOf(HarnessError)
@@ -1240,7 +1240,7 @@ describe('LlmRuntime', () => {
   })
 
   it('HarnessError carries a code, names itself by subclass, and chains cause', async () => {
-    const { HarnessError, isHarnessError } = await import('@pentest-harness/dsh-llm')
+    const { HarnessError, isHarnessError } = await import('@fathom/llm')
     const root = new Error('root cause')
     const err = new HarnessError('wrapper', 'UNKNOWN', { cause: root })
     expect(err).toBeInstanceOf(Error)

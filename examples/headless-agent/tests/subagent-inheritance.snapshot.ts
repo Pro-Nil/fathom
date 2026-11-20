@@ -6,12 +6,12 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import { normalizeSessionSnapshot, type NormalizeContext } from '@pentest-harness/dsh-acp-snapshot'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@pentest-harness/dsh-loader-smoke'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import { Context } from '@fathom/cordis'
+import { normalizeSessionSnapshot, type NormalizeContext } from '@fathom/acp-snapshot'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@fathom/loader-smoke'
+import { createUserMessage } from '@fathom/llm'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = fileURLToPath(new URL('./subagent-inheritance-snapshots/parent-override', import.meta.url))
@@ -23,7 +23,7 @@ const configPath = fileURLToPath(new URL('../subagent-inheritance.cordis.snapsho
 const binScript = fileURLToPath(new URL('./fixtures/headless-driver.ts', import.meta.url))
 const tsconfigPath = fileURLToPath(new URL('../../../tsconfig.json', import.meta.url))
 const sessionId = SessionId('subagent-inheritance-parent')
-const refreshing = process.env.DSH_SNAPSHOT === 'refresh'
+const refreshing = process.env.FATHOM_SNAPSHOT === 'refresh'
 const task = 'Delegate the write probe to a subagent.'
 
 /** Seed a completed parent turn with the only read-only fact in the app. */
@@ -57,7 +57,7 @@ describe('parent-only override inheritance snapshot', () => {
     let cwd = ''
     const result = await runLoaderSmoke({
       label: 'subagent inheritance headless stream-json snapshot',
-      tempDirPrefix: 'dsh-subagent-inherit-',
+      tempDirPrefix: 'fathom-subagent-inherit-',
       binScript,
       libBinScript: binScript,
       configPath,
@@ -66,9 +66,9 @@ describe('parent-only override inheritance snapshot', () => {
       env: {
         // The primary fixture path must exist for llm-replay's config guard;
         // the override sidecar fully replaces the derived parent script.
-        DSH_SNAPSHOT_FILE: replayOverride,
-        DSH_SNAPSHOT_OVERRIDE: replayOverride,
-        DSH_SNAPSHOT_CHILD_FILES: childReplay,
+        FATHOM_SNAPSHOT_FILE: replayOverride,
+        FATHOM_SNAPSHOT_OVERRIDE: replayOverride,
+        FATHOM_SNAPSHOT_CHILD_FILES: childReplay,
       },
       prepare: async (runCwd) => {
         cwd = runCwd
@@ -105,13 +105,13 @@ describe('parent-only override inheritance snapshot', () => {
           }
           if (record.type !== 'user/message'
             || record.data?.source?.kind !== 'plugin'
-            || record.data.source.plugin !== '@pentest-harness/dsh-system-prompt') return []
+            || record.data.source.plugin !== '@fathom/system-prompt') return []
           return record.data.content?.flatMap(block => block.type === 'text' && typeof block.text === 'string' ? [block.text] : []) ?? []
         })
         const policyContexts = [...runtimeContexts(parent), ...runtimeContexts(child)]
         expect(policyContexts).toHaveLength(2)
         for (const context of policyContexts) {
-          expect(context).toContain('Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode.')
+          expect(context).toContain('Any available operation enforced by the FATHOM file sandbox cannot modify files in the standing mode.')
           expect(context).toContain('Do not refuse a required modification from this policy alone')
           expect(context).not.toContain('write and edit tools')
           expect(context).not.toContain('one-shot bash commands')

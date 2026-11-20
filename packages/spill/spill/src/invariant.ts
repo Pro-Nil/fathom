@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-spill`.
- * @module @pentest-harness/dsh-spill/invariant
+ * Package-owned invariant companion for `@fathom/spill`.
+ * @module @fathom/spill/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-spill'
+const PACKAGE_NAME = '@fathom/spill'
 
 /** Cordis companion plugin name. */
 export const name = 'spill-invariant'

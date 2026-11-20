@@ -1,7 +1,7 @@
 /** Durable Session-message acceptance checks shared by provisioning and mailbox recovery. */
 
-import type { UserMessage } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { UserMessage } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 
 type InboxProjection = Record<'next-turn' | 'next-step', UserMessage[]>
 

@@ -1,10 +1,10 @@
 /**
  * Typed failures shared by subagent service and provider operations.
  *
- * @module @pentest-harness/dsh-subagent
+ * @module @fathom/subagent
  */
 
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import { HarnessError } from '@fathom/llm'
 
 /** Typed failure for the subagent seam. */
 export class SubagentError extends HarnessError {

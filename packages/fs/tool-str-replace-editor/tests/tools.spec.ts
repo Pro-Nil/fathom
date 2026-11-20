@@ -2,19 +2,19 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { FsVersion } from '@pentest-harness/dsh-fs'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import SandboxedFileSystem from '@pentest-harness/dsh-fs-sandbox'
-import SandboxPolicy from '@pentest-harness/dsh-sandbox-policy'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as ToolStrReplaceEditor from '@pentest-harness/dsh-tool-str-replace-editor'
+import { Context } from '@fathom/cordis'
+import { FsVersion } from '@fathom/fs'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import LocalFileSystem from '@fathom/fs-local'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import SandboxedFileSystem from '@fathom/fs-sandbox'
+import SandboxPolicy from '@fathom/sandbox-policy'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import * as ToolStrReplaceEditor from '@fathom/tool-str-replace-editor'
 
 const contexts: Context[] = []
 const roots: string[] = []
@@ -66,7 +66,7 @@ async function setup(
   config: ToolStrReplaceEditor.Config = {},
   options: { fsPolicy?: boolean; sandboxMode?: 'read-only' | 'workspace-write' | 'danger-full-access' } = {},
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-tool-str-replace-editor-'))
+  const root = await mkdtemp(join(tmpdir(), 'fathom-tool-str-replace-editor-'))
   roots.push(root)
   const ctx = new Context()
   contexts.push(ctx)
@@ -526,7 +526,7 @@ describe('tool-str-replace-editor', () => {
   })
 
   it('reports missing sandbox-policy composition during plugin startup', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-tool-str-replace-editor-missing-policy-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-tool-str-replace-editor-missing-policy-'))
     roots.push(root)
     const ctx = new Context()
     contexts.push(ctx)

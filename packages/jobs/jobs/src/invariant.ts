@@ -1,11 +1,11 @@
-/** Package-owned background-job snapshot invariants. @module @pentest-harness/dsh-jobs/invariant */
+/** Package-owned background-job snapshot invariants. @module @fathom/jobs/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { JobSnapshot } from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-jobs'
+const PACKAGE_NAME = '@fathom/jobs'
 const TERMINAL_STATUSES = new Set(['completed', 'killed', 'failed'])
 
 /** Cordis companion plugin name. */

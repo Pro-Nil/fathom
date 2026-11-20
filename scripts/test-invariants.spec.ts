@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context, FiberState, Service, ValidationError } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import z from '@pentest-harness/schemastery'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import { Context, FiberState, Service, ValidationError } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import z from '@fathom/schemastery'
+import InvariantRegistry from '@fathom/invariants'
+import type { InvariantInstaller } from '@fathom/invariants'
 import { packageInvariantOwners } from './package-invariants.ts'
 import {
   TEST_INVARIANT_READY_SERVICE,
@@ -13,7 +13,7 @@ import {
   usesManualInvariantTree,
 } from './test-invariants.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     testInvariantProbe: TestInvariantProbe
   }

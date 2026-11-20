@@ -1,5 +1,5 @@
-import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@pentest-harness/dsh-llm'
-import { CallId, LlmAdapter } from '@pentest-harness/dsh-llm'
+import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@fathom/llm'
+import { CallId, LlmAdapter } from '@fathom/llm'
 
 /** Helpers to write scripted responses tersely. */
 export function textResponse(text: string): StreamChunk[] {

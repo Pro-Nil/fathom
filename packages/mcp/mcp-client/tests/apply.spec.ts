@@ -3,10 +3,10 @@
  * Isolated file so vi.mock of the MCP SDK doesn't pollute other test suites.
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import type { Config } from '@pentest-harness/dsh-mcp-client'
+import { Context } from '@fathom/cordis'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import type { Config } from '@fathom/mcp-client'
 
 // ---- Mock MCP SDK ----
 
@@ -54,7 +54,7 @@ vi.mock('@modelcontextprotocol/sdk/client/streamableHttp.js', () => ({
 
 // vi.mock is hoisted above static imports, so the module under test sees the
 // mocked SDK even through a static import.
-import { apply, name, inject, Config as ConfigSchema } from '@pentest-harness/dsh-mcp-client/src/index.ts'
+import { apply, name, inject, Config as ConfigSchema } from '@fathom/mcp-client/src/index.ts'
 
 // ---- Helpers ----
 

@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { WebError } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
 import {
   DUCKDUCKGO_DEFAULT_BASE_URL, DuckDuckGoSearchProvider, decodeEntities, parseResults, resolveResultUrl,
-} from '@pentest-harness/dsh-web-search-duckduckgo'
+} from '@fathom/web-search-duckduckgo'
 
 const PAGE = `
 <div class="results">

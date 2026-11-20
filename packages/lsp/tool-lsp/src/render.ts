@@ -3,11 +3,11 @@
  * conversion, workspace-grouped location rendering with `file:`-URI resolution, complete-result
  * capping, and UI presentation. No I/O — a UI may call the presenter on live streaming and on
  * replay, so it depends only on the tool arguments.
- * @module @pentest-harness/dsh-tool-lsp/render
+ * @module @fathom/tool-lsp/render
  */
 
-import type { GenericCallView } from '@pentest-harness/dsh-tools'
-import type { LspHover, LspLocation, LspOperation, LspPosition } from '@pentest-harness/dsh-lsp'
+import type { GenericCallView } from '@fathom/tools'
+import type { LspHover, LspLocation, LspOperation, LspPosition } from '@fathom/lsp'
 import { posix, win32 } from 'node:path'
 import { fileURLToPath } from 'node:url'
 

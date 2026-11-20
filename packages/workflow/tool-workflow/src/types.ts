@@ -2,13 +2,13 @@
  * Browser-safe durable workflow-record events written by the model-facing
  * workflow tool into its calling parent Session.
  *
- * @module @pentest-harness/dsh-tool-workflow/types
+ * @module @fathom/tool-workflow/types
  */
 
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { SessionId } from '@fathom/session/types'
 import type {
   WorkflowAgentOutcome, WorkflowRunId, WorkflowStopReason,
-} from '@pentest-harness/dsh-workflow/types'
+} from '@fathom/workflow/types'
 
 /** Opens one durable top-level workflow run record. */
 export interface ToolWorkflowRunStartData {
@@ -38,7 +38,7 @@ export interface ToolWorkflowRunEndData {
   readonly stopReason: WorkflowStopReason
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Opens one top-level workflow record.

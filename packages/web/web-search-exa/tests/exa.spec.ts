@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import WebRuntime from '@pentest-harness/dsh-web'
-import { ExaSearchProvider, EXA_PROVIDER_ID } from '@pentest-harness/dsh-web-search-exa'
-import * as exaPlugin from '@pentest-harness/dsh-web-search-exa'
+import { Context } from '@fathom/cordis'
+import WebRuntime from '@fathom/web'
+import { ExaSearchProvider, EXA_PROVIDER_ID } from '@fathom/web-search-exa'
+import * as exaPlugin from '@fathom/web-search-exa'
 import { mapExaResponse, mapExaResult } from '../src/provider.ts'
 
 const options = { apiKey: 'exa-key', baseURL: 'https://api.exa.test', searchType: 'auto' as const, highlightsPerResult: 1 }

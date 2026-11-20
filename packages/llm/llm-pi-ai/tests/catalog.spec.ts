@@ -2,13 +2,13 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, ReasoningEffortId } from '@pentest-harness/dsh-llm'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import FileSettingsProvider from '@pentest-harness/dsh-settings-file'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import { PiAiAdapter } from '@pentest-harness/dsh-llm-pi-ai'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, ReasoningEffortId } from '@fathom/llm'
+import type { StreamChunk } from '@fathom/llm'
+import FileSettingsProvider from '@fathom/settings-file'
+import { settingsNamespace } from '@fathom/settings'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import { PiAiAdapter } from '@fathom/llm-pi-ai'
 import { getBuiltinModels } from '@earendil-works/pi-ai/providers/all'
 import { createModels, getSupportedThinkingLevels } from '@earendil-works/pi-ai'
 import type { Api, Model, OpenAICompletionsCompat, Provider } from '@earendil-works/pi-ai'
@@ -35,9 +35,9 @@ afterEach(async () => {
   await Promise.all(homes.splice(0).map(dir => rm(dir, { recursive: true, force: true })))
 })
 
-/** A throwaway $DSH_HOME with an empty settings document. */
+/** A throwaway $FATHOM_HOME with an empty settings document. */
 async function home(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-pi-catalog-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-pi-catalog-'))
   homes.push(dir)
   await writeFile(join(dir, 'settings.yaml'), '')
   return dir

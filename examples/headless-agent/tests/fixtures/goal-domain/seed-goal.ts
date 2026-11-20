@@ -1,7 +1,7 @@
 /** Test-only Loader plugin that creates a goal at the first real step edge. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/dsh-goal'
+import type { Context } from '@fathom/cordis'
+import type {} from '@fathom/goal'
 
 export const name = 'seed-goal'
 export const inject = ['goals']

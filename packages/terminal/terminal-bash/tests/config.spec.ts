@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { resolveBashPath } from '@pentest-harness/dsh-bash-local'
-import type { Config } from '@pentest-harness/dsh-terminal-bash/src/config.ts'
-import { resolveConfig, validateConfig } from '@pentest-harness/dsh-terminal-bash/src/config.ts'
+import { resolveBashPath } from '@fathom/bash-local'
+import type { Config } from '@fathom/terminal-bash/src/config.ts'
+import { resolveConfig, validateConfig } from '@fathom/terminal-bash/src/config.ts'
 
 function config(overrides: Partial<Config> = {}): Config {
   return {

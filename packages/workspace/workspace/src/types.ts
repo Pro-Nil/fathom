@@ -2,11 +2,11 @@
  * Public type vocabulary of the workspace entity: the `WorkspaceId` brand and
  * the `Workspace` consumer interface. Types only — the `WorkspaceId` factory
  * lives in `index.ts` (this file carries no runtime code).
- * @module @pentest-harness/dsh-workspace/src/types
+ * @module @fathom/workspace/src/types
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Branded } from '@fathom/brand'
+import type { SessionId } from '@fathom/session'
 
 /**
  * Identifies one workspace record. A generated uuid, never the path: path

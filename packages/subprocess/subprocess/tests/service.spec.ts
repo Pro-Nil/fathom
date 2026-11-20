@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { PassThrough } from 'node:stream'
-import { Context } from '@pentest-harness/cordis'
-import { scrubbedParentEnv, SubprocessRuntime } from '@pentest-harness/dsh-subprocess'
+import { Context } from '@fathom/cordis'
+import { scrubbedParentEnv, SubprocessRuntime } from '@fathom/subprocess'
 import type {
   SubprocessHandle,
   SubprocessOutputRead,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@pentest-harness/dsh-subprocess'
+} from '@fathom/subprocess'
 
 /**
  * Minimal concrete service: a hand-built handle. The seam is spawn-only —
@@ -75,23 +75,23 @@ describe('SubprocessRuntime seam', () => {
     await expect(ctx.plugin(SecondService)).rejects.toThrow(/service "subprocess" has been registered/)
   })
 
-  it('scrubbedParentEnv drops credential-shaped and DSH_ names (case-insensitively) but keeps PATH', () => {
-    process.env.DSH_SCRUB_PROBE = 'stale'
-    process.env.dsh_scrub_probe_lower = 'stale'
+  it('scrubbedParentEnv drops credential-shaped and FATHOM_ names (case-insensitively) but keeps PATH', () => {
+    process.env.FATHOM_SCRUB_PROBE = 'stale'
+    process.env.fathom_scrub_probe_lower = 'stale'
     process.env.SCRUB_PROBE_TOKEN = 'secret'
     process.env.SCRUB_PROBE_PASSWORD = 'secret'
     process.env.SCRUB_PROBE_PLAIN = 'visible'
     try {
       const env = scrubbedParentEnv()
-      expect(env.DSH_SCRUB_PROBE).toBeUndefined()
-      expect(env.dsh_scrub_probe_lower).toBeUndefined()
+      expect(env.FATHOM_SCRUB_PROBE).toBeUndefined()
+      expect(env.fathom_scrub_probe_lower).toBeUndefined()
       expect(env.SCRUB_PROBE_TOKEN).toBeUndefined()
       expect(env.SCRUB_PROBE_PASSWORD).toBeUndefined()
       expect(env.SCRUB_PROBE_PLAIN).toBe('visible')
       expect(env.PATH).toBeDefined()
     } finally {
-      delete process.env.DSH_SCRUB_PROBE
-      delete process.env.dsh_scrub_probe_lower
+      delete process.env.FATHOM_SCRUB_PROBE
+      delete process.env.fathom_scrub_probe_lower
       delete process.env.SCRUB_PROBE_TOKEN
       delete process.env.SCRUB_PROBE_PASSWORD
       delete process.env.SCRUB_PROBE_PLAIN

@@ -2,20 +2,20 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { scopeOf } from '@pentest-harness/dsh-scope'
-import { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SubagentService from '@pentest-harness/dsh-subagent'
-import * as SubagentFork from '@pentest-harness/dsh-subagent-fork-in-process'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import { renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import * as ToolSubagentControl from '@pentest-harness/dsh-tool-subagent-control'
-import { defineContentToolFixture } from '@pentest-harness/dsh-tools'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { CallId } from '@fathom/llm'
+import { scopeOf } from '@fathom/scope'
+import { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SubagentService from '@fathom/subagent'
+import * as SubagentFork from '@fathom/subagent-fork-in-process'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import { renderPrompt } from '@fathom/system-prompt'
+import * as ToolSubagentControl from '@fathom/tool-subagent-control'
+import { defineContentToolFixture } from '@fathom/tools'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import TeamService from '../../agent-team/src/index.ts'
 import * as toolTeam from '../src/index.ts'
@@ -44,7 +44,7 @@ afterEach(() => {
 async function setup(script: ConstructorParameters<typeof MockAdapter>[0], legacyControl = false) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  const storageRoot = mkdtempSync(join(tmpdir(), 'dsh-tool-team-'))
+  const storageRoot = mkdtempSync(join(tmpdir(), 'fathom-tool-team-'))
   roots.push(storageRoot)
   await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })
   await ctx.plugin(AgentLoop, { agents: [] })
@@ -110,7 +110,7 @@ async function waitNoAgent(ctx: Context, id: SessionId): Promise<void> {
   await vi.waitFor(() => { expect(ctx.agents.get(id)).toBeUndefined() }, { timeout: 5_000 })
 }
 
-describe('dsh-tool-team', () => {
+describe('fathom-tool-team', () => {
   it('installs the complete scoped schema and shared-checkout policy for roots and teammates', async () => {
     const { ctx, lead } = await setup(['hang'])
     const leadAssembly = await assembly(ctx, lead)

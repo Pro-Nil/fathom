@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
+import { Context } from '@fathom/cordis'
+import { CodeRuntime } from '@fathom/code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@fathom/code-runtime'
 
 /**
  * Minimal concrete runtime: records requests, "executes" by invoking every

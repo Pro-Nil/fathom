@@ -8,14 +8,14 @@
  * disposal removes the contribution (HMR safety). The same plugin registers
  * its Settings row and invalidates that row on host settings changes.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import { SlotRegistry, type SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as settingsApply, inject as settingsInject } from '@pentest-harness/dsh-client-ui-settings/client'
-import type { CommandDecoration } from '@pentest-harness/dsh-client-ui-commands/client'
-import type { PermissionSelect } from '@pentest-harness/dsh-permission-presets/client'
+import { SlotRegistry, type SessionId } from '@fathom/client-runtime/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import { apply as settingsApply, inject as settingsInject } from '@fathom/client-ui-settings/client'
+import type { CommandDecoration } from '@fathom/client-ui-commands/client'
+import type { PermissionSelect } from '@fathom/permission-presets/client'
 import {
   PermissionRow, type PermissionRowInjected,
 } from '../src/client/PermissionRow.tsx'

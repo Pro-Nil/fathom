@@ -1,17 +1,17 @@
 /**
- * `@pentest-harness/dsh-web-search-exa`: registers an Exa-backed `WebSearchProvider`
+ * `@fathom/web-search-exa`: registers an Exa-backed `WebSearchProvider`
  * with `ctx.web`. A function/namespace plugin (NOT a default-export service):
  * a search provider does not own the `ctx.web` key — it registers INTO the
- * seam's provider registry, exactly as `@pentest-harness/dsh-llm-acme`
- * registers an adapter into `ctx.llm`. The key is owned by `@pentest-harness/dsh-web`.
+ * seam's provider registry, exactly as `@fathom/llm-acme`
+ * registers an adapter into `ctx.llm`. The key is owned by `@fathom/web`.
  *
- * @module @pentest-harness/dsh-web-search-exa
+ * @module @fathom/web-search-exa
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { launchEnvironmentOf } from '@pentest-harness/dsh-launch-environment'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-web'
+import type { Context } from '@fathom/cordis'
+import { launchEnvironmentOf } from '@fathom/launch-environment'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/web'
 import {
   ExaSearchProvider,
   EXA_DEFAULT_BASE_URL,

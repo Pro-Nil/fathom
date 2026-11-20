@@ -13,10 +13,10 @@
  * as trusted as the host process that accepted its definition.
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { DynamicCordisPackage } from '@pentest-harness/dsh-api-remotes/client'
-import type { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import type { ThemeRuntime } from '@pentest-harness/dsh-client-ui-theme/client'
+import { Context } from '@fathom/cordis'
+import type { DynamicCordisPackage } from '@fathom/api-remotes/client'
+import type { SlotRegistry } from '@fathom/client-runtime/client'
+import type { ThemeRuntime } from '@fathom/client-ui-theme/client'
 
 /** Facade verbs beyond declared services (host CTX_VERBS twin). */
 const CTX_VERBS = new Set([

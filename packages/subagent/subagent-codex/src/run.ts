@@ -4,15 +4,15 @@
  * creation, flatten post-publication failures, and dispose to whole-tree
  * quiescence.
  *
- * @module @pentest-harness/dsh-subagent-codex/run
+ * @module @fathom/subagent-codex/run
  */
 
 import { randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import {
   settleRunResult,
   subprocessRunHandle,
@@ -20,12 +20,12 @@ import {
   type SubagentRun,
   type SubagentStartRequest,
   type SubagentStopReason,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@pentest-harness/dsh-subprocess'
+} from '@fathom/subprocess'
 import {
   CodexAppServerWire,
   type CodexWireFailureFacts,

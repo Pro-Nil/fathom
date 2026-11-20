@@ -3,16 +3,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import LlmRuntime, { createUserMessage, LlmAdapter, LlmError, resolveRetryPolicy  } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, ResolvedRetryPolicy, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import AgentRegistry from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import LlmRuntime, { createUserMessage, LlmAdapter, LlmError, resolveRetryPolicy  } from '@fathom/llm'
+import type { GenerateOptions, ResolvedRetryPolicy, StreamChunk } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
 import * as retry from '../src/index.ts'
 
 let root: string | undefined
@@ -49,7 +49,7 @@ afterEach(async () => {
 })
 
 async function loadYaml(lines: readonly string[]): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-llm-retry-loader-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-llm-retry-loader-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [...lines, ''].join('\n'))
 
@@ -58,13 +58,13 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-llm', LlmRuntime],
-    ['@pentest-harness/dsh-session', SessionStore],
-    ['@pentest-harness/dsh-system-prompt', SystemPrompt],
-    ['@pentest-harness/dsh-tools', ToolRuntime],
-    ['@pentest-harness/dsh-agent', AgentRegistry],
-    ['@pentest-harness/dsh-llm-retry', retry],
-    ['@pentest-harness/dsh-agent-loop', AgentLoop],
+    ['@fathom/llm', LlmRuntime],
+    ['@fathom/session', SessionStore],
+    ['@fathom/system-prompt', SystemPrompt],
+    ['@fathom/tools', ToolRuntime],
+    ['@fathom/agent', AgentRegistry],
+    ['@fathom/llm-retry', retry],
+    ['@fathom/agent-loop', AgentLoop],
   ])
   context.loader.internal = {
     version: 'v2',
@@ -87,13 +87,13 @@ describe('real Loader composition', () => {
   // to trip the default 5s budget on cold caches.
   it('loads provider-supplied policy and records recovery through the shipping loop', { timeout: 60_000 }, async () => {
     const loaded = await loadYaml([
-      "- name: '@pentest-harness/dsh-llm'",
-      "- name: '@pentest-harness/dsh-session'",
-      "- name: '@pentest-harness/dsh-system-prompt'",
-      "- name: '@pentest-harness/dsh-tools'",
-      "- name: '@pentest-harness/dsh-agent'",
-      "- name: '@pentest-harness/dsh-llm-retry'",
-      "- name: '@pentest-harness/dsh-agent-loop'",
+      "- name: '@fathom/llm'",
+      "- name: '@fathom/session'",
+      "- name: '@fathom/system-prompt'",
+      "- name: '@fathom/tools'",
+      "- name: '@fathom/agent'",
+      "- name: '@fathom/llm-retry'",
+      "- name: '@fathom/agent-loop'",
     ])
 
     const unloaded = [...loaded.loader.entries()]

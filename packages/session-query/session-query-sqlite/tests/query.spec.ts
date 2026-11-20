@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { SessionSearchCursor, type SessionQueryErrorCode } from '@pentest-harness/dsh-session-query'
+import { SessionId } from '@fathom/session'
+import { SessionSearchCursor, type SessionQueryErrorCode } from '@fathom/session-query'
 import {
   buildEventWhere,
   buildSessionWhere,

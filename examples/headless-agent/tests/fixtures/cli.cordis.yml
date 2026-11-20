@@ -2,15 +2,15 @@
   name: './cli-mock-llm.ts'
 
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ../../cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - id: agent-spine
-        name: '@pentest-harness/dsh-agent-spine-demo'
+        name: '@fathom/agent-spine-demo'
         config:
           agents:
             - id: main
@@ -18,12 +18,12 @@
               model: cli-mock
               cwd: !!js process.cwd()
           workspaceContext: false
-          dshHome: './.dsh-home'
+          fathomHome: './.fathom-home'
           skills:
             filesystem:
               agentsHome: './.agents-home'
           persona: 'Keyless headless-agent smoke.'
       - id: persistence
-        name: '@pentest-harness/dsh-session-persistence-jsonl'
+        name: '@fathom/session-persistence-jsonl'
         config:
           root: './.sessions'

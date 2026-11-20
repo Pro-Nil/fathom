@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { MessageText } from '@pentest-harness/dsh-client-ui-primitives'
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import { MessageText } from '@fathom/client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import type { GoalCommandInputData } from './goal-command-input.ts'
 import css from './GoalCommandInputView.module.css'
 

@@ -9,9 +9,9 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { BlockAssembler } from '@pentest-harness/dsh-llm'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import { CallId } from '@pentest-harness/dsh-llm'
+import { BlockAssembler } from '@fathom/llm'
+import type { StreamChunk } from '@fathom/llm'
+import { CallId } from '@fathom/llm'
 
 // A small pool of indices so collisions (duplicate-index bugs) are common.
 const indexArb = fc.integer({ min: 0, max: 4 })

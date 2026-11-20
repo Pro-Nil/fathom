@@ -2,10 +2,10 @@
  * Runtime registry for generated Typert reflection, Remote invocations, and
  * dependency-inverted lookup/Context providers. It performs no TypeScript
  * analysis or schema generation.
- * @module @pentest-harness/dsh-typert-registry
+ * @module @fathom/typert-registry
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { z } from 'zod'
 import type {
   InvocationDescriptor,
@@ -29,7 +29,7 @@ import type {
   TypertRegistryChange,
   TypertRegistryListener,
   TypertRegistryContract,
-} from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/typert-protocol'
 import type {
   TypertContribution,
   TypertFace,

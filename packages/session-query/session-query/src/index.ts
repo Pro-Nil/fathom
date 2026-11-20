@@ -1,13 +1,13 @@
 /**
  * Service Definition for combined session-history reads, traces, filters, and full-text search.
  *
- * @module @pentest-harness/dsh-session-query
+ * @module @fathom/session-query
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { Session, snapshotSessionEvent, type SessionId } from '@pentest-harness/dsh-session'
-import { foldSessionTitle } from '@pentest-harness/dsh-session-title'
-import type { SessionTitleSnapshot } from '@pentest-harness/dsh-session-title'
+import { Context, Service } from '@fathom/cordis'
+import { Session, snapshotSessionEvent, type SessionId } from '@fathom/session'
+import { foldSessionTitle } from '@fathom/session-title'
+import type { SessionTitleSnapshot } from '@fathom/session-title'
 import type {
   SessionEventResultFilter,
   SessionEventSearchPage,
@@ -65,7 +65,7 @@ export {
 } from './filters.ts'
 export { assertSessionHeadersCompatible } from './sources.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionQuery: SessionQueryEngine
   }

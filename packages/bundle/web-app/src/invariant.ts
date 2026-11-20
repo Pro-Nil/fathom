@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-web-app`.
- * @module @pentest-harness/dsh-web-app/invariant
+ * Package-owned invariant companion for `@fathom/web-app`.
+ * @module @fathom/web-app/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-web-app'
+const PACKAGE_NAME = '@fathom/web-app'
 
 /** Cordis companion plugin name. */
 export const name = 'web-app-invariant'

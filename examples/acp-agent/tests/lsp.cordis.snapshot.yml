@@ -1,17 +1,17 @@
 # Keyless replay keeps the LSP composition intact and replaces only the model adapter.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ../cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: lsp
-            name: '@pentest-harness/dsh-lsp'
+            name: '@fathom/lsp'
           - id: lsp-stdio
-            name: '@pentest-harness/dsh-lsp-stdio'
+            name: '@fathom/lsp-stdio'
             config:
               servers:
                 fixture:
@@ -20,10 +20,10 @@
                   extensionToLanguage:
                     '.ts': typescript
           - id: timeout-policy
-            name: '@pentest-harness/dsh-tool-call-timeout-policy'
+            name: '@fathom/tool-call-timeout-policy'
           - id: tool-lsp
-            name: '@pentest-harness/dsh-tool-lsp'
+            name: '@fathom/tool-lsp'
             config:
               maxLocations: 1
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'

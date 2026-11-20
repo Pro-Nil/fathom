@@ -1,13 +1,13 @@
 {
-  "name": "@pentest-harness/dsh-workspace",
-  "description": "Workspace entity registry (ctx.workspaceRegistry): durable workspace records with validated session attachment over the domain data form for the Pentest Harness",
+  "name": "@fathom/workspace",
+  "description": "Workspace entity registry (ctx.workspaceRegistry): durable workspace records with validated session attachment over the domain data form for the Fathom",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/workspace/workspace"
   },
   "type": "module",
@@ -37,24 +37,24 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/dsh-brand": "workspace:^",
-    "@pentest-harness/dsh-storage-domain": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-session-persistence": "workspace:^",
-    "@pentest-harness/dsh-storage": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/brand": "workspace:^",
+    "@fathom/storage-domain": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/session-persistence": "workspace:^",
+    "@fathom/storage": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   },
   "dependencies": {
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@pentest-harness/dsh-brand": "workspace:^",
-    "@pentest-harness/dsh-storage-domain": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-session-persistence": "workspace:^",
-    "@pentest-harness/dsh-storage": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/brand": "workspace:^",
+    "@fathom/storage-domain": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/session-persistence": "workspace:^",
+    "@fathom/storage": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   }
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /** Inspect the public Claude Code Bundle composition without invoking the product. */
 
-import { boot, loadOverlayPatches, resolveConfigPath } from '@pentest-harness/dsh-app-boot'
-import type {} from '@pentest-harness/dsh-subagent'
-import type {} from '@pentest-harness/dsh-tools'
+import { boot, loadOverlayPatches, resolveConfigPath } from '@fathom/app-boot'
+import type {} from '@fathom/subagent'
+import type {} from '@fathom/tools'
 
 const configPath = process.argv[2]
 const bundlePatchPath = process.argv[3]

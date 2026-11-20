@@ -1,20 +1,20 @@
 /**
  * Service Definition for the approval capability seam, covering requests, cancellation, audit, and per-session policy. Missing
  * answerers fail closed; grants apply only to the requested action.
- * @module @pentest-harness/dsh-user-approval
+ * @module @fathom/user-approval
  */
 
 import { randomUUID } from 'node:crypto'
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage, type CallId } from '@pentest-harness/dsh-llm'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import type { Scoped } from '@pentest-harness/dsh-scope'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage, type CallId } from '@fathom/llm'
+import { scopeTarget } from '@fathom/scope'
+import type { Scoped } from '@fathom/scope'
+import type { Session, SessionEvent } from '@fathom/session'
+import type {} from '@fathom/system-prompt'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     approval: ApprovalService
   }
@@ -23,7 +23,7 @@ declare module '@pentest-harness/cordis' {
     /**
      * Ask composed answerers for one decision. Return an outcome to claim the
      * request or call `next()`; failure yields the fail-closed default.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@fathom/scope`): agent-scoped listeners receive only that agent.
      * @param req - the pending decision (agent, tool identity, reason, signal).
      * @mode waterfall
      */
@@ -31,7 +31,7 @@ declare module '@pentest-harness/cordis' {
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * An approval question was put to the answerer chain — log-only audit

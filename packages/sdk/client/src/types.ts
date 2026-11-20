@@ -2,11 +2,11 @@
  * Types for the TypeScript SDK client: launch options, notification shapes,
  * and owned activity results.
  *
- * @module @pentest-harness/dsh-sdk-client/types
+ * @module @fathom/sdk-client/types
  */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 
 /** One server-to-client notification as received off the wire. */
 export interface HarnessNotification {
@@ -21,7 +21,7 @@ export type NotificationFilter = (notification: HarnessNotification) => boolean
 
 /** Launch and timeout options for {@link HarnessClient}. */
 export interface HarnessClientOptions {
-  /** The runtime executable (the `dsh-jsonrpc-agent` bin, a packaged exe, or `node`). */
+  /** The runtime executable (the `fathom-jsonrpc-agent` bin, a packaged exe, or `node`). */
   command: string
   /** Arguments passed to {@link command}. */
   args?: string[]
@@ -30,7 +30,7 @@ export interface HarnessClientOptions {
   /**
    * The complete child environment. `undefined` inherits the parent env
    * verbatim; passing an object replaces it entirely, so callers own
-   * credential policy (see `scrubbedParentEnv` in `@pentest-harness/dsh-subprocess`
+   * credential policy (see `scrubbedParentEnv` in `@fathom/subprocess`
    * for the shared scrub-then-merge base).
    */
   env?: NodeJS.ProcessEnv
@@ -44,8 +44,8 @@ export interface HarnessClientOptions {
   disposeGraceMs?: number
 }
 
-/** Options for the high-level {@link PentestHarness} wrapper. */
-export interface PentestHarnessOptions {
+/** Options for the high-level {@link Fathom} wrapper. */
+export interface FathomOptions {
   /** Launch spec for the runtime subprocess (command, args, cwd, env, timeouts). */
   launch: HarnessClientOptions
   /** Workspace cwd recorded on every SDK-created session (default: the launch cwd, else `process.cwd()`). */

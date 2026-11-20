@@ -5,7 +5,7 @@
  * shared {@link CardForm} exactly like the hand-written cards.
  */
 
-import type { SettingsScope, SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import type { SettingsScope, SnapshotStore } from '@fathom/client-runtime/client'
 import {
   CardForm, numberField, textField,
   type CardActions, type CardFieldSpec, type CardFieldState, type CardShell,

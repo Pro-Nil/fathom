@@ -3,23 +3,23 @@ requires = ["hatchling==1.30.1"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pentest-harness-sdk"
+name = "fathom-sdk"
 version = "0.0.0.dev0"
-description = "Python SDK for Pentest Harness"
+description = "Python SDK for Fathom"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-authors = [{ name = "Pentest Harness contributors" }]
+authors = [{ name = "Fathom contributors" }]
 dependencies = [
   "pydantic>=2.12,<3",
-  "pentest-harness-runtime-bin==0.0.0.dev0",
+  "fathom-runtime-bin==0.0.0.dev0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/S1N6H/pentest-harness"
-Documentation = "https://github.com/S1N6H/pentest-harness/blob/master/docs/user/guide/python-sdk.md"
-Issues = "https://github.com/S1N6H/pentest-harness/issues"
-Source = "https://github.com/S1N6H/pentest-harness"
+Homepage = "https://github.com/Pro-Nil/fathom"
+Documentation = "https://github.com/Pro-Nil/fathom/blob/master/docs/user/guide/python-sdk.md"
+Issues = "https://github.com/Pro-Nil/fathom/issues"
+Source = "https://github.com/Pro-Nil/fathom"
 
 [dependency-groups]
 test = ["pytest>=8.0"]
@@ -29,9 +29,9 @@ addopts = "-q"
 testpaths = ["tests"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pentest_harness"]
+packages = ["src/fathom"]
 
 # Editable installs see runtime executables injected after installation instead
 # of freezing a wheel snapshot.
 [tool.uv.sources]
-pentest-harness-runtime-bin = { path = "../sdk-runtime", editable = true }
+fathom-runtime-bin = { path = "../sdk-runtime", editable = true }

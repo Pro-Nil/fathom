@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-output-retention`.
- * @module @pentest-harness/dsh-output-retention/invariant
+ * Package-owned invariant companion for `@fathom/output-retention`.
+ * @module @fathom/output-retention/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-output-retention'
+const PACKAGE_NAME = '@fathom/output-retention'
 
 /** Cordis companion plugin name. */
 export const name = 'output-retention-invariant'

@@ -8,67 +8,67 @@
 
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, resolve } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { ToolSchema } from '@pentest-harness/dsh-llm'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createScope } from '@pentest-harness/dsh-scope'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import SqliteSessionQueryEngine from '@pentest-harness/dsh-session-query-sqlite'
-import GoalService from '@pentest-harness/dsh-goal'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type Config as ToolsConfig } from '@pentest-harness/dsh-tools'
-import LocalBashExecutor from '@pentest-harness/dsh-bash-local'
-import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
-import { PwshLocalExecutor } from '@pentest-harness/dsh-pwsh-local'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import { AttachmentStore } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@pentest-harness/dsh-attachment'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import PlanModeController from '@pentest-harness/dsh-plan-mode'
-import WebRuntime from '@pentest-harness/dsh-web'
-import * as WebSearchExa from '@pentest-harness/dsh-web-search-exa'
-import * as WebFetchLocal from '@pentest-harness/dsh-web-fetch-http'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentProvider, SubagentReportDelivery } from '@pentest-harness/dsh-subagent'
-import * as ToolSubagentControl from '@pentest-harness/dsh-tool-subagent-control'
-import * as ToolSubagentListAgents from '@pentest-harness/dsh-tool-subagent-control/list-agents'
-import * as ToolSubagentReport from '@pentest-harness/dsh-tool-subagent-report'
-import SkillRegistry from '@pentest-harness/dsh-skill'
-import * as SkillFileSystem from '@pentest-harness/dsh-skill-filesystem'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as ToolAskUser from '@pentest-harness/dsh-tool-ask-user'
-import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as ToolPwsh from '@pentest-harness/dsh-tool-pwsh'
-import * as ToolBashPersistent from '@pentest-harness/dsh-tool-bash-persistent'
-import * as ToolPwshPersistent from '@pentest-harness/dsh-tool-pwsh-persistent'
-import CordisHostRunner from '@pentest-harness/dsh-cordis-host-runner'
-import * as ToolCordis from '@pentest-harness/dsh-tool-cordis'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
-import * as ToolFsSearch from '@pentest-harness/dsh-tool-fs-search'
-import * as ToolStrReplaceEditor from '@pentest-harness/dsh-tool-str-replace-editor'
-import TerminalSessionService from '@pentest-harness/dsh-terminal'
-import * as ToolPty from '@pentest-harness/dsh-tool-terminal'
-import * as ToolGoal from '@pentest-harness/dsh-tool-goal'
-import * as ToolSchedule from '@pentest-harness/dsh-schedule'
-import Lsp from '@pentest-harness/dsh-lsp'
-import * as ToolLsp from '@pentest-harness/dsh-tool-lsp'
-import * as ToolSkill from '@pentest-harness/dsh-tool-skill'
-import * as ToolSessionQuery from '@pentest-harness/dsh-tool-session-query'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
-import type TeamService from '@pentest-harness/dsh-experimental-agent-team'
-import * as ToolTeam from '@pentest-harness/dsh-experimental-tool-agent-team'
-import * as ToolTodo from '@pentest-harness/dsh-tool-todo'
-import * as ToolSubagent from '@pentest-harness/dsh-tool-subagent'
-import * as ToolWeb from '@pentest-harness/dsh-tool-web'
-import BrowserRuntime from '@pentest-harness/dsh-browser'
-import * as ToolBrowser from '@pentest-harness/dsh-tool-browser'
-import * as PentestToolkit from '@pentest-harness/dsh-pentest-toolkit'
-import VmWorkflowEngine from '@pentest-harness/dsh-workflow-worker-thread'
-import * as ToolRalph from '@pentest-harness/dsh-tool-ralph'
-import * as ToolWorkflow from '@pentest-harness/dsh-tool-workflow'
+import { Context } from '@fathom/cordis'
+import type { ToolSchema } from '@fathom/llm'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import { createScope } from '@fathom/scope'
+import SessionStore, { SessionId } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import SqliteSessionQueryEngine from '@fathom/session-query-sqlite'
+import GoalService from '@fathom/goal'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { type Config as ToolsConfig } from '@fathom/tools'
+import LocalBashExecutor from '@fathom/bash-local'
+import * as BashEnvPlugin from '@fathom/shell-env'
+import { PwshLocalExecutor } from '@fathom/pwsh-local'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import LocalFileSystem from '@fathom/fs-local'
+import { AttachmentStore } from '@fathom/attachment'
+import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@fathom/attachment'
+import UserQuestionService from '@fathom/user-questions'
+import PlanModeController from '@fathom/plan-mode'
+import WebRuntime from '@fathom/web'
+import * as WebSearchExa from '@fathom/web-search-exa'
+import * as WebFetchLocal from '@fathom/web-fetch-http'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubagentProvider, SubagentReportDelivery } from '@fathom/subagent'
+import * as ToolSubagentControl from '@fathom/tool-subagent-control'
+import * as ToolSubagentListAgents from '@fathom/tool-subagent-control/list-agents'
+import * as ToolSubagentReport from '@fathom/tool-subagent-report'
+import SkillRegistry from '@fathom/skill'
+import * as SkillFileSystem from '@fathom/skill-filesystem'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as ToolAskUser from '@fathom/tool-ask-user'
+import * as ToolBash from '@fathom/tool-bash'
+import * as ToolPwsh from '@fathom/tool-pwsh'
+import * as ToolBashPersistent from '@fathom/tool-bash-persistent'
+import * as ToolPwshPersistent from '@fathom/tool-pwsh-persistent'
+import CordisHostRunner from '@fathom/cordis-host-runner'
+import * as ToolCordis from '@fathom/tool-cordis'
+import * as ToolFs from '@fathom/tool-fs'
+import * as ToolFsSearch from '@fathom/tool-fs-search'
+import * as ToolStrReplaceEditor from '@fathom/tool-str-replace-editor'
+import TerminalSessionService from '@fathom/terminal'
+import * as ToolPty from '@fathom/tool-terminal'
+import * as ToolGoal from '@fathom/tool-goal'
+import * as ToolSchedule from '@fathom/schedule'
+import Lsp from '@fathom/lsp'
+import * as ToolLsp from '@fathom/tool-lsp'
+import * as ToolSkill from '@fathom/tool-skill'
+import * as ToolSessionQuery from '@fathom/tool-session-query'
+import * as ToolTasks from '@fathom/tool-jobs'
+import type TeamService from '@fathom/experimental-agent-team'
+import * as ToolTeam from '@fathom/experimental-tool-agent-team'
+import * as ToolTodo from '@fathom/tool-todo'
+import * as ToolSubagent from '@fathom/tool-subagent'
+import * as ToolWeb from '@fathom/tool-web'
+import BrowserRuntime from '@fathom/browser'
+import * as ToolBrowser from '@fathom/tool-browser'
+import * as PentestToolkit from '@fathom/pentest-toolkit'
+import VmWorkflowEngine from '@fathom/workflow-worker-thread'
+import * as ToolRalph from '@fathom/tool-ralph'
+import * as ToolWorkflow from '@fathom/tool-workflow'
 import { githubSlug } from './verify-md-links.ts'
 
 /** Attachment seam marker that makes the attachments-conditional `read_image` schema harvestable. */
@@ -190,7 +190,7 @@ export interface ToolPackage {
  */
 const TOOL_PACKAGES: ToolPackage[] = [
   {
-    pkg: '@pentest-harness/dsh-tool-ask-user',
+    pkg: '@fathom/tool-ask-user',
     dir: 'tool-ask-user',
     source: 'packages/interaction/tool-ask-user/src/index.ts',
     requires: ['ctx.tools', 'ctx.userQuestions'],
@@ -203,7 +203,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'ask_user_question pauses the tool call until the active UI provider returns a human answer.',
   },
   {
-    pkg: '@pentest-harness/dsh-tools',
+    pkg: '@fathom/tools',
     dir: 'tools',
     source: 'packages/core/tools/src/code-mode.ts',
     requires: ['ctx.tools', 'ctx.codeRuntime (execution time)', 'ctx.systemPrompt'],
@@ -217,7 +217,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'Owned by the tool registry as a reserved transport outside filterable capability layers under `mode: code` / `mode: both` (see the Code Mode Agent Note). Under `code` it is the registry\'s only wire contribution; the other visible capabilities are declared in a generated SDK section in the loaded runtime\'s language, and a program calls them through bindings scheduled under the native concurrency contract (submission-ordered starts and policy; concurrency-safe bodies overlap up to `maxParallelSubCalls`) that re-enter the complete guarded tool pipeline and link each nested execution to this outer result.',
   },
   {
-    pkg: '@pentest-harness/dsh-plan-mode',
+    pkg: '@fathom/plan-mode',
     dir: 'plan-mode',
     source: 'packages/plan/plan-mode/src/index.ts',
     requires: ['ctx.tools', 'ctx.systemPrompt', 'ctx.userQuestions (execution time, opportunistic)'],
@@ -229,7 +229,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'exit_plan_mode stays in the model-facing schema while planning is inactive so transitions add no tool-catalog churn on top of the plan-policy change. Its execute path rejects calls outside plan mode; in plan mode it presents the plan over the user-questions seam (approve / keep planning with feedback), and approval logs plan mode inactive at the step boundary.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-bash',
+    pkg: '@fathom/tool-bash',
     dir: 'tool-bash',
     source: 'packages/shell/tool-bash/src/index.ts',
     requires: ['ctx.tools', 'ctx.shell', 'ctx.systemPrompt', 'ctx.shellEnv', 'ctx.jobs at call time for run_in_background'],
@@ -241,10 +241,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(ToolBash)
     },
     note:
-      'The bash tool is the model-facing consumer of the bash executor seam. A `run_in_background` run registers with the generic `ctx.jobs` runtime and is collected/stopped through the `job_*` tools from `@pentest-harness/dsh-tool-jobs`; the `enableRunInBackground` config (default true) removes the parameter entirely when disabled.',
+      'The bash tool is the model-facing consumer of the bash executor seam. A `run_in_background` run registers with the generic `ctx.jobs` runtime and is collected/stopped through the `job_*` tools from `@fathom/tool-jobs`; the `enableRunInBackground` config (default true) removes the parameter entirely when disabled.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-pwsh',
+    pkg: '@fathom/tool-pwsh',
     dir: 'tool-pwsh',
     source: 'packages/shell/tool-pwsh/src/index.ts',
     requires: ['ctx.tools', 'ctx.shell', 'ctx.systemPrompt', 'ctx.shellEnv', 'ctx.jobs at call time for run_in_background'],
@@ -259,10 +259,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(ToolPwsh)
     },
     note:
-      'The pwsh tool is the PowerShell-dialect consumer of the bash executor seam for Windows compositions (a PowerShell executor such as `@pentest-harness/dsh-pwsh-local` backs `ctx.shell`); it mirrors the bash tool call-for-call minus sandbox controls — `run_in_background` runs register with the generic `ctx.jobs` runtime and are collected/stopped through the `job_*` tools, and the managed `DSH_*` environment comes from `@pentest-harness/dsh-shell-env`. Each call runs in a fresh process (no persistent PTY session), with native `C:\\...` paths and `$env:NAME` variables.',
+      'The pwsh tool is the PowerShell-dialect consumer of the bash executor seam for Windows compositions (a PowerShell executor such as `@fathom/pwsh-local` backs `ctx.shell`); it mirrors the bash tool call-for-call minus sandbox controls — `run_in_background` runs register with the generic `ctx.jobs` runtime and are collected/stopped through the `job_*` tools, and the managed `FATHOM_*` environment comes from `@fathom/shell-env`. Each call runs in a fresh process (no persistent PTY session), with native `C:\\...` paths and `$env:NAME` variables.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-cordis',
+    pkg: '@fathom/tool-cordis',
     dir: 'tool-cordis',
     source: 'packages/extensions/tool-cordis/src/index.ts',
     requires: ['ctx.tools', 'ctx.dynamicCordisRunner'],
@@ -272,10 +272,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(ToolCordis)
     },
     note:
-      'Not in any shipped tree (a deliberate opt-in — dynamic package code reaches the real runtime, see .agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md). The toolset injects `ctx.dynamicCordisRunner` from `@pentest-harness/dsh-cordis-host-runner`, which owns the definition registry and the vm sandbox; a composition missing it never activates the tools. A running package may register ADDITIONAL model-visible tools until it is stopped, undefined, or DSH restarts; a full changed request header logs those tool-set changes.',
+      'Not in any shipped tree (a deliberate opt-in — dynamic package code reaches the real runtime, see .agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md). The toolset injects `ctx.dynamicCordisRunner` from `@fathom/cordis-host-runner`, which owns the definition registry and the vm sandbox; a composition missing it never activates the tools. A running package may register ADDITIONAL model-visible tools until it is stopped, undefined, or FATHOM restarts; a full changed request header logs those tool-set changes.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-bash-persistent',
+    pkg: '@fathom/tool-bash-persistent',
     dir: 'tool-bash-persistent',
     source: 'packages/shell/tool-bash-persistent/src/index.ts',
     requires: ['ctx.tools', 'ctx.terminals', 'an owning Agent at execution time'],
@@ -288,7 +288,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'One owner-isolated persistent bash tool; deployment composition supplies the PTY backend and may override the model-facing environment description.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-pwsh-persistent',
+    pkg: '@fathom/tool-pwsh-persistent',
     dir: 'tool-pwsh-persistent',
     source: 'packages/shell/tool-pwsh-persistent/src/index.ts',
     requires: ['ctx.tools', 'ctx.terminals', 'an owning Agent at execution time'],
@@ -301,7 +301,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'One owner-isolated persistent pwsh tool, the Windows counterpart of the persistent bash tool; deployment composition supplies a pwsh-dialect PTY backend and may override the model-facing environment description.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-str-replace-editor',
+    pkg: '@fathom/tool-str-replace-editor',
     dir: 'tool-str-replace-editor',
     source: 'packages/fs/tool-str-replace-editor/src/index.ts',
     requires: ['ctx.tools', 'ctx.fs'],
@@ -314,7 +314,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'Standalone view/create/unique literal replace/line insert tool over the filesystem seam; it composes with any shell or terminal API.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-fs',
+    pkg: '@fathom/tool-fs',
     dir: 'tool-fs',
     source: 'packages/fs/tool-fs/src/index.ts',
     requires: ['ctx.tools', 'ctx.fs', 'ctx.systemPrompt', 'ctx.attachments (image-tool registration)', 'ctx.llm + an image-capable route (image-tool execution)'],
@@ -328,10 +328,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(ToolFs)
     },
     note:
-      'The read-before-write/edit policy is added by `@pentest-harness/dsh-fs-observation-policy` (an `fs/*` event-gate plugin, no schema change); a deployment that loads these tools is expected to also load it. The image tool is not registered without `ctx.attachments`; its schema is route-independent, and execution refuses unless the exact routed model declares image input.',
+      'The read-before-write/edit policy is added by `@fathom/fs-observation-policy` (an `fs/*` event-gate plugin, no schema change); a deployment that loads these tools is expected to also load it. The image tool is not registered without `ctx.attachments`; its schema is route-independent, and execution refuses unless the exact routed model declares image input.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-fs-search',
+    pkg: '@fathom/tool-fs-search',
     dir: 'tool-fs-search',
     source: 'packages/fs/tool-fs-search/src/index.ts',
     requires: ['ctx.tools', 'ctx.subprocess', 'ctx.systemPrompt'],
@@ -349,7 +349,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'glob and grep are unconditional discovery tools that spawn the packaged ripgrep binary (`@vscode/ripgrep`) through ctx.subprocess as ordinary foreground calls (never background jobs) — no host `rg` install and no shell layer. The catalog uses `sampleOverCapGlobResults: true`; deployments must choose that behavior explicitly. Capped results save the complete formatted list through the optional ctx.spillStore backend; returned locators are follow-up-readable/searchable when the backend exposes local paths in co-located deployments.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-terminal',
+    pkg: '@fathom/tool-terminal',
     dir: 'tool-terminal',
     source: 'packages/terminal/tool-terminal/src/index.ts',
     requires: ['ctx.tools', 'ctx.terminals', 'ctx.systemPrompt', 'ctx.jobs at call time for run_in_background'],
@@ -362,7 +362,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The six terminal tools are opt-in and complement one-shot shell/filesystem tools. `terminal_send(run_in_background: true)` registers with `ctx.jobs`; TUI, named key sequences, BEL, resize, auto-start, and cross-agent sharing are absent from the schema.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-goal',
+    pkg: '@fathom/tool-goal',
     dir: 'tool-goal',
     source: 'packages/goal/tool-goal/src/index.ts',
     requires: ['ctx.tools', 'ctx.agents', 'ctx.goals', 'ctx.systemPrompt', 'a calling Agent in an authorized open turn'],
@@ -376,7 +376,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds.',
   },
   {
-    pkg: '@pentest-harness/dsh-schedule',
+    pkg: '@fathom/schedule',
     dir: 'schedule',
     source: 'packages/schedule/schedule/src/tools.ts',
     requires: ['ctx.tools', 'ctx.sessions', 'Session persistence', 'a future live root Agent'],
@@ -397,7 +397,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       + 'management reads and mutations require the shared Session persistence barrier.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-lsp',
+    pkg: '@fathom/tool-lsp',
     dir: 'tool-lsp',
     source: 'packages/lsp/tool-lsp/src/index.ts',
     requires: ['ctx.tools', 'ctx.lsp', 'ctx.systemPrompt'],
@@ -408,10 +408,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(ToolLsp)
     },
     note:
-      'The lsp tool keeps provider selection and language-server subprocesses behind ctx.lsp, so its model-visible schema stays stable across providers. Requires a registered provider (e.g. `@pentest-harness/dsh-lsp-stdio`) at runtime; without one, a query returns the structured `LSP_UNAVAILABLE` error rather than changing the schema.',
+      'The lsp tool keeps provider selection and language-server subprocesses behind ctx.lsp, so its model-visible schema stays stable across providers. Requires a registered provider (e.g. `@fathom/lsp-stdio`) at runtime; without one, a query returns the structured `LSP_UNAVAILABLE` error rather than changing the schema.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-ralph',
+    pkg: '@fathom/tool-ralph',
     dir: 'tool-ralph',
     source: 'packages/workflow/tool-ralph/src/index.ts',
     requires: ['ctx.tools', 'ctx.workflowEngine', 'ctx.subagents', 'ctx.systemPrompt', 'a calling Agent (exec.agent parents every fresh round)'],
@@ -426,7 +426,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'A fixed foreground workflow starts one fresh structured child per round; the model selects only the immutable objective and an optional round cap.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-skill',
+    pkg: '@fathom/tool-skill',
     dir: 'tool-skill',
     source: 'packages/skill/tool-skill/src/index.ts',
     requires: ['ctx.tools', 'ctx.agents', 'ctx.skills'],
@@ -435,14 +435,14 @@ const TOOL_PACKAGES: ToolPackage[] = [
       await ctx.plugin(AgentRegistry)
       await ctx.plugin(SkillRegistry)
       await ctx.plugin(SkillFileSystem, {
-        dshHome: resolve(root, '.tmp/tool-catalog/.dsh'),
+        fathomHome: resolve(root, '.tmp/tool-catalog/.fathom'),
         agentsHome: resolve(root, '.tmp/tool-catalog/.agents'),
       })
       await ctx.plugin(ToolSkill)
     },
   },
   {
-    pkg: '@pentest-harness/dsh-tool-session-query',
+    pkg: '@fathom/tool-session-query',
     dir: 'tool-session-query',
     source: 'packages/session-query/tool-session-query/src/index.ts',
     requires: ['ctx.tools', 'ctx.systemPrompt', 'ctx.sessionQuery', 'a calling Agent for workspace authority'],
@@ -456,7 +456,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The five read-only tools hide provider cursors and authorize every result from the immutable calling agent session. The package is opt-in; compositions that need enforced deadlines or bounded inline output also mount the generic timeout or spill policies.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-subagent',
+    pkg: '@fathom/tool-subagent',
     dir: 'tool-subagent',
     source: 'packages/subagent/tool-subagent/src/index.ts',
     requires: ['ctx.tools', 'ctx.subagents', 'ctx.systemPrompt'],
@@ -471,7 +471,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The registered tool name is the load-time `toolName` config (default `subagent`); the schema above is that default. The shipped compositions load this package once per subagent backend, so the model additionally sees `subagent_fork` bound to the fork backend. Each instance\'s description, `run_in_background` parameter, and system-prompt policy follow its own `backgroundMode` and `enableRunInBackground`, so the two shipped schemas are not identical: `subagent` is `continuable` and defaults omitted calls to background with automatic settlement delivery, while `subagent_fork` stays `one-shot` and defaults them to foreground — see `packages/bundle/base/cordis.patch.yml` and `examples/acp-agent/cordis.yml`.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-subagent-control',
+    pkg: '@fathom/tool-subagent-control',
     dir: 'tool-subagent-control',
     source: {
       interrupt_agent: 'packages/subagent/tool-subagent-control/src/index.ts',
@@ -493,7 +493,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The globally named control tools over continuable background subagents: provider-bound `tool-subagent` instances register distinct delegation tools, while this package registers `send_message` and `interrupt_agent` once, plus `list_agents` from its separately loaded `/list-agents` plugin (whose catalog rows use the sessionProjections and live Agent registries).',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-subagent-report',
+    pkg: '@fathom/tool-subagent-report',
     dir: 'tool-subagent-report',
     source: 'packages/subagent/tool-subagent-report/src/index.ts',
     requires: ['ctx.subagents', 'ctx.systemPrompt', 'a live continuable in-process child Agent'],
@@ -514,7 +514,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       + '`send_message` tool is installed independently.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-jobs',
+    pkg: '@fathom/tool-jobs',
     dir: 'tool-jobs',
     source: 'packages/jobs/tool-jobs/src/index.ts',
     requires: ['ctx.tools', 'ctx.jobs', 'ctx.systemPrompt'],
@@ -527,7 +527,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The kind-agnostic background-job controller: background bash commands, PTY sends, and subagents are read, listed, and killed through the same three tools. Loading the plugin attaches the controller that arms producers\' `ctx.jobs.start()`.',
   },
   {
-    pkg: '@pentest-harness/dsh-experimental-tool-agent-team',
+    pkg: '@fathom/experimental-tool-agent-team',
     dir: 'tool-agent-team',
     source: 'packages/experimental/tool-agent-team/src/index.ts',
     requires: ['ctx.tools', 'ctx.systemPrompt', 'ctx.agentTeams', 'an exact live Team member Agent'],
@@ -562,10 +562,10 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     scope: ctx => catalogChildScopes.get(ctx) as Agent,
     note:
-      'All ten tools are scoped to implicit Team Leads and durable teammates. The shipped dsh-base bundle keeps the package disabled; the documented Agent Teams profile patch enables it while disabling the legacy continuable-child control names.',
+      'All ten tools are scoped to implicit Team Leads and durable teammates. The shipped fathom-base bundle keeps the package disabled; the documented Agent Teams profile patch enables it while disabling the legacy continuable-child control names.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-todo',
+    pkg: '@fathom/tool-todo',
     dir: 'tool-todo',
     source: 'packages/todo/tool-todo/src/index.ts',
     requires: ['ctx.tools', 'owning Agent session'],
@@ -577,7 +577,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'todo_write is session-owned state; UIs render the latest todo/write event as a checklist. `allowParallelInProgress` is required with no default, so the catalog states its choice: `true`, whose description invites several `in_progress` items. A deployment choosing `false` receives the same tool with a description asking for exactly one active task.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-workflow',
+    pkg: '@fathom/tool-workflow',
     dir: 'tool-workflow',
     source: 'packages/workflow/tool-workflow/src/index.ts',
     requires: ['ctx.tools', 'ctx.workflowEngine', 'ctx.systemPrompt', 'a calling Agent (exec.agent parents the script children)'],
@@ -593,7 +593,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
   },
   {
-    pkg: '@pentest-harness/dsh-tool-web',
+    pkg: '@fathom/tool-web',
     dir: 'tool-web',
     source: 'packages/web/tool-web/src/index.ts',
     requires: ['ctx.tools', 'ctx.web', 'ctx.systemPrompt'],
@@ -610,7 +610,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps.',
   },
   {
-    pkg: '@pentest-harness/dsh-tool-browser',
+    pkg: '@fathom/tool-browser',
     dir: 'tool-browser',
     source: 'packages/browser/tool-browser/src/index.ts',
     requires: ['ctx.tools', 'ctx.browser', 'ctx.systemPrompt'],
@@ -625,7 +625,7 @@ const TOOL_PACKAGES: ToolPackage[] = [
       'The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane.',
   },
   {
-    pkg: '@pentest-harness/dsh-pentest-toolkit',
+    pkg: '@fathom/pentest-toolkit',
     dir: 'pentest-toolkit',
     source: 'packages/pentest/pentest-toolkit/src/index.ts',
     requires: ['ctx.tools', 'ctx.systemPrompt'],

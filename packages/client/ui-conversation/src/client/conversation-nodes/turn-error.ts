@@ -1,11 +1,11 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition, TurnErrorNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { displayFailureMessage } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
+import { displayFailureMessage } from '@fathom/client-runtime/client'
 import { chatNode } from './common.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Terminal turn failure recorded on the turn's end reason. */
     'turn-error': TurnErrorNode

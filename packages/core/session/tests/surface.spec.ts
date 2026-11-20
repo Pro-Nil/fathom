@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { SessionEvent, SurfaceEvent, SurfaceEventType } from '@pentest-harness/dsh-session'
+import type { SessionEvent, SurfaceEvent, SurfaceEventType } from '@fathom/session'
 import {
   Session,
   SessionId,
@@ -8,8 +8,8 @@ import {
   isReplacementSurfaceEvent,
   isSurfaceEligibleType,
   isSurfaceEvent,
-} from '@pentest-harness/dsh-session'
-import { SurfaceManager } from '@pentest-harness/dsh-session/surface'
+} from '@fathom/session'
+import { SurfaceManager } from '@fathom/session/surface'
 import {
   createMessage,
   createToolResultMessage,
@@ -17,7 +17,7 @@ import {
   freezeMessage,
   CallId,
   MessageId,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 
 /** Build a minimal session with turn boundaries and a single user message. */
 function surfaceSession(): Session {

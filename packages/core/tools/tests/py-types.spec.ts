@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { jsonSchemaToPy, renderToolsSdkPy } from '@pentest-harness/dsh-tools/src/py-types.ts'
-import { parameterSchemaSpecToJsonSchema } from '@pentest-harness/dsh-tools'
-import type { ToolSdkSchema } from '@pentest-harness/dsh-tools/src/ts-types.ts'
+import { jsonSchemaToPy, renderToolsSdkPy } from '@fathom/tools/src/py-types.ts'
+import { parameterSchemaSpecToJsonSchema } from '@fathom/tools'
+import type { ToolSdkSchema } from '@fathom/tools/src/ts-types.ts'
 
 describe('jsonSchemaToPy', () => {
   it('maps the defineTool DSL subset', () => {

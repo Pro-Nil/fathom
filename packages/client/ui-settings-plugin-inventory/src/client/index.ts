@@ -1,15 +1,15 @@
 /** Read-only Host plugin inventory registered into Web Settings. */
 
-import type {} from '@pentest-harness/dsh-client-locale/client'
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-ui-settings/client'
+import type {} from '@fathom/client-locale/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-ui-settings/client'
 import { PluginInventorySettingsTab, type PluginInventorySettingsTabInjected } from './PluginInventorySettingsTab.tsx'
 import { en, type PluginInventoryLocaleKey } from './locales.ts'
 
 export type { PluginInventorySettingsTabInjected, PluginInventorySettingsTabProps } from './PluginInventorySettingsTab.tsx'
 export type { PluginInventoryLocaleKey } from './locales.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Read-only Host plugin inventory copy. */
     'settings.pluginInventory': PluginInventoryLocaleKey

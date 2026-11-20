@@ -1,13 +1,13 @@
 /**
  * Service Definition for the `ctx.shell` capability seam, covering foreground commands and background process
  * handles. Job ids, ownership, polling, and notices belong to
- * `@pentest-harness/dsh-jobs`, keeping executors independent of sessions.
- * @module @pentest-harness/dsh-shell
+ * `@fathom/jobs`, keeping executors independent of sessions.
+ * @module @fathom/shell
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
+import { Context, Service } from '@fathom/cordis'
+import { settingsNamespace } from '@fathom/settings'
+import type { SandboxMode } from '@fathom/sandbox'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from './types.ts'
 
 /**
@@ -21,7 +21,7 @@ import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } fr
  */
 export const SHELL_SETTINGS_NAMESPACE = settingsNamespace('shell')
 
-export { DSH_ENV_PREFIX } from './types.ts'
+export { FATHOM_ENV_PREFIX } from './types.ts'
 export type {
   ShellExecRequest,
   ShellExecSpec,
@@ -31,13 +31,13 @@ export type {
   ShellRunResult,
   ShellSandboxInfo,
   CollectedOutput,
-  DshEnvironment,
-  DshEnvironmentKey,
+  FathomEnvironment,
+  FathomEnvironmentKey,
 } from './types.ts'
 export { parseExitStatus } from './render.ts'
 export type { ParsedExitStatus } from './render.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     shell: ShellExecutor
   }

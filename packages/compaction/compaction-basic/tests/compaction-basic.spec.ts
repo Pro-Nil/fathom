@@ -1,18 +1,18 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
-import BasicCompactionEngine from '@pentest-harness/dsh-compaction-basic'
-import type { BasicCompactionConfig } from '@pentest-harness/dsh-compaction-basic'
-import { selectCompactableRange } from '@pentest-harness/dsh-compaction-basic/src/region.ts'
-import type { SummarizationInput, SummaryResult } from '@pentest-harness/dsh-compaction-basic/src/summarizer.ts'
-import { CompactionId, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@pentest-harness/dsh-compaction'
+import { Context } from '@fathom/cordis'
+import { AttachmentId } from '@fathom/attachment'
+import BasicCompactionEngine from '@fathom/compaction-basic'
+import type { BasicCompactionConfig } from '@fathom/compaction-basic'
+import { selectCompactableRange } from '@fathom/compaction-basic/src/region.ts'
+import type { SummarizationInput, SummaryResult } from '@fathom/compaction-basic/src/summarizer.ts'
+import { CompactionId, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@fathom/compaction'
 import {
   resolveCompactSpec,
   resolveConfig,
   resolveTargetPolicy,
-} from '@pentest-harness/dsh-compaction-basic/src/config.ts'
-import type { CompactionResult } from '@pentest-harness/dsh-compaction'
-import LlmRuntime, { createUserMessage, CallId, CONTEXT_WINDOW_EXCEEDED_CODE, createToolResultMessage, LlmAdapter , createMessage } from '@pentest-harness/dsh-llm'
+} from '@fathom/compaction-basic/src/config.ts'
+import type { CompactionResult } from '@fathom/compaction'
+import LlmRuntime, { createUserMessage, CallId, CONTEXT_WINDOW_EXCEEDED_CODE, createToolResultMessage, LlmAdapter , createMessage } from '@fathom/llm'
 import type {
   ContentBlock,
   GenerateOptions,
@@ -21,11 +21,11 @@ import type {
   Message,
   StreamChunk,
   TokenUsage,
-} from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import TokenMeter from '@pentest-harness/dsh-token-meter'
-import { agentEvents, type Agent, type RequestErrorAction } from '@pentest-harness/dsh-agent'
-import ToolResultPruner from '@pentest-harness/dsh-compaction-tool-result-pruner'
+} from '@fathom/llm'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import TokenMeter from '@fathom/token-meter'
+import { agentEvents, type Agent, type RequestErrorAction } from '@fathom/agent'
+import ToolResultPruner from '@fathom/compaction-tool-result-pruner'
 
 const SIGNAL = new AbortController().signal
 const MODEL = 'test-model'

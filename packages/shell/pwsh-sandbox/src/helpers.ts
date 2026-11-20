@@ -1,15 +1,15 @@
 /**
  * Internal sandbox-result classification helpers — deliberate call-for-call
- * mirror of `@pentest-harness/dsh-bash-sandbox/src/helpers.ts` (the pwsh twin of
+ * mirror of `@fathom/bash-sandbox/src/helpers.ts` (the pwsh twin of
  * the bash consumer shares the identical classification dialect).
  *
- * @module @pentest-harness/dsh-pwsh-sandbox/helpers
+ * @module @fathom/pwsh-sandbox/helpers
  */
 
 /* jscpd:ignore-start */
 import { accessSync, constants, statSync } from 'node:fs'
-import type { ShellRunResult } from '@pentest-harness/dsh-shell'
-import type { RunnerFailureRule } from '@pentest-harness/dsh-sandbox'
+import type { ShellRunResult } from '@fathom/shell'
+import type { RunnerFailureRule } from '@fathom/sandbox'
 
 /** Node-local spawn codes proven to identify executable resolution or permission failure. */
 const EXECUTABLE_SPAWN_CODES = new Set(['EACCES', 'ENOENT'])

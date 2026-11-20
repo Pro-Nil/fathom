@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import Lsp, { LspProviderId, type LspProvider, type LspProviderQuery, type LspQueryResult } from '@pentest-harness/dsh-lsp'
-import * as ToolLsp from '@pentest-harness/dsh-tool-lsp'
-import { DEFAULT_LSP_TOOL_TIMEOUT_MS, LSP_PROMPT_TEXT } from '@pentest-harness/dsh-tool-lsp'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import { Context } from '@fathom/cordis'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import Lsp, { LspProviderId, type LspProvider, type LspProviderQuery, type LspQueryResult } from '@fathom/lsp'
+import * as ToolLsp from '@fathom/tool-lsp'
+import { DEFAULT_LSP_TOOL_TIMEOUT_MS, LSP_PROMPT_TEXT } from '@fathom/tool-lsp'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 
 /** A scripted provider recording queries; `respond` yields the result or throws. */
 function stubProvider(

@@ -110,7 +110,7 @@ export const en = {
   welcomeContinue: WELCOME_NOTICE_COPY.en.continueLabel,
   welcomeError: 'The acknowledgement could not be saved. Please try again.',
   onboardingTitle: 'Add an API key to get started',
-  onboardingDescription: 'Add your model provider API key to start building in Pentest Harness.',
+  onboardingDescription: 'Add your model provider API key to start building in Fathom.',
   onboardingLater: 'Configure later',
   onboardingSave: 'Save and continue',
   onboardingSaving: 'Saving…',

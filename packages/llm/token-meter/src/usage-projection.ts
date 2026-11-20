@@ -3,9 +3,9 @@
  */
 
 import { z } from 'zod'
-import type { TokenUsage } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
+import type { TokenUsage } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
+import type { ProjectionDefinition } from '@fathom/session-projection'
 import type { ContextPressureProjection, TokenUsageProjection } from './projection.ts'
 import { foldSurfaceProjection } from './surface-projection.ts'
 
@@ -84,7 +84,7 @@ const usageOf = (event: SessionEvent): TokenUsage | undefined =>
       ? event.data.usage
       : undefined
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     tokenUsage: TokenUsageState
     contextPressure: ContextPressureState

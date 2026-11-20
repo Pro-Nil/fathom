@@ -1,10 +1,10 @@
 /** Sidebar shell slot registration and its plain runtime/layout callbacks. */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { apply, inject } from '@pentest-harness/dsh-client-ui-sidebar/client'
-import type { SidebarRootInjected } from '@pentest-harness/dsh-client-ui-sidebar/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { apply, inject } from '@fathom/client-ui-sidebar/client'
+import type { SidebarRootInjected } from '@fathom/client-ui-sidebar/client'
 
 async function bench(declare = true) {
   const ctx = new Context()

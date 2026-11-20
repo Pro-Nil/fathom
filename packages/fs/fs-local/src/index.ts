@@ -1,15 +1,15 @@
 /**
  * Host-filesystem implementation of `ctx.fs`. Realpath-derived target identity makes aliases
  * share stale guards, and writes through a symlink update its target without replacing the link.
- * @module @pentest-harness/dsh-fs-local
+ * @module @fathom/fs-local
  */
 
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { constants as bufferConstants } from 'node:buffer'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import z from '@pentest-harness/schemastery'
-import { FileSystem, FsError, FsVersion } from '@pentest-harness/dsh-fs'
+import z from '@fathom/schemastery'
+import { FileSystem, FsError, FsVersion } from '@fathom/fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -19,7 +19,7 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@pentest-harness/dsh-fs'
+} from '@fathom/fs'
 import {
   applyLiteralEdit,
   listDirectory,

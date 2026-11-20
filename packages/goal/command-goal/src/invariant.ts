@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-command-goal`.
- * @module @pentest-harness/dsh-command-goal/invariant
+ * Package-owned invariant companion for `@fathom/command-goal`.
+ * @module @fathom/command-goal/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-command-goal'
+const PACKAGE_NAME = '@fathom/command-goal'
 
 /** Cordis companion plugin name. */
 export const name = 'command-goal-invariant'

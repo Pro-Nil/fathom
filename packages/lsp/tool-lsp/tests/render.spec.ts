@@ -10,8 +10,8 @@ import {
   parseLspArgs,
   presentLspCall,
   renderUri,
-} from '@pentest-harness/dsh-tool-lsp'
-import type { LspLocation } from '@pentest-harness/dsh-lsp'
+} from '@fathom/tool-lsp'
+import type { LspLocation } from '@fathom/lsp'
 
 const WS = resolve('/home/u/proj')
 const WS_URI = pathToFileURL(WS).href

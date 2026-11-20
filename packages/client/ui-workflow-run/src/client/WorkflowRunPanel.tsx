@@ -5,9 +5,9 @@ import {
 import {
   DisclosureRow, IconChevronRightOutline14, StateDot,
   type DisclosureRowProps, type StateDotState,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
-import { shallowEqual, type SessionId, type SessionListState } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
+import { shallowEqual, type SessionId, type SessionListState } from '@fathom/client-runtime/client'
 import type { WorkflowRunKey } from './locales.ts'
 import type {
   WorkflowRunMemberData, WorkflowRunPhaseData, WorkflowRunStatus,

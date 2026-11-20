@@ -3,13 +3,13 @@
  * {@link agentEvents} couples the agent subject to its scope carrier, so the
  * scope key and the payload's `agent` cannot diverge; repeat dispatchers (the
  * loop driver) build it once in the agent's constructor and reuse it.
- * @module @pentest-harness/dsh-agent/dispatch
+ * @module @fathom/agent/dispatch
  */
 
-import type { Context, Events } from '@pentest-harness/cordis'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import type { Scoped } from '@pentest-harness/dsh-scope'
-import type { AssembleContext } from '@pentest-harness/dsh-system-prompt'
+import type { Context, Events } from '@fathom/cordis'
+import { scopeTarget } from '@fathom/scope'
+import type { Scoped } from '@fathom/scope'
+import type { AssembleContext } from '@fathom/system-prompt'
 import type { Agent } from './runtime-types.ts'
 
 /** Extract the parameter tuple from an event handler type (its `this` is not part of the tuple). */

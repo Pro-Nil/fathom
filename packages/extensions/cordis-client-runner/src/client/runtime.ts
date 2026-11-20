@@ -14,14 +14,14 @@
  * serialization keeps a second request from interleaving with one in flight.
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Loader } from '@pentest-harness/cordis-plugin-loader'
+import type { Context } from '@fathom/cordis'
+import type { Loader } from '@fathom/cordis-plugin-loader'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId, DynamicCordisPackage,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
-import type { ClientModuleSystem } from '@pentest-harness/dsh-client-modules/client'
-import type { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
+import type { ClientModuleSystem } from '@fathom/client-modules/client'
+import type { SlotRegistry } from '@fathom/client-runtime/client'
 import { DynamicCordisStyles, evaluateClientHalf, DYNAMIC_CLIENT_REDIRECTS } from './evaluator.ts'
 import type { DynamicCordisEvaluatedPlugin } from './evaluator.ts'
 import { dynamicCordisContext } from './guard.ts'

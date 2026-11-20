@@ -2,26 +2,26 @@
 # fixture server stay real (the tool call re-executes the actual HTTP fetch and
 # markdown rendering); only the model adapter is replaced by replay.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: web
-            name: '@pentest-harness/dsh-web'
+            name: '@fathom/web'
           - id: web-fetch-http
-            name: '@pentest-harness/dsh-web-fetch-http'
+            name: '@fathom/web-fetch-http'
           - id: web-fetch-fixture
             name: './web-fetch-fixture-server.mjs'
           - id: tool-web
-            name: '@pentest-harness/dsh-tool-web'
+            name: '@fathom/tool-web'
             config:
               search: false
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               providers:
                 - id: acme-official

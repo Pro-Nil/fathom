@@ -1,10 +1,10 @@
-/** Package-owned durable plan-mode invariants. @module @pentest-harness/dsh-plan-mode/invariant */
+/** Package-owned durable plan-mode invariants. @module @fathom/plan-mode/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-plan-mode'
+const PACKAGE_NAME = '@fathom/plan-mode'
 
 /** Cordis companion plugin name. */
 export const name = 'plan-mode-invariant'

@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-tool-browser
+# @fathom/tool-browser
 
 Model-facing browser tools over the shared browser [`ctx.browser`](../browser/README.md). The tool set follows Claude Code's built-in browser:
 
@@ -64,7 +64,7 @@ Prefix-stable while the plugin is mounted; mounting or disposing it invalidates 
 
 #### What the model sees
 
-The generated [`browser_*` schemas](../../../docs/tool-catalog.md#pentest-harnessdsh-tool-browser). The resolved `maxChars` appears in the `max_chars` descriptions.
+The generated [`browser_*` schemas](../../../docs/tool-catalog.md#fathomtool-browser). The resolved `maxChars` appears in the `max_chars` descriptions.
 
 #### Token effect
 

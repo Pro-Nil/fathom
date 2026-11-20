@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { redactSecrets, settingsNamespace } from '../src/index.ts'
 import { MemorySettings } from './memory.ts'
 

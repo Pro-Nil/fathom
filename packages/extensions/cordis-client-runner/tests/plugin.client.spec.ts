@@ -8,17 +8,17 @@
  */
 /* oxlint-disable typescript/no-unsafe-assignment -- Vitest asymmetric matchers are typed as any. */
 
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import InvariantService from '@pentest-harness/dsh-invariants'
+import InvariantService from '@fathom/invariants'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
-import type { DynamicCordisInvokeResult } from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
+import type { DynamicCordisInvokeResult } from '@fathom/api-remotes/client'
 // Type-only: resolves `ctx.remote` and with it the `$on`/`$dispatch` surface.
-import type {} from '@pentest-harness/dsh-api-gateway/client'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
+import type {} from '@fathom/api-gateway/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
 import * as NodeHalf from '../src/index.ts'
 import * as Invariant from '../src/invariant.ts'
 import * as ClientHalf from '../src/client/index.ts'

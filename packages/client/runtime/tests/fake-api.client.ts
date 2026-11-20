@@ -5,8 +5,8 @@ import type {
   ClientResponse, HostFrame, IApiClient, ModelSelection, MuxFrame,
   RpcError, RpcReceipt, RpcRequest, RpcResponse, SessionId, SessionModels, SessionSearchItem, SkillEntry,
   WorkspaceId, WorkspaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
-import { RpcId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/api-remotes/client'
+import { RpcId } from '@fathom/client-connection/client'
 import type { SessionRemotes } from '../src/client/sessions/remotes.ts'
 
 /** Programmable-default workspace row (branded id, ISO-ish times). */

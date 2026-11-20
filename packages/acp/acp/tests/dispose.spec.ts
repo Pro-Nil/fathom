@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import type { Agent } from '@fathom/agent'
+import type { StreamChunk } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import { makeBridgeHarness, type BridgeHarness } from './harness.ts'
 
 describe('ACP connection ownership', () => {

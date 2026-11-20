@@ -9,17 +9,17 @@
   - tablist:
     - tab "Chat" [selected]
     - tab "Trajectory"
-- text: Use web_search once with queries ["Pentest Harness snapshot search","Pentest Harness multi-query search"]. Then reply exactly SEARCH_DONE and stop. {{clock}}
+- text: Use web_search once with queries ["Fathom snapshot search","Fathom multi-query search"]. Then reply exactly SEARCH_DONE and stop. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
-- button "Search Pentest Harness snapshot search, Pentest Harness multi-query search":
+  - text: Context injection @fathom/system-prompt
+- button "Search Fathom snapshot search, Fathom multi-query search":
   - img
   - img
-  - text: Search Pentest Harness snapshot search, Pentest Harness multi-query search
+  - text: Search Fathom snapshot search, Fathom multi-query search
 - paragraph: SEARCH_DONE
 - button "Copy":
   - img

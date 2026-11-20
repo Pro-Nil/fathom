@@ -1,12 +1,12 @@
 /** Models section registration: slot declaration injection, the locale-following label thunk, and HMR recovery. */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { resolveSlotLabel } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as settingsApply, inject as settingsInject } from '@pentest-harness/dsh-client-ui-settings/client'
-import { apply, inject, refreshIfLoaded } from '@pentest-harness/dsh-client-ui-settings-models/client'
+import { resolveSlotLabel } from '@fathom/client-ui-slots'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import { apply as settingsApply, inject as settingsInject } from '@fathom/client-ui-settings/client'
+import { apply, inject, refreshIfLoaded } from '@fathom/client-ui-settings-models/client'
 import {
   WELCOME_NOTICE_ACK_FIELD, WELCOME_NOTICE_SETTINGS_NAMESPACE, WELCOME_NOTICE_VERSION,
 } from '../src/onboarding-copy.ts'

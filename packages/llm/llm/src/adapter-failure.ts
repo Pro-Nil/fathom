@@ -1,7 +1,7 @@
 /**
  * Normalization for values thrown by a final LLM adapter boundary.
  *
- * @module @pentest-harness/dsh-llm/adapter-failure
+ * @module @fathom/llm/adapter-failure
  */
 
 import { HarnessError } from './error.ts'

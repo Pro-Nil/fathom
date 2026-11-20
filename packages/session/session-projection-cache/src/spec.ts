@@ -6,12 +6,12 @@
  * the storage-domain routing decides the medium (the shipped composition's
  * json backend lands it at `<root>/session_projcache.json`, beside
  * `workspace.json`).
- * @module @pentest-harness/dsh-session-projection-cache/src/spec
+ * @module @fathom/session-projection-cache/src/spec
  */
 
 import { z } from 'zod'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { defineDomain, domainTable } from '@pentest-harness/dsh-storage-domain'
+import { SessionId } from '@fathom/session'
+import { defineDomain, domainTable } from '@fathom/storage-domain'
 
 /**
  * One persisted checkpoint row (the RFC's `(sessionId, key, ver, seq, val)`

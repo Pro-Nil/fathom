@@ -1,13 +1,13 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, deepFreeze, markAgentLoopRequest  } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import LlmRuntime, { createUserMessage, deepFreeze, markAgentLoopRequest  } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
 import SessionTitleService, {
   SessionTitleProviderId,
   type SessionTitleProvider,
   type SessionTitleProviderRequest,
   type SessionTitleProviderResult,
-} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

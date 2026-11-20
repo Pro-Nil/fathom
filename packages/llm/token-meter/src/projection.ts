@@ -1,7 +1,7 @@
 /**
  * Pure client-safe token-projection vocabulary.
  *
- * @module @pentest-harness/dsh-token-meter/projection
+ * @module @fathom/token-meter/projection
  */
 
 /**
@@ -65,7 +65,7 @@ export interface ContextBreakdownProjection {
   messageTokens: number
 }
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionMap {
     /** Provider-reported usage accumulated across the complete durable log. */
     tokenUsage: TokenUsageProjection

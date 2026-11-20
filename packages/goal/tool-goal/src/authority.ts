@@ -1,11 +1,11 @@
 /** Execution-time authority checks for the model-facing goal tools. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { GoalView } from '@pentest-harness/dsh-goal'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { ToolRunContext } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { GoalView } from '@fathom/goal'
+import { HarnessError } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
+import type { ToolRunContext } from '@fathom/tools'
 
 type TurnStartEvent = Extract<SessionEvent, { type: 'turn/start' }>
 

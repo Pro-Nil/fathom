@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-terminal`.
- * @module @pentest-harness/dsh-terminal/invariant
+ * Package-owned invariant companion for `@fathom/terminal`.
+ * @module @fathom/terminal/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-terminal'
+const PACKAGE_NAME = '@fathom/terminal'
 
 /** Cordis companion plugin name. */
 export const name = 'terminal-invariant'

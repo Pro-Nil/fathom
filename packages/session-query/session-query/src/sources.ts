@@ -1,6 +1,6 @@
 /** Shared immutable-header checks for logical session source observers. */
 
-import type { SessionHeader } from '@pentest-harness/dsh-session'
+import type { SessionHeader } from '@fathom/session'
 import { SessionQueryError } from './config.ts'
 
 /**

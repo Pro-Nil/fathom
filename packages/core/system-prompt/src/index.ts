@@ -1,16 +1,16 @@
 /**
  * Registry for ordered system sections, dynamic context, tool schemas, and prompt variables.
  *
- * @module @pentest-harness/dsh-system-prompt
+ * @module @fathom/system-prompt
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { AnonymousEntries, NamedEntries, ScopedLayers, scopeTarget } from '@pentest-harness/dsh-scope'
-import type { ScopeKey, ScopeLayer, Scoped } from '@pentest-harness/dsh-scope'
-import type { ContextSnapshotSection, ToolSchema } from '@pentest-harness/dsh-llm'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { AnonymousEntries, NamedEntries, ScopedLayers, scopeTarget } from '@fathom/scope'
+import type { ScopeKey, ScopeLayer, Scoped } from '@fathom/scope'
+import type { ContextSnapshotSection, ToolSchema } from '@fathom/llm'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     systemPrompt: SystemPrompt
   }
@@ -18,7 +18,7 @@ declare module '@pentest-harness/cordis' {
   interface Events {
     /**
      * Expert waterfall over the assembled sections, contexts, tools, and variables.
-     * Scope-filtered dispatch (`@pentest-harness/dsh-scope`): scoped listeners
+     * Scope-filtered dispatch (`@fathom/scope`): scoped listeners
      * receive only that scope's assemblies. The returned value is authoritative.
      * A supplied signal controls only this explicit assembly request and must not
      * be retained to control later turns. A registered complete section is
@@ -199,7 +199,7 @@ function compareToolNames(a: ToolSchema, b: ToolSchema): number {
 
 /** Plugin config: the deployment-authored fragment of the system prompt (see {@link Config.persona} for its contract). */
 export interface Config {
-  /** Include the fixed Pentest Harness identity before the deployment persona (default true). */
+  /** Include the fixed Fathom identity before the deployment persona (default true). */
   includeHarnessIdentity?: boolean
   /** Include dynamic runtime-context snapshots in model history (default true). */
   includeRuntimeContext?: boolean
@@ -373,7 +373,7 @@ export class SystemPrompt extends Service {
       this.section({
         name: 'harness:identity',
         order: -100,
-        text: 'You are an AI agent powered by Pentest Harness.',
+        text: 'You are an AI agent powered by Fathom.',
       })
     }
     this.section({

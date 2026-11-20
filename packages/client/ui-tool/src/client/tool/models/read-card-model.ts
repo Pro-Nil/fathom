@@ -13,8 +13,8 @@
  * until the result arrives.
  * @module
  */
-import { abbreviateHomePath } from '@pentest-harness/dsh-client-runtime/client'
-import type { ReadBlockLine, ReadBlockProps } from '@pentest-harness/dsh-client-ui-primitives'
+import { abbreviateHomePath } from '@fathom/client-runtime/client'
+import type { ReadBlockLine, ReadBlockProps } from '@fathom/client-ui-primitives'
 import { relativizeToCwd, type ToolCallBlock } from './tool-call-model.ts'
 
 /**

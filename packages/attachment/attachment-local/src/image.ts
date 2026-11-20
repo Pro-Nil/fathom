@@ -1,8 +1,8 @@
 /** Raster inspection: full decode at admission, header-only probe on verified reads. */
 
 import sharp, { type Sharp } from 'sharp'
-import { AttachmentError } from '@pentest-harness/dsh-attachment'
-import type { ImageMediaType } from '@pentest-harness/dsh-attachment'
+import { AttachmentError } from '@fathom/attachment'
+import type { ImageMediaType } from '@fathom/attachment'
 
 /** Decoded metadata from a supported image. */
 export interface DetectedImage {

@@ -4,18 +4,18 @@
  * else references RequestPayload<'session.*'> / ResponseValue<'session.*'>.
  */
 
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef, ImageMediaType } from '@pentest-harness/dsh-attachment'
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session/types'
+import type { MessageId } from '@fathom/llm/brand'
+import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef, ImageMediaType } from '@fathom/attachment'
+import type { ContentBlock } from '@fathom/llm/types'
+import type { SessionEvent, SessionId } from '@fathom/session/types'
 // The pure-type outlet: api/ is browser-importable, and the package root's
-// cordis Context merge (via dsh-agent) must not enter client aggregates.
-import type { SessionProjectionMap } from '@pentest-harness/dsh-session-projection/types'
+// cordis Context merge (via fathom-agent) must not enter client aggregates.
+import type { SessionProjectionMap } from '@fathom/session-projection/types'
 import type { RpcId, RpcRequest, RpcResponse } from './rpc.ts'
 import type { ToolEventView } from './events.ts'
 import type { WorkspaceId } from './workspace.ts'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     sessionListMetadata: SessionListMetadata
     imageLimits: null
@@ -47,7 +47,7 @@ export interface SessionListMetadata {
   lastPromptAt: number | null
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     /**
      * The prompt's rpcId is passed through MessageSource into the `user/message` event

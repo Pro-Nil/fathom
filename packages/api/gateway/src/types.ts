@@ -1,6 +1,6 @@
 /**
  * Carrier-independent Typert Gateway request, service, and error contracts.
- * @module @pentest-harness/dsh-api-gateway/types
+ * @module @fathom/api-gateway/types
  */
 
 /** One Remote method request after a carrier has decoded its envelope. */
@@ -46,7 +46,7 @@ export interface TypertGateway {
   invoke(request: InvokeRemoteRequest): Promise<unknown>
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Host dispatcher for Typert Remote calls. */
     typertGateway: TypertGateway

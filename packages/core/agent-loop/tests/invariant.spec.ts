@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import { createUserMessage, markAgentLoopRequest, type GenerateOptions  } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId } from '@fathom/session'
+import InvariantRegistry from '@fathom/invariants'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
+import { createUserMessage, markAgentLoopRequest, type GenerateOptions  } from '@fathom/llm'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

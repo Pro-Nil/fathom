@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-skill-filesystem`.
- * @module @pentest-harness/dsh-skill-filesystem/invariant
+ * Package-owned invariant companion for `@fathom/skill-filesystem`.
+ * @module @fathom/skill-filesystem/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-skill-filesystem'
+const PACKAGE_NAME = '@fathom/skill-filesystem'
 
 /** Cordis companion plugin name. */
 export const name = 'skill-filesystem-invariant'

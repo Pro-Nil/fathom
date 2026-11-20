@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-web-search-perplexity`.
- * @module @pentest-harness/dsh-web-search-perplexity/invariant
+ * Package-owned invariant companion for `@fathom/web-search-perplexity`.
+ * @module @fathom/web-search-perplexity/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-web-search-perplexity'
+const PACKAGE_NAME = '@fathom/web-search-perplexity'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-perplexity-invariant'

@@ -3,25 +3,25 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { z } from 'zod'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
-import SessionProjectionCache from '@pentest-harness/dsh-session-projection-cache'
-import Storage from '@pentest-harness/dsh-storage'
-import { DomainFacility } from '@pentest-harness/dsh-storage-domain'
+import { Context } from '@fathom/cordis'
+import { createUserMessage } from '@fathom/llm'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@fathom/session'
+import type { SessionEvent, SessionHeader } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import type { ProjectionDefinition } from '@fathom/session-projection'
+import SessionProjectionCache from '@fathom/session-projection-cache'
+import Storage from '@fathom/storage'
+import { DomainFacility } from '@fathom/storage-domain'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import SubagentRuntime, {
   SUBAGENT_DESCRIPTOR_VERSION,
   SubagentError,
-} from '@pentest-harness/dsh-subagent'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import * as SubagentFork from '@pentest-harness/dsh-subagent-fork-in-process'
+} from '@fathom/subagent'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import * as SubagentFork from '@fathom/subagent-fork-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 type Script = ConstructorParameters<typeof MockAdapter>[0]
@@ -38,7 +38,7 @@ async function setup(
 ) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  const root = mkdtempSync(join(tmpdir(), 'dsh-subagent-list-'))
+  const root = mkdtempSync(join(tmpdir(), 'fathom-subagent-list-'))
   roots.push(root)
   await ctx.plugin(JsonlSessionPersistence, { root })
   await ctx.plugin(AgentLoop, { agents: [] })
@@ -117,7 +117,7 @@ function descriptorPayload(label: string, version = SUBAGENT_DESCRIPTOR_VERSION)
   return { version, mode: 'continuable' as const, provider: 'spawn', label }
 }
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     subagentListHostileProbe: { poisoned?: boolean | undefined }
   }

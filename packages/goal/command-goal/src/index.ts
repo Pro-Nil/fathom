@@ -1,13 +1,13 @@
 /**
  * Human-facing `/goal` command over the persisted same-session goal domain.
- * @module @pentest-harness/dsh-command-goal
+ * @module @fathom/command-goal
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { CommandInvocation, CommandResult } from '@pentest-harness/dsh-commands'
-import { GoalError } from '@pentest-harness/dsh-goal'
-import type { GoalPhase, GoalRef, GoalView } from '@pentest-harness/dsh-goal'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { CommandInvocation, CommandResult } from '@fathom/commands'
+import { GoalError } from '@fathom/goal'
+import type { GoalPhase, GoalRef, GoalView } from '@fathom/goal'
+import { createUserMessage } from '@fathom/llm'
 
 export const name = 'command-goal'
 export const inject = ['commands', 'goals']

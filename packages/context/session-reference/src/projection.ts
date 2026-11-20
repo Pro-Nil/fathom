@@ -1,9 +1,9 @@
 /** Current-surface projection and byte-bounded rendering. */
 
-import { isCompactCheckpointSource } from '@pentest-harness/dsh-compaction'
-import type { SessionSurfaceSnapshot } from '@pentest-harness/dsh-session-query'
-import { assertNever } from '@pentest-harness/dsh-llm'
-import { TextRetainer } from '@pentest-harness/dsh-output-retention'
+import { isCompactCheckpointSource } from '@fathom/compaction'
+import type { SessionSurfaceSnapshot } from '@fathom/session-query'
+import { assertNever } from '@fathom/llm'
+import { TextRetainer } from '@fathom/output-retention'
 import { stringifyTagSafeJson } from './serialization.ts'
 import type { ReferencedConversationItem } from './types.ts'
 

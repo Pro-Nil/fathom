@@ -9,7 +9,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import type { JsonValue } from '@pentest-harness/dsh-session'
+import type { JsonValue } from '@fathom/session'
 import {
   globSearchMeta,
   grepSearchMeta,

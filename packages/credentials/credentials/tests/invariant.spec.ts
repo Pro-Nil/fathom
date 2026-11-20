@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import InvariantRegistry from '@fathom/invariants'
 import { credentialRef } from '../src/index.ts'
 import * as CredentialsInvariant from '../src/invariant.ts'
 import { MemoryCredentials } from './memory.ts'
@@ -22,7 +22,7 @@ describe('credentials invariant companion', () => {
     await ctx.plugin(InvariantRegistry)
     await ctx.plugin(CredentialsInvariant)
 
-    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@pentest-harness\/dsh-credentials"/)
+    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@fathom\/credentials"/)
   })
 
   it('reserves the package name against duplicate registration', async () => {
@@ -31,7 +31,7 @@ describe('credentials invariant companion', () => {
     await ctx.plugin(CredentialsInvariant)
 
     expect(() => {
-      ctx.invariants.register('@pentest-harness/dsh-credentials', () => {})
+      ctx.invariants.register('@fathom/credentials', () => {})
     }).toThrow(/already registered/)
   })
 })

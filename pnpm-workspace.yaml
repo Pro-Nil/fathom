@@ -5,9 +5,8 @@ packages:
   # its native build and publication scripts under native/landlock-run.
   - native/landlock-run
   - native/landlock-run/packages/*
-  # Product assemblies over the package tier; apps/cli owns the `dsh` bin.
+  # Product assemblies over the package tier; apps/cli owns the `fathom` bin.
   - apps/*
-  - website
   # The runnable demo leaves join as ONE workspace member: examples/package.json
   # declares the union of every leaf's cordis.yml plugins as workspace:*, so a
   # plain-node (`:lib`) boot of any leaf (examples/<leaf>/cordis.yml) resolves its
@@ -25,8 +24,8 @@ packages:
 linkWorkspacePackages: true
 
 overrides:
-  '@pentest-harness/cosmokit': 'link:vendor/cosmokit'
-  '@pentest-harness/schemastery': 'link:vendor/schemastery'
+  '@fathom/cosmokit': 'link:vendor/cosmokit'
+  '@fathom/schemastery': 'link:vendor/schemastery'
 
 peerDependencyRules:
   allowedVersions:
@@ -52,7 +51,7 @@ allowBuilds:
   koffi: true
   # The Python runtime deploy includes the reviewed workspace postinstall that
   # restores the executable bit on node-pty's macOS spawn helper.
-  '@pentest-harness/dsh-subprocess-local@file:packages/subprocess/subprocess-local': true
+  '@fathom/subprocess-local@file:packages/subprocess/subprocess-local': true
 
 minimumReleaseAgeExclude:
   # Fresh pi-ai releases carry the model catalog updates that are the whole

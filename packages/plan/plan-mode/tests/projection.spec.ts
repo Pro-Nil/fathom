@@ -11,17 +11,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import { CommandId } from '@pentest-harness/dsh-commands/brand'
-import PlanModeController from '@pentest-harness/dsh-plan-mode'
+import { Context } from '@fathom/cordis'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import type { Session } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import UserQuestionService from '@fathom/user-questions'
+import { CommandId } from '@fathom/commands/brand'
+import PlanModeController from '@fathom/plan-mode'
 
 interface Bench {
   ctx: Context

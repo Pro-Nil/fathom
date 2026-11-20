@@ -1,4 +1,4 @@
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { Entry, type EntryOptions } from './entry.ts'
 import { EntryTree } from './tree.ts'
 

@@ -12,7 +12,7 @@ afterEach(() => {
 
 describe('cordisConfigFiles', () => {
   it('finds Loader YAML outside ignored trees', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-cordis-config-files-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-cordis-config-files-'))
     roots.push(root)
     for (const directory of ['.claude', 'docs', 'examples', 'node_modules/pkg', 'vendor/pkg']) {
       mkdirSync(join(root, directory), { recursive: true })

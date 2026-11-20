@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capText, interactiveLines } from '@pentest-harness/dsh-tool-browser'
+import { capText, interactiveLines } from '@fathom/tool-browser'
 
 describe('interactiveLines', () => {
   it('keeps only interactive roles that carry a ref', () => {

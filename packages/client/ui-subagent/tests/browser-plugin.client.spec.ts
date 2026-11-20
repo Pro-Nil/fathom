@@ -1,13 +1,13 @@
 /** ui-subagent browser half: catalog actions and read-only composer routing. */
-import { Context } from '@pentest-harness/cordis'
-import { stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { stubSettingsScope } from '@fathom/client-test-runtime'
 import { describe, expect, it } from 'vitest'
 import {
   SlotRegistry, type ConversationSnapshot, type SessionId, type SessionListState,
   type SessionSummary, type SubagentAddress,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ComposerChainProps } from '@pentest-harness/dsh-client-ui-conversation/client'
-import { apply as applyLocale, inject as localeInject } from '@pentest-harness/dsh-client-locale/client'
+} from '@fathom/client-runtime/client'
+import type { ComposerChainProps } from '@fathom/client-ui-conversation/client'
+import { apply as applyLocale, inject as localeInject } from '@fathom/client-locale/client'
 import {
   SubagentHeaderLineage, type SubagentCatalogInjected,
 } from '../src/client/SubagentHeaderLineage.tsx'

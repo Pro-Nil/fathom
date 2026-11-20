@@ -1,17 +1,17 @@
 /**
  * Service Definition for the user-questions capability seam (`ctx.userQuestions`): a UI-backed service for
  * pausing an agent tool call until the human answers a question. The model-
- * facing tool lives in `@pentest-harness/dsh-tool-ask-user`; UI packages provide
+ * facing tool lives in `@fathom/tool-ask-user`; UI packages provide
  * the single active provider.
  *
- * @module @pentest-harness/dsh-user-questions
+ * @module @fathom/user-questions
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import { Context, Service } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { HarnessError } from '@fathom/llm'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     userQuestions: UserQuestionService
   }

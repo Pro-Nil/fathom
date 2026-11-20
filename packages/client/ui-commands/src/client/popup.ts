@@ -9,9 +9,9 @@
  * Input side owns the span/bare-token CAS guard) and focuses the composer;
  * the controller never touches the input machine.
  */
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { TokenSpan } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import type { TokenSpan } from '@fathom/client-ui-input-trigger/client'
 import type { SelectOption } from './contract.ts'
 
 /**

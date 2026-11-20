@@ -1,7 +1,7 @@
 /**
  * Model text rendering and generic tool-call presentation.
  *
- * @module @pentest-harness/dsh-tool-session-query/presentation
+ * @module @fathom/tool-session-query/presentation
  */
 
 import {
@@ -12,12 +12,12 @@ import {
   type SessionLineageTrace,
   type SessionRecord,
   type SessionSearchHit,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 import type {
   SessionEvent,
   SessionId,
-} from '@pentest-harness/dsh-session'
-import type { GenericCallView } from '@pentest-harness/dsh-tools'
+} from '@fathom/session'
+import type { GenericCallView } from '@fathom/tools'
 import { workspaceAccess } from './workspace-access.ts'
 
 type TitleView = Awaited<ReturnType<typeof workspaceAccess.readTitle>>

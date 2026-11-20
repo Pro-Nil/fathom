@@ -2,13 +2,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import Storage from '@pentest-harness/dsh-storage'
-import type { StorageBackend } from '@pentest-harness/dsh-storage'
-import { DomainFacility } from '@pentest-harness/dsh-storage-domain'
-import type { DomainChanged } from '@pentest-harness/dsh-storage-domain'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionHeader } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import Storage from '@fathom/storage'
+import type { StorageBackend } from '@fathom/storage'
+import { DomainFacility } from '@fathom/storage-domain'
+import type { DomainChanged } from '@fathom/storage-domain'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { SessionHeader } from '@fathom/session'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import WorkspaceRegistry, {
   WorkspaceId,
@@ -171,7 +171,7 @@ let base: string
 const tempDirs: string[] = []
 
 async function makeDir(name: string): Promise<string> {
-  base ??= await realpath(await mkdtemp(join(tmpdir(), 'dsh-workspace-')))
+  base ??= await realpath(await mkdtemp(join(tmpdir(), 'fathom-workspace-')))
   if (tempDirs.length === 0) tempDirs.push(base)
   const dir = join(base, name)
   await mkdir(dir, { recursive: true })

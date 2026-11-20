@@ -1,16 +1,16 @@
 /**
  * Same-session goal-round driver over public agent, session, and goal services.
- * @module @pentest-harness/dsh-goal-round-driver
+ * @module @fathom/goal-round-driver
  */
 
 import { isDeepStrictEqual } from 'node:util'
-import { FiberState } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import type { GoalMessageSource, GoalRef, GoalView } from '@pentest-harness/dsh-goal'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, MessageId, MessageSource } from '@pentest-harness/dsh-llm'
-import type { Session, SessionEvent, UserMessage } from '@pentest-harness/dsh-session'
+import { FiberState } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import type { GoalMessageSource, GoalRef, GoalView } from '@fathom/goal'
+import { createUserMessage } from '@fathom/llm'
+import type { ContentBlock, MessageId, MessageSource } from '@fathom/llm'
+import type { Session, SessionEvent, UserMessage } from '@fathom/session'
 import { renderGoalRoundPrompt } from './prompt.ts'
 
 export { renderGoalRoundPrompt } from './prompt.ts'

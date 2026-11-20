@@ -1,12 +1,12 @@
 /** Scoped model-facing tools for the opt-in Agent Teams runtime. */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { TeamTaskId } from '@pentest-harness/dsh-experimental-agent-team'
-import type { TeamMemberView } from '@pentest-harness/dsh-experimental-agent-team'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { InferValue, ValueSchemaSpec } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import { TeamTaskId } from '@fathom/experimental-agent-team'
+import type { TeamMemberView } from '@fathom/experimental-agent-team'
+import { defineTool } from '@fathom/tools'
+import type { InferValue, ValueSchemaSpec } from '@fathom/tools'
 
 /** Cordis plugin name. */
 export const name = 'tool-agent-team'

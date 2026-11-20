@@ -7,9 +7,9 @@
 
 import type { z as zCore } from 'zod'
 type ZodIssue = zCore.core.$ZodIssue
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { Branded } from '@fathom/brand'
+import type { MessageId } from '@fathom/llm/brand'
+import type { SessionId } from '@fathom/session/types'
 
 /**
  * Message correlation id: the initiator mints it on a request; a response

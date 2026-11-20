@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, createEvent, fireEvent, render, screen } from '@testing-library/react'
-import type { SessionId, WorkspaceId } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import type { SessionId, WorkspaceId } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type { RowDragProps } from '../src/client/rows/Rows.tsx'
 import { ProjectRowItem, SearchResultItem, SessionNodeItem } from '../src/client/rows/Rows.tsx'
 import type { GroupNode, SearchResultNode, SessionNode } from '../src/client/tree.ts'

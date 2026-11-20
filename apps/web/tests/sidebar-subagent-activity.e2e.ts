@@ -4,12 +4,12 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { AgentHandle } from '@pentest-harness/dsh-agent'
-import { createUserMessage, LlmAdapter } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { SessionId, type SessionId as SessionIdValue } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-subagent'
-import type {} from '@pentest-harness/dsh-workspace'
+import type { AgentHandle } from '@fathom/agent'
+import { createUserMessage, LlmAdapter } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { SessionId, type SessionId as SessionIdValue } from '@fathom/session'
+import type {} from '@fathom/subagent'
+import type {} from '@fathom/workspace'
 import {
   assertFixtureInventory,
   captureStableAria,

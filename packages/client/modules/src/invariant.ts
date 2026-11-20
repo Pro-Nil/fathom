@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-client-modules`.
- * @module @pentest-harness/dsh-client-modules/invariant
+ * Package-owned invariant companion for `@fathom/client-modules`.
+ * @module @fathom/client-modules/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-client-modules'
+const PACKAGE_NAME = '@fathom/client-modules'
 
 /** Cordis companion plugin name. */
 export const name = 'client-modules-invariant'
@@ -29,7 +29,7 @@ const install: InvariantInstaller = (ctx, fail) => {
     if (host === undefined) return // browser side / host without the node half: nothing to audit
     for (const row of host.graph().entries) {
       if (host.clientPath(row.id) === undefined) {
-        fail(`web plugin graph row "${row.id}" advertises ${row.url} but resolves no client bundle path — the served __DSH_BOOT__ would 404 on fetch`)
+        fail(`web plugin graph row "${row.id}" advertises ${row.url} but resolves no client bundle path — the served __FATHOM_BOOT__ would 404 on fetch`)
       }
     }
   }, { global: true })

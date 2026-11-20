@@ -13,13 +13,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import LlmRuntime, { createMessage, createUserMessage } from '@pentest-harness/dsh-llm'
-import LocalCredentialProvider from '@pentest-harness/dsh-credentials-local'
-import FileSettingsProvider from '@pentest-harness/dsh-settings-file'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import LlmRuntime, { createMessage, createUserMessage } from '@fathom/llm'
+import LocalCredentialProvider from '@fathom/credentials-local'
+import FileSettingsProvider from '@fathom/settings-file'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 
@@ -46,7 +46,7 @@ afterEach(async () => {
 
 /** Boot the dormant composition: a bare `llm-pi-ai` row with no config at all. */
 async function loadComposition(): Promise<{ ctx: Context; settingsPath: string }> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-pi-composition-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-pi-composition-'))
   const settingsPath = join(root, 'settings.yaml')
   await writeFile(settingsPath, '# personal settings\n')
   await writeFile(join(root, '.credentials.yaml'), 'version: 1\nrefs:\n  PI_COMPOSITION_KEY: key-from-store\n', { mode: 0o600 })
@@ -56,17 +56,17 @@ async function loadComposition(): Promise<{ ctx: Context; settingsPath: string }
     '- id: llm',
     "  name: 'test-llm-service'",
     '- id: settings',
-    "  name: '@pentest-harness/dsh-settings-file'",
+    "  name: '@fathom/settings-file'",
     '  config:',
     `    path: ${JSON.stringify(settingsPath)}`,
     '    debounceMs: 10',
     '- id: credentials',
-    "  name: '@pentest-harness/dsh-credentials-local'",
+    "  name: '@fathom/credentials-local'",
     '  config:',
     `    path: ${JSON.stringify(join(root, '.credentials.yaml'))}`,
     '    debounceMs: 10',
     '- id: llm-pi-ai',
-    "  name: '@pentest-harness/dsh-llm-pi-ai'",
+    "  name: '@fathom/llm-pi-ai'",
     '',
   ].join('\n'))
 
@@ -77,9 +77,9 @@ async function loadComposition(): Promise<{ ctx: Context; settingsPath: string }
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
     ['test-llm-service', LlmRuntime],
-    ['@pentest-harness/dsh-settings-file', FileSettingsProvider],
-    ['@pentest-harness/dsh-credentials-local', LocalCredentialProvider],
-    ['@pentest-harness/dsh-llm-pi-ai', LlmPiAi],
+    ['@fathom/settings-file', FileSettingsProvider],
+    ['@fathom/credentials-local', LocalCredentialProvider],
+    ['@fathom/llm-pi-ai', LlmPiAi],
   ])
   ctx.loader.internal = {
     version: 'v2',

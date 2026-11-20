@@ -8,34 +8,34 @@ import { mkdir, stat } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { dirname } from 'node:path'
 import { z as zod } from 'zod'
-import type { Context } from '@pentest-harness/cordis'
-import { installModelSelection } from '@pentest-harness/dsh-agent'
-import type { Agent, ModelSelection, ModelSelectionRef, AgentOptions, AgentStatus } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-agent-presets/types'
-import { AttachmentError, admitEncodedImages } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
-import { createUserMessage, freezeMessage, ReasoningEffortId } from '@pentest-harness/dsh-llm'
-import { errorChain } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, MessageSource } from '@pentest-harness/dsh-llm'
-import { isAppendSurfaceEvent, isJsonValue } from '@pentest-harness/dsh-session'
-import type { JsonValue, Session, SessionEvent, SessionEventMap, SessionHeader, SessionId, UserMessage } from '@pentest-harness/dsh-session'
-import type { SessionPersistence } from '@pentest-harness/dsh-session-persistence'
-import { SessionQueryError, type SessionSearchCursor } from '@pentest-harness/dsh-session-query'
-import { SubagentError } from '@pentest-harness/dsh-subagent'
-import type { SubagentListEntry as CatalogSubagentListEntry } from '@pentest-harness/dsh-subagent'
-import { isUserInvocable } from '@pentest-harness/dsh-skill'
-import type { Workspace, WorkspaceRecord } from '@pentest-harness/dsh-workspace'
+import type { Context } from '@fathom/cordis'
+import { installModelSelection } from '@fathom/agent'
+import type { Agent, ModelSelection, ModelSelectionRef, AgentOptions, AgentStatus } from '@fathom/agent'
+import type {} from '@fathom/agent-presets/types'
+import { AttachmentError, admitEncodedImages } from '@fathom/attachment'
+import type { ImageAttachmentRef } from '@fathom/attachment'
+import { createUserMessage, freezeMessage, ReasoningEffortId } from '@fathom/llm'
+import { errorChain } from '@fathom/llm'
+import type { ContentBlock, MessageSource } from '@fathom/llm'
+import { isAppendSurfaceEvent, isJsonValue } from '@fathom/session'
+import type { JsonValue, Session, SessionEvent, SessionEventMap, SessionHeader, SessionId, UserMessage } from '@fathom/session'
+import type { SessionPersistence } from '@fathom/session-persistence'
+import { SessionQueryError, type SessionSearchCursor } from '@fathom/session-query'
+import { SubagentError } from '@fathom/subagent'
+import type { SubagentListEntry as CatalogSubagentListEntry } from '@fathom/subagent'
+import { isUserInvocable } from '@fathom/skill'
+import type { Workspace, WorkspaceRecord } from '@fathom/workspace'
 import {
   workspaceDomainState, workspaceRecord, WorkspaceId as brandWorkspaceId,
   WorkspaceMoveInvalidError, WorkspaceOrderInvalidError, WorkspaceUnknownSessionError,
-} from '@pentest-harness/dsh-workspace'
+} from '@fathom/workspace'
 // Type-only: brings the `ctx.tools` Context merge into this program (viewFor reads presenters).
 import {
   InvalidPresetIdError, PresetExistsError, PresetMountError,
   PresetNotWritableError, resolveSessionPreset, UnknownPresetError,
-} from '@pentest-harness/dsh-agent-presets'
-import type { PresetBearingSession } from '@pentest-harness/dsh-agent-presets'
-import type {} from '@pentest-harness/dsh-tools'
+} from '@fathom/agent-presets'
+import type { PresetBearingSession } from '@fathom/agent-presets'
+import type {} from '@fathom/tools'
 import type {
   ApiProxy, ConfigurableProviderView, CredentialView, GoalRef, HistoryEntry, HostFrame,
   ModelCatalogFailure, ModelProviderGroup,
@@ -52,45 +52,45 @@ import {
   type SessionLogExportReady,
   type SessionLogCompressionLevel,
 } from './session-export.ts'
-import type { SessionRawArtifact } from '@pentest-harness/dsh-session-persistence'
+import type { SessionRawArtifact } from '@fathom/session-persistence'
 import {
   SESSION_SEARCH_RESULT_LIMIT,
   SESSION_SEARCH_SNIPPET_MAX_CODE_POINTS,
   truncateUnicodeCodePoints,
 } from './api/session-search.ts'
 // Type-only: resolves `ctx.get('sessionProjections')` to the projection registry.
-import type {} from '@pentest-harness/dsh-session-projection'
+import type {} from '@fathom/session-projection'
 // Type-only: resolves `ctx.get('tasks')` to the background job registry.
-import type {} from '@pentest-harness/dsh-jobs'
-import type { JobSnapshot } from '@pentest-harness/dsh-jobs'
-import type { JobId } from '@pentest-harness/dsh-jobs/brand'
+import type {} from '@fathom/jobs'
+import type { JobSnapshot } from '@fathom/jobs'
+import type { JobId } from '@fathom/jobs/brand'
 // Type-only: resolves `ctx.get('sessionProjectionCache')` (the cold listing column).
-import type {} from '@pentest-harness/dsh-session-projection-cache'
+import type {} from '@fathom/session-projection-cache'
 // GoalError narrows domain rejections to their stable codes at the wire boundary.
-import { GoalError } from '@pentest-harness/dsh-goal'
-import type { GoalRef as CoreGoalRef } from '@pentest-harness/dsh-goal'
+import { GoalError } from '@fathom/goal'
+import type { GoalRef as CoreGoalRef } from '@fathom/goal'
 // Type-only edges: resolve the command-change stream and `ctx.get('skills')`.
-import type {} from '@pentest-harness/dsh-commands'
+import type {} from '@fathom/commands'
 // Type-only: the dynamic-package runner's forwarded-event declarations. Its
 // client-safe `./types` subpath deliberately, not the package root — the root
 // merges `ctx.dynamicCordisRunner`, and a dependency on that package would
 // rebuild the api-remotes cycle this direction exists to avoid.
-import type {} from '@pentest-harness/dsh-cordis-host-runner/types'
-import type {} from '@pentest-harness/dsh-skill'
+import type {} from '@fathom/cordis-host-runner/types'
+import type {} from '@fathom/skill'
 // The settings/credentials seams: brand guards run at this wire boundary; the
 // service reads stay optional (`ctx.get`) so a composition without either
 // provider still serves every other domain.
-import { SettingsConflictError, settingsNamespace } from '@pentest-harness/dsh-settings'
-import type { SettingsDescriptor, SettingsNamespace, SettingsPathOp } from '@pentest-harness/dsh-settings'
-import { credentialRef } from '@pentest-harness/dsh-credentials'
+import { SettingsConflictError, settingsNamespace } from '@fathom/settings'
+import type { SettingsDescriptor, SettingsNamespace, SettingsPathOp } from '@fathom/settings'
+import { credentialRef } from '@fathom/credentials'
 // Value edge: the rename impl narrows the title service's validation failure; the import also resolves `ctx.get('sessionTitle')`.
-import { SessionTitleInvalidError } from '@pentest-harness/dsh-session-title'
-import type { CallId } from '@pentest-harness/dsh-llm/brand'
-import type { ScopeKey } from '@pentest-harness/dsh-scope'
-import type { ApprovalOutcome, ApprovalRequestId } from '@pentest-harness/dsh-user-approval'
+import { SessionTitleInvalidError } from '@fathom/session-title'
+import type { CallId } from '@fathom/llm/brand'
+import type { ScopeKey } from '@fathom/scope'
+import type { ApprovalOutcome, ApprovalRequestId } from '@fathom/user-approval'
 // Side-effect type import: resolves the `approval/request` waterfall and
 // `ctx.get('approval')` without a value dependency on the seam (optional composition).
-import type {} from '@pentest-harness/dsh-user-approval'
+import type {} from '@fathom/user-approval'
 import { approvalResponsePayloadSchema } from './api/approvals.schema.ts'
 import { imageLimitsProjectionSchema, sessionListMetadataProjectionSchema } from './api/sessions.schema.ts'
 import { questionResponsePayloadSchema } from './api/questions.schema.ts'
@@ -98,9 +98,9 @@ import type { ClientResponse, RpcError, RpcReceipt, RpcRequest, RpcResponse } fr
 import { RpcId } from './api/rpc.ts'
 import type {
   AskUserQuestionAnswer, AskUserQuestionItem, AskUserQuestionRequest,
-} from '@pentest-harness/dsh-user-questions'
-import { UserQuestionError } from '@pentest-harness/dsh-user-questions'
-import { DirectoryPickerError } from '@pentest-harness/dsh-host-directory-picker'
+} from '@fathom/user-questions'
+import { UserQuestionError } from '@fathom/user-questions'
+import { DirectoryPickerError } from '@fathom/host-directory-picker'
 import {
   ApiRemoteSessionNotFound as SessionNotFound,
   ApiRemoteSubagentSessionOwnership as SubagentSessionOwnership,
@@ -109,7 +109,7 @@ import {
   createApiRemoteAgentResolver,
   hasApiRemoteSubagentOwner,
   inspectApiRemoteSession,
-} from '@pentest-harness/dsh-api-remotes'
+} from '@fathom/api-remotes'
 import { canOpenNativePath, openNativePath, openNativeTextFile } from './native-path-opener.ts'
 
 /** Page size when history is called without maxMessages. */
@@ -884,7 +884,7 @@ function subagentPromptError(
 function projectionsUnavailableError(): RpcError {
   return {
     code: 'internal',
-    message: 'subagent catalog is unavailable: this deployment does not mount the sessionProjections registry (load @pentest-harness/dsh-session-projection)',
+    message: 'subagent catalog is unavailable: this deployment does not mount the sessionProjections registry (load @fathom/session-projection)',
     details: {},
   }
 }
@@ -1246,7 +1246,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
   // same state reference for every event, so no change frames are ever
   // pushed — baselines alone carry the value — and clients pre-check intake
   // and label upload affordances from it. Registered here, not in the
-  // attachment Service Definition: dsh-llm depends on dsh-attachment, so the
+  // attachment Service Definition: fathom-llm depends on fathom-attachment, so the
   // seam package cannot reference the projection registry without a cycle,
   // and the per-message rules the value describes are this proxy's own
   // admission checks. The child activates only while both seams are composed.
@@ -1739,7 +1739,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
     const presets = ctx.get('agentPresets')
     const goals = presets?.serviceFor(agent, 'goals') ?? ctx.get('goals')
     if (goals === undefined) {
-      return { error: { code: 'internal', message: 'goal service is absent: neither this session\'s agent preset nor the host composition mounts @pentest-harness/dsh-goal', details: {} } }
+      return { error: { code: 'internal', message: 'goal service is absent: neither this session\'s agent preset nor the host composition mounts @fathom/goal', details: {} } }
     }
     return goals
   }
@@ -1810,7 +1810,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
 
   /** Missing-service report shared by the settings domain (skills-domain stance). */
   function settingsAbsent(): RpcError {
-    return { code: 'internal', message: 'settings service is absent: this deployment does not mount a settings provider (e.g. @pentest-harness/dsh-settings-file) in its composition', details: {} }
+    return { code: 'internal', message: 'settings service is absent: this deployment does not mount a settings provider (e.g. @fathom/settings-file) in its composition', details: {} }
   }
 
   /** Open one Host-resolved target and map native failures onto the wire vocabulary. */
@@ -1864,7 +1864,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
 
   /** Missing-service report shared by the credentials domain. */
   function credentialsAbsent(): RpcError {
-    return { code: 'internal', message: 'credentials service is absent: this deployment does not mount a credential provider (e.g. @pentest-harness/dsh-credentials-local) in its composition', details: {} }
+    return { code: 'internal', message: 'credentials service is absent: this deployment does not mount a credential provider (e.g. @fathom/credentials-local) in its composition', details: {} }
   }
 
   /** Map one redacted settings descriptor to its wire view. */
@@ -1957,7 +1957,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         if (sessionQuery === undefined) {
           return err(request, {
             code: 'internal',
-            message: 'session search is unavailable: this deployment does not mount @pentest-harness/dsh-session-query',
+            message: 'session search is unavailable: this deployment does not mount @fathom/session-query',
             details: {},
           })
         }
@@ -3060,7 +3060,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         }
       },
 
-      // Authoring is privileged (see PRIVILEGED_METHODS in dsh-client-connection):
+      // Authoring is privileged (see PRIVILEGED_METHODS in fathom-client-connection):
       // a composition names the plugins a session runs, so reading one is
       // reconnaissance, and copy/remove/openDocument manage the roster and
       // drive the host desktop.
@@ -3158,12 +3158,12 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         const presets = ctx.get('agentPresets')
         const scoped = live === undefined ? undefined : presets?.serviceFor(live, 'skills')
         // Same stance as the commands domain: a missing service means no
-        // composition mounts dsh-skill, not an empty catalog. `ctx.get` also
+        // composition mounts fathom-skill, not an empty catalog. `ctx.get` also
         // keeps this handler independent of the gateway plugin's inject list
         // (an undeclared `ctx.skills` property read fails the reflect proxy).
         const skillRegistry = scoped ?? ctx.get('skills')
         if (skillRegistry === undefined) {
-          return err(request, { code: 'internal', message: 'skill registry is absent: neither this session\'s agent preset nor the host composition mounts @pentest-harness/dsh-skill', details: {} })
+          return err(request, { code: 'internal', message: 'skill registry is absent: neither this session\'s agent preset nor the host composition mounts @fathom/skill', details: {} })
         }
         // The scope presenters resolve in — the live agent, else the recorded
         // preset's standing key, else the global layer — so a cold session's

@@ -1,10 +1,10 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ContextMessageNode, ConversationNodeDefinition, SteeringMessageNode, UserMessageNode,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import {
   contextForm, contextProvenance, isAppendSurfaceEvent, isReplacementSurfaceEvent,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type { InboxState } from './inbox.ts'
 import { chatNode } from './common.ts'
 
@@ -20,7 +20,7 @@ interface ReferencedSteeringMessageNode extends SteeringMessageNode {
 
 type MessageNode = ReferencedUserMessageNode | ReferencedSteeringMessageNode | ContextMessageNode
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Ordinary turn-opening user message. */
     user: ReferencedUserMessageNode

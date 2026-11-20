@@ -1,7 +1,7 @@
 /** Synchronous schema introspection and immutable settings-draft edits. */
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import Schema from '@pentest-harness/schemastery'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import Schema from '@fathom/schemastery'
 
 /** Live schemastery node used for settings introspection and validation. */
 export type SchemaNode = Schema
@@ -150,7 +150,7 @@ export class SettingsSchemaService extends Service {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Settings-owned synchronous schema and immutable path operations. */
     settingsSchema: SettingsSchemaService

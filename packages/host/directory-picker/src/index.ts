@@ -8,10 +8,10 @@
  * can reach). Consumers switch on `capability().kind`; the union is
  * merge-extensible, and the documented default for an unknown kind is to
  * hide the picking affordance rather than fail.
- * @module @pentest-harness/dsh-host-directory-picker
+ * @module @fathom/host-directory-picker
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 
 /** The native interaction: one OS directory chooser on the host display. */
 export interface DirectoryPickerNativeCapability {
@@ -118,7 +118,7 @@ export class DirectoryPickerError extends Error {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     directoryPicker: DirectoryPicker
   }

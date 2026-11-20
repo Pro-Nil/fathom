@@ -4,18 +4,18 @@
  * actor the `fs/*` events carry.
  *
  * The provider vocabulary (`FsTarget`, `FsVersion`, write/edit request types) is
- * re-used from `@pentest-harness/dsh-fs`; this package owns only the observed-state
+ * re-used from `@fathom/fs`; this package owns only the observed-state
  * owner structure on top of it.
  *
- * @module @pentest-harness/dsh-fs-observation-policy/types
+ * @module @fathom/fs-observation-policy/types
  */
 
 /**
  * Minimal structural view of a tool execution the policy plugin needs to derive
- * an observed-state owner. `@pentest-harness/dsh-tools`' `ToolExecution` contains
+ * an observed-state owner. `@fathom/tools`' `ToolExecution` contains
  * these fields, so the tool passes its `exec` straight through as the opaque
  * `object` actor on the `fs/*` events; this plugin narrows that actor to
- * `FsObservationActor` without importing `dsh-tools`, `dsh-agent`, or `dsh-session`.
+ * `FsObservationActor` without importing `fathom-tools`, `fathom-agent`, or `fathom-session`.
  *
  * The owner is `agent.session` when present. It is treated as an opaque object
  * identity (a `WeakMap` key); this package never reads any of its fields.

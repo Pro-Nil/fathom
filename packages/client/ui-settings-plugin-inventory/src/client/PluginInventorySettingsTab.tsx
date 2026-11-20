@@ -1,10 +1,10 @@
 import { useEffect, useId, useMemo, useState, type ReactNode } from 'react'
-import type { PluginInventorySnapshot } from '@pentest-harness/dsh-api-remotes/client'
+import type { PluginInventorySnapshot } from '@fathom/api-remotes/client'
 import {
   IconChevronDownOutline14,
   IconSearchOutline16,
-} from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+} from '@fathom/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import type { PluginInventoryLocaleKey } from './locales.ts'
 import css from './PluginInventorySettingsTab.module.css'
 
@@ -50,7 +50,7 @@ function moduleShortName(moduleName: string): string {
   return unscoped
     .replace(/^cordis:/, '')
     .replace(/^cordis-plugin-/, '')
-    .replace(/^dsh-(?:host-|client-)?/, '')
+    .replace(/^(?:host-|client-)/, '')
 }
 
 /** Whether an inventory row matches the local catalog query. */

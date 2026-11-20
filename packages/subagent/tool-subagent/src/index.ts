@@ -5,19 +5,19 @@
  * Background policy is selected by this plugin's configuration: one-shot
  * calls own a plain Task, while continuable calls use
  * `ctx.subagents.startContinuable()`.
- * @module @pentest-harness/dsh-tool-subagent
+ * @module @fathom/tool-subagent
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { AgentOptions } from '@pentest-harness/dsh-agent'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JsonValue } from '@pentest-harness/dsh-session'
-import { assertSubagentMaxDepth, settleRun } from '@pentest-harness/dsh-subagent'
-import type { SubagentProvider, SubagentResult, SubagentRun } from '@pentest-harness/dsh-subagent'
-import type { JobOutcome } from '@pentest-harness/dsh-jobs'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { defineTool } from '@fathom/tools'
+import type { AgentOptions } from '@fathom/agent'
+import type { ContentBlock } from '@fathom/llm'
+import type { JsonValue } from '@fathom/session'
+import { assertSubagentMaxDepth, settleRun } from '@fathom/subagent'
+import type { SubagentProvider, SubagentResult, SubagentRun } from '@fathom/subagent'
+import type { JobOutcome } from '@fathom/jobs'
+import type {} from '@fathom/system-prompt'
 
 export const name = 'tool-subagent'
 export const inject = ['tools', 'subagents', 'systemPrompt']
@@ -408,7 +408,7 @@ export function apply(ctx: Context, config: Config): void {
           }
           const jobs = ctx.get('jobs')
           if (jobs === undefined) {
-            throw new Error('background jobs unavailable: load @pentest-harness/dsh-jobs and @pentest-harness/dsh-tool-jobs')
+            throw new Error('background jobs unavailable: load @fathom/jobs and @fathom/tool-jobs')
           }
           // One-shot background child: job preflight finishes before the
           // starter can spawn, and the task-owned signal covers startup.

@@ -1,13 +1,13 @@
 /**
  * Agent-scoped Schedule management tools over the durable session fold.
- * @module @pentest-harness/dsh-schedule
+ * @module @fathom/schedule
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { ContentBlock } from '@fathom/llm'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView } from '@fathom/tools'
 import {
   allocateScheduleId,
   createAfterScheduleRecord,

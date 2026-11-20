@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-invariants`.
- * @module @pentest-harness/dsh-invariants/invariant
+ * Package-owned invariant companion for `@fathom/invariants`.
+ * @module @fathom/invariants/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type { InvariantInstaller } from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-invariants'
+const PACKAGE_NAME = '@fathom/invariants'
 
 /** Cordis companion plugin name. */
 export const name = 'invariants-invariant'

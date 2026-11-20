@@ -7,12 +7,12 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import { normalizeSessionSnapshot, type NormalizeContext } from '@pentest-harness/dsh-acp-snapshot'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@pentest-harness/dsh-loader-smoke'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import { Context } from '@fathom/cordis'
+import { normalizeSessionSnapshot, type NormalizeContext } from '@fathom/acp-snapshot'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@fathom/loader-smoke'
+import { createUserMessage } from '@fathom/llm'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = fileURLToPath(new URL('./subagent-diagnostic-snapshots/descriptorless-child', import.meta.url))
@@ -23,7 +23,7 @@ const binScript = fileURLToPath(new URL('./fixtures/headless-driver.ts', import.
 const tsconfigPath = fileURLToPath(new URL('../../../tsconfig.json', import.meta.url))
 const parentId = SessionId('subagent-diagnostic-parent')
 const childId = SessionId('subagent-diagnostic-child')
-const refreshing = process.env.DSH_SNAPSHOT === 'refresh'
+const refreshing = process.env.FATHOM_SNAPSHOT === 'refresh'
 const task = 'Call list_agents once and report what it shows.'
 
 /**
@@ -75,15 +75,15 @@ describe('descriptor-less cold child diagnostic snapshot', () => {
     let cwd = ''
     const result = await runLoaderSmoke({
       label: 'subagent diagnostic headless stream-json snapshot',
-      tempDirPrefix: 'dsh-subagent-diag-',
+      tempDirPrefix: 'fathom-subagent-diag-',
       binScript,
       libBinScript: binScript,
       configPath,
       binArgs: [configPath, task],
       tsconfigPath,
       env: {
-        DSH_SNAPSHOT_FILE: replayOverride,
-        DSH_SNAPSHOT_OVERRIDE: replayOverride,
+        FATHOM_SNAPSHOT_FILE: replayOverride,
+        FATHOM_SNAPSHOT_OVERRIDE: replayOverride,
       },
       prepare: async (runCwd) => {
         cwd = runCwd

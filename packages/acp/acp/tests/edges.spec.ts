@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { createUserMessage, CallId, type StreamChunk  } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { defineContentToolFixture } from '@pentest-harness/dsh-tools'
+import { createUserMessage, CallId, type StreamChunk  } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import { defineContentToolFixture } from '@fathom/tools'
 import { makeBridgeHarness, textResponse, type BridgeHarness } from './harness.ts'
 
 function toolCallResponse(): StreamChunk[] {

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-client-ui-plan`.
- * @module @pentest-harness/dsh-client-ui-plan/invariant
+ * Package-owned invariant companion for `@fathom/client-ui-plan`.
+ * @module @fathom/client-ui-plan/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-client-ui-plan'
+const PACKAGE_NAME = '@fathom/client-ui-plan'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-plan-invariant'
@@ -16,7 +16,7 @@ export const inject = ['invariants']
 
 /**
  * No runtime invariant: plan state and boundary ownership are
- * audited by dsh-plan-mode, while the control is a slot effect whose
+ * audited by fathom-plan-mode, while the control is a slot effect whose
  * declaration, registration, and teardown are exercised by this package.
  */
 const install: InvariantInstaller = () => {}

@@ -1,11 +1,11 @@
 /**
  * Durable Tool event vocabulary shared with type-only consumers.
  *
- * @module @pentest-harness/dsh-tools/types
+ * @module @fathom/tools/types
  */
 
-import type { CallId } from '@pentest-harness/dsh-llm/brand'
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
+import type { CallId } from '@fathom/llm/brand'
+import type { ContentBlock } from '@fathom/llm/types'
 
 /** Payload recorded when one nested Code Mode Tool dispatch starts. */
 export interface CodeDispatchStartEventData {
@@ -22,7 +22,7 @@ export interface CodeDispatchEventData extends CodeDispatchStartEventData {
   content: ContentBlock[]
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * One sub-dispatch STARTING inside a `run_code` program: the parent

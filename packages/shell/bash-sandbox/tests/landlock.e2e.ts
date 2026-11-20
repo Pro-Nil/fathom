@@ -4,12 +4,12 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { launcherPath } from '@pentest-harness/node-addon-landlock-run'
-import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
-import { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import { SandboxBashExecutor } from '@pentest-harness/dsh-bash-sandbox'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import { Context } from '@fathom/cordis'
+import { launcherPath } from '@fathom/node-addon-landlock-run'
+import { LocalSandboxProvider } from '@fathom/sandbox-local'
+import { SandboxPolicyService } from '@fathom/sandbox-policy'
+import { SandboxBashExecutor } from '@fathom/bash-sandbox'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 
 /**
  * KEYLESS consumer-integration proof: the REAL `LocalSandboxProvider` (bwrap
@@ -17,7 +17,7 @@ import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
  * REAL `SandboxBashExecutor`, driven through the executor's public run/start
  * paths. Verifies the WORLD (files exist or don't) plus the stamped result
  * facts; the backend-only confinement proofs live with
- * `@pentest-harness/dsh-sandbox-local`.
+ * `@fathom/sandbox-local`.
  *
  * Self-skips when the running kernel does not enforce Landlock. CI builds the launcher from
  * `native/landlock-run` before running this file.
@@ -38,7 +38,7 @@ afterEach(async () => {
 })
 
 async function tempDir(base: string): Promise<string> {
-  const dir = await mkdtemp(join(base, 'dsh-landlock-e2e-'))
+  const dir = await mkdtemp(join(base, 'fathom-landlock-e2e-'))
   tempDirs.push(dir)
   return dir
 }

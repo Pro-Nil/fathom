@@ -1,3 +1,3 @@
 import { clientBundle } from '../../client/tsdown.client.ts'
 
-export default clientBundle('@pentest-harness/dsh-cordis-client-runner', ['lib/types/index.js', 'lib/types/invariant.js'])
+export default clientBundle('@fathom/cordis-client-runner', ['lib/types/index.js', 'lib/types/invariant.js'])

@@ -5,12 +5,12 @@
  */
 
 import { expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentProvider } from '@pentest-harness/dsh-subagent'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubagentProvider } from '@fathom/subagent'
 import WorkerThreadWorkflowEngine from '../src/index.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 // A fresh thread compiles the source runtime. Leave contention headroom on
 // shared CI runners without weakening any engine-level timeout assertion.

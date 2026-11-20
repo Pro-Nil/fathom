@@ -3,29 +3,29 @@
 # while the session is offline, then resumes through the public agent service.
 
 - id: persistence
-  name: '@pentest-harness/dsh-session-persistence-jsonl'
+  name: '@fathom/session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: none
 
 - id: replay
-  name: '@pentest-harness/dsh-llm-replay'
+  name: '@fathom/llm-replay'
   config:
-    file: !!js process.env.DSH_SNAPSHOT_FILE
-    overrideFile: !!js process.env.DSH_SNAPSHOT_OVERRIDE
+    file: !!js process.env.FATHOM_SNAPSHOT_FILE
+    overrideFile: !!js process.env.FATHOM_SNAPSHOT_OVERRIDE
 
 - id: fs-local
-  name: '@pentest-harness/dsh-fs-local'
+  name: '@fathom/fs-local'
   config:
     cwd: !!js process.cwd()
 
 - id: agent
-  name: '@pentest-harness/dsh-agent-spine-demo'
+  name: '@fathom/agent-spine-demo'
   config:
     agents: []
     workspaceContext:
       maxBytes: 65536
-      dshHome: !!js process.cwd() + '/.dsh'
+      fathomHome: !!js process.cwd() + '/.fathom'
     skills:
       enabled: false
     toolBash: false

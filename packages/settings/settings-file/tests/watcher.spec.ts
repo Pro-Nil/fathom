@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { chmod, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
+import { settingsNamespace } from '@fathom/settings'
 import { FileSettingsProvider } from '../src/index.ts'
 
 // chokidar is the nondeterministic OS boundary: faking it lets these tests
@@ -51,7 +51,7 @@ afterEach(async () => {
 })
 
 async function tempDir(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-settings-watch-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-settings-watch-'))
   cleanups.push(() => rm(dir, { recursive: true, force: true }))
   return dir
 }

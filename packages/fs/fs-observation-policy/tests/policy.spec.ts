@@ -1,11 +1,11 @@
 /** Event-level policy tests; no filesystem provider is needed because the plugin performs no I/O. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { FsTargetKey, FsVersion } from '@pentest-harness/dsh-fs'
-import type { FsObservation, FsTarget, FsWriteIntent } from '@pentest-harness/dsh-fs'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import type { FsObservationActor } from '@pentest-harness/dsh-fs-observation-policy'
+import { Context } from '@fathom/cordis'
+import { FsTargetKey, FsVersion } from '@fathom/fs'
+import type { FsObservation, FsTarget, FsWriteIntent } from '@fathom/fs'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import type { FsObservationActor } from '@fathom/fs-observation-policy'
 
 function target(path: string): FsTarget {
   return { targetKey: FsTargetKey(path), displayPath: path }

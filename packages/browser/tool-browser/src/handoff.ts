@@ -16,7 +16,7 @@
  *
  * A successful `ask_user_question` call releases both blocks: the user has had
  * the chance to solve the CAPTCHA or sign in in the Browser pane.
- * @module @pentest-harness/dsh-tool-browser/src/handoff
+ * @module @fathom/tool-browser/src/handoff
  */
 
 import type { Page } from 'playwright-core'

@@ -4,13 +4,13 @@ import {
   isInvalidHandle,
   windowsProcessTree,
   WindowsProcessInspector,
-} from '@pentest-harness/dsh-subprocess-local/src/windows-inspector.ts'
+} from '@fathom/subprocess-local/src/windows-inspector.ts'
 import type {
   NativePtr,
   ProcessEntry,
   WindowsProcessInspectorInternals,
   WindowsProcessState,
-} from '@pentest-harness/dsh-subprocess-local/src/windows-inspector.ts'
+} from '@fathom/subprocess-local/src/windows-inspector.ts'
 
 function fakeInternals() {
   const entries: ProcessEntry[] = []

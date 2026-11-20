@@ -3,7 +3,7 @@
  * canvas showing the shared browser's screencast. Pointer, wheel and keyboard
  * input on the canvas go back to the same tab, so the user can take over at
  * any point. Self-contained (no external assets) so it works offline.
- * @module @pentest-harness/dsh-browser/src/viewer-page
+ * @module @fathom/browser/src/viewer-page
  */
 
 /** Complete HTML document for the live view. */

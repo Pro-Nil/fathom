@@ -14,15 +14,15 @@
  * holds this package's 'root' row in this compilation unit, but consumers
  * merge keys in; the rule fires on the narrow-map view, not on real
  * redundancy. */
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import { SlotCore } from '@pentest-harness/dsh-client-ui-slots'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import { SlotCore } from '@fathom/client-ui-slots'
 import type {
   LiveSlotNode, LocaleFace, OwnerOf, SlotEntryDef, SlotMap, SlotRenderer, SlotRendererHost,
   SlotScope, SlotSpec, StoreDecl, StoreFactory, StoredEntry, StoreInstanceLike,
-} from '@pentest-harness/dsh-client-ui-slots'
+} from '@fathom/client-ui-slots'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     /**
      * The built-in render-tree root hole (seeded by SlotCore): the one slot the

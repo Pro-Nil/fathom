@@ -15,7 +15,7 @@ import {
   type ClientPackageFacts,
 } from './verify-client-packages.ts'
 
-const CORDIS = '@pentest-harness/cordis'
+const CORDIS = '@fathom/cordis'
 const roots: string[] = []
 
 afterEach(() => {
@@ -27,7 +27,7 @@ function declaration(
   fields: Partial<Omit<ClientDeclaration, 'name' | 'manifest'>> = {},
 ): ClientDeclaration {
   return {
-    name: short.startsWith('@') ? short : '@pentest-harness/dsh-client-' + short,
+    name: short.startsWith('@') ? short : '@fathom/client-' + short,
     manifest: 'packages/client/' + short.replace(/^.*\//, '') + '/package.json',
     dynamic: true,
     external: [],
@@ -73,26 +73,26 @@ function facts(
 describe('source package uses', () => {
   it('counts type imports, module augmentations, dynamic imports, and JSX', () => {
     const uses = collectSourcePackageUses('feature.tsx', [
-      "import type { A } from '@pentest-harness/dsh-a/subpath'",
-      "declare module '@pentest-harness/dsh-client-ui-slots' {}",
-      "const load = () => import('@pentest-harness/dsh-b')",
+      "import type { A } from '@fathom/a/subpath'",
+      "declare module '@fathom/client-ui-slots' {}",
+      "const load = () => import('@fathom/b')",
       'export const view = <div />',
       "export type { Local } from './local.ts'",
     ].join('\n'))
 
     expect([...uses].sort()).toEqual([
-      '@pentest-harness/dsh-a',
-      '@pentest-harness/dsh-b',
-      '@pentest-harness/dsh-client-ui-slots',
+      '@fathom/a',
+      '@fathom/b',
+      '@fathom/client-ui-slots',
       'react',
     ])
     expect([...collectRuntimeSourcePackageUses('feature.tsx', [
-      "import type { A } from '@pentest-harness/dsh-a/subpath'",
-      "declare module '@pentest-harness/dsh-client-ui-slots' {}",
-      "const load = () => import('@pentest-harness/dsh-b')",
+      "import type { A } from '@fathom/a/subpath'",
+      "declare module '@fathom/client-ui-slots' {}",
+      "const load = () => import('@fathom/b')",
       'export const view = <div />',
     ].join('\n'))].sort()).toEqual([
-      '@pentest-harness/dsh-b',
+      '@fathom/b',
       'react',
     ])
   })
@@ -124,7 +124,7 @@ describe('package modes', () => {
     }))
     expect(found).toHaveLength(2)
     expect(found.join('\n')).toContain('does not use the staticLinked preset')
-    expect(found.join('\n')).toContain('has no dynamic dsh.client row')
+    expect(found.join('\n')).toContain('has no dynamic fathom.client row')
   })
 
   it('requires every preloaded external to have a parser preload row', () => {
@@ -135,7 +135,7 @@ describe('package modes', () => {
       parserPreloadIds: [],
     }))).toEqual([
       'packages/client/web/src/platform.ts: parser-preloaded external '
-      + '"@pentest-harness/dsh-client-runtime/client" has no matching PARSER_PRELOAD_IDS row in '
+      + '"@fathom/client-runtime/client" has no matching PARSER_PRELOAD_IDS row in '
       + 'packages/client/modules/src/index.ts',
     ])
   })
@@ -145,23 +145,23 @@ describe('dependency sections', () => {
   it('accepts dynamic peer plus dev relationships, static dev inputs, and private dependencies', () => {
     const slots = pkg('ui-slots', { dynamic: false, staticLinked: true })
     const runtime = pkg('runtime', {
-      inject: ['@pentest-harness/dsh-client-feature'],
+      inject: ['@fathom/client-feature'],
       sourceUses: {
-        '@pentest-harness/dsh-agent': ['packages/client/runtime/src/index.ts'],
-        '@pentest-harness/dsh-client-ui-slots': ['packages/client/runtime/src/client/slots.ts'],
+        '@fathom/agent': ['packages/client/runtime/src/index.ts'],
+        '@fathom/client-ui-slots': ['packages/client/runtime/src/client/slots.ts'],
         react: ['packages/client/runtime/src/client/view.tsx'],
       },
       dependencies: { immer: '^10.1.1' },
       peerDependencies: {
         [CORDIS]: 'workspace:^',
-        '@pentest-harness/dsh-agent': 'workspace:^',
-        '@pentest-harness/dsh-client-feature': 'workspace:^',
+        '@fathom/agent': 'workspace:^',
+        '@fathom/client-feature': 'workspace:^',
       },
       devDependencies: {
         [CORDIS]: 'workspace:^',
-        '@pentest-harness/dsh-agent': 'workspace:^',
-        '@pentest-harness/dsh-client-feature': 'workspace:^',
-        '@pentest-harness/dsh-client-ui-slots': 'workspace:^',
+        '@fathom/agent': 'workspace:^',
+        '@fathom/client-feature': 'workspace:^',
+        '@fathom/client-ui-slots': 'workspace:^',
         react: '^18.2.0',
       },
     })
@@ -174,26 +174,26 @@ describe('dependency sections', () => {
     const slots = pkg('ui-slots', { dynamic: false, staticLinked: true })
     const subject = pkg('feature', {
       sourceUses: {
-        '@pentest-harness/dsh-agent': ['packages/client/feature/src/index.ts'],
+        '@fathom/agent': ['packages/client/feature/src/index.ts'],
         [slots.name]: ['packages/client/feature/src/view.tsx'],
       },
-      dependencies: { '@pentest-harness/dsh-agent': 'workspace:^' },
+      dependencies: { '@fathom/agent': 'workspace:^' },
       peerDependencies: { [CORDIS]: 'workspace:^', [slots.name]: 'workspace:^' },
       devDependencies: { [CORDIS]: 'workspace:^', [slots.name]: 'workspace:*' },
     })
     const found = collectClientPackageViolations(facts([slots, subject]))
     expect(found).toHaveLength(2)
-    expect(found.join('\n')).toContain('peer-installed DSH relationship')
+    expect(found.join('\n')).toContain('peer-installed FATHOM relationship')
     expect(found.join('\n')).toContain('static client input')
   })
 
   it('requires every peer to have the same development range', () => {
     const subject = pkg('feature', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@pentest-harness/cordis-plugin-loader': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@fathom/cordis-plugin-loader': 'workspace:^' },
     })
     expect(collectClientPackageViolations(facts([subject]))).toEqual([
-      'packages/client/feature/package.json: peerDependencies.@pentest-harness/cordis-plugin-loader'
-      + ' is workspace:^, so devDependencies.@pentest-harness/cordis-plugin-loader must use the same range;'
+      'packages/client/feature/package.json: peerDependencies.@fathom/cordis-plugin-loader'
+      + ' is workspace:^, so devDependencies.@fathom/cordis-plugin-loader must use the same range;'
       + ' found no declaration',
     ])
   })
@@ -219,12 +219,12 @@ describe('dependency sections', () => {
       dynamic: false,
       staticLinked: true,
       runtimeSourceUses: {
-        '@pentest-harness/cordis-plugin-loader': ['packages/client/web/src/boot.ts'],
+        '@fathom/cordis-plugin-loader': ['packages/client/web/src/boot.ts'],
         react: ['packages/client/web/src/seed.ts'],
       },
       devDependencies: {
         [CORDIS]: 'workspace:^',
-        '@pentest-harness/cordis-plugin-loader': 'workspace:^',
+        '@fathom/cordis-plugin-loader': 'workspace:^',
         react: '^18.2.0',
       },
     })
@@ -233,12 +233,12 @@ describe('dependency sections', () => {
 
   it('allows npm dependency cycles', () => {
     const a = pkg('a', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@pentest-harness/dsh-client-b': 'workspace:^' },
-      devDependencies: { [CORDIS]: 'workspace:^', '@pentest-harness/dsh-client-b': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@fathom/client-b': 'workspace:^' },
+      devDependencies: { [CORDIS]: 'workspace:^', '@fathom/client-b': 'workspace:^' },
     })
     const b = pkg('b', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@pentest-harness/dsh-client-a': 'workspace:^' },
-      devDependencies: { [CORDIS]: 'workspace:^', '@pentest-harness/dsh-client-a': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@fathom/client-a': 'workspace:^' },
+      devDependencies: { [CORDIS]: 'workspace:^', '@fathom/client-a': 'workspace:^' },
     })
     expect(collectClientPackageViolations(facts([a, b]))).toEqual([])
   })
@@ -246,7 +246,7 @@ describe('dependency sections', () => {
 
 describe('module requests', () => {
   it('accepts a dynamic row supplier and its client subpath', () => {
-    const ui = declaration('ui', { external: ['@pentest-harness/dsh-client-slots/client'] })
+    const ui = declaration('ui', { external: ['@fathom/client-slots/client'] })
     const slots = declaration('slots')
     expect(collectClientPackageViolations(facts([], { declarations: [ui, slots] }))).toEqual([])
   })
@@ -257,35 +257,35 @@ describe('module requests', () => {
       declarations: [ui],
       platformModules: ['react'],
     }))).toEqual([
-      ui.manifest + ': dsh.client.external repeats baseline module "react"; remove the explicit declaration',
+      ui.manifest + ': fathom.client.external repeats baseline module "react"; remove the explicit declaration',
     ])
   })
 
   it('rejects duplicates, empty values, self-requests, and missing suppliers', () => {
     const ui = declaration('ui', {
-      external: ['', '@pentest-harness/dsh-client-ui', '@pentest-harness/dsh-missing', '@pentest-harness/dsh-missing'],
-      inject: ['', '@pentest-harness/dsh-a', '@pentest-harness/dsh-a'],
+      external: ['', '@fathom/client-ui', '@fathom/missing', '@fathom/missing'],
+      inject: ['', '@fathom/a', '@fathom/a'],
     })
     const found = collectClientPackageViolations(facts([], { declarations: [ui] }))
     expect(found).toHaveLength(6)
-    expect(found.join('\n')).toContain('dsh.client.external contains an empty value')
-    expect(found.join('\n')).toContain('dsh.client.inject contains an empty value')
+    expect(found.join('\n')).toContain('fathom.client.external contains an empty value')
+    expect(found.join('\n')).toContain('fathom.client.inject contains an empty value')
     expect(found.join('\n')).toContain('names its own row')
     expect(found.join('\n')).toContain('has no supplier')
   })
 
   it('rejects synchronous module-request cycles but ignores inject cycles', () => {
     const a = declaration('a', {
-      external: ['@pentest-harness/dsh-client-b'],
-      inject: ['@pentest-harness/dsh-client-b'],
+      external: ['@fathom/client-b'],
+      inject: ['@fathom/client-b'],
     })
     const b = declaration('b', {
-      external: ['@pentest-harness/dsh-client-a'],
-      inject: ['@pentest-harness/dsh-client-a'],
+      external: ['@fathom/client-a'],
+      inject: ['@fathom/client-a'],
     })
     const found = collectClientPackageViolations(facts([], { declarations: [a, b] }))
     expect(found).toHaveLength(1)
-    expect(found[0]).toContain('synchronous dsh.client.external cycle')
+    expect(found[0]).toContain('synchronous fathom.client.external cycle')
   })
 })
 
@@ -295,9 +295,9 @@ describe('manifest declarations', () => {
     roots.push(root)
     const files: Record<string, unknown> = {
       'packages/g/a/package.json': {
-        name: '@f/a', dsh: { client: { external: 'react', inject: ['@f/b', 1] } },
+        name: '@f/a', fathom: { client: { external: 'react', inject: ['@f/b', 1] } },
       },
-      'packages/g/b/package.json': { name: '@f/b', dsh: { client: {} } },
+      'packages/g/b/package.json': { name: '@f/b', fathom: { client: {} } },
     }
     for (const [path, value] of Object.entries(files)) {
       mkdirSync(dirname(join(root, path)), { recursive: true })
@@ -307,8 +307,8 @@ describe('manifest declarations', () => {
     const result = readClientDeclarations(root)
     expect(result.declarations).toHaveLength(2)
     expect(result.malformed).toEqual([
-      'packages/g/a/package.json: @f/a dsh.client.external must be a string array',
-      'packages/g/a/package.json: @f/a dsh.client.inject must be a string array',
+      'packages/g/a/package.json: @f/a fathom.client.external must be a string array',
+      'packages/g/a/package.json: @f/a fathom.client.inject must be a string array',
     ])
   })
 
@@ -316,26 +316,26 @@ describe('manifest declarations', () => {
     const root = mkdtempSync(join(tmpdir(), 'client-packages-fix-'))
     roots.push(root)
     const subject = pkg('feature', {
-      external: ['', 'react', '@pentest-harness/dsh-client-feature', '@pentest-harness/dsh-missing'],
-      inject: ['', '@pentest-harness/dsh-agent', '@pentest-harness/dsh-agent'],
+      external: ['', 'react', '@fathom/client-feature', '@fathom/missing'],
+      inject: ['', '@fathom/agent', '@fathom/agent'],
       sourceUses: {
-        '@pentest-harness/dsh-agent': ['packages/client/feature/src/index.ts'],
-        '@pentest-harness/dsh-client-ui-slots': ['packages/client/feature/src/view.tsx'],
+        '@fathom/agent': ['packages/client/feature/src/index.ts'],
+        '@fathom/client-ui-slots': ['packages/client/feature/src/view.tsx'],
       },
       dependencies: {
         [CORDIS]: 'workspace:^',
-        '@pentest-harness/dsh-agent': 'workspace:*',
+        '@fathom/agent': 'workspace:*',
       },
       peerDependencies: {
-        '@pentest-harness/dsh-client-ui-slots': 'workspace:^',
-        '@pentest-harness/cordis-plugin-loader': 'workspace:^',
+        '@fathom/client-ui-slots': 'workspace:^',
+        '@fathom/cordis-plugin-loader': 'workspace:^',
       },
       devDependencies: {},
     })
     const slots = declaration('ui-slots', { dynamic: false })
     const manifest = {
       name: subject.name,
-      dsh: { client: { external: subject.external, inject: subject.inject, platform: 'web' } },
+      fathom: { client: { external: subject.external, inject: subject.inject, platform: 'web' } },
       dependencies: subject.dependencies,
       peerDependencies: subject.peerDependencies,
       devDependencies: subject.devDependencies,
@@ -351,26 +351,26 @@ describe('manifest declarations', () => {
     }))).toEqual([subject.manifest])
 
     const fixed = JSON.parse(readFileSync(join(root, subject.manifest), 'utf8')) as {
-      dsh: { client: { external: string[]; inject: string[] } }
+      fathom: { client: { external: string[]; inject: string[] } }
       dependencies?: Record<string, string>
       peerDependencies: Record<string, string>
       devDependencies: Record<string, string>
     }
-    expect(fixed.dsh.client).toMatchObject({
-      external: ['@pentest-harness/dsh-missing'],
-      inject: ['@pentest-harness/dsh-agent'],
+    expect(fixed.fathom.client).toMatchObject({
+      external: ['@fathom/missing'],
+      inject: ['@fathom/agent'],
     })
     expect(fixed.dependencies).toBeUndefined()
     expect(fixed.peerDependencies).toEqual({
-      '@pentest-harness/cordis-plugin-loader': 'workspace:^',
+      '@fathom/cordis-plugin-loader': 'workspace:^',
       [CORDIS]: 'workspace:^',
-      '@pentest-harness/dsh-agent': 'workspace:*',
+      '@fathom/agent': 'workspace:*',
     })
     expect(fixed.devDependencies).toEqual({
-      '@pentest-harness/dsh-client-ui-slots': 'workspace:^',
+      '@fathom/client-ui-slots': 'workspace:^',
       [CORDIS]: 'workspace:^',
-      '@pentest-harness/dsh-agent': 'workspace:*',
-      '@pentest-harness/cordis-plugin-loader': 'workspace:^',
+      '@fathom/agent': 'workspace:*',
+      '@fathom/cordis-plugin-loader': 'workspace:^',
     })
   })
 

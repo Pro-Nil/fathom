@@ -2,15 +2,15 @@
  * Model-facing full-file write. It obtains an optional intent from the single policy slot, calls
  * `ctx.fs.writeText` without a stat, then records the resulting version; no policy means an
  * unconditional atomic create-or-overwrite.
- * @module @pentest-harness/dsh-tool-fs/src/write
+ * @module @fathom/tool-fs/src/write
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { DiffCallView, DiffResultView, ToolResult } from '@pentest-harness/dsh-tools'
-import type { FsWriteOutcome } from '@pentest-harness/dsh-fs'
-import type {} from '@pentest-harness/dsh-fs'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import type { DiffCallView, DiffResultView, ToolResult } from '@fathom/tools'
+import type { FsWriteOutcome } from '@fathom/fs'
+import type {} from '@fathom/fs'
+import type {} from '@fathom/system-prompt'
 import { computeHunkDiffs, diffsFromMeta } from './diff.ts'
 import { remediateFsError } from './error.ts'
 import { sessionResolveOptions } from './session-cwd.ts'

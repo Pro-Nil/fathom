@@ -1,7 +1,7 @@
 /**
  * Content identity for workspace instruction duplicate suppression.
  *
- * @module @pentest-harness/dsh-agent-instructions/digest
+ * @module @fathom/agent-instructions/digest
  */
 
 import { createHash } from 'node:crypto'

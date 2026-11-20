@@ -3,10 +3,10 @@
  * vocabulary remains in `./types` so Client programs never import Agent or
  * host Cordis context declarations.
  *
- * @module @pentest-harness/dsh-workflow
+ * @module @fathom/workflow
  */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Agent } from '@fathom/agent'
 import type {
   WorkflowMeta, WorkflowResult, WorkflowRunId,
 } from './types.ts'

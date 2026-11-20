@@ -5,16 +5,16 @@
 # authored fixture and the pinned header class are flash), because a config
 # patch replaces the whole app config.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: acp-agent
-        name: '@pentest-harness/dsh-acp-demo'
+        name: '@fathom/acp-demo'
         config:
           provider: acme-official
           model: acme-v4-flash
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceRoot: !!js process.env.FATHOM_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
             maxBytes: 65536
@@ -24,4 +24,4 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: attachment-local
-            name: '@pentest-harness/dsh-attachment-local'
+            name: '@fathom/attachment-local'

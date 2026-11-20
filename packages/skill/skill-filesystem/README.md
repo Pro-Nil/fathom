@@ -1,8 +1,8 @@
-# @pentest-harness/dsh-skill-filesystem
+# @fathom/skill-filesystem
 
 Local filesystem provider for the `ctx.skills` registry.
 
-This package implements one skill source. It scans local project, custom, and user skill roots, parses `SKILL.md` or flat Markdown skill files, and registers the provider on `ctx.skills`. The registry remains in `@pentest-harness/dsh-skill`; the durable session catalogs and model-facing loader tool remain in `@pentest-harness/dsh-tool-skill`.
+This package implements one skill source. It scans local project, custom, and user skill roots, parses `SKILL.md` or flat Markdown skill files, and registers the provider on `ctx.skills`. The registry remains in `@fathom/skill`; the durable session catalogs and model-facing loader tool remain in `@fathom/tool-skill`.
 
 ## Plugin
 
@@ -14,8 +14,8 @@ Requires `ctx.skills` (`inject: ['skills']`).
 |---|---|---|
 | `providerName` | `filesystem` | Unique name used to register this provider on `ctx.skills`. |
 | `includeDefaultRoots` | `true` | Include project and user roots around `customSkillDirs`; set false for an isolated custom-root provider. |
-| `dshHome` | `$DSH_HOME` or `~/.dsh` | Pentest Harness config root resolved by [`@pentest-harness/dsh-home-paths`](../../util/home-paths/README.md); scans `skills` under this directory. |
-| `agentsHome` | `$DSH_AGENTS_HOME` or `~/.agents` | Shared agent config root scanned for compatible skills. |
+| `fathomHome` | `$FATHOM_HOME` or `~/.fathom` | Fathom config root resolved by [`@fathom/home-paths`](../../util/home-paths/README.md); scans `skills` under this directory. |
+| `agentsHome` | `$FATHOM_AGENTS_HOME` or `~/.agents` | Shared agent config root scanned for compatible skills. |
 | `customSkillDirs` | `[]` | Additional local skill roots scanned after project roots and before user roots. |
 | `watch` | `true` | Watch host-local roots and invalidate the local provider when catalog membership or frontmatter may have changed. |
 | `watchUsePolling` | `false` | Use Chokidar polling instead of native events for existing skill roots. |
@@ -30,13 +30,13 @@ Default roots are resolved in this provider's rank order:
 
 | Rank | Source | Path |
 |---|---|---|
-| 100 | `project-dsh` | `<projectRoot>/.dsh/skills` |
+| 100 | `project-fathom` | `<projectRoot>/.fathom/skills` |
 | 200 | `project-agents` | `<projectRoot>/.agents/skills` |
 | 300 | `custom` | `Config.customSkillDirs` |
-| 400 | `user-dsh` | `<dshHome>/skills` |
+| 400 | `user-fathom` | `<fathomHome>/skills` |
 | 500 | `user-agents` | `<agentsHome>/skills` |
 
-The project root is the nearest ancestor containing `.git`; without one, the current cwd is used. The user DSH root skips its `.system` child so system-owned directories are not treated as normal user skills. `includeDefaultRoots: false` omits the project and user rows and the `$DSH_BUNDLED_SKILL_DIR` environment default while retaining explicitly configured custom and bundled roots, allowing several uniquely named isolated providers to see only their own roots. This provider supplies project and user skills; another provider may supply built-in system skills.
+The project root is the nearest ancestor containing `.git`; without one, the current cwd is used. The user FATHOM root skips its `.system` child so system-owned directories are not treated as normal user skills. `includeDefaultRoots: false` omits the project and user rows and the `$FATHOM_BUNDLED_SKILL_DIR` environment default while retaining explicitly configured custom and bundled roots, allowing several uniquely named isolated providers to see only their own roots. This provider supplies project and user skills; another provider may supply built-in system skills.
 
 When `ctx.fs` is available, discovery lists roots through `ctx.fs.listDir`, reads skill files through `ctx.fs.readText`, and probes `.git` through the filesystem service. Full skill loads forward the lookup abort signal to filesystem metadata and content reads. Without a filesystem service, the provider falls back to abortable Node filesystem I/O so minimal local contexts can still load skills. Confirmed missing paths are valid empty state, malformed or non-text entries warn and skip, and unexpected discovery/read failures make the registry snapshot incomplete rather than replacing a last-good model catalog with a misleading deletion.
 
@@ -58,7 +58,7 @@ The catalog and body have separate lifecycles. Discovery parses frontmatter to p
 
 ## Model Experience
 
-Indirectly, through `dsh-tool-skill`, which renders this provider's invocable names and capped descriptions into the initial or replacement catalog and a selected current instruction body plus resource-base guidance into retained tool history while paths, provider ranks, and disabled skills remain hidden.
+Indirectly, through `fathom-tool-skill`, which renders this provider's invocable names and capped descriptions into the initial or replacement catalog and a selected current instruction body plus resource-base guidance into retained tool history while paths, provider ranks, and disabled skills remain hidden.
 
 #### KV Cache effect
 

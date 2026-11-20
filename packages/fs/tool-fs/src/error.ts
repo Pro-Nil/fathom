@@ -4,11 +4,11 @@
  * not the only correct recovery (re-read / read the file), so this package
  * appends the remedy at the model boundary; provider messages stay
  * machine-oriented and unchanged.
- * @module @pentest-harness/dsh-tool-fs/src/error
+ * @module @fathom/tool-fs/src/error
  */
 
-import { FsError } from '@pentest-harness/dsh-fs'
-import type { FsErrorCode } from '@pentest-harness/dsh-fs'
+import { FsError } from '@fathom/fs'
+import type { FsErrorCode } from '@fathom/fs'
 
 /** The remedy appended to each remediable failure code's message. */
 const REMEDIES: Partial<Record<FsErrorCode, string>> = {

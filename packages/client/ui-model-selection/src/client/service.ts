@@ -6,19 +6,19 @@
  *
  * Per-session storage follows the client service pattern (InputTriggerService /
  * CommandUiRuntime): a lazy service-internal map whose entry is deleted by the
- * owning scope's disposer. The host `dsh-scope` ScopedLayers registry does
+ * owning scope's disposer. The host `fathom-scope` ScopedLayers registry does
  * does not belong here: it derives scope from the host carrier mechanism
  * (object-keyed), while client scopes tag contexts with branded SessionId
  * strings, and it models global+shadow named registries — this is a
  * per-session singleton with no global layer to merge.
  */
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import type { ConnectionHandle, SessionId } from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionRuntime } from '@pentest-harness/dsh-client-runtime/client'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import type { ConnectionHandle, SessionId } from '@fathom/api-remotes/client'
+import type { SessionRuntime } from '@fathom/client-runtime/client'
 import { ModelDirectory } from './directory.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     modelDirectories: ModelDirectoryResolver
   }

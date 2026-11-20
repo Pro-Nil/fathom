@@ -3,19 +3,19 @@
  * the cancellable generated Remote namespaces in parallel with deterministic
  * ordering and labels.
  *
- * @module @pentest-harness/dsh-client-ui-reference/client
+ * @module @fathom/client-ui-reference/client
  */
 // Type-only: pulls the generated Remote API and ctx.remote merge through the Client assembly boundary.
-import type {} from '@pentest-harness/dsh-api-remotes/client'
+import type {} from '@fathom/api-remotes/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@pentest-harness/dsh-client-locale/client'
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
+import type {} from '@fathom/client-locale/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
 import type {
   ClientSessionContext, InputTriggerServiceContract, InputTriggerSource,
-} from '@pentest-harness/dsh-client-ui-input-trigger/client'
-import { formatFileMention } from '@pentest-harness/dsh-file-reference/grammar'
-import type { FileReferenceCandidate } from '@pentest-harness/dsh-file-reference/types'
-import type { SessionReferenceMentionCandidate } from '@pentest-harness/dsh-session-reference/types'
+} from '@fathom/client-ui-input-trigger/client'
+import { formatFileMention } from '@fathom/file-reference/grammar'
+import type { FileReferenceCandidate } from '@fathom/file-reference/types'
+import type { SessionReferenceMentionCandidate } from '@fathom/session-reference/types'
 import { en, NS, type ReferenceKey } from './locales.ts'
 
 /** Required services: the trigger registry, the Remote namespaces, and the copy. */

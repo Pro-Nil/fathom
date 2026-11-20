@@ -3,7 +3,7 @@
  * semantic-empty LLM recovery tests. Each accepted chat-completions request
  * consumes one behavior; the server never retries or interprets harness policy.
  *
- * @module @pentest-harness/dsh-llm-mock-server
+ * @module @fathom/llm-mock-server
  */
 
 import { createServer } from 'node:http'

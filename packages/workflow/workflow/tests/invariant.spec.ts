@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { WorkflowRunId } from '@pentest-harness/dsh-workflow'
+import { Context } from '@fathom/cordis'
+import { SessionId } from '@fathom/session'
+import { WorkflowRunId } from '@fathom/workflow'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
   WorkflowResultInfo,
   WorkflowRunInfo,
-} from '@pentest-harness/dsh-workflow'
-import * as WorkflowInvariant from '@pentest-harness/dsh-workflow/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+} from '@fathom/workflow'
+import * as WorkflowInvariant from '@fathom/workflow/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

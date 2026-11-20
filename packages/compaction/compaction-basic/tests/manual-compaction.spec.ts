@@ -1,37 +1,37 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import { CommandId } from '@pentest-harness/dsh-commands/brand'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import * as CompactionInvariant from '@pentest-harness/dsh-compaction/invariant'
-import * as CompactionBasicInvariant from '@pentest-harness/dsh-compaction-basic/invariant'
-import { BasicCompactionEngine } from '@pentest-harness/dsh-compaction-basic'
-import { CompactionId, isCompactCheckpointSource, ManualCompactionError } from '@pentest-harness/dsh-compaction'
-import type { CompactionResult } from '@pentest-harness/dsh-compaction'
+import { Context } from '@fathom/cordis'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import InvariantRegistry from '@fathom/invariants'
+import { CommandId } from '@fathom/commands/brand'
+import * as SessionInvariant from '@fathom/session/invariant'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
+import * as CompactionInvariant from '@fathom/compaction/invariant'
+import * as CompactionBasicInvariant from '@fathom/compaction-basic/invariant'
+import { BasicCompactionEngine } from '@fathom/compaction-basic'
+import { CompactionId, isCompactCheckpointSource, ManualCompactionError } from '@fathom/compaction'
+import type { CompactionResult } from '@fathom/compaction'
 import {
   createAssistantMessage,
   createUserMessage,
   LlmAdapter,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 import type {
   ContentBlock,
   LlmResolvedModelInfo,
   Message,
   StreamChunk,
   TokenUsage,
-} from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import TokenMeter from '@pentest-harness/dsh-token-meter'
-import type { Agent } from '@pentest-harness/dsh-agent'
+} from '@fathom/llm'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@fathom/session'
+import LlmRuntime from '@fathom/llm'
+import TokenMeter from '@fathom/token-meter'
+import type { Agent } from '@fathom/agent'
 import type {
   SummarizationInput,
   SummaryResult,
-} from '@pentest-harness/dsh-compaction-basic/src/summarizer.ts'
+} from '@fathom/compaction-basic/src/summarizer.ts'
 
 const MODEL = 'mock'
 const SIGNAL = new AbortController().signal

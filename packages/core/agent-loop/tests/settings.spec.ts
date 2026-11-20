@@ -1,16 +1,16 @@
 /** The `agent-loop` settings section layered over the composition entry. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Fiber } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import { SettingsProvider } from '@pentest-harness/dsh-settings'
-import type { SettingsNamespace } from '@pentest-harness/dsh-settings'
-import AgentLoop, { AGENT_LOOP_SETTINGS_NAMESPACE } from '@pentest-harness/dsh-agent-loop'
+import { Context } from '@fathom/cordis'
+import type { Fiber } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry from '@fathom/agent'
+import { SettingsProvider } from '@fathom/settings'
+import type { SettingsNamespace } from '@fathom/settings'
+import AgentLoop, { AGENT_LOOP_SETTINGS_NAMESPACE } from '@fathom/agent-loop'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

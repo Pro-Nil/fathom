@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import TerminalSessionService, { TerminalBackendCleanupError, TerminalError, TerminalSessionId } from '@pentest-harness/dsh-terminal'
+import { Context } from '@fathom/cordis'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import TerminalSessionService, { TerminalBackendCleanupError, TerminalError, TerminalSessionId } from '@fathom/terminal'
 import type {
   TerminalBackend,
   TerminalBackendSession,
@@ -13,7 +13,7 @@ import type {
   TerminalSessionId as TerminalSessionIdType,
   TerminalSessionStatus,
   TerminalSignal,
-} from '@pentest-harness/dsh-terminal'
+} from '@fathom/terminal'
 
 const agentScopeDisposers = new WeakMap<Agent, () => Promise<void>>()
 const ptyServiceDisposers = new WeakMap<Context, () => Promise<void>>()

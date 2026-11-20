@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-lsp`.
- * @module @pentest-harness/dsh-lsp/invariant
+ * Package-owned invariant companion for `@fathom/lsp`.
+ * @module @fathom/lsp/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-lsp'
+const PACKAGE_NAME = '@fathom/lsp'
 
 /** Cordis companion plugin name. */
 export const name = 'lsp-invariant'

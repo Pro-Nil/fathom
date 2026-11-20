@@ -10,22 +10,22 @@
  * shell-quoting layer to escape (the `bash -c` string domain has no
  * equivalent here). Native Win32 paths (`C:\...`) pass through unchanged.
  *
- * @module @pentest-harness/dsh-pwsh-local
+ * @module @fathom/pwsh-local
  */
 
-/* jscpd:ignore-start -- this executor mirrors dsh-bash-local call-for-call by
+/* jscpd:ignore-start -- this executor mirrors fathom-bash-local call-for-call by
    design (see this package's README), so the two import the same seam surface */
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@pentest-harness/dsh-shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@pentest-harness/dsh-shell'
-import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import { installSettingsSection } from '@pentest-harness/dsh-settings'
-import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@pentest-harness/dsh-timeout'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@fathom/shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@fathom/shell'
+import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@fathom/subprocess'
+import { installSettingsSection } from '@fathom/settings'
+import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@fathom/timeout'
 /* jscpd:ignore-end */
 import { resolvePwshPath } from './resolve.ts'
 
-/* jscpd:ignore-start -- deliberate call-for-call mirror of dsh-bash-local (Agent Note: pwsh-tool-and-executor). */
+/* jscpd:ignore-start -- deliberate call-for-call mirror of fathom-bash-local (Agent Note: pwsh-tool-and-executor). */
 /**
  * Model-friendly environment overrides for PowerShell: disable colors and
  * pagers that would garble tool output. `TERM=dumb` is a POSIX concept and is
@@ -203,7 +203,7 @@ export class PwshLocalExecutor extends ShellExecutor {
       ...request.signal ? { signal: request.signal } : {},
       ...request.stdin !== undefined ? { stdin: request.stdin } : {},
       ...request.env !== undefined ? { env: request.env } : {},
-      ...request.dshEnv !== undefined ? { dshEnv: request.dshEnv } : {},
+      ...request.fathomEnv !== undefined ? { fathomEnv: request.fathomEnv } : {},
       sandboxPolicy: request.sandboxPolicy,
     }
   }
@@ -211,8 +211,8 @@ export class PwshLocalExecutor extends ShellExecutor {
   /**
    * The pwsh invocation argv for one resolved spec — the argv-level seam a
    * confining subclass wraps through `ctx.sandbox.confine` (the pwsh twin of
-   * `dsh-bash-local`'s `runArgv`/`startArgv` hooks; see
-   * `@pentest-harness/dsh-pwsh-sandbox`).
+   * `fathom-bash-local`'s `runArgv`/`startArgv` hooks; see
+   * `@fathom/pwsh-sandbox`).
    */
   protected argv(spec: ShellExecSpec): string[] {
     return [this.pwshPath, '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', `${ENCODING_PREAMBLE}${spec.command}`]
@@ -237,7 +237,7 @@ export class PwshLocalExecutor extends ShellExecutor {
       },
       graceMs: this.config.graceMs,
       signal,
-      env: { ...ENV_OVERRIDES, ...spec.env, ...spec.dshEnv },
+      env: { ...ENV_OVERRIDES, ...spec.env, ...spec.fathomEnv },
     }
   }
 
@@ -349,8 +349,8 @@ export class PwshLocalExecutor extends ShellExecutor {
   /**
    * Settlement hook for subclasses that attach execution facts to a process.
    * The base implementation is intentionally empty. Mirrored from
-   * `dsh-bash-local` (whose sandboxing subclass consumes the same hook); the
-   * pwsh-confining consumer is `@pentest-harness/dsh-pwsh-sandbox`.
+   * `fathom-bash-local` (whose sandboxing subclass consumes the same hook); the
+   * pwsh-confining consumer is `@fathom/pwsh-sandbox`.
    * @param _proc - the settled process handle.
    * @param _stderr - the process's retained stderr tail used by subclasses for settlement classification.
    * @param _spawnFailed - whether the spawn rejected before any process existed.

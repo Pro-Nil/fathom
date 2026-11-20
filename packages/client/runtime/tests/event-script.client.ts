@@ -1,8 +1,8 @@
-import { createUserMessage, createMessage, createToolResultMessage, CallId } from '@pentest-harness/dsh-llm'
+import { createUserMessage, createMessage, createToolResultMessage, CallId } from '@fathom/llm'
 // Minimal SessionEvent builders for orchestration tests (shape mirrors what the
 // host emits; only the fields the object layer reads).
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
+import type { ContentBlock } from '@fathom/llm/types'
+import type { SessionEvent } from '@fathom/session/types'
 
 /** One text content block (local helper). */
 const text = (t: string): ContentBlock[] => [{ type: 'text', text: t }]

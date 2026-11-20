@@ -1,25 +1,25 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { createAssistantMessage, createUserMessage } from '@pentest-harness/dsh-llm'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
+import { Context } from '@fathom/cordis'
+import { createAssistantMessage, createUserMessage } from '@fathom/llm'
+import type { MessageId } from '@fathom/llm/brand'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
   type SessionEvent,
   type SessionHeader,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import SessionPersistence, {
   SessionPersistenceRevision,
   type SessionInspection,
   type SessionLocation,
   type SessionPersistenceSnapshot,
-} from '@pentest-harness/dsh-session-persistence'
-import Storage from '@pentest-harness/dsh-storage'
-import * as StorageDomain from '@pentest-harness/dsh-storage-domain'
-import * as StorageJson from '@pentest-harness/dsh-storage-json'
+} from '@fathom/session-persistence'
+import Storage from '@fathom/storage'
+import * as StorageDomain from '@fathom/storage-domain'
+import * as StorageJson from '@fathom/storage-json'
 import MessageFeedbackService from '../src/index.ts'
 
 export interface MessageFixture {
@@ -185,7 +185,7 @@ export interface TestHarness {
 
 /** Compose the service over the real storage hub/domain/JSON backend. */
 export async function setupHarness(maxNoteBytes = 64): Promise<TestHarness> {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-message-feedback-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'fathom-message-feedback-test-'))
   const ctx = new Context()
   let disposeFeedback: (() => Promise<void>) | undefined
   try {

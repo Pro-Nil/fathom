@@ -1,15 +1,15 @@
 /**
  * Durable projection state for dynamic runtime context.
- * @module @pentest-harness/dsh-agent-loop/runtime-context
+ * @module @fathom/agent-loop/runtime-context
  */
 
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContextSnapshotSection } from '@pentest-harness/dsh-llm'
-import type { Session, UserMessage } from '@pentest-harness/dsh-session'
-import { isReplacementSurfaceEvent } from '@pentest-harness/dsh-session'
-import type { Context } from '@pentest-harness/cordis'
+import { createUserMessage } from '@fathom/llm'
+import type { ContextSnapshotSection } from '@fathom/llm'
+import type { Session, UserMessage } from '@fathom/session'
+import { isReplacementSurfaceEvent } from '@fathom/session'
+import type { Context } from '@fathom/cordis'
 
-const SOURCE = '@pentest-harness/system-prompt'
+const SOURCE = '@fathom/runtime-context'
 const CLEARED = 'Current runtime context: none. Earlier runtime-context snapshots no longer apply.'
 
 function isOwned(message: UserMessage): boolean {

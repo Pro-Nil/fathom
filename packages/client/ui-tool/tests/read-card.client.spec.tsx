@@ -8,23 +8,23 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { Context } from '@pentest-harness/cordis'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+} from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ToolResultView } from '@pentest-harness/dsh-api-remotes/client'
-import type { SelectionTarget } from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-runtime/client'
+import type { ToolResultView } from '@fathom/api-remotes/client'
+import type { SelectionTarget } from '@fathom/client-ui-conversation/client'
 import { CHAT_READ_MAX_LINES, readCardModel } from '../src/client/tool/models/read-card-model.ts'
-import { createChatStore } from '@pentest-harness/dsh-client-ui-conversation/src/client/stores.ts'
+import { createChatStore } from '@fathom/client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
-import { DetailsPanel } from '@pentest-harness/dsh-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
+import { DetailsPanel } from '@fathom/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { ReadRow, readToolview } from '../src/client/tool/toolviews/read-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
 

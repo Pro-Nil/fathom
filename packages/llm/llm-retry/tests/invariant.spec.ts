@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId, type Session } from '@pentest-harness/dsh-session'
-import { createUserMessage, ProviderRequestId } from '@pentest-harness/dsh-llm'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as RetryInvariant from '@pentest-harness/dsh-llm-retry/invariant'
-import { RetryId } from '@pentest-harness/dsh-llm-retry'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId, type Session } from '@fathom/session'
+import { createUserMessage, ProviderRequestId } from '@fathom/llm'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
+import InvariantRegistry from '@fathom/invariants'
+import * as RetryInvariant from '@fathom/llm-retry/invariant'
+import { RetryId } from '@fathom/llm-retry'
 import { providerForOpenStep } from '../src/history.ts'
 
 async function setup(): Promise<Context> {

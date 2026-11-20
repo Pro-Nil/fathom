@@ -1,11 +1,11 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { codingHarness, finalText, SYSTEM_PROMPT, waitForIdle } from './harness.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 /**
  * Key-gated smoke for mid-session compaction. It verifies the compact event
@@ -26,7 +26,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.ACME_API_KEY)('compaction: a long session compacts mid-flight and keeps running', () => {
   it('summarizes older history into a checkpoint without breaking the task', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-compaction-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-compaction-'))
     for (let i = 1; i <= 4; i++) {
       await writeFile(join(workdir, `file${i}.txt`), `This is file number ${i}. `.repeat(50))
     }

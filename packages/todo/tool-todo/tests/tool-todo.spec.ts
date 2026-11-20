@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { TodoItem } from '@pentest-harness/dsh-session'
-import { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import { Session, SessionId } from '@fathom/session'
+import type { TodoItem } from '@fathom/session'
+import { type Agent } from '@fathom/agent'
 
 import * as tool from '../src/index.ts'
 
 const testToolSignal = new AbortController().signal
 
 /**
- * Drives the REAL plugin body: mounts `dsh-tool-todo` on a real `ToolRuntime`
+ * Drives the REAL plugin body: mounts `fathom-tool-todo` on a real `ToolRuntime`
  * and invokes the registered `todo_write` tool through `ctx.tools.execute`,
  * with a fake parent Agent carrying a real `Session` — so the append the tool
  * makes is observable on a genuine session log (only the agent wrapper is a
@@ -50,7 +50,7 @@ function text(result: { content: { type: string; text?: string }[] }): string {
   return result.content.filter(b => b.type === 'text').map(b => b.text).join('')
 }
 
-describe('dsh-tool-todo', () => {
+describe('fathom-tool-todo', () => {
   it('registers a `todo_write` tool whose schema is an array of {content,status}', async () => {
     const ctx = await setup(true)
     const schema = ctx.tools.schemas().find(s => s.name === 'todo_write')

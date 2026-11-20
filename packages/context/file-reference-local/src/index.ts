@@ -1,18 +1,18 @@
 /**
  * Local-filesystem implementation of `ctx.fileReferences`.
  *
- * @module @pentest-harness/dsh-file-reference-local
+ * @module @fathom/file-reference-local
  */
 
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
 import FileReferenceService, {
   FILE_REFERENCE_PROMPT,
   type FileReferenceCandidate,
-} from '@pentest-harness/dsh-file-reference'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type {} from '@pentest-harness/dsh-tools'
+} from '@fathom/file-reference'
+import type {} from '@fathom/system-prompt'
+import type {} from '@fathom/tools'
 import {
   DEFAULT_FILE_SEARCH_EXCLUDED_DIRECTORIES,
   DEFAULT_FILE_SEARCH_MAX_ENTRIES,
@@ -28,8 +28,8 @@ export {
   WorkspaceFileSearch,
 } from './search.ts'
 export type { FileSearchConfig } from './search.ts'
-export { FILE_REFERENCE_PROMPT } from '@pentest-harness/dsh-file-reference'
-export { activeAtToken, formatFileMention } from '@pentest-harness/dsh-file-reference/grammar'
+export { FILE_REFERENCE_PROMPT } from '@fathom/file-reference'
+export { activeAtToken, formatFileMention } from '@fathom/file-reference/grammar'
 
 /** Local file-reference discovery configuration. */
 export interface Config {

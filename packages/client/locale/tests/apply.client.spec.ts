@@ -1,15 +1,15 @@
 /** locale apply wiring: service + dictionaries provision, declaration-aware
  * Language row registration, snapshot projection into the row store, and
  * recovery after an HMR collapse of the declaring entry. */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { apply as settingsApply, inject as settingsInject } from '@pentest-harness/dsh-client-ui-settings/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { apply as settingsApply, inject as settingsInject } from '@fathom/client-ui-settings/client'
+import { TestRemote } from '@fathom/client-test-runtime'
 import {
   apply, inject, SETTINGS_NS,
-} from '@pentest-harness/dsh-client-locale/client'
-import type { LanguageRowInjected, LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
+} from '@fathom/client-locale/client'
+import type { LanguageRowInjected, LocaleRuntime } from '@fathom/client-locale/client'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from '../src/locale-settings.ts'
 import { LanguageRow } from '../src/client/LanguageRow.tsx'
 import type { createLanguageRowStore } from '../src/client/settings-store.ts'

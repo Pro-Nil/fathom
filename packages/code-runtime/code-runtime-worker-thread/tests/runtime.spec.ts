@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { WorkerThreadCodeRuntime } from '@pentest-harness/dsh-code-runtime-worker-thread'
-import type { Config } from '@pentest-harness/dsh-code-runtime-worker-thread'
-import type { CodeBindingFunction, CodeBindingNamespace, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
+import { Context } from '@fathom/cordis'
+import { WorkerThreadCodeRuntime } from '@fathom/code-runtime-worker-thread'
+import type { Config } from '@fathom/code-runtime-worker-thread'
+import type { CodeBindingFunction, CodeBindingNamespace, CodeRunResult } from '@fathom/code-runtime'
 
 /**
  * Integration suite over REAL worker threads (no mocks — workers are cheap
@@ -838,7 +838,7 @@ describe('WorkerThreadCodeRuntime — seam misuse and lifecycle', () => {
     await expect(run([namespace('tools', 'CallError', '__dict__')])).rejects.toThrow(/member property.*not usable/)
     // The Python backend's owned globals are refused here too (shared
     // RESERVED_BINDING_GLOBALS), keeping namespace lists backend-portable.
-    await expect(runtime.run({ program: 'return 1', bindings: [{ global: '__dsh_main__', functions: {} }] }))
+    await expect(runtime.run({ program: 'return 1', bindings: [{ global: '__fathom_main__', functions: {} }] }))
       .rejects.toThrow(/reserved binding global/)
   })
 

@@ -5,18 +5,18 @@
  * tool (click, type, key, scroll, drag, screenshot …), fill forms, read text,
  * run JavaScript, read console/network logs, and manage tabs. Text reads are
  * the primary channel; screenshots are attached only for image-capable models.
- * @module @pentest-harness/dsh-tool-browser/src/tools
+ * @module @fathom/tool-browser/src/tools
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
-import type { BrowserScope, BrowserTarget, MouseButton } from '@pentest-harness/dsh-browser'
-import { toPlaywrightChord } from '@pentest-harness/dsh-browser'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, ToolExecution } from '@pentest-harness/dsh-tools'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import { AttachmentId } from '@fathom/attachment'
+import type { ImageAttachmentRef } from '@fathom/attachment'
+import type { BrowserScope, BrowserTarget, MouseButton } from '@fathom/browser'
+import { toPlaywrightChord } from '@fathom/browser'
+import type { ContentBlock } from '@fathom/llm'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, ToolExecution } from '@fathom/tools'
+import type {} from '@fathom/system-prompt'
 import type { Page } from 'playwright-core'
 import { HandoffGuard, inspectPage, MAX_FAILED_LOGINS } from './handoff.ts'
 

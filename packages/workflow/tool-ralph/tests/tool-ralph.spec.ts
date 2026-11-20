@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentCapabilities, SubagentProvider, SubagentRun, SubagentStartRequest } from '@pentest-harness/dsh-subagent'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import type { ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import { WorkflowRunId, WorkflowEngine } from '@pentest-harness/dsh-workflow'
-import type { WorkflowResult, WorkflowRun, WorkflowStartRequest } from '@pentest-harness/dsh-workflow'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import type { Agent } from '@fathom/agent'
+import { CallId } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubagentCapabilities, SubagentProvider, SubagentRun, SubagentStartRequest } from '@fathom/subagent'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import type { ToolExecutionResult } from '@fathom/tools'
+import { WorkflowRunId, WorkflowEngine } from '@fathom/workflow'
+import type { WorkflowResult, WorkflowRun, WorkflowStartRequest } from '@fathom/workflow'
 import * as toolRalph from '../src/index.ts'
 
 const testToolSignal = new AbortController().signal
@@ -141,7 +141,7 @@ async function settleCompleted(
   return pending
 }
 
-describe('dsh-tool-ralph', () => {
+describe('fathom-tool-ralph', () => {
   it('starts the fixed workflow through the configured fresh provider and renders completion', async () => {
     const { ctx, engine, parent } = await setup({ config: { maxRounds: 9, maxHandoffChars: 9000 } })
     const pending = execute(ctx, { objective: '  Finish the migration.  ', maxRounds: 4 }, { agent: parent })

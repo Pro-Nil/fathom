@@ -1,8 +1,8 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SettingsNamespaceView } from '@pentest-harness/dsh-api-remotes/client'
-import { SettingsSchemaService } from '@pentest-harness/dsh-client-ui-settings/src/client/schema.ts'
-import { SettingsDescribeMirror } from '@pentest-harness/dsh-client-ui-settings/src/client/settings-mirror.ts'
+import type { SettingsNamespaceView } from '@fathom/api-remotes/client'
+import { SettingsSchemaService } from '@fathom/client-ui-settings/src/client/schema.ts'
+import { SettingsDescribeMirror } from '@fathom/client-ui-settings/src/client/settings-mirror.ts'
 import {
   PermissionPresetSettingsController, permissionDefaultOf,
 } from '../src/client/settings-store.ts'

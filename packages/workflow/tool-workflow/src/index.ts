@@ -2,29 +2,29 @@
  * The model-facing `workflow` tool: run a JavaScript orchestration script that fans out
  * subagents, and return the script's final value. It owns the model-facing schema and run lifecycle; script
  * parsing, execution, caps, and cancellation live behind `ctx.workflowEngine`
- * (`@pentest-harness/dsh-workflow`), so a hardened engine swaps in without touching what the model
+ * (`@fathom/workflow`), so a hardened engine swaps in without touching what the model
  * sees. Execution awaits `run.result` and always disposes the run; non-completed reasons become tool
  * errors, and background collection remains deferred. Presentation is an args-only generic card
  * titled from `meta.name`. Explicit-ask usage guidance is registered as the tool's own prompt
  * section rather than deployment persona prose.
- * @module @pentest-harness/dsh-tool-workflow
+ * @module @fathom/tool-workflow
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { ToolCallView, ToolResultView } from '@pentest-harness/dsh-tools'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JsonValue, Session, SessionEventMap } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { defineTool } from '@fathom/tools'
+import type { ToolCallView, ToolResultView } from '@fathom/tools'
+import type { ContentBlock } from '@fathom/llm'
+import type { JsonValue, Session, SessionEventMap } from '@fathom/session'
 import type {
   WorkflowResult, WorkflowRun, WorkflowRunId, WorkflowStopReason,
-} from '@pentest-harness/dsh-workflow'
+} from '@fathom/workflow'
 import type {
   ToolWorkflowAgentEndData, ToolWorkflowAgentStartData,
   ToolWorkflowRunEndData, ToolWorkflowRunStartData,
 } from './types.ts'
 // Declaration merge only: makes ctx.systemPrompt visible for the section registration.
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type {} from '@fathom/system-prompt'
 
 export const name = 'tool-workflow'
 export const inject = ['tools', 'workflowEngine', 'systemPrompt']

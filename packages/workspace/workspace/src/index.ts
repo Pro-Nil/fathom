@@ -2,16 +2,16 @@
  * Workspace entity registry (`ctx.workspaceRegistry`): durable workspace records,
  * stable registry order, and header-validated session membership over the
  * domain data form.
- * @module @pentest-harness/dsh-workspace
+ * @module @fathom/workspace
  */
 
 import { randomUUID } from 'node:crypto'
 import { stat } from 'node:fs/promises'
 import { basename } from 'node:path'
-import { Context, Service } from '@pentest-harness/cordis'
-import type { SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-persistence'
-import type { DomainGlobal, KvTable } from '@pentest-harness/dsh-storage-domain'
+import { Context, Service } from '@fathom/cordis'
+import type { SessionHeader, SessionId } from '@fathom/session'
+import type {} from '@fathom/session-persistence'
+import type { DomainGlobal, KvTable } from '@fathom/storage-domain'
 import { WorkspaceEntity } from './entity.ts'
 import type { WorkspaceEntityHost } from './entity.ts'
 
@@ -64,7 +64,7 @@ export class WorkspaceOrderInvalidError extends Error {
 }
 
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     workspaceRegistry: WorkspaceRegistry
   }

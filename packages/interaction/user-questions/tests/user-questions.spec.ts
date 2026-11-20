@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 import UserQuestionService, {
   UserQuestionError,
   type AskUserQuestionRequest,
   type UserQuestionProvider,
-} from '@pentest-harness/dsh-user-questions'
+} from '@fathom/user-questions'
 
 function provider(answer = 'approved'): UserQuestionProvider & { seen: AskUserQuestionRequest[] } {
   const seen: AskUserQuestionRequest[] = []

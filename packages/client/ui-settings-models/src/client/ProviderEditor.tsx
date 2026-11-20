@@ -23,7 +23,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { CredentialView, IApiClient, SettingsNamespaceView, SettingsPathOpView } from '@pentest-harness/dsh-api-remotes/client'
+import type { CredentialView, IApiClient, SettingsNamespaceView, SettingsPathOpView } from '@fathom/api-remotes/client'
 import { modelDrafts, validateModelCatalog } from './model-catalog.ts'
 import { apiKeyFailure } from './apiKey.ts'
 import { EditorFooter } from './EditorFooter.tsx'

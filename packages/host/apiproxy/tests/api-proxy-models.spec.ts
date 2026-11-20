@@ -6,22 +6,22 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { agentEvents } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AttachmentStore from '@pentest-harness/dsh-attachment'
-import LlmRuntime, { LlmAdapter, ReasoningEffortId } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { agentEvents } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import AttachmentStore from '@fathom/attachment'
+import LlmRuntime, { LlmAdapter, ReasoningEffortId } from '@fathom/llm'
 import type {
   GenerateOptions, LlmCallConfig, LlmModelInfo, LlmModelReasoningInfo, LlmProviderInfo,
   LlmResolvedModelInfo, StreamChunk,
   UserMessage,
-} from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
+} from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import type { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import UserQuestionService from '@fathom/user-questions'
+import type { RpcRequest } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 let nextRpc = 1

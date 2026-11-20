@@ -1,12 +1,12 @@
 # Replay counterpart to cordis.yml for the shipped Ralph-loop snapshot.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'

@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-agent-spine-demo
+# @fathom/agent-spine-demo
 
 The **default executor-less, UI-less agent spine** as ONE Cordis bundle plugin. It loads the fixed set of services every harness agent needs, including the local skill provider, and forwards the loop's `agents` list as its own config — so an app package composes a working agent by adding only an entry point and the swappable backends.
 
@@ -9,32 +9,32 @@ Read this package for the whole plugin tree and its composition order.
 `apply(ctx, config)` mounts each of these as a child of the bundle fiber:
 
 ```
-@pentest-harness/cordis-plugin-timer  timer service (writes nothing to stdout)
-@pentest-harness/dsh-llm              abstract LLM service + content-block vocabulary
-@pentest-harness/dsh-session          event-sourced session log + store
-@pentest-harness/dsh-session-title    log-backed title service + deterministic fallback
-@pentest-harness/dsh-system-prompt    prompt-section + tool-schema assembly
-@pentest-harness/dsh-tools            registry + guarded pre/around/post/final-result pipeline
-@pentest-harness/dsh-skill            skill provider registry
-@pentest-harness/dsh-skill-filesystem      local filesystem skill provider
-@pentest-harness/dsh-agent            agent registry + initiator scope + agent/* events
-@pentest-harness/dsh-goal             optional persisted same-session goal domain
-@pentest-harness/dsh-tool-goal        optional model-facing goal controls
-@pentest-harness/dsh-goal-round-driver     optional same-session goal-round driver
-@pentest-harness/dsh-llm-retry        provider-routed request retry policy
-@pentest-harness/dsh-jobs-local      generic background-job registry
-@pentest-harness/dsh-invariants       configurable invariant registry service
-@pentest-harness/dsh-session/invariant
-@pentest-harness/dsh-agent/invariant
-@pentest-harness/dsh-scope/invariant
-@pentest-harness/dsh-agent-loop/invariant
+@fathom/cordis-plugin-timer  timer service (writes nothing to stdout)
+@fathom/llm              abstract LLM service + content-block vocabulary
+@fathom/session          event-sourced session log + store
+@fathom/session-title    log-backed title service + deterministic fallback
+@fathom/system-prompt    prompt-section + tool-schema assembly
+@fathom/tools            registry + guarded pre/around/post/final-result pipeline
+@fathom/skill            skill provider registry
+@fathom/skill-filesystem      local filesystem skill provider
+@fathom/agent            agent registry + initiator scope + agent/* events
+@fathom/goal             optional persisted same-session goal domain
+@fathom/tool-goal        optional model-facing goal controls
+@fathom/goal-round-driver     optional same-session goal-round driver
+@fathom/llm-retry        provider-routed request retry policy
+@fathom/jobs-local      generic background-job registry
+@fathom/invariants       configurable invariant registry service
+@fathom/session/invariant
+@fathom/agent/invariant
+@fathom/scope/invariant
+@fathom/agent-loop/invariant
                                   package-owned relational checks
-@pentest-harness/dsh-tool-bash        the model-facing bash schema (unless toolBash=false)
-@pentest-harness/dsh-agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
-@pentest-harness/dsh-tool-skill       session-prefix skill catalog + model-facing loader schema
-@pentest-harness/dsh-tool-jobs       job_output/job_list/job_kill schemas + completion notices
-@pentest-harness/dsh-agent-loop       THE concrete loop (gets the forwarded `agents`)
-                                  (dsh-system-prompt gets the forwarded `persona`)
+@fathom/tool-bash        the model-facing bash schema (unless toolBash=false)
+@fathom/agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
+@fathom/tool-skill       session-prefix skill catalog + model-facing loader schema
+@fathom/tool-jobs       job_output/job_list/job_kill schemas + completion notices
+@fathom/agent-loop       THE concrete loop (gets the forwarded `agents`)
+                                  (fathom-system-prompt gets the forwarded `persona`)
 ```
 
 ## What it deliberately leaves OUTSIDE the bundle
@@ -52,14 +52,14 @@ This applies the [Service Definition / Service Provider / Consumer separation](.
 ## Config
 
 ```ts
-import type { Config } from '@pentest-harness/dsh-agent-spine-demo'
-// { agents?, maxParallelToolCalls?, includeHarnessIdentity?, includeRuntimeContext?, persona?, toolOrder?, tools?, dshHome?, sessionTitle?, skills?, workspaceContext, toolBash?, jobs?, toolJobs?, goals?, invariants? }
+import type { Config } from '@fathom/agent-spine-demo'
+// { agents?, maxParallelToolCalls?, includeHarnessIdentity?, includeRuntimeContext?, persona?, toolOrder?, tools?, fathomHome?, sessionTitle?, skills?, workspaceContext, toolBash?, jobs?, toolJobs?, goals?, invariants? }
 // workspaceContext requires { maxBytes } or false; the other owner schemas supply defaults.
 ```
 
-The bundle forwards each field to the child that owns it. App packages supply any pre-created agents: headless and JSON-RPC compositions create `main`, while the ACP app creates agents on demand at `session/new`. `includeRuntimeContext: false` is forwarded to `dsh-system-prompt` and suppresses all dynamic context snapshots for fresh sessions without disabling their policy services. Prompt, tool, title, skill, agent-instructions, invariant, goal, and task settings retain the schemas and defaults documented by their owning packages; `jobs.maxConcurrentJobsPerOwner` configures the local provider independently of the model-facing `toolJobs` controls. `pickSpineConfig()` copies only fields owned by this bundle, and conflicting `dshHome` values fail during composition.
+The bundle forwards each field to the child that owns it. App packages supply any pre-created agents: headless and JSON-RPC compositions create `main`, while the ACP app creates agents on demand at `session/new`. `includeRuntimeContext: false` is forwarded to `fathom-system-prompt` and suppresses all dynamic context snapshots for fresh sessions without disabling their policy services. Prompt, tool, title, skill, agent-instructions, invariant, goal, and task settings retain the schemas and defaults documented by their owning packages; `jobs.maxConcurrentJobsPerOwner` configures the local provider independently of the model-facing `toolJobs` controls. `pickSpineConfig()` copies only fields owned by this bundle, and conflicting `fathomHome` values fail during composition.
 
-For example, `{ invariants: { enabled: true, package_allowlist: ['^@pentest-harness/dsh-'], package_blocklist: ['agent-loop$'] } }` keeps the package-owned companions mounted but suppresses the blocked owner. Blocklist matches override allowlist matches; see [`dsh-invariants`](../../runtime-diagnostics/invariants/README.md) for regex and lifecycle rules.
+For example, `{ invariants: { enabled: true, package_allowlist: ['^@fathom/'], package_blocklist: ['agent-loop$'] } }` keeps the package-owned companions mounted but suppresses the blocked owner. Blocklist matches override allowlist matches; see [`fathom-invariants`](../../runtime-diagnostics/invariants/README.md) for regex and lifecycle rules.
 
 ## Why a code bundle, not a shared YAML include
 
@@ -69,7 +69,7 @@ The retry policy may repeat a failed request in a new numbered step. Retry statu
 
 ## Model Experience
 
-Indirectly, through `dsh-system-prompt`, `dsh-tool-skill`, `dsh-tool-bash`, `dsh-tools`, and `dsh-llm-retry`, plus `dsh-tool-goal` and goal-round prompts when `goals` is enabled. The bundle adds no model-bound wrapper content of its own.
+Indirectly, through `fathom-system-prompt`, `fathom-tool-skill`, `fathom-tool-bash`, `fathom-tools`, and `fathom-llm-retry`, plus `fathom-tool-goal` and goal-round prompts when `goals` is enabled. The bundle adds no model-bound wrapper content of its own.
 
 #### KV Cache effect
 

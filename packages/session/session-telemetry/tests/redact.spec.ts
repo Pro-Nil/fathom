@@ -1,4 +1,4 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 /**
  * The `session-telemetry/record` waterfall contract: pass-through when no listener is
  * mounted, listener stacking and replacement, ops-record coverage, the
@@ -6,8 +6,8 @@ import { createUserMessage } from '@pentest-harness/dsh-llm'
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId } from '@fathom/session'
 import {
   SessionTelemetryCoordinator,
   type SessionTelemetrySink,

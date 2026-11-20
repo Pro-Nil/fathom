@@ -1,13 +1,13 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   GoalId,
   type GoalSnapshotChangeMeta,
-} from '@pentest-harness/dsh-goal'
-import * as GoalInvariantCompanion from '@pentest-harness/dsh-goal/invariant'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+} from '@fathom/goal'
+import * as GoalInvariantCompanion from '@fathom/goal/invariant'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId } from '@fathom/session'
 
 const change: GoalSnapshotChangeMeta = {
   kind: 'goal/change',
@@ -54,7 +54,7 @@ describe('goal stream invariants', () => {
       session.append('goal/change', { ...change, extra: true } as never)
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-goal',
+      packageName: '@fathom/goal',
     }))
     expect(session.seq).toBe(0)
     expect(() => {

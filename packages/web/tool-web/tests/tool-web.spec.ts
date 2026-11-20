@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import TurndownService from 'turndown'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import WebRuntime from '@pentest-harness/dsh-web'
-import type { WebSearchProvider, WebSearchResult } from '@pentest-harness/dsh-web'
-import * as ToolWeb from '@pentest-harness/dsh-tool-web'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@fathom/tools'
+import WebRuntime from '@fathom/web'
+import type { WebSearchProvider, WebSearchResult } from '@fathom/web'
+import * as ToolWeb from '@fathom/tool-web'
 import {
   formatSearchOutput,
   formatFetchOutput,
@@ -21,9 +21,9 @@ import {
   fetchMetaFromResult,
   WEB_SEARCH_MAX_QUERIES,
   WEB_SEARCH_MAX_RESULTS,
-} from '@pentest-harness/dsh-tool-web'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { ToolResult } from '@pentest-harness/dsh-tools'
+} from '@fathom/tool-web'
+import type { ContentBlock } from '@fathom/llm'
+import type { ToolResult } from '@fathom/tools'
 import { parseSearchArgs } from '../src/search.ts'
 
 const testToolSignal = new AbortController().signal
@@ -39,7 +39,7 @@ async function mountTools(opts: {
   config?: ToolWeb.Config
   webConfig?: ConstructorParameters<typeof WebRuntime>[1]
   search?: WebSearchProvider
-  fetchProvider?: import('@pentest-harness/dsh-web').WebFetchProvider
+  fetchProvider?: import('@fathom/web').WebFetchProvider
 } = {}): Promise<{ ctx: Context; fiber: Awaited<ReturnType<Context['plugin']>>; call: (name: string, args: unknown) => Promise<ToolExecutionResult> }> {
   const ctx = new Context()
   await ctx.plugin(SystemPrompt)
@@ -732,7 +732,7 @@ describe('tool-web execution through the real registry', () => {
       truncated: false,
     })
     // The model schema exposes no timeout: the tool forwards only the url; the
-    // tool-call budget is owned by dsh-tool-call-timeout-policy over exec.signal.
+    // tool-call budget is owned by fathom-tool-call-timeout-policy over exec.signal.
     expect(seen.request).toEqual({ url: 'https://a.test' })
     expect(seen.signal).toBe(controller.signal)
     await fiber.dispose()

@@ -8,13 +8,13 @@
 
 import type {
   IApiClient, SettingsNamespaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
 import {
   createSnapshotStore, type SnapshotStore,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   SchemaNode, SettingsDescribeFace, SettingsSchemaService,
-} from '@pentest-harness/dsh-client-ui-settings/client'
+} from '@fathom/client-ui-settings/client'
 import { displayPermissionPreset } from './presentation.ts'
 
 /** Permission's settings namespace on the host wire. */

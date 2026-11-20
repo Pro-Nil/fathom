@@ -4,13 +4,13 @@
  * registration follows the slot declaration, resolves the per-session controller from the slot's
  * sessionId, and unregisters on fiber teardown.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { createScope, scopeOf, SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { apply, inject, InputTriggerService } from '@pentest-harness/dsh-client-ui-input-trigger/client'
-import type { MenuViewInjected } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { createScope, scopeOf, SlotRegistry } from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import { apply, inject, InputTriggerService } from '@fathom/client-ui-input-trigger/client'
+import type { MenuViewInjected } from '@fathom/client-ui-input-trigger/client'
 
 const sid = (k: string): SessionId => k as SessionId
 

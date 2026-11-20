@@ -11,12 +11,12 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { promisify } from 'node:util'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubprocessHandle } from '@pentest-harness/dsh-subprocess'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import type { Agent } from '@fathom/agent'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubprocessHandle } from '@fathom/subprocess'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 import * as codex from '../src/index.ts'
 import {
   startAcmeResponsesBridge,
@@ -55,13 +55,13 @@ describe.skipIf(!process.env.ACME_API_KEY)(
     it('returns one unique nonce through the production provider and real Codex', async () => {
       const apiKey = process.env.ACME_API_KEY
       if (apiKey === undefined) throw new Error('e2e ran without ACME_API_KEY')
-      const root = mkdtempSync(join(tmpdir(), 'dsh-codex-acme-e2e-'))
+      const root = mkdtempSync(join(tmpdir(), 'fathom-codex-acme-e2e-'))
       roots.push(root)
       const workspace = join(root, 'workspace')
       const codexHome = join(root, 'codex-home')
       mkdirSync(workspace)
       mkdirSync(codexHome)
-      const nonce = `DSH_CODEX_ACME_${randomUUID()}`
+      const nonce = `FATHOM_CODEX_ACME_${randomUUID()}`
       const bridge = await startAcmeResponsesBridge(nonce)
       bridges.push(bridge)
       writeFileSync(join(codexHome, 'config.toml'), [

@@ -1,6 +1,6 @@
 /**
  * Named backend registry of the storage hub.
- * @module @pentest-harness/dsh-storage/src/registry
+ * @module @fathom/storage/src/registry
  */
 
 import type { StorageBackend } from './backend.ts'

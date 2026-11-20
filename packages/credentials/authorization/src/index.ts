@@ -23,12 +23,12 @@
  * })
  * ```
  *
- * @module @pentest-harness/dsh-authorization
+ * @module @fathom/authorization
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { CredentialKey } from '@pentest-harness/dsh-credentials'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import { Context, Service } from '@fathom/cordis'
+import type { CredentialKey } from '@fathom/credentials'
+import { HarnessError } from '@fathom/llm'
 
 import type {
   AuthorizationEntry, AuthorizationMethod, AuthorizationNotice, AuthorizationOutcome, AuthorizationPrompt,
@@ -40,7 +40,7 @@ export type {
   AuthorizationPromptOption, AuthorizationSettlement, AuthorizationStatus,
 } from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     authorization: AuthorizationService
   }

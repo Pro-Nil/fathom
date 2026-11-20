@@ -10,12 +10,12 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import * as SessionStatsPlugin from '@pentest-harness/dsh-session-stats'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import SessionStore, { SessionId } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import * as SessionStatsPlugin from '@fathom/session-stats'
 
 let root: string | undefined
 let context: Context | undefined
@@ -28,7 +28,7 @@ afterEach(async () => {
 })
 
 async function loadYaml(lines: readonly string[]): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-session-stats-loader-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-session-stats-loader-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [...lines, ''].join('\n'))
 
@@ -37,9 +37,9 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-session', SessionStore],
-    ['@pentest-harness/dsh-session-projection', SessionProjectionRegistry],
-    ['@pentest-harness/dsh-session-stats', SessionStatsPlugin],
+    ['@fathom/session', SessionStore],
+    ['@fathom/session-projection', SessionProjectionRegistry],
+    ['@fathom/session-stats', SessionStatsPlugin],
   ])
   context.loader.internal = {
     version: 'v2',
@@ -59,9 +59,9 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
 describe('real Loader composition', () => {
   it('loads the shipped session-stats YAML shape and serves whole-log counts', async () => {
     const loaded = await loadYaml([
-      "- name: '@pentest-harness/dsh-session'",
-      "- name: '@pentest-harness/dsh-session-projection'",
-      "- name: '@pentest-harness/dsh-session-stats'",
+      "- name: '@fathom/session'",
+      "- name: '@fathom/session-projection'",
+      "- name: '@fathom/session-stats'",
     ])
 
     const unloaded = [...loaded.loader.entries()]

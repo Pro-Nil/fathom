@@ -8,9 +8,9 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@pentest-harness/dsh-llm-replay'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
+import type { StreamChunk } from '@fathom/llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@fathom/llm-replay'
+import { SessionId, type SessionEvent } from '@fathom/session'
 import { createChatScrollFixture } from './chat-scroll-fixture.ts'
 import {
   launchWebScaffold,
@@ -141,7 +141,7 @@ describe('web e2e: long Chat interaction contract', () => {
   let tripwire: ReturnType<typeof watchConsole>
 
   beforeAll(async () => {
-    replayDir = await mkdtemp(join(tmpdir(), 'dsh-chat-interaction-replay-'))
+    replayDir = await mkdtemp(join(tmpdir(), 'fathom-chat-interaction-replay-'))
     const replayOverride = join(replayDir, 'replay.override.json')
     const replay: ReplayOverrideDoc = [replayEntry(continuationChunks())]
     await writeFile(replayOverride, JSON.stringify(replay))

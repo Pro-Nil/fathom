@@ -7,18 +7,18 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { z } from 'zod'
-import Storage from '@pentest-harness/dsh-storage'
-import { DomainFacility } from '@pentest-harness/dsh-storage-domain'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
+import Storage from '@fathom/storage'
+import { DomainFacility } from '@fathom/storage-domain'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import type { ProjectionDefinition } from '@fathom/session-projection'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import SessionProjectionCache from '../src/index.ts'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     'cache-test/marks': MarksState
     'cache-test/marks2': Map<string, string>
@@ -28,7 +28,7 @@ declare module '@pentest-harness/dsh-session-projection/types' {
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     'cache-test/mark': { marks: string[] }
   }

@@ -11,13 +11,13 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import type { ISession, SessionId, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotTestRuntime, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { apply as applyConversation, inject as injectConversation } from '@pentest-harness/dsh-client-ui-conversation/client'
-import { apply as applyTool, inject as injectTool } from '@pentest-harness/dsh-client-ui-tool/client'
-import type { ToolCallViewProps } from '@pentest-harness/dsh-client-ui-tool/client'
+import type { ISession, SessionId, ToolResultNode } from '@fathom/client-runtime/client'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { SlotTestRuntime, stubSettingsScope } from '@fathom/client-test-runtime'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { apply as applyConversation, inject as injectConversation } from '@fathom/client-ui-conversation/client'
+import { apply as applyTool, inject as injectTool } from '@fathom/client-ui-tool/client'
+import type { ToolCallViewProps } from '@fathom/client-ui-tool/client'
 import { toolChatSnapshot } from './tool-details-render.client.tsx'
 
 const SID = 's1' as SessionId

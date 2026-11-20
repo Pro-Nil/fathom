@@ -1,5 +1,5 @@
 {
-  "name": "@pentest-harness/dsh-client-ui-theme",
+  "name": "@fathom/client-ui-theme",
   "description": "Theme plugin: Host bootstrap for the pre-plugin palette; DOM-free ThemeRuntime for light/dark/system state; --dsw-* token styles and Appearance settings row",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/client/ui-theme"
   },
   "type": "module",
@@ -29,14 +29,14 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "dsh": {
+  "fathom": {
     "client": {
       "inject": [
-        "@pentest-harness/dsh-client-connection",
-        "@pentest-harness/dsh-client-runtime",
-        "@pentest-harness/dsh-client-locale",
-        "@pentest-harness/dsh-client-ui-settings",
-        "@pentest-harness/dsh-api-remotes"
+        "@fathom/client-connection",
+        "@fathom/client-runtime",
+        "@fathom/client-locale",
+        "@fathom/client-ui-settings",
+        "@fathom/api-remotes"
       ],
       "platform": "web",
       "immediately": true
@@ -44,29 +44,29 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-api-remotes": "workspace:^",
-    "@pentest-harness/dsh-client-connection": "workspace:^",
-    "@pentest-harness/dsh-client-locale": "workspace:^",
-    "@pentest-harness/dsh-client-runtime": "workspace:^",
-    "@pentest-harness/dsh-client-ui-settings": "workspace:^",
-    "@pentest-harness/dsh-host-webserver": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-settings": "workspace:^"
+    "@fathom/cordis": "workspace:^",
+    "@fathom/api-remotes": "workspace:^",
+    "@fathom/client-connection": "workspace:^",
+    "@fathom/client-locale": "workspace:^",
+    "@fathom/client-runtime": "workspace:^",
+    "@fathom/client-ui-settings": "workspace:^",
+    "@fathom/host-webserver": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/settings": "workspace:^"
   },
   "devDependencies": {
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-api-remotes": "workspace:^",
-    "@pentest-harness/dsh-client-connection": "workspace:^",
-    "@pentest-harness/dsh-client-locale": "workspace:^",
-    "@pentest-harness/dsh-client-runtime": "workspace:^",
-    "@pentest-harness/dsh-client-test-runtime": "workspace:^",
-    "@pentest-harness/dsh-client-ui-primitives": "workspace:^",
-    "@pentest-harness/dsh-client-ui-settings": "workspace:^",
-    "@pentest-harness/dsh-client-ui-slots": "workspace:^",
-    "@pentest-harness/dsh-host-webserver": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-settings": "workspace:^",
+    "@fathom/cordis": "workspace:^",
+    "@fathom/api-remotes": "workspace:^",
+    "@fathom/client-connection": "workspace:^",
+    "@fathom/client-locale": "workspace:^",
+    "@fathom/client-runtime": "workspace:^",
+    "@fathom/client-test-runtime": "workspace:^",
+    "@fathom/client-ui-primitives": "workspace:^",
+    "@fathom/client-ui-settings": "workspace:^",
+    "@fathom/client-ui-slots": "workspace:^",
+    "@fathom/host-webserver": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/settings": "workspace:^",
     "@types/react": "~18.3.1",
     "react": "^18.2.0"
   },
@@ -83,6 +83,6 @@
   },
   "dependencies": {
     "clsx": "^2.0.0",
-    "@pentest-harness/schemastery": "workspace:^"
+    "@fathom/schemastery": "workspace:^"
   }
 }

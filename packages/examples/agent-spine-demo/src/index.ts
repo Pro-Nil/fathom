@@ -5,37 +5,37 @@
  * deployments still choose the LLM adapter, bash executor, and presentation.
  * The plugin intentionally exposes named exports only because Loader default
  * unwrapping would discard its `Config` schema (see docs/postmortem/0001).
- * @module @pentest-harness/dsh-agent-spine-demo
+ * @module @fathom/agent-spine-demo
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import Timer from '@pentest-harness/cordis-plugin-timer'
-import z from '@pentest-harness/schemastery'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import SessionTitleService, { type Config as SessionTitleConfig } from '@pentest-harness/dsh-session-title'
-import SystemPrompt, { type Config as SystemPromptConfig } from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type Config as ToolsConfig } from '@pentest-harness/dsh-tools'
-import SkillRegistry, { type Config as SkillRegistryConfig } from '@pentest-harness/dsh-skill'
-import * as SkillFileSystem from '@pentest-harness/dsh-skill-filesystem'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import GoalService, { type Config as GoalDomainConfig } from '@pentest-harness/dsh-goal'
-import * as goalSession from '@pentest-harness/dsh-goal-round-driver'
-import * as toolGoal from '@pentest-harness/dsh-tool-goal'
-import LocalJobRegistry, { type Config as JobsConfig } from '@pentest-harness/dsh-jobs-local'
-import InvariantRegistry, { type Config as InvariantConfig } from '@pentest-harness/dsh-invariants'
-import * as sessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as agentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as scopeInvariant from '@pentest-harness/dsh-scope/invariant'
-import * as agentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import * as toolBash from '@pentest-harness/dsh-tool-bash'
-import * as bashEnv from '@pentest-harness/dsh-shell-env'
-import * as workspaceContext from '@pentest-harness/dsh-agent-instructions'
-import * as toolSkill from '@pentest-harness/dsh-tool-skill'
-import * as toolJobs from '@pentest-harness/dsh-tool-jobs'
-import AgentLoop, { type Config as AgentLoopConfig } from '@pentest-harness/dsh-agent-loop'
-import * as llmRetry from '@pentest-harness/dsh-llm-retry'
-import { resolveDshHome } from '@pentest-harness/dsh-home-paths'
+import type { Context } from '@fathom/cordis'
+import Timer from '@fathom/cordis-plugin-timer'
+import z from '@fathom/schemastery'
+import LlmRuntime from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import SessionTitleService, { type Config as SessionTitleConfig } from '@fathom/session-title'
+import SystemPrompt, { type Config as SystemPromptConfig } from '@fathom/system-prompt'
+import ToolRuntime, { type Config as ToolsConfig } from '@fathom/tools'
+import SkillRegistry, { type Config as SkillRegistryConfig } from '@fathom/skill'
+import * as SkillFileSystem from '@fathom/skill-filesystem'
+import AgentRegistry from '@fathom/agent'
+import GoalService, { type Config as GoalDomainConfig } from '@fathom/goal'
+import * as goalSession from '@fathom/goal-round-driver'
+import * as toolGoal from '@fathom/tool-goal'
+import LocalJobRegistry, { type Config as JobsConfig } from '@fathom/jobs-local'
+import InvariantRegistry, { type Config as InvariantConfig } from '@fathom/invariants'
+import * as sessionInvariant from '@fathom/session/invariant'
+import * as agentInvariant from '@fathom/agent/invariant'
+import * as scopeInvariant from '@fathom/scope/invariant'
+import * as agentLoopInvariant from '@fathom/agent-loop/invariant'
+import * as toolBash from '@fathom/tool-bash'
+import * as bashEnv from '@fathom/shell-env'
+import * as workspaceContext from '@fathom/agent-instructions'
+import * as toolSkill from '@fathom/tool-skill'
+import * as toolJobs from '@fathom/tool-jobs'
+import AgentLoop, { type Config as AgentLoopConfig } from '@fathom/agent-loop'
+import * as llmRetry from '@fathom/llm-retry'
+import { resolveFathomHome } from '@fathom/home-paths'
 
 export const name = 'agent-spine-demo'
 
@@ -73,7 +73,7 @@ export interface GoalConfig {
  * `persona`, and `toolOrder` to the system-prompt plugin (the fixed opener,
  * dynamic-context policy, deployment persona, and explicit model-facing tool
  * order), the `tools` object to the tool registry (its presentation `mode`),
- * `dshHome` to bash environment and local skill discovery, `sessionTitle` to
+ * `fathomHome` to bash environment and local skill discovery, `sessionTitle` to
  * the fallback title service, `skills` to the
  * skill registry/local provider/tool consumer, `workspaceContext` to the
  * agent-instructions loader, `jobs` to the process-local job provider, and
@@ -90,7 +90,7 @@ export interface GoalConfig {
  * `bash` name.
  */
 export interface Config {
-  /** The agent-loop `agents` list (see dsh-agent-loop's `Config`). */
+  /** The agent-loop `agents` list (see fathom-agent-loop's `Config`). */
   agents?: AgentLoopConfig['agents']
   /** Agent-loop concurrency cap; `1` is serial. */
   maxParallelToolCalls?: AgentLoopConfig['maxParallelToolCalls']
@@ -98,14 +98,14 @@ export interface Config {
   includeHarnessIdentity?: SystemPromptConfig['includeHarnessIdentity']
   /** Whether model history includes dynamic runtime-context snapshots (default true). */
   includeRuntimeContext?: SystemPromptConfig['includeRuntimeContext']
-  /** The deployment persona (see dsh-system-prompt's `Config`). */
+  /** The deployment persona (see fathom-system-prompt's `Config`). */
   persona?: SystemPromptConfig['persona']
-  /** The explicit model-facing tool order (see dsh-system-prompt's `Config`). */
+  /** The explicit model-facing tool order (see fathom-system-prompt's `Config`). */
   toolOrder?: SystemPromptConfig['toolOrder']
-  /** The tool registry's config — its presentation `mode` (see dsh-tools' `Config`). */
+  /** The tool registry's config — its presentation `mode` (see fathom-tools' `Config`). */
   tools?: ToolsConfig
-  /** Pentest Harness home directory shared by shell context and local skill discovery. */
-  dshHome?: string
+  /** Fathom home directory shared by shell context and local skill discovery. */
+  fathomHome?: string
   /** Deterministic fallback and accepted-title limits; omission uses the bundle's example policy. */
   sessionTitle?: SessionTitleConfig
   /** Workspace-context loader controls with an explicit byte budget; set `false` for hermetic prompts. */
@@ -162,7 +162,7 @@ export const Config = z.intersect([
   SystemPrompt.Config,
   z.object({
     tools: ToolRuntime.Config,
-    dshHome: z.string(),
+    fathomHome: z.string(),
     sessionTitle: SessionTitleConfigSchema,
     skills: SkillConfigSchema,
     workspaceContext: z.union([z.const(false), workspaceContext.Config]).required(),
@@ -171,7 +171,7 @@ export const Config = z.intersect([
     toolJobs: z.union([z.const(false), ToolJobsConfigSchema]),
     invariants: InvariantRegistry.Config,
     goals: z.union([z.const(false), GoalConfigSchema]),
-  }) as unknown as z<Pick<Config, 'tools' | 'dshHome' | 'sessionTitle' | 'skills' | 'workspaceContext' | 'toolBash' | 'jobs' | 'toolJobs' | 'invariants' | 'goals'>>,
+  }) as unknown as z<Pick<Config, 'tools' | 'fathomHome' | 'sessionTitle' | 'skills' | 'workspaceContext' | 'toolBash' | 'jobs' | 'toolJobs' | 'invariants' | 'goals'>>,
 ]) as unknown as z<Config>
 
 /**
@@ -187,7 +187,7 @@ export function pickSpineConfig(config: Omit<Config, 'agents'>): Omit<Config, 'a
     ...config.persona !== undefined ? { persona: config.persona } : {},
     ...config.toolOrder !== undefined ? { toolOrder: config.toolOrder } : {},
     ...config.tools !== undefined ? { tools: config.tools } : {},
-    ...config.dshHome !== undefined ? { dshHome: config.dshHome } : {},
+    ...config.fathomHome !== undefined ? { fathomHome: config.fathomHome } : {},
     ...config.sessionTitle !== undefined ? { sessionTitle: config.sessionTitle } : {},
     workspaceContext: config.workspaceContext,
     ...config.skills !== undefined ? { skills: config.skills } : {},
@@ -210,12 +210,12 @@ export function pickSpineConfig(config: Omit<Config, 'agents'>): Omit<Config, 'a
  * seams, then the loop that drives them.
  */
 export function apply(ctx: Context, config: Config): void {
-  const nestedDshHome = config.skills?.filesystem?.dshHome
-  if (config.dshHome !== undefined && nestedDshHome !== undefined
-    && resolveDshHome(config.dshHome) !== resolveDshHome(nestedDshHome)) {
-    throw new Error('agent-spine-demo: dshHome and skills.filesystem.dshHome must resolve to the same directory')
+  const nestedFathomHome = config.skills?.filesystem?.fathomHome
+  if (config.fathomHome !== undefined && nestedFathomHome !== undefined
+    && resolveFathomHome(config.fathomHome) !== resolveFathomHome(nestedFathomHome)) {
+    throw new Error('agent-spine-demo: fathomHome and skills.filesystem.fathomHome must resolve to the same directory')
   }
-  const dshHome = resolveDshHome(config.dshHome ?? nestedDshHome)
+  const fathomHome = resolveFathomHome(config.fathomHome ?? nestedFathomHome)
 
   ctx.plugin(Timer)
   ctx.plugin(LlmRuntime)
@@ -232,7 +232,7 @@ export function apply(ctx: Context, config: Config): void {
   const skillsEnabled = config.skills?.enabled ?? true
   if (skillsEnabled) {
     ctx.plugin(SkillRegistry, config.skills?.registry ?? {})
-    ctx.plugin(SkillFileSystem, Object.assign({}, config.skills?.filesystem, { dshHome }))
+    ctx.plugin(SkillFileSystem, Object.assign({}, config.skills?.filesystem, { fathomHome }))
   }
   ctx.plugin(AgentRegistry)
   ctx.plugin(llmRetry)
@@ -248,7 +248,7 @@ export function apply(ctx: Context, config: Config): void {
   ctx.plugin(scopeInvariant)
   ctx.plugin(agentLoopInvariant)
   if (config.toolBash !== false) {
-    ctx.plugin(bashEnv, { dshHome })
+    ctx.plugin(bashEnv, { fathomHome })
     ctx.plugin(toolBash, config.toolBash ?? {})
   }
   if (config.workspaceContext !== false) {

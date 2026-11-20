@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-session-folders
+# @fathom/session-folders
 
 Gives each session its own folder inside its workspace, so sessions in the same workspace stop writing to the same files.
 
@@ -7,7 +7,7 @@ A session's folder is `<workspace>/<folder>/<title-slug>/` (default `<workspace>
 ## How a folder is chosen
 
 - The folder is assigned the first time a tool needs it. If the session only has the instant first-prompt title so far, the service waits up to `titleWaitMs` for the model-written title.
-- A `.dsh-session` file inside the folder records the owning session id. A restarted harness or a renamed session finds and keeps the same folder.
+- A `.fathom-session` file inside the folder records the owning session id. A restarted harness or a renamed session finds and keeps the same folder.
 - A name another session already owns gets a numeric suffix (`recon-2`).
 - A subagent or fork (`parentSession`) shares its parent's folder.
 - A session that existed before the service started and has no folder keeps working in the workspace root, so an engagement already in progress does not move.

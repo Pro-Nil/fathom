@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
-import { AttachmentError, AttachmentId } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentRef, SaveImageAttachment } from '@pentest-harness/dsh-attachment'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Context } from '@fathom/cordis'
+import { AttachmentError, AttachmentId } from '@fathom/attachment'
+import type { ImageAttachmentRef, SaveImageAttachment } from '@fathom/attachment'
+import type { Agent } from '@fathom/agent'
 import {
   AcpContentError,
   admitAcpPrompt,

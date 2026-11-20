@@ -3,7 +3,7 @@
 
 # Third-Party Notices
 
-Pentest Harness is licensed under [MIT](LICENSE). It depends on the third-party software listed below. Each project remains under its own license; nothing in this file changes those terms.
+Fathom is licensed under [MIT](LICENSE). It depends on the third-party software listed below. Each project remains under its own license; nothing in this file changes those terms.
 
 This file lists **direct** dependencies declared by the workspace and the explicitly disclosed official Claude Code platform payload closure. It is generated from the workspace manifests by `scripts/gen-third-party-notices.ts`: a pre-commit hook regenerates it whenever a staged file changes one of its inputs, and `scripts/gen-third-party-notices.spec.ts` asserts in the test lane that the committed bytes match. Deleting a manifest runs no hook, so that case is caught by the assertion instead. Run `pnpm run verify-third-party-notices` for the standalone check.
 
@@ -11,23 +11,23 @@ The complete npm transitive closure, including the Landlock launcher workspace, 
 
 ## Vendored source (`vendor/`)
 
-The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the `@pentest-harness` scope. All are MIT-licensed; each directory preserves its upstream `LICENSE` file. Exact upstream commits and local modifications are recorded in [`vendor/README.md`](vendor/README.md).
+The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the `@fathom` scope. All are MIT-licensed; each directory preserves its upstream `LICENSE` file. Exact upstream commits and local modifications are recorded in [`vendor/README.md`](vendor/README.md).
 
 | Package | Upstream name | Upstream | License |
 | --- | --- | --- | --- |
-| `@pentest-harness/cosmokit` | `cosmokit` | [github.com/shigma/cosmokit](https://github.com/shigma/cosmokit) | MIT |
-| `@pentest-harness/schemastery` | `schemastery` | [github.com/shigma/schemastery](https://github.com/shigma/schemastery) | MIT |
-| `@pentest-harness/cordis` | `cordis` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-loader` | `@cordisjs/plugin-loader` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-include` | `@cordisjs/plugin-include` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-group` | `@cordisjs/plugin-group` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-timer` | `@cordisjs/plugin-timer` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-hmr` | `@cordisjs/plugin-hmr` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
-| `@pentest-harness/cordis-plugin-logger-console` | `@cordisjs/plugin-logger-console` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cosmokit` | `cosmokit` | [github.com/shigma/cosmokit](https://github.com/shigma/cosmokit) | MIT |
+| `@fathom/schemastery` | `schemastery` | [github.com/shigma/schemastery](https://github.com/shigma/schemastery) | MIT |
+| `@fathom/cordis` | `cordis` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-loader` | `@cordisjs/plugin-loader` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-include` | `@cordisjs/plugin-include` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-group` | `@cordisjs/plugin-group` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-timer` | `@cordisjs/plugin-timer` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-hmr` | `@cordisjs/plugin-hmr` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
+| `@fathom/cordis-plugin-logger-console` | `@cordisjs/plugin-logger-console` | [github.com/cordiverse/cordis](https://github.com/cordiverse/cordis) | MIT |
 
 ## Runtime npm dependencies
 
-External packages that a workspace package resolves at runtime. The tier covers every plugin a user can mount from `cordis.yml` — not only what the `dsh` CLI, Web UI, and Python SDK runtime load by default.
+External packages that a workspace package resolves at runtime. The tier covers every plugin a user can mount from `cordis.yml` — not only what the `fathom` CLI, Web UI, and Python SDK runtime load by default.
 
 | Package | License |
 | --- | --- |
@@ -121,7 +121,6 @@ External packages **directly declared** only by repository tooling, test infrast
 
 | Package | License |
 | --- | --- |
-| [`@braintree/sanitize-url`](https://github.com/braintree/sanitize-url) | MIT |
 | [`@modelcontextprotocol/server-everything`](https://github.com/modelcontextprotocol/servers) | MIT / Apache-2.0 |
 | [`@modelcontextprotocol/server-filesystem`](https://github.com/modelcontextprotocol/servers) | MIT / Apache-2.0 |
 | [`@stylistic/eslint-plugin`](https://github.com/eslint-stylistic/eslint-stylistic) | MIT |
@@ -140,10 +139,6 @@ External packages **directly declared** only by repository tooling, test infrast
 | [`@vitejs/plugin-react`](https://github.com/vitejs/vite-plugin-react) | MIT |
 | [`@vitest/coverage-v8`](https://github.com/vitest-dev/vitest) | MIT |
 | [`@yarnpkg/cli-dist`](https://github.com/yarnpkg/berry) | BSD-2-Clause |
-| [`cytoscape`](https://github.com/cytoscape/cytoscape.js) | MIT |
-| [`cytoscape-cose-bilkent`](https://github.com/cytoscape/cytoscape.js-cose-bilkent) | MIT |
-| [`dayjs`](https://github.com/iamkun/dayjs) | MIT |
-| [`debug`](https://github.com/debug-js/debug) | MIT |
 | [`esbuild`](https://github.com/evanw/esbuild) | MIT |
 | [`eslint-plugin-sonarjs`](https://github.com/SonarSource/SonarJS) | LGPL-3.0-only |
 | [`execa`](https://github.com/sindresorhus/execa) | MIT |
@@ -166,11 +161,9 @@ External packages **directly declared** only by repository tooling, test infrast
 | [`unrun`](https://github.com/Gugustinette/unrun) | MIT |
 | [`vite`](https://github.com/vitejs/vite) | MIT |
 | [`vite-tsconfig-paths`](https://github.com/aleclarson/vite-tsconfig-paths) | MIT |
-| [`vitepress`](https://github.com/vuejs/vitepress) | MIT |
-| [`vitepress-plugin-mermaid`](https://github.com/emersonbottero/vitepress-plugin-mermaid) | MIT |
 | [`vitest`](https://github.com/vitest-dev/vitest) | MIT |
 
-`eslint-plugin-sonarjs` (LGPL-3.0-only) and `lightningcss` (MPL-2.0) run only as development tooling; their code is not linked into or distributed with any Pentest Harness artifact.
+`eslint-plugin-sonarjs` (LGPL-3.0-only) and `lightningcss` (MPL-2.0) run only as development tooling; their code is not linked into or distributed with any Fathom artifact.
 
 ## Python SDK dependencies (`python/`)
 
@@ -179,7 +172,7 @@ Direct dependencies of the `pyproject.toml` manifests, plus `uv` as the developm
 | Package | License | Role |
 | --- | --- | --- |
 | [`hatchling`](https://github.com/pypa/hatch) | MIT | build backend |
-| [`pydantic`](https://github.com/pydantic/pydantic) | MIT | runtime dependency of `pentest-harness-sdk` |
+| [`pydantic`](https://github.com/pydantic/pydantic) | MIT | runtime dependency of `fathom-sdk` |
 | [`pytest`](https://github.com/pytest-dev/pytest) | MIT | test-only |
 | [`uv`](https://github.com/astral-sh/uv) | MIT / Apache-2.0 | development workflow tool |
 
@@ -191,4 +184,4 @@ Direct dependencies of the `pyproject.toml` manifests, plus `uv` as the developm
 
 ## First-party native packages
 
-`@pentest-harness/node-addon-landlock-run` (and its platform packages) is built and released from this repository under BSD 3-Clause. It is listed here for completeness; it is first-party, not third-party.
+`@fathom/node-addon-landlock-run` (and its platform packages) is built and released from this repository under BSD 3-Clause. It is listed here for completeness; it is first-party, not third-party.

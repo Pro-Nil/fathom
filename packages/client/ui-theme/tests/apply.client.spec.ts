@@ -1,14 +1,14 @@
 /** ui-theme apply wiring: service provision, settings dictionaries riding the
  * locale service, declaration-aware Appearance row registration, snapshot
  * projection into the row store, and HMR collapse recovery. */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as settingsApply, inject as settingsInject } from '@pentest-harness/dsh-client-ui-settings/client'
-import { apply, inject, SETTINGS_NS } from '@pentest-harness/dsh-client-ui-theme/client'
-import type { AppearanceRowInjected, ThemeRuntime } from '@pentest-harness/dsh-client-ui-theme/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import { apply as settingsApply, inject as settingsInject } from '@fathom/client-ui-settings/client'
+import { apply, inject, SETTINGS_NS } from '@fathom/client-ui-theme/client'
+import type { AppearanceRowInjected, ThemeRuntime } from '@fathom/client-ui-theme/client'
 import { THEME_SETTINGS_NAMESPACE, ThemeSettingsSchema } from '../src/theme-settings.ts'
 import { AppearanceRow } from '../src/client/AppearanceRow.tsx'
 import type { createAppearanceRowStore } from '../src/client/settings-store.ts'

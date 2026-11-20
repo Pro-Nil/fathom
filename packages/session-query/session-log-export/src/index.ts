@@ -1,7 +1,7 @@
 /** Web Session-log download command over the host endpoint owned by ApiProxy. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { CommandResult } from '@pentest-harness/dsh-commands'
+import type { Context } from '@fathom/cordis'
+import type { CommandResult } from '@fathom/commands'
 
 export const name = 'session-log-download'
 export const inject = ['commands']

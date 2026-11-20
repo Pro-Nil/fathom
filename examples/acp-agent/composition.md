@@ -8,101 +8,101 @@ The ACP demo exposes fresh baseline-prompt agent sessions to programmatic client
 ```mermaid
 flowchart LR
   cfg["examples/acp-agent<br/>cordis.yml"]
-  plugin_acp_llm_acme["llm-acme<br/>@pentest-harness/dsh-llm-acme"]
+  plugin_acp_llm_acme["llm-acme<br/>@fathom/llm-acme"]
   cfg --> plugin_acp_llm_acme
-  plugin_acp_sandbox["sandbox<br/>@pentest-harness/dsh-sandbox-local"]
+  plugin_acp_sandbox["sandbox<br/>@fathom/sandbox-local"]
   cfg --> plugin_acp_sandbox
-  plugin_acp_sandbox_policy["sandbox-policy<br/>@pentest-harness/dsh-sandbox-policy"]
+  plugin_acp_sandbox_policy["sandbox-policy<br/>@fathom/sandbox-policy"]
   cfg --> plugin_acp_sandbox_policy
-  plugin_acp_subprocess["subprocess<br/>@pentest-harness/dsh-subprocess-local"]
+  plugin_acp_subprocess["subprocess<br/>@fathom/subprocess-local"]
   cfg --> plugin_acp_subprocess
-  plugin_acp_bash["bash<br/>@pentest-harness/dsh-bash-sandbox"]
+  plugin_acp_bash["bash<br/>@fathom/bash-sandbox"]
   cfg --> plugin_acp_bash
-  plugin_acp_approval["approval<br/>@pentest-harness/dsh-user-approval"]
+  plugin_acp_approval["approval<br/>@fathom/user-approval"]
   cfg --> plugin_acp_approval
-  plugin_acp_acp_agent["acp-agent<br/>@pentest-harness/dsh-acp-demo"]
+  plugin_acp_acp_agent["acp-agent<br/>@fathom/acp-demo"]
   cfg --> plugin_acp_acp_agent
-  plugin_acp_acp_agent --> bundle_agent_core["@pentest-harness/dsh-agent-spine-demo"]
-  plugin_acp_acp_agent --> bundle_jsonl["@pentest-harness/dsh-session-persistence-jsonl"]
-  plugin_acp_acp_agent --> entrypoint_acp["@pentest-harness/dsh-acp<br/>automation-only JSON-RPC stdio<br/>fresh sessions created by client"]
+  plugin_acp_acp_agent --> bundle_agent_core["@fathom/agent-spine-demo"]
+  plugin_acp_acp_agent --> bundle_jsonl["@fathom/session-persistence-jsonl"]
+  plugin_acp_acp_agent --> entrypoint_acp["@fathom/acp<br/>automation-only JSON-RPC stdio<br/>fresh sessions created by client"]
   bundle_agent_core --> spine_llm["ctx.llm"]
   bundle_agent_core --> spine_sessions["ctx.sessions"]
   bundle_agent_core --> spine_tools["ctx.tools + tool-bash"]
   bundle_agent_core --> spine_loop["ctx.agents + ctx.agentLoop"]
-  plugin_acp_token_meter["token-meter<br/>@pentest-harness/dsh-token-meter"]
+  plugin_acp_token_meter["token-meter<br/>@fathom/token-meter"]
   cfg --> plugin_acp_token_meter
-  plugin_acp_compaction_basic["compaction-basic<br/>@pentest-harness/dsh-compaction-basic"]
+  plugin_acp_compaction_basic["compaction-basic<br/>@fathom/compaction-basic"]
   cfg --> plugin_acp_compaction_basic
-  plugin_acp_session_projection["session-projection<br/>@pentest-harness/dsh-session-projection"]
+  plugin_acp_session_projection["session-projection<br/>@fathom/session-projection"]
   cfg --> plugin_acp_session_projection
-  plugin_acp_subagent["subagent<br/>@pentest-harness/dsh-subagent"]
+  plugin_acp_subagent["subagent<br/>@fathom/subagent"]
   cfg --> plugin_acp_subagent
-  plugin_acp_subagent_spawn_in_process["subagent-spawn-in-process<br/>@pentest-harness/dsh-subagent-spawn-in-process"]
+  plugin_acp_subagent_spawn_in_process["subagent-spawn-in-process<br/>@fathom/subagent-spawn-in-process"]
   cfg --> plugin_acp_subagent_spawn_in_process
-  plugin_acp_subagent_fork_in_process["subagent-fork-in-process<br/>@pentest-harness/dsh-subagent-fork-in-process"]
+  plugin_acp_subagent_fork_in_process["subagent-fork-in-process<br/>@fathom/subagent-fork-in-process"]
   cfg --> plugin_acp_subagent_fork_in_process
-  plugin_acp_tool_subagent_control["tool-subagent-control<br/>@pentest-harness/dsh-tool-subagent-control"]
+  plugin_acp_tool_subagent_control["tool-subagent-control<br/>@fathom/tool-subagent-control"]
   cfg --> plugin_acp_tool_subagent_control
-  plugin_acp_tool_subagent_list_agents["tool-subagent-list-agents<br/>@pentest-harness/dsh-tool-subagent-control/list-agents"]
+  plugin_acp_tool_subagent_list_agents["tool-subagent-list-agents<br/>@fathom/tool-subagent-control/list-agents"]
   cfg --> plugin_acp_tool_subagent_list_agents
-  plugin_acp_tool_subagent_report["tool-subagent-report<br/>@pentest-harness/dsh-tool-subagent-report"]
+  plugin_acp_tool_subagent_report["tool-subagent-report<br/>@fathom/tool-subagent-report"]
   cfg --> plugin_acp_tool_subagent_report
-  plugin_acp_tool_subagent["tool-subagent<br/>@pentest-harness/dsh-tool-subagent"]
+  plugin_acp_tool_subagent["tool-subagent<br/>@fathom/tool-subagent"]
   cfg --> plugin_acp_tool_subagent
-  plugin_acp_tool_subagent_fork["tool-subagent-fork<br/>@pentest-harness/dsh-tool-subagent"]
+  plugin_acp_tool_subagent_fork["tool-subagent-fork<br/>@fathom/tool-subagent"]
   cfg --> plugin_acp_tool_subagent_fork
-  plugin_acp_workflow_worker_thread["workflow-worker-thread<br/>@pentest-harness/dsh-workflow-worker-thread"]
+  plugin_acp_workflow_worker_thread["workflow-worker-thread<br/>@fathom/workflow-worker-thread"]
   cfg --> plugin_acp_workflow_worker_thread
-  plugin_acp_tool_workflow["tool-workflow<br/>@pentest-harness/dsh-tool-workflow"]
+  plugin_acp_tool_workflow["tool-workflow<br/>@fathom/tool-workflow"]
   cfg --> plugin_acp_tool_workflow
-  plugin_acp_tool_ralph["tool-ralph<br/>@pentest-harness/dsh-tool-ralph"]
+  plugin_acp_tool_ralph["tool-ralph<br/>@fathom/tool-ralph"]
   cfg --> plugin_acp_tool_ralph
-  plugin_acp_tool_todo["tool-todo<br/>@pentest-harness/dsh-tool-todo"]
+  plugin_acp_tool_todo["tool-todo<br/>@fathom/tool-todo"]
   cfg --> plugin_acp_tool_todo
-  plugin_acp_repeat_tool_reminder["repeat-tool-reminder<br/>@pentest-harness/dsh-repeat-tool-reminder"]
+  plugin_acp_repeat_tool_reminder["repeat-tool-reminder<br/>@fathom/repeat-tool-reminder"]
   cfg --> plugin_acp_repeat_tool_reminder
-  plugin_acp_fs_sandbox["fs-sandbox<br/>@pentest-harness/dsh-fs-sandbox"]
+  plugin_acp_fs_sandbox["fs-sandbox<br/>@fathom/fs-sandbox"]
   cfg --> plugin_acp_fs_sandbox
-  plugin_acp_fs_observation_policy["fs-observation-policy<br/>@pentest-harness/dsh-fs-observation-policy"]
+  plugin_acp_fs_observation_policy["fs-observation-policy<br/>@fathom/fs-observation-policy"]
   cfg --> plugin_acp_fs_observation_policy
-  plugin_acp_tool_fs["tool-fs<br/>@pentest-harness/dsh-tool-fs"]
+  plugin_acp_tool_fs["tool-fs<br/>@fathom/tool-fs"]
   cfg --> plugin_acp_tool_fs
-  plugin_acp_hooks_claude_code["hooks-claude-code<br/>@pentest-harness/dsh-hooks-claude-code"]
+  plugin_acp_hooks_claude_code["hooks-claude-code<br/>@fathom/hooks-claude-code"]
   cfg --> plugin_acp_hooks_claude_code
-  plugin_acp_hooks_codex["hooks-codex<br/>@pentest-harness/dsh-hooks-codex"]
+  plugin_acp_hooks_codex["hooks-codex<br/>@fathom/hooks-codex"]
   cfg --> plugin_acp_hooks_codex
 ```
 
 | Plugin id | Package / module |
 | --- | --- |
-| `llm-acme` | `@pentest-harness/dsh-llm-acme` |
-| `sandbox` | `@pentest-harness/dsh-sandbox-local` |
-| `sandbox-policy` | `@pentest-harness/dsh-sandbox-policy` |
-| `subprocess` | `@pentest-harness/dsh-subprocess-local` |
-| `bash` | `@pentest-harness/dsh-bash-sandbox` |
-| `approval` | `@pentest-harness/dsh-user-approval` |
-| `acp-agent` | `@pentest-harness/dsh-acp-demo` |
-| `token-meter` | `@pentest-harness/dsh-token-meter` |
-| `compaction-basic` | `@pentest-harness/dsh-compaction-basic` |
-| `session-projection` | `@pentest-harness/dsh-session-projection` |
-| `subagent` | `@pentest-harness/dsh-subagent` |
-| `subagent-spawn-in-process` | `@pentest-harness/dsh-subagent-spawn-in-process` |
-| `subagent-fork-in-process` | `@pentest-harness/dsh-subagent-fork-in-process` |
-| `tool-subagent-control` | `@pentest-harness/dsh-tool-subagent-control` |
-| `tool-subagent-list-agents` | `@pentest-harness/dsh-tool-subagent-control/list-agents` |
-| `tool-subagent-report` | `@pentest-harness/dsh-tool-subagent-report` |
-| `tool-subagent` | `@pentest-harness/dsh-tool-subagent` |
-| `tool-subagent-fork` | `@pentest-harness/dsh-tool-subagent` |
-| `workflow-worker-thread` | `@pentest-harness/dsh-workflow-worker-thread` |
-| `tool-workflow` | `@pentest-harness/dsh-tool-workflow` |
-| `tool-ralph` | `@pentest-harness/dsh-tool-ralph` |
-| `tool-todo` | `@pentest-harness/dsh-tool-todo` |
-| `repeat-tool-reminder` | `@pentest-harness/dsh-repeat-tool-reminder` |
-| `fs-sandbox` | `@pentest-harness/dsh-fs-sandbox` |
-| `fs-observation-policy` | `@pentest-harness/dsh-fs-observation-policy` |
-| `tool-fs` | `@pentest-harness/dsh-tool-fs` |
-| `hooks-claude-code` | `@pentest-harness/dsh-hooks-claude-code` |
-| `hooks-codex` | `@pentest-harness/dsh-hooks-codex` |
+| `llm-acme` | `@fathom/llm-acme` |
+| `sandbox` | `@fathom/sandbox-local` |
+| `sandbox-policy` | `@fathom/sandbox-policy` |
+| `subprocess` | `@fathom/subprocess-local` |
+| `bash` | `@fathom/bash-sandbox` |
+| `approval` | `@fathom/user-approval` |
+| `acp-agent` | `@fathom/acp-demo` |
+| `token-meter` | `@fathom/token-meter` |
+| `compaction-basic` | `@fathom/compaction-basic` |
+| `session-projection` | `@fathom/session-projection` |
+| `subagent` | `@fathom/subagent` |
+| `subagent-spawn-in-process` | `@fathom/subagent-spawn-in-process` |
+| `subagent-fork-in-process` | `@fathom/subagent-fork-in-process` |
+| `tool-subagent-control` | `@fathom/tool-subagent-control` |
+| `tool-subagent-list-agents` | `@fathom/tool-subagent-control/list-agents` |
+| `tool-subagent-report` | `@fathom/tool-subagent-report` |
+| `tool-subagent` | `@fathom/tool-subagent` |
+| `tool-subagent-fork` | `@fathom/tool-subagent` |
+| `workflow-worker-thread` | `@fathom/workflow-worker-thread` |
+| `tool-workflow` | `@fathom/tool-workflow` |
+| `tool-ralph` | `@fathom/tool-ralph` |
+| `tool-todo` | `@fathom/tool-todo` |
+| `repeat-tool-reminder` | `@fathom/repeat-tool-reminder` |
+| `fs-sandbox` | `@fathom/fs-sandbox` |
+| `fs-observation-policy` | `@fathom/fs-observation-policy` |
+| `tool-fs` | `@fathom/tool-fs` |
+| `hooks-claude-code` | `@fathom/hooks-claude-code` |
+| `hooks-codex` | `@fathom/hooks-codex` |
 
 Source config: [`examples/acp-agent/cordis.yml`](cordis.yml).
 

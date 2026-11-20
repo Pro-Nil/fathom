@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { AttachmentId, AttachmentStore, ImageVariantId } from '@pentest-harness/dsh-attachment'
+import { Context } from '@fathom/cordis'
+import { AttachmentId, AttachmentStore, ImageVariantId } from '@fathom/attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -8,11 +8,11 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@pentest-harness/dsh-attachment'
-import LlmRuntime, { createUserMessage, CONTEXT_WINDOW_EXCEEDED_CODE, LlmError, ReasoningEffortId, userAgent } from '@pentest-harness/dsh-llm'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import { PiAiAdapter } from '@pentest-harness/dsh-llm-pi-ai'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+} from '@fathom/attachment'
+import LlmRuntime, { createUserMessage, CONTEXT_WINDOW_EXCEEDED_CODE, LlmError, ReasoningEffortId, userAgent } from '@fathom/llm'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import { PiAiAdapter } from '@fathom/llm-pi-ai'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import { getBuiltinModels } from '@earendil-works/pi-ai/providers/all'
 import { DEFAULT_MAX_REQUEST_IMAGE_BYTES, resolveProfiles } from '../src/config.ts'
 import { memoryAuth } from './auth-double.ts'

@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Fathom desktop shell: a small Avalonia window around the harness
+    web UI, for Windows and Linux. It starts the harness server itself (no
+    terminal), hides to the tray on close, quits from the tray, and raises a
+    notification with its own sound whenever a session needs the user's input.
+    The page is shown by the system web view: WebView2 on Windows, WebKitGTK
+    (or WPE WebKit) on Linux.
+
+    Build for Windows: -f net10.0-windows10.0.19041.0 -r win-x64
+    Build for Linux:   -f net10.0 -r linux-x64
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--
+      The Windows target only exists when building on Windows: on Linux the SDK
+      refuses to restore a -windows target (NETSDK1100), and it is never needed there.
+    -->
+    <TargetFrameworks>net10.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net10.0;net10.0-windows10.0.19041.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Fathom</AssemblyName>
+    <RootNamespace>Fathom.Desktop</RootNamespace>
+    <Product>Fathom</Product>
+    <AssemblyTitle>Fathom</AssemblyTitle>
+    <Company>Fathom</Company>
+    <Version>0.2.0</Version>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SelfContained>false</SelfContained>
+    <!-- Run on the newest installed .NET runtime (10 or later). -->
+    <RollForward>LatestMajor</RollForward>
+    <DebugType>none</DebugType>
+    <AvaloniaVersion>12.1.6</AvaloniaVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <ApplicationIcon>assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Controls.WebView" Version="12.1.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+    <!-- Only for CoreWebView2.CreateFromComICoreWebView2 over the handle the WebView exposes. -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="assets\app.png" LogicalName="app.png" />
+    <EmbeddedResource Include="assets\notify.wav" LogicalName="notify.wav" />
+    <EmbeddedResource Include="web\bridge.js" LogicalName="bridge.js" />
+    <EmbeddedResource Include="web\splash.html" LogicalName="splash.html" />
+    <None Include="assets\app.png" Link="app.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

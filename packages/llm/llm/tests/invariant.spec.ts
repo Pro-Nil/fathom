@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { CallId, LlmAdapter } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import * as LlmInvariant from '@pentest-harness/dsh-llm/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { CallId, LlmAdapter } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import * as LlmInvariant from '@fathom/llm/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

@@ -1,10 +1,10 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
-import * as TimeInvariant from '@pentest-harness/dsh-time-context/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { ContentBlock } from '@fathom/llm'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@fathom/session'
+import * as TimeInvariant from '@fathom/time-context/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 const SECOND = Date.parse('2026-07-14T00:00:00Z')
 

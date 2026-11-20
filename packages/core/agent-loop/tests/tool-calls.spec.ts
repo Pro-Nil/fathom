@@ -4,17 +4,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId, StreamChunk  } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type PostToolDecision, type PreToolDecision } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop, { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from '@pentest-harness/dsh-agent-loop'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId, StreamChunk  } from '@fathom/llm'
+import SessionStore, { SessionEvent, SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import LlmRuntime from '@fathom/llm'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type PostToolDecision, type PreToolDecision } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import AgentLoop, { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from '@fathom/agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
-import { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
+import { CodeRuntime } from '@fathom/code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@fathom/code-runtime'
 
 async function harness(adapter: MockAdapter, maxParallelToolCalls?: number) {
   const ctx = new Context()

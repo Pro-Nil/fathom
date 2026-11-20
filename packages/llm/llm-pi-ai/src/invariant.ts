@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-llm-pi-ai`.
- * @module @pentest-harness/dsh-llm-pi-ai/invariant
+ * Package-owned invariant companion for `@fathom/llm-pi-ai`.
+ * @module @fathom/llm-pi-ai/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-llm-pi-ai'
+const PACKAGE_NAME = '@fathom/llm-pi-ai'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-pi-ai-invariant'

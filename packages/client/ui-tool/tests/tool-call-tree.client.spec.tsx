@@ -2,13 +2,13 @@
 /** ToolCallTree-owned root/subcall markers and selection projection. */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import type { HostDescription } from '@pentest-harness/dsh-client-connection/client'
-import type { ConversationSnapshot, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import type { HostDescription } from '@fathom/client-connection/client'
+import type { ConversationSnapshot, ToolResultNode } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type { ToolTreeProps } from '../src/client/contract/slots.ts'
 import { ToolCallTree } from '../src/client/tool/ToolCallTree.tsx'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 

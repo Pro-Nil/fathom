@@ -1,6 +1,6 @@
-import type { Context } from '@pentest-harness/cordis'
-import { setSandboxMode } from '@pentest-harness/dsh-sandbox-policy'
-import type {} from '@pentest-harness/dsh-agent'
+import type { Context } from '@fathom/cordis'
+import { setSandboxMode } from '@fathom/sandbox-policy'
+import type {} from '@fathom/agent'
 
 export const name = 'parent-sandbox-override'
 

@@ -1,12 +1,12 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context, Service, symbols } from '@pentest-harness/cordis'
-import { createUserMessage, freezeMessage } from '@pentest-harness/dsh-llm'
-import { Session, SessionId, type UserMessage } from '@pentest-harness/dsh-session'
+import { Context, Service, symbols } from '@fathom/cordis'
+import { createUserMessage, freezeMessage } from '@fathom/llm'
+import { Session, SessionId, type UserMessage } from '@fathom/session'
 import AgentRegistry, {
   agentEvents,
   Inbox,
-} from '@pentest-harness/dsh-agent'
-import TypertRegistry from '@pentest-harness/dsh-typert-registry'
+} from '@fathom/agent'
+import TypertRegistry from '@fathom/typert-registry'
 
 import type {
   Agent,
@@ -15,7 +15,7 @@ import type {
   AgentStatus,
   CreateAgentOptions,
   ResumeAgentOptions,
-} from '@pentest-harness/dsh-agent'
+} from '@fathom/agent'
 
 function stubAgent(rawId: string, overrides: Partial<Agent> = {}): Agent {
   const id = SessionId(rawId)
@@ -155,8 +155,8 @@ describe('AgentRegistry', () => {
     expect(lookup).toMatchObject({
       parameter: 'agent',
       wire: 'agentId',
-      hostTypeSymbol: '@pentest-harness/dsh-agent#Agent',
-      wireTypeSymbol: '@pentest-harness/dsh-session/types#SessionId',
+      hostTypeSymbol: '@fathom/agent#Agent',
+      wireTypeSymbol: '@fathom/session/types#SessionId',
     })
     expect(lookup?.resolve(agent.id)).toBe(agent)
     expect(ctx.typert.contexts.getHost('agent')?.resolve(agent.id)).toBe(agent.ctx)

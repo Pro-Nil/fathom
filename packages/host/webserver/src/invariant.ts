@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-host-webserver`.
- * @module @pentest-harness/dsh-host-webserver/invariant
+ * Package-owned invariant companion for `@fathom/host-webserver`.
+ * @module @fathom/host-webserver/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-host-webserver'
+const PACKAGE_NAME = '@fathom/host-webserver'
 
 /** Cordis companion plugin name. */
 export const name = 'host-webserver-invariant'
@@ -36,11 +36,11 @@ const install: InvariantInstaller = (ctx, fail) => {
     // behind, a second register throws the duplicate error — the asymmetry.
     // Each register(probe)() is one register+dispose cycle, so the probe never
     // leaves residue; a leftover from the first cycle makes the second throw.
-    const probe = { kind: 'exact' as const, path: '/__dsh_invariant_probe__', handler: () => {} }
+    const probe = { kind: 'exact' as const, path: '/__fathom_invariant_probe__', handler: () => {} }
     try {
       server.register(probe)()
       server.register(probe)()
-      const upgradeProbe = { path: '/__dsh_invariant_upgrade_probe__', handler: () => {} }
+      const upgradeProbe = { path: '/__fathom_invariant_upgrade_probe__', handler: () => {} }
       server.registerUpgrade(upgradeProbe)()
       server.registerUpgrade(upgradeProbe)()
     } catch {

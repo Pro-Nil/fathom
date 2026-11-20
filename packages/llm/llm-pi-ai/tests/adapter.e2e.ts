@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId  } from '@pentest-harness/dsh-llm'
-import type { Message, ToolSchema } from '@pentest-harness/dsh-llm'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import type { PiAiProviderProfile } from '@pentest-harness/dsh-llm-pi-ai'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId  } from '@fathom/llm'
+import type { Message, ToolSchema } from '@fathom/llm'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import type { PiAiProviderProfile } from '@fathom/llm-pi-ai'
 import { assemble, type AssembledResult } from './assemble.ts'
 
 /**

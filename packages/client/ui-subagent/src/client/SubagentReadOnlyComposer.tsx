@@ -1,4 +1,4 @@
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import { NS } from './locales.ts'
 import css from './SubagentReadOnlyComposer.module.css'
 

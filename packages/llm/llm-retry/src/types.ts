@@ -1,9 +1,9 @@
-import type { LlmFailure } from '@pentest-harness/dsh-llm/types'
+import type { LlmFailure } from '@fathom/llm/types'
 import type { RetryId } from './brand.ts'
 
 export type { RetryId }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /** Durable, non-surface record of one provider-routed retry scheduled after a failed request attempt. */
     'llm/retry': LlmRetryEventData

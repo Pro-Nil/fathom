@@ -1,5 +1,5 @@
-import { Context, Fiber, Inject } from '@pentest-harness/cordis'
-import { deepEqual, isNullable } from '@pentest-harness/cosmokit'
+import { Context, Fiber, Inject } from '@fathom/cordis'
+import { deepEqual, isNullable } from '@fathom/cosmokit'
 import { Loader } from '../index.ts'
 import { EntryGroup } from './group.ts'
 import { EntryTree } from './tree.ts'

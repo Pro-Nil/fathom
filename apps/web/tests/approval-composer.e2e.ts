@@ -17,10 +17,10 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 // Empty type import: carries the approval package's session-event merge, so
 // the decided-outcome assertion below type-checks against the real union.
-import type {} from '@pentest-harness/dsh-user-approval'
+import type {} from '@fathom/user-approval'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

@@ -1,8 +1,8 @@
 /** Parent adapter that fails if the composition-only Loader test starts a turn. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { LlmAdapter } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { LlmAdapter } from '@fathom/llm'
 
 class CompositionOnlyAdapter extends LlmAdapter {
   async * stream(_options: GenerateOptions): AsyncIterable<StreamChunk> {

@@ -2,8 +2,8 @@
 
 import type {
   HostFrame, IApiClient, RpcError, RpcRequest, RpcResult, SessionId, WorkspaceId, WorkspaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
-import { transportError } from '@pentest-harness/dsh-host-apiproxy/api'
+} from '@fathom/api-remotes/client'
+import { transportError } from '@fathom/host-apiproxy/api'
 import { Notifier } from '../sessions/notifier.ts'
 import { Workspace, type WorkspaceCreateInput } from './workspace.ts'
 

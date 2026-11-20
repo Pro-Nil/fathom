@@ -1,11 +1,11 @@
 /**
  * Types shared by job producers, the registry, and controllers. The
  * service implementation lives in `./index.ts`.
- * @module @pentest-harness/dsh-jobs/types
+ * @module @fathom/jobs/types
  */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Agent } from '@fathom/agent'
+import type { SessionId } from '@fathom/session'
 import type { JobId } from './brand.ts'
 
 export { JobId } from './brand.ts'

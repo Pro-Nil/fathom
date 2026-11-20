@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Fiber } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, CallId, EMPTY_RESPONSE_CODE, LlmAdapter, LlmError, resolveRetryPolicy  } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import type { Fiber } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, CallId, EMPTY_RESPONSE_CODE, LlmAdapter, LlmError, resolveRetryPolicy  } from '@fathom/llm'
 import type {
   AlwaysRetryPolicyConfig,
   BackoffConfig,
@@ -10,15 +10,15 @@ import type {
   ResolvedRetryPolicy,
   RetryPolicyConfig,
   StreamChunk,
-} from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionEventMap } from '@pentest-harness/dsh-session'
-import type { LlmRetryEventData } from '@pentest-harness/dsh-llm-retry/types'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent, RequestErrorAction } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+} from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { SessionEvent, SessionEventMap } from '@fathom/session'
+import type { LlmRetryEventData } from '@fathom/llm-retry/types'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@fathom/tools'
+import AgentRegistry from '@fathom/agent'
+import type { Agent, RequestErrorAction } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
 import * as retry from '../src/index.ts'
 
 type ScriptEntry = Error | Iterable<StreamChunk> | AsyncIterable<StreamChunk>

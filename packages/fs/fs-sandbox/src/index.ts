@@ -1,6 +1,6 @@
 /**
  * `SandboxedFileSystem`: the sandbox-enforcing implementation of the
- * `@pentest-harness/dsh-fs` Service Definition. It extends `LocalFileSystem` so all
+ * `@fathom/fs` Service Definition. It extends `LocalFileSystem` so all
  * text-storage mechanics — resolve, stat, read/stream, list, the atomic
  * write and the read-match-write edit critical section — are the local
  * implementation's, verbatim; this package adds only the per-call POLICY fence
@@ -11,7 +11,7 @@
  * NOT a kernel boundary — the operations are the seam's own (open, rename),
  * and only the target path is untrusted, so canonicalize-then-contain is the
  * complete answer to this surface. Kernel-grade isolation of untrusted CODE
- * stays `ctx.shell`'s job (`@pentest-harness/dsh-bash-sandbox`). This mirrors the
+ * stays `ctx.shell`'s job (`@fathom/bash-sandbox`). This mirrors the
  * `code-runtime` stance: containment, not a security boundary. The residual
  * TOCTOU (an ancestor symlink swapped between the containment re-check and the
  * syscall) is narrowed by re-canonicalizing immediately before delegating and
@@ -24,20 +24,20 @@
  * `danger-full-access` delegates unfenced. A denial throws the structured
  * `FS_SANDBOX_DENIED` — no text inference is needed (unlike bash's kernel
  * stderr), because an in-process fence knows exactly what it refused. The
- * escalation retry lives in the tool layer (`@pentest-harness/dsh-tool-fs`),
+ * escalation retry lives in the tool layer (`@fathom/tool-fs`),
  * exactly as bash's does.
  *
- * @module @pentest-harness/dsh-fs-sandbox
+ * @module @fathom/fs-sandbox
  */
 
-import { Context } from '@pentest-harness/cordis'
-import { LocalFileSystem } from '@pentest-harness/dsh-fs-local'
-import type { Config as LocalConfig } from '@pentest-harness/dsh-fs-local'
-import { FsError } from '@pentest-harness/dsh-fs'
-import type { FsEditOutcome, FsEditRequest, FsTarget, FsVersion, FsWriteIntent, FsWriteOutcome } from '@pentest-harness/dsh-fs'
-import { writableRoots } from '@pentest-harness/dsh-sandbox'
-import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
-import type {} from '@pentest-harness/dsh-sandbox-policy'
+import { Context } from '@fathom/cordis'
+import { LocalFileSystem } from '@fathom/fs-local'
+import type { Config as LocalConfig } from '@fathom/fs-local'
+import { FsError } from '@fathom/fs'
+import type { FsEditOutcome, FsEditRequest, FsTarget, FsVersion, FsWriteIntent, FsWriteOutcome } from '@fathom/fs'
+import { writableRoots } from '@fathom/sandbox'
+import type { SandboxExecutionPolicy, SandboxMode } from '@fathom/sandbox'
+import type {} from '@fathom/sandbox-policy'
 import { isPathUnder } from './containment.ts'
 
 /**
@@ -50,9 +50,9 @@ export type Config = LocalConfig
 
 /**
  * Sandbox-enforcing filesystem backend. Registers as `ctx.fs` (loading it
- * INSTEAD OF `dsh-fs-local`, together with a `ctx.sandboxPolicy`, is the whole
+ * INSTEAD OF `fathom-fs-local`, together with a `ctx.sandboxPolicy`, is the whole
  * swap — the model-facing tools are untouched). Its configured default mode is
- * the capability fact exposed by {@link sandboxMode}; `dsh-tool-fs` resolves
+ * the capability fact exposed by {@link sandboxMode}; `fathom-tool-fs` resolves
  * each session's mode and cwd into a policy for every mutation, while an
  * approved escalation may stamp a strictly wider mode for one call.
  */

@@ -3,16 +3,16 @@ import { mkdtempSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SqliteSessionPersistence from '@pentest-harness/dsh-session-persistence-sqlite'
-import SubagentService, { seedDescriptorTurn, snapshotSubagentDescriptor } from '@pentest-harness/dsh-subagent'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { createUserMessage } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SqliteSessionPersistence from '@fathom/session-persistence-sqlite'
+import SubagentService, { seedDescriptorTurn, snapshotSubagentDescriptor } from '@fathom/subagent'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import TeamService, { foldTeam, TeamId, TeamMessageId } from '../src/index.ts'
 import type { TeamMemberSnapshot, TeamMessageSnapshot, TeamTaskSnapshot } from '../src/index.ts'
@@ -148,7 +148,7 @@ for (const backend of backends) {
     it('reconciles a persisted child to active and a missing child to durable failed', {
       timeout: PERSISTENCE_TEST_TIMEOUT_MS,
     }, async () => {
-      const storageRoot = mkdtempSync(join(tmpdir(), `dsh-team-${backend.name.toLowerCase()}-`))
+      const storageRoot = mkdtempSync(join(tmpdir(), `fathom-team-${backend.name.toLowerCase()}-`))
       roots.push(storageRoot)
       const first = await stack(backend, storageRoot, [textResponse('initial child answer')])
       const activeRootId = SessionId(`${backend.name.toLowerCase()}-active-root`)
@@ -224,7 +224,7 @@ for (const backend of backends) {
     it('reconciles a provisioning child whose initial prompt is durably pending', {
       timeout: PERSISTENCE_TEST_TIMEOUT_MS,
     }, async () => {
-      const storageRoot = mkdtempSync(join(tmpdir(), `dsh-team-pending-${backend.name.toLowerCase()}-`))
+      const storageRoot = mkdtempSync(join(tmpdir(), `fathom-team-pending-${backend.name.toLowerCase()}-`))
       roots.push(storageRoot)
       const rootId = SessionId(`${backend.name.toLowerCase()}-pending-root`)
       const childId = SessionId(`${backend.name.toLowerCase()}-pending-child`)
@@ -268,7 +268,7 @@ for (const backend of backends) {
     it('replays queued-minus-delivered mail in FIFO order without waking for quiet mail', {
       timeout: PERSISTENCE_TEST_TIMEOUT_MS,
     }, async () => {
-      const storageRoot = mkdtempSync(join(tmpdir(), `dsh-team-mail-${backend.name.toLowerCase()}-`))
+      const storageRoot = mkdtempSync(join(tmpdir(), `fathom-team-mail-${backend.name.toLowerCase()}-`))
       roots.push(storageRoot)
       const rootId = SessionId(`${backend.name.toLowerCase()}-mail-root`)
 
@@ -328,7 +328,7 @@ for (const backend of backends) {
     it('acknowledges target-recorded mail after restart without delivering it twice', {
       timeout: PERSISTENCE_TEST_TIMEOUT_MS,
     }, async () => {
-      const storageRoot = mkdtempSync(join(tmpdir(), `dsh-team-dedup-${backend.name.toLowerCase()}-`))
+      const storageRoot = mkdtempSync(join(tmpdir(), `fathom-team-dedup-${backend.name.toLowerCase()}-`))
       roots.push(storageRoot)
       const rootId = SessionId(`${backend.name.toLowerCase()}-dedup-root`)
       const messageId = TeamMessageId(`${backend.name.toLowerCase()}-recorded-message`)
@@ -407,7 +407,7 @@ for (const backend of backends) {
     it('acknowledges durably pending target mail without cold-resume duplication', {
       timeout: PERSISTENCE_TEST_TIMEOUT_MS,
     }, async () => {
-      const storageRoot = mkdtempSync(join(tmpdir(), `dsh-team-inbox-${backend.name.toLowerCase()}-`))
+      const storageRoot = mkdtempSync(join(tmpdir(), `fathom-team-inbox-${backend.name.toLowerCase()}-`))
       roots.push(storageRoot)
       const rootId = SessionId(`${backend.name.toLowerCase()}-inbox-root`)
       const childId = SessionId(`${backend.name.toLowerCase()}-inbox-child`)

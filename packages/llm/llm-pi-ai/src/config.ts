@@ -11,16 +11,16 @@
  * once, while the configuration key that made a route unserviceable can still be
  * named in the failure.
  *
- * @module dsh-llm-pi-ai/config
+ * @module fathom-llm-pi-ai/config
  */
 
 import type { CacheRetention, ChatTemplateKwargValue, ModelThinkingLevel, Provider, ThinkingBudgets, Transport } from '@earendil-works/pi-ai'
-import z from '@pentest-harness/schemastery'
-import { credentialRef } from '@pentest-harness/dsh-credentials'
-import type { CredentialRef } from '@pentest-harness/dsh-credentials'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
-import { resolveRetryPolicy, RetryPolicySchema } from '@pentest-harness/dsh-llm'
-import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@pentest-harness/dsh-llm'
+import z from '@fathom/schemastery'
+import { credentialRef } from '@fathom/credentials'
+import type { CredentialRef } from '@fathom/credentials'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
+import { resolveRetryPolicy, RetryPolicySchema } from '@fathom/llm'
+import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@fathom/llm'
 import {
   CACHE_CONTROL_FORMATS,
   SESSION_AFFINITY_FORMATS,
@@ -378,7 +378,7 @@ function rejectRemovedFields(provider: string, source: PiAiProviderProfile): voi
   if ('maxRetries' in legacy || 'maxRetryDelayMs' in legacy) {
     throw new Error(
       `llm-pi-ai: provider "${provider}" sets maxRetries or maxRetryDelayMs, which were removed;`
-      + ' compose agent recovery with dsh-llm-retry',
+      + ' compose agent recovery with fathom-llm-retry',
     )
   }
 }

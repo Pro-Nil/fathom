@@ -8,22 +8,22 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { z } from 'zod'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import { AttachmentStore } from '@pentest-harness/dsh-attachment'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { MuxFrame, RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import { AttachmentStore } from '@fathom/attachment'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import type { ProjectionDefinition } from '@fathom/session-projection'
+import UserQuestionService from '@fathom/user-questions'
+import type { MuxFrame, RpcRequest } from '@fathom/host-apiproxy/api'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     'test/last-user': LastUserState
     'test/internal-count': number

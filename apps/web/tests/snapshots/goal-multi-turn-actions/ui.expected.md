@@ -18,10 +18,10 @@
   - img
   - img
   - text: Context injection goal
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - 'button "Think The user''s goal is: \"쎶묰옺turn，퉙옺turn튭븚랡뺚퀼옺쥋춘꿍듊뽉퉠。꺐둑몴쎶궤퀼옺turn흍쉂，단뻧튭븚섋퓋，헰웪，껳냰춘툽핝쭢칎몴늫쟨퀼옺turn，몴쀡굄쎶퀼옺뉥쿀춘\" — which translates to: \"Do two turns, each turn output the file structure of a random package. Note that after you finish one turn, directly output the content and stop; our system will help you open another turn, and you just do something similar.\""':
   - img
   - img

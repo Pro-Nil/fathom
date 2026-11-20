@@ -1,19 +1,19 @@
 /** Session-fork boundaries, lineage, and inherited model routing. */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { agentEvents } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@pentest-harness/dsh-agent'
-import { createUserMessage, ReasoningEffortId } from '@pentest-harness/dsh-llm'
-import type { LlmCallConfig } from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { Workspace } from '@pentest-harness/dsh-workspace'
-import type { RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { agentEvents } from '@fathom/agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@fathom/agent'
+import { createUserMessage, ReasoningEffortId } from '@fathom/llm'
+import type { LlmCallConfig } from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import UserQuestionService from '@fathom/user-questions'
+import type { Workspace } from '@fathom/workspace'
+import type { RpcRequest } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

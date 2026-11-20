@@ -6,7 +6,7 @@ This guide assumes you started the Web UI through the [root README](../../../REA
 
 Open **Settings → Models** to see every configured provider. No provider ships configured, so start by adding one below.
 
-Keys are write-only. The page receives a redacted descriptor after saving, never the literal secret. The key is stored in `$DSH_HOME/.credentials.yaml`, while settings retain only its credential reference.
+Keys are write-only. The page receives a redacted descriptor after saving, never the literal secret. The key is stored in `$FATHOM_HOME/.credentials.yaml`, while settings retain only its credential reference.
 
 ## Add a catalog provider
 
@@ -28,7 +28,7 @@ Under **Model catalog**, choose **Fetch available models** to query the base URL
 
 A model you enter by hand is treated as text-only until it says otherwise, because nothing can ask an endpoint which modalities it accepts. Attaching an image to such a model is refused before it is sent, naming the model.
 
-A vision model on a custom provider therefore needs one line. The form has no field for it; add `input` to the model in `$DSH_HOME/settings.yaml`:
+A vision model on a custom provider therefore needs one line. The form has no field for it; add `input` to the model in `$FATHOM_HOME/settings.yaml`:
 
 ```yaml
 llm-pi-ai:
@@ -79,7 +79,7 @@ Both fields state a claim about your endpoint rather than checking it. A model t
 
 A gateway can hold a working key at a reachable address and still refuse every request. pi-ai decides the shape of a request — which role carries the system prompt, which field caps the output, how a thinking level travels — from the endpoint's URL, and an address it does not recognize is addressed as though it were OpenAI itself. Most OpenAI-compatible gateways refuse at least one thing OpenAI accepts.
 
-Two account for most of it. A model that declares reasoning has its system prompt sent as `role: "developer"`, which many gateways reject outright, and the output cap is sent as `max_completion_tokens`, which a server that only knows `max_tokens` refuses. The form has no field for either; correct them on the route in `$DSH_HOME/settings.yaml`:
+Two account for most of it. A model that declares reasoning has its system prompt sent as `role: "developer"`, which many gateways reject outright, and the output cap is sent as `max_completion_tokens`, which a server that only knows `max_tokens` refuses. The form has no field for either; correct them on the route in `$FATHOM_HOME/settings.yaml`:
 
 ```yaml
 llm-pi-ai:
@@ -109,7 +109,7 @@ What neither sets keeps the installed catalog's value for that model, and what t
 
 Each switch belongs to the protocols that declare it, so a switch valid on one `api` may be refused on another — the message names what that protocol does offer. Like `input` above, a switch states a claim about your endpoint rather than checking it: setting one your gateway does not actually need simply sends a different request.
 
-Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `dsh-llm-pi-ai` configuration reference](../../config-catalog.md#pentest-harnessdsh-llm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
+Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `fathom-llm-pi-ai` configuration reference](../../config-catalog.md#fathomllm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
 
 ## Select a model
 
@@ -130,4 +130,4 @@ If a saved default names a provider that was deleted, the composer displays **Se
 
 ## Advanced configuration
 
-The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`dsh-llm-pi-ai`](../../config-catalog.md#pentest-harnessdsh-llm-pi-ai) is the provider section this page configures. The [`dsh-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`dsh-llm-acme`](../../../packages/llm/llm-acme/README.md) references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.
+The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`fathom-llm-pi-ai`](../../config-catalog.md#fathomllm-pi-ai) is the provider section this page configures. The [`fathom-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`fathom-llm-acme`](../../../packages/llm/llm-acme/README.md) references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.

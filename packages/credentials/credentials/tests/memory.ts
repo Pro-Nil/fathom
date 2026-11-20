@@ -1,4 +1,4 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { CredentialProvider } from '../src/index.ts'
 import type {
   CredentialInfo,

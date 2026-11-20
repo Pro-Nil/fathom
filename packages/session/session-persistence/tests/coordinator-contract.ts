@@ -1,4 +1,4 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 /**
  * Shared write-path orchestration contract for backends using {@link PersistenceCoordinator}.
  * Unlike the public storage-semantics suite in `contract.ts`, it covers SessionStore event wiring,
@@ -7,14 +7,14 @@ import { createUserMessage } from '@pentest-harness/dsh-llm'
  *
  * Each real backend supplies a shared storage scope and optional torn-tail injector; backend specs
  * retain only storage-mechanics tests, while these scenarios run once per backend.
- * @module @pentest-harness/dsh-session-persistence/tests/coordinator-contract
+ * @module @fathom/session-persistence/tests/coordinator-contract
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@pentest-harness/cordis'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import { Context, type Fiber } from '@fathom/cordis'
+import { scopeTarget } from '@fathom/scope'
+import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
 import { meta, oneTurnLog, appendLog } from './contract.ts'
 
 /**

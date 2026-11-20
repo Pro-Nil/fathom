@@ -1,0 +1,60 @@
+{
+  "name": "@fathom/subagent-fathom-sdk",
+  "description": "Out-of-process SDK subagent backend: drives a child Fathom runtime subprocess over stdio JSON-RPC through the TypeScript SDK client",
+  "version": "0.1.1-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
+    "directory": "packages/subagent/subagent-fathom-sdk"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@fathom/agent": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/sdk-client": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/subagent": "workspace:^",
+    "@fathom/subprocess": "workspace:^",
+    "@fathom/cordis": "workspace:^"
+  },
+  "dependencies": {
+    "@fathom/schemastery": "workspace:^"
+  },
+  "devDependencies": {
+    "@fathom/cordis-plugin-loader": "workspace:^",
+    "@fathom/agent": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/loader-smoke": "workspace:^",
+    "@fathom/sdk-client": "workspace:^",
+    "@fathom/sdk-protocol": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/subagent": "workspace:^",
+    "@fathom/subprocess": "workspace:^",
+    "@fathom/cordis": "workspace:^"
+  }
+}

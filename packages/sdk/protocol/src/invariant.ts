@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-sdk-protocol`.
- * @module @pentest-harness/dsh-sdk-protocol/invariant
+ * Package-owned invariant companion for `@fathom/sdk-protocol`.
+ * @module @fathom/sdk-protocol/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-sdk-protocol'
+const PACKAGE_NAME = '@fathom/sdk-protocol'
 
 /** Cordis companion plugin name. */
 export const name = 'sdk-protocol-invariant'

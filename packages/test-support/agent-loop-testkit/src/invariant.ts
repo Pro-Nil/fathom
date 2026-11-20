@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-agent-loop-testkit`.
- * @module @pentest-harness/dsh-agent-loop-testkit/invariant
+ * Package-owned invariant companion for `@fathom/agent-loop-testkit`.
+ * @module @fathom/agent-loop-testkit/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-loop-testkit'
+const PACKAGE_NAME = '@fathom/agent-loop-testkit'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-loop-testkit-invariant'

@@ -2,7 +2,7 @@
 
 import { closeSync, openSync, readFileSync, readdirSync, readSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
-import type { SubprocessTerminalSignal } from '@pentest-harness/dsh-subprocess'
+import type { SubprocessTerminalSignal } from '@fathom/subprocess'
 import { createWindowsProcessInspector } from './windows-inspector.ts'
 
 /** PID plus start identity, preventing teardown escalation after PID reuse. */

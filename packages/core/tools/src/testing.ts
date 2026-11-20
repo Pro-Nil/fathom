@@ -1,7 +1,7 @@
-/** Canonical tool-definition fixtures for repository tests. @module dsh-tools/testing */
+/** Canonical tool-definition fixtures for repository tests. @module fathom-tools/testing */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JsonValue } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import type { JsonValue } from '@fathom/session'
 import { defineTool } from './schema.ts'
 import type { DefineToolOptions, ParameterSchemaSpec } from './schema.ts'
 import type { ToolDefinition, ToolRunContext } from './index.ts'

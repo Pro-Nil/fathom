@@ -13,13 +13,13 @@
  * projections. Direct driving is deliberate: this spec owns only the
  * source's own contract.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { InputTriggerService } from '@pentest-harness/dsh-client-ui-input-trigger/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import type { ClientSessionContext, InputTriggerSource } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { InputTriggerService } from '@fathom/client-ui-input-trigger/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import type { ClientSessionContext, InputTriggerSource } from '@fathom/client-ui-input-trigger/client'
 import { apply, inject } from '../src/client/index.ts'
 import { SkillRow as SkillToolRow } from '../src/client/SkillRow.tsx'
 

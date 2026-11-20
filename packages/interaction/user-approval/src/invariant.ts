@@ -1,12 +1,12 @@
-/** Package-owned approval audit-stream invariants. @module @pentest-harness/dsh-user-approval/invariant */
+/** Package-owned approval audit-stream invariants. @module @fathom/user-approval/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { ApprovalRequestId } from './index.ts'
 import { APPROVAL_POLICIES } from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-user-approval'
+const PACKAGE_NAME = '@fathom/user-approval'
 const APPROVAL_OUTCOMES = ['allowed-once', 'rejected', 'cancelled', 'unavailable'] as const
 
 /** Cordis companion plugin name. */

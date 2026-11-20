@@ -3,16 +3,16 @@
  * becomes `content`; sources prefer structured `search_results[]` and fall back to URL-only
  * `citations[]`. The wire format and native `fetch` client are provider-private and do not use
  * `ctx.llm`.
- * @module @pentest-harness/dsh-web-search-perplexity/provider
+ * @module @fathom/web-search-perplexity/provider
  */
 
-import { WebError } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
 import type {
   WebSearchProvider,
   WebSearchRequest,
   WebSearchResult,
   WebSearchSource,
-} from '@pentest-harness/dsh-web'
+} from '@fathom/web'
 import type { PerplexityError, PerplexityResponse, PerplexitySearchResult } from './types.ts'
 
 /** Stable id this provider registers under. */
@@ -31,7 +31,7 @@ export const PERPLEXITY_DEFAULT_MAX_TOKENS = 1024
 export type PerplexityRecency = 'day' | 'week' | 'month' | 'year'
 
 /** Attribution header sent on every request. Bump with the package version. */
-const USER_AGENT = 'pentest-harness/0.0.1'
+const USER_AGENT = 'fathom/0.0.1'
 
 /** Resolved provider options (the plugin's `apply` supplies env-var and constant defaults). */
 export interface PerplexitySearchProviderOptions {

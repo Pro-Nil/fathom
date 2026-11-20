@@ -22,13 +22,13 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { createMessage, createUserMessage } from '@pentest-harness/dsh-llm'
+import { createMessage, createUserMessage } from '@fathom/llm'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session'
+import type {} from '@fathom/session-title'
 import {
   assertFixtureInventory,
   compareOrRefreshGolden,
@@ -73,7 +73,7 @@ const WIDTHS = [1680, 1100, 640]
 /** A sentence long enough that three of them cannot sit unwrapped in the 748px column. */
 const SENTENCE = 'This cell carries one full sentence so the unwrapped table is far wider than the message column.'
 /** Unbroken path-like token (no scheme, so GFM does not autolink it and no anchor joins the tab order). */
-const LONG_TOKEN = 'workspace/pentest-harness/packages/client/ui-primitives/src/markdown/render.tsx/'.repeat(3)
+const LONG_TOKEN = 'workspace/fathom/packages/client/ui-primitives/src/markdown/render.tsx/'.repeat(3)
 const CJK_SENTENCE = '쇿옺뱷쪉뤼쥋껡퀼뾛쏉쁕춘쮿꿍켠췺，끌펇효좓쁕섋퓋맜욀홝춛읡텟릸팁썩쵵춛탢픚묄륈귷덩큶홝좉뵿쨬뎈엋뾓쵵。'
 
 /** The assistant markdown: one 3-column fill, one 12-column wide, one long-cell table. */

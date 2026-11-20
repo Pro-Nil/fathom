@@ -2,7 +2,7 @@
 // call/result slice.
 
 import { describe, expect, it } from 'vitest'
-import type { RunningToolCall, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
+import type { RunningToolCall, ToolResultNode } from '@fathom/client-runtime/client'
 import { cordisActionCard, cordisDefineCard } from '../src/client/card-model.ts'
 
 const ARGS = '{"name":"clock","purpose":"쁆붹쵶쨑","code":{"client":"return {}","host":"harness.handle(\'now\', () => Date.now())"}}'

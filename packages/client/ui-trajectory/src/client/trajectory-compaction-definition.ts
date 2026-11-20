@@ -1,8 +1,8 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationMatch, ConversationNodeDefinition, RequestView,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-compaction/types'
+} from '@fathom/client-runtime/client'
+import type {} from '@fathom/compaction/types'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 
 interface CompactionState {

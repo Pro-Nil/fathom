@@ -2,19 +2,19 @@
 # the auxiliary route consumes replay.override.json with pacing so its accepted
 # title commits only after the main turn has closed.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - id: acp-agent
-        name: '@pentest-harness/dsh-acp-demo'
+        name: '@fathom/acp-demo'
         config:
           provider: acme-official
           model: acme-v4-flash
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceRoot: !!js process.env.FATHOM_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
             maxBytes: 65536
@@ -24,7 +24,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay-main
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               overrideFile: ./.missing-main-replay-override.json
               providers:
@@ -33,7 +33,7 @@
                   models:
                     - id: acme-v4-flash
           - id: llm-replay-title
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               paceMs: 10
               providers:
@@ -42,7 +42,7 @@
                   models:
                     - id: title-model
           - id: session-title-provider
-            name: '@pentest-harness/dsh-session-title-first-prompt-llm'
+            name: '@fathom/session-title-first-prompt-llm'
             config:
               targetWords: 5
               targetCjkCharacters: 10

@@ -4,12 +4,12 @@
 # context compaction are absent.
 
 - id: sdk-jsonrpc-server
-  name: '@pentest-harness/dsh-sdk-jsonrpc-server'
+  name: '@fathom/sdk-jsonrpc-server'
   config:
     maxTokensAsSuccess: false
 
 - id: llm-pi-ai
-  name: '@pentest-harness/dsh-llm-pi-ai'
+  name: '@fathom/llm-pi-ai'
   config:
     providers:
       acme-official:
@@ -19,42 +19,42 @@
         apiKeyEnv: ACME_API_KEY
         streamIdleTimeoutMs: 172800000
         models:
-          - id: !!js process.env.DSH_MODEL ?? 'acme-v4-flash'
-            contextWindow: !!js Number(process.env.DSH_CONTEXT_WINDOW ?? 1000000)
+          - id: !!js process.env.FATHOM_MODEL ?? 'acme-v4-flash'
+            contextWindow: !!js Number(process.env.FATHOM_CONTEXT_WINDOW ?? 1000000)
 
 - id: sandbox
-  name: '@pentest-harness/dsh-sandbox-local'
+  name: '@fathom/sandbox-local'
 
 - id: sandbox-policy
-  name: '@pentest-harness/dsh-sandbox-policy'
+  name: '@fathom/sandbox-policy'
   config:
     mode: danger-full-access
-    workspaceRoot: !!js process.env.DSH_CWD ?? process.cwd()
+    workspaceRoot: !!js process.env.FATHOM_CWD ?? process.cwd()
 
 - id: subprocess
-  name: '@pentest-harness/dsh-subprocess-local'
+  name: '@fathom/subprocess-local'
 
 - id: pty
-  name: '@pentest-harness/dsh-terminal'
+  name: '@fathom/terminal'
 
 - id: terminal-bash
-  name: '@pentest-harness/dsh-terminal-bash'
+  name: '@fathom/terminal-bash'
   config:
     timeoutMs: 300000
 
 # The editor uses the bare local filesystem; persistent Bash still consumes the
 # shared danger-full-access sandbox policy above.
 - id: fs-local
-  name: '@pentest-harness/dsh-fs-local'
+  name: '@fathom/fs-local'
   config:
-    cwd: !!js process.env.DSH_CWD ?? process.cwd()
+    cwd: !!js process.env.FATHOM_CWD ?? process.cwd()
 
 - id: agent-spine
-  name: '@pentest-harness/dsh-agent-spine-demo'
+  name: '@fathom/agent-spine-demo'
   config:
     includeHarnessIdentity: false
     includeRuntimeContext: false
-    persona: !!js process.env.DSH_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
+    persona: !!js process.env.FATHOM_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
     workspaceContext: false
     skills:
       enabled: false
@@ -62,7 +62,7 @@
     toolJobs: false
 
 - id: persistent-bash
-  name: '@pentest-harness/dsh-tool-bash-persistent'
+  name: '@fathom/tool-bash-persistent'
   config:
     timeoutMs: 300000
     description: |-
@@ -76,12 +76,12 @@
       * Please run long lived commands in the background, e.g. 'sleep 10 &' or start a server in the background.
 
 - id: str-replace-editor
-  name: '@pentest-harness/dsh-tool-str-replace-editor'
+  name: '@fathom/tool-str-replace-editor'
   config:
     maxOutputChars: 16000
 
 - id: sessions
-  name: '@pentest-harness/dsh-session-persistence-jsonl'
+  name: '@fathom/session-persistence-jsonl'
   config:
-    root: !!js process.env.DSH_SESSION_ROOT ?? './.sessions'
+    root: !!js process.env.FATHOM_SESSION_ROOT ?? './.sessions'
     compression: none

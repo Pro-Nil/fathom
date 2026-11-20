@@ -16,19 +16,19 @@
  * artifact is the formatted result saved through `ctx.spillStore.saveText()`
  * ({@link trySaveFormattedResult}).
  *
- * @module @pentest-harness/dsh-tool-fs-search/search-core
+ * @module @fathom/tool-fs-search/search-core
  */
 
 import { existsSync } from 'node:fs'
 import { isAbsolute, relative, sep } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import { ItemRetainer, TextRetainer } from '@pentest-harness/dsh-output-retention'
-import type { RetainedItems } from '@pentest-harness/dsh-output-retention'
-import type { SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
-import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
-import type { ToolExecution } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
+import { ItemRetainer, TextRetainer } from '@fathom/output-retention'
+import type { RetainedItems } from '@fathom/output-retention'
+import type { SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessSpawnSpec } from '@fathom/subprocess'
+import { toolWorkdir } from '@fathom/session-folders'
+import type { SaveTextSpill, SpillRef } from '@fathom/spill'
+import type { ToolExecution } from '@fathom/tools'
 
 /**
  * Default cap on the complete raw `rg` stdout the tools will parse (the
@@ -39,7 +39,7 @@ export const RAW_OUTPUT_MAX_BYTES = 20_000_000
 /**
  * Default cooperative tool-call timeout budget in milliseconds (the `timeoutMs`
  * config), attached to both tool definitions for
- * `@pentest-harness/dsh-tool-call-timeout-policy` to enforce through `exec.signal`.
+ * `@fathom/tool-call-timeout-policy` to enforce through `exec.signal`.
  */
 export const SEARCH_TIMEOUT_MS = 30_000
 
@@ -59,7 +59,7 @@ export const SEARCH_GRACE_MS = 3_000
  * COUNT, but retained matches of a broad search (many long lines) can still
  * serialize to hundreds of kilobytes, and `meta` is persisted with the session
  * log and re-sent on every request. A deployment's final output budget
- * (`dsh-spill-policy`) only shrinks a result's `content`, never its `meta`, so the
+ * (`fathom-spill-policy`) only shrinks a result's `content`, never its `meta`, so the
  * projection owns this cap. 64 KiB holds the full default-capped result of a
  * typical search while bounding the pathological one.
  */
@@ -181,9 +181,9 @@ export function resolveRgPath(): Promise<string> {
 /**
  * Run the packaged ripgrep binary with a plain argv vector and return its
  * complete raw stdout. The working directory is the calling agent's session
- * folder (see `@pentest-harness/dsh-session-folders`) or session cwd
+ * folder (see `@fathom/session-folders`) or session cwd
  * (`exec.agent.session.header.cwd`) when available, else `process.cwd()`. `exec.signal` is forwarded so the cooperative tool timeout
- * (`@pentest-harness/dsh-tool-call-timeout-policy`) and caller cancellation terminate the
+ * (`@fathom/tool-call-timeout-policy`) and caller cancellation terminate the
  * process tree.
  *
  * The spawn is unconfined (a plain `ctx.subprocess` call), so `--no-config`
@@ -326,9 +326,9 @@ export function previewLine(line: string, maxBytes: number): string {
 /**
  * Apply the shared inline cap to a canonical `grep` match list: preview each
  * retained line to `maxLineBytes` and keep the first `maxMatches`. The single
- * retention pass both the model-facing render ({@link module:@pentest-harness/dsh-tool-fs-search/grep}
+ * retention pass both the model-facing render ({@link module:@fathom/tool-fs-search/grep}
  * `formatGrepOutput`) and the search-card projection
- * ({@link module:@pentest-harness/dsh-tool-fs-search/presentation} `grepSearchMeta`)
+ * ({@link module:@fathom/tool-fs-search/presentation} `grepSearchMeta`)
  * consume, so text and card never disagree about which matches survived.
  *
  * @param matches - every match the search parsed (the canonical value's matches).

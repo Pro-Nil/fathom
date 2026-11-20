@@ -17,8 +17,8 @@ import type {
   DynamicCordisResolveAck,
   DynamicCordisRunResolution,
   DynamicCordisRunResponse,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
 import { errorDetails } from './runtime.ts'
 import type { CordisErrorDetails, CordisObservable, DynamicCordisPackageRunner } from './runtime.ts'
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type {
   SessionId, SessionListState, SessionSummary, WorkspaceId, WorkspaceView,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import {
   deriveFlat, deriveGroups, deriveSearchResults, workspaceLabel, relativeTime,
   UNGROUPED_KEY, UNGROUPED_LABEL,

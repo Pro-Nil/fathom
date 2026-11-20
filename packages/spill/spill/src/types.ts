@@ -1,14 +1,14 @@
 /**
  * Vocabulary for the spill storage Service Definition. Types only — the abstract service
  * lives in `./index.ts`, implementations in sibling packages
- * (`@pentest-harness/dsh-spill-local` first).
+ * (`@fathom/spill-local` first).
  *
- * @module @pentest-harness/dsh-spill/types
+ * @module @fathom/spill/types
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { CallId } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Branded } from '@fathom/brand'
+import type { CallId } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
 
 /**
  * Opaque model-facing handle for one spilled artifact. A local backend may use a

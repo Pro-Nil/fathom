@@ -10,16 +10,16 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createScope } from '@pentest-harness/dsh-scope'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import CommandRuntime from '@pentest-harness/dsh-commands'
-import PermissionPresetService from '@pentest-harness/dsh-permission-presets'
-import type { Config } from '@pentest-harness/dsh-permission-presets'
-import ApprovalService from '@pentest-harness/dsh-user-approval'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session } from '@fathom/session'
+import type { Agent } from '@fathom/agent'
+import { createScope } from '@fathom/scope'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import CommandRuntime from '@fathom/commands'
+import PermissionPresetService from '@fathom/permission-presets'
+import type { Config } from '@fathom/permission-presets'
+import ApprovalService from '@fathom/user-approval'
 
 async function harness(options: { withPermission?: boolean; config?: Config } = {}): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()

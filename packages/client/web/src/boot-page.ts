@@ -1,7 +1,7 @@
 /**
  * Framework-free boot page and failure report. It remains available when a
  * client plugin fails because React arrives only with the UI renderer.
- * @module @pentest-harness/dsh-client-web/src/boot-page
+ * @module @fathom/client-web/src/boot-page
  */
 import type { LoaderEntryState } from './loader-status.ts'
 import css from './boot-page.module.css'
@@ -14,9 +14,15 @@ function div(className: string | undefined, text?: string): HTMLDivElement {
   return el
 }
 
-/** Pentest logo image for the framework-free boot page. */
-const markSvg = `<svg width="131" height="40" viewBox="0 0 522 159" fill="none" aria-hidden="true">
-  <image href="/brand/pentest-harness.png" x="0" y="0" width="522" height="159" preserveAspectRatio="xMidYMid meet"/>
+/**
+ * The Fathom mark for the framework-free boot page. Same geometry as
+ * FathomLogo in client-ui-primitives, inlined so the boot page loads no React.
+ */
+const markSvg = `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M9.9 3.4a2.1 2.1 0 1 0 4.2 0a2.1 2.1 0 1 0 -4.2 0Z" fill="#2DD4BF"/>
+  <path d="M18.269 6.733A7.100 7.100 0 0 1 5.731 6.733A1.100 1.100 0 0 1 7.674 5.700A4.900 4.900 0 0 0 16.326 5.700A1.100 1.100 0 0 1 18.269 6.733Z" fill="#2DD4BF"/>
+  <path d="M17.312 13.825A11.700 11.700 0 0 1 6.688 13.825A1.100 1.100 0 0 1 7.687 11.865A9.500 9.500 0 0 0 16.313 11.865A1.100 1.100 0 0 1 17.312 13.825Z" fill="#2DD4BF" fill-opacity="0.72"/>
+  <path d="M15.528 19.314A16.300 16.300 0 0 1 8.472 19.314A1.100 1.100 0 0 1 8.948 17.166A14.100 14.100 0 0 0 15.052 17.166A1.100 1.100 0 0 1 15.528 19.314Z" fill="#2DD4BF" fill-opacity="0.45"/>
 </svg>`
 
 /** Kernel-owned page mounted below the application's root element. */
@@ -38,13 +44,13 @@ export class BootPage {
    */
   constructor(container: HTMLElement) {
     this.root = div(css.boot)
-    this.root.dataset.dshBoot = ''
+    this.root.dataset.fathomBoot = ''
     this.card = div(css.card)
-    this.wordmark = div(css.wordmark, 'PENTEST HARNESS')
+    this.wordmark = div(css.wordmark, 'Fathom')
     this.logoWrap = div(css.logo)
     this.logoWrap.innerHTML = markSvg
     this.spinner = div(css.spinner)
-    this.spinner.dataset.dshBootSpinner = ''
+    this.spinner.dataset.fathomBootSpinner = ''
     this.hint = div(css.hint, 'Spinning up recon engines…')
     this.card.append(this.logoWrap, this.wordmark, this.spinner, this.hint)
     this.root.append(this.card)
@@ -106,6 +112,6 @@ export class BootPage {
   /** Grow the rotating arc monotonically as loader entries activate. */
   private updateProgress(): void {
     const ratio = this.total === 0 ? 0 : Math.min(this.active.size / this.total, 1)
-    this.spinner.style.setProperty('--dsh-boot-arc', `${String(Math.round(72 + ratio * 216))}deg`)
+    this.spinner.style.setProperty('--fathom-boot-arc', `${String(Math.round(72 + ratio * 216))}deg`)
   }
 }

@@ -2,13 +2,13 @@
  * Concrete agent-loop plugin: creates scoped ReactLoopAgents, publishes them
  * through the agent/session registries, and owns their ordered teardown.
  *
- * @module @pentest-harness/dsh-agent-loop
+ * @module @fathom/agent-loop
  */
 
-import { Context, FiberState, Service } from '@pentest-harness/cordis'
+import { Context, FiberState, Service } from '@fathom/cordis'
 import { randomUUID } from 'node:crypto'
-import z from '@pentest-harness/schemastery'
-import { emitAgentEvent } from '@pentest-harness/dsh-agent'
+import z from '@fathom/schemastery'
+import { emitAgentEvent } from '@fathom/agent'
 import type {
   Agent,
   AgentFactory,
@@ -18,14 +18,14 @@ import type {
   CreateAgentOptions,
   ResumeAgentOptions,
   SessionStartSource,
-} from '@pentest-harness/dsh-agent'
-import { errorChain } from '@pentest-harness/dsh-llm'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
-import { SessionId, SessionPreparation } from '@pentest-harness/dsh-session'
-import type { Session, SessionHeader } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type {} from '@pentest-harness/dsh-tools'
-import type { SessionPersistence } from '@pentest-harness/dsh-session-persistence'
+} from '@fathom/agent'
+import { errorChain } from '@fathom/llm'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
+import { SessionId, SessionPreparation } from '@fathom/session'
+import type { Session, SessionHeader } from '@fathom/session'
+import type {} from '@fathom/system-prompt'
+import type {} from '@fathom/tools'
+import type { SessionPersistence } from '@fathom/session-persistence'
 import { ReactLoopAgent } from './agent.ts'
 import { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from './constants.ts'
 
@@ -157,7 +157,7 @@ interface PreparedAgent {
   dispose(): Promise<void>
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     agentLoop: AgentLoop
     /**
@@ -653,7 +653,7 @@ export class AgentLoop extends Service implements AgentFactory {
   async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandle> {
     const persistence = this.runtime.ctx.get('sessionPersistence')
     if (persistence === undefined) {
-      throw new Error('cannot resume: session persistence is not configured (load a dsh-session-persistence backend)')
+      throw new Error('cannot resume: session persistence is not configured (load a fathom-session-persistence backend)')
     }
     return this.resumeWith(ownerCtx, persistence, options)
   }

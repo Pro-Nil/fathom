@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import type { DomainChanged } from '@pentest-harness/dsh-storage-domain'
+import { Context } from '@fathom/cordis'
+import InvariantRegistry from '@fathom/invariants'
+import type { DomainChanged } from '@fathom/storage-domain'
 import * as WorkspaceInvariant from '../src/invariant.ts'
 import { WorkspaceId } from '../src/index.ts'
 

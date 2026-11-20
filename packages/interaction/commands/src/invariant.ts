@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-commands`:
+ * Package-owned invariant companion for `@fathom/commands`:
  * command lifecycle events pair by commandId within one session log.
- * @module @pentest-harness/dsh-commands/invariant
+ * @module @fathom/commands/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-commands'
+const PACKAGE_NAME = '@fathom/commands'
 
 /** Cordis companion plugin name. */
 export const name = 'commands-invariant'

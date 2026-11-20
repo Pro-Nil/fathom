@@ -8,12 +8,12 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
-import type { PatchOptions } from '@pentest-harness/cordis-plugin-include'
-import { boot, loadOverlayPatches } from '@pentest-harness/dsh-app-boot'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as McpClient from '@pentest-harness/dsh-mcp-client/src/index.ts'
+import type { Context } from '@fathom/cordis'
+import type { PatchOptions } from '@fathom/cordis-plugin-include'
+import { boot, loadOverlayPatches } from '@fathom/app-boot'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import * as McpClient from '@fathom/mcp-client/src/index.ts'
 
 interface ExampleContract {
   file: string
@@ -87,7 +87,7 @@ describe('third-party memory MCP example overlays', () => {
     const row = insertedRow(loadOverlayPatches('memory-mcp-config-test', file))
 
     expect(row.id).toBe(contract.id)
-    expect(row.name).toBe('@pentest-harness/dsh-mcp-client')
+    expect(row.name).toBe('@fathom/mcp-client')
     expect(row.config?.serverName).toBe(contract.serverName)
     expect(row.config?.transport).toBe(contract.transport)
     expect(source.split('\n', 1)[0]).toContain(contract.pin)

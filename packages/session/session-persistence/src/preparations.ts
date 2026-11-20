@@ -1,9 +1,9 @@
 /**
  * Bounded sharing and exclusive reservation of unpublished Sessions.
- * @module @pentest-harness/dsh-session-persistence/preparations
+ * @module @fathom/session-persistence/preparations
  */
 
-import type { Session, SessionId } from '@pentest-harness/dsh-session'
+import type { Session, SessionId } from '@fathom/session'
 
 interface PreparedSource {
   readonly session: Session

@@ -5,10 +5,10 @@
  */
 import type {
   ConversationNodeDefinition, ToolResultNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { isAppendSurfaceEvent } from '@pentest-harness/dsh-client-runtime/client'
-import type { MarkdownFileMentions } from '@pentest-harness/dsh-client-ui-primitives'
-import type { TurnTailOwnerProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-runtime/client'
+import { isAppendSurfaceEvent } from '@fathom/client-runtime/client'
+import type { MarkdownFileMentions } from '@fathom/client-ui-primitives'
+import type { TurnTailOwnerProps } from '@fathom/client-ui-conversation/client'
 
 interface ProducedPath {
   readonly seq: number
@@ -20,7 +20,7 @@ export interface DeliverablesTurnData {
   readonly produced: readonly ProducedPath[]
 }
 
-declare module '@pentest-harness/dsh-client-runtime/client' {
+declare module '@fathom/client-runtime/client' {
   interface ConversationTurnDataMap {
     /** Successful mutation paths accumulated in this Turn. */
     deliverables: DeliverablesTurnData

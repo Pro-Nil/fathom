@@ -1,6 +1,6 @@
 /**
  * Error vocabulary for the storage hub and its backends.
- * @module @pentest-harness/dsh-storage/src/error
+ * @module @fathom/storage/src/error
  */
 
 /** Discriminant codes carried by every {@link StorageError}. */

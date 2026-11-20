@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import * as WorkspaceInvariant from '@pentest-harness/dsh-client-ui-workspace/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import * as WorkspaceInvariant from '@fathom/client-ui-workspace/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 describe('invariant companion', () => {
   it('registers under the package name with an empty installer', async () => {
@@ -11,7 +11,7 @@ describe('invariant companion', () => {
   })
 
   it('node-half apply is a no-op host placeholder', async () => {
-    const { apply } = await import('@pentest-harness/dsh-client-ui-workspace')
+    const { apply } = await import('@fathom/client-ui-workspace')
     apply()
     expect(true).toBe(true) // reaching here without throw is the contract
   })

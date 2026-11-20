@@ -1,22 +1,22 @@
 /**
  * E2B Service Provider for the subprocess capability seam. Each handle starts through the
  * shared sandbox and retains command output/status paths in that remote world.
- * @module @pentest-harness/dsh-subprocess-e2b
+ * @module @fathom/subprocess-e2b
  */
 
 import { randomUUID } from 'node:crypto'
 import { posix } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { SubprocessRuntime } from '@pentest-harness/dsh-subprocess'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { SubprocessRuntime } from '@fathom/subprocess'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import type {
   SubprocessHandle,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@pentest-harness/dsh-subprocess'
-import { e2bControlEnvs, quoteE2BShellArg } from '@pentest-harness/dsh-e2b'
+} from '@fathom/subprocess'
+import { e2bControlEnvs, quoteE2BShellArg } from '@fathom/e2b'
 import { E2BSubprocessHandle } from './process.ts'
 import { asError, signalOpts } from './remote.ts'
 import { spawnE2BTerminal } from './terminal.ts'

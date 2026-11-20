@@ -1,14 +1,14 @@
 /**
- * `@pentest-harness/dsh-web-search-duckduckgo`: registers a keyless,
+ * `@fathom/web-search-duckduckgo`: registers a keyless,
  * DuckDuckGo-backed `WebSearchProvider` with `ctx.web`, so `web_search` works
  * without an account or a paid API. Like the other search providers it
- * registers INTO the seam owned by `@pentest-harness/dsh-web`.
- * @module @pentest-harness/dsh-web-search-duckduckgo
+ * registers INTO the seam owned by `@fathom/web`.
+ * @module @fathom/web-search-duckduckgo
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-web'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/web'
 import { DUCKDUCKGO_DEFAULT_BASE_URL, DuckDuckGoSearchProvider } from './provider.ts'
 
 export {

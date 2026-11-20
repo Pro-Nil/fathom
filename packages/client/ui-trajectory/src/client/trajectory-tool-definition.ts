@@ -1,9 +1,9 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition,
   RunningToolCall, ToolCallBlock, ToolResultNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-tools/types'
+} from '@fathom/client-runtime/client'
+import type {} from '@fathom/tools/types'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 
 /* jscpd:ignore-start -- Target-owned Definitions intentionally keep their event

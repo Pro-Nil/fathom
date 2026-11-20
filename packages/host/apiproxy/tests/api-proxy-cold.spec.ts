@@ -8,24 +8,24 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore from '@pentest-harness/dsh-session'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import { TypertLookupFailure } from '@pentest-harness/dsh-typert-protocol'
-import TypertRegistry from '@pentest-harness/dsh-typert-registry'
-import { createUserMessage, MessageId } from '@pentest-harness/dsh-llm'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import SessionStore from '@fathom/session'
+import AgentRegistry from '@fathom/agent'
+import { TypertLookupFailure } from '@fathom/typert-protocol'
+import TypertRegistry from '@fathom/typert-registry'
+import { createUserMessage, MessageId } from '@fathom/llm'
+import type { Agent } from '@fathom/agent'
+import UserQuestionService from '@fathom/user-questions'
+import type { SessionEvent, SessionHeader, SessionId } from '@fathom/session'
 import {
   PersistenceCoordinator,
   SessionPersistenceRevision,
   type PersistenceBackend,
   type StoredPrefix,
-} from '@pentest-harness/dsh-session-persistence'
-import type { RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+} from '@fathom/session-persistence'
+import type { RpcRequest } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 
@@ -43,7 +43,7 @@ describe('sessions.list cold merge', () => {
     const ctx = new Context()
     await ctx.plugin(SessionStore)
     await ctx.plugin(UserQuestionService)
-    const root = mkdtempSync(join(tmpdir(), 'dsh-cold-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-cold-'))
     const smallPath = join(root, 'small.log')
     const largePath = join(root, 'large.log')
     writeFileSync(smallPath, 'x'.repeat(1024))
@@ -163,7 +163,7 @@ describe('sessions.list cold merge', () => {
     await ctx.plugin(UserQuestionService)
     await ctx.plugin(AgentRegistry)
     const meta = header('attached-during-probe', 100)
-    const root = mkdtempSync(join(tmpdir(), 'dsh-cold-race-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-cold-race-'))
     const path = join(root, 'small.log')
     writeFileSync(path, 'x')
     const started = Promise.withResolvers<undefined>()
@@ -339,7 +339,7 @@ describe('Remote Agent and Session lookup policy', () => {
       inspect,
       locate: () => undefined,
     } as never)
-    const resumedSession = { id: sessionId, header: meta, events: [] } as unknown as import('@pentest-harness/dsh-session').Session
+    const resumedSession = { id: sessionId, header: meta, events: [] } as unknown as import('@fathom/session').Session
     const resumedAgent = { id: sessionId, session: resumedSession, status: 'idle', ctx } as Agent
     const release = Promise.withResolvers<undefined>()
     const resume = vi.spyOn(ctx.agents, 'resume').mockImplementation(async () => {

@@ -5,26 +5,26 @@
  *
  * TODO(permissions): deployment policy belongs in `tools/pre-execute` and
  * sandboxing executors; see docs/architecture.md § Where new behavior goes.
- * @module @pentest-harness/dsh-tool-bash
+ * @module @fathom/tool-bash
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { isAbsolute, resolve as resolvePath } from 'node:path'
-import { defineTool, TOOL_ABORTED } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@pentest-harness/dsh-tools'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type {} from '@pentest-harness/dsh-jobs'
-import type {} from '@pentest-harness/dsh-user-approval'
-import type {} from '@pentest-harness/dsh-shell-env'
-import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
-import { ESCALATION_TARGETS, approveEscalation, canonicalPath, validateEscalationArgs } from '@pentest-harness/dsh-sandbox'
-import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
-import type { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import { DSH_ENV_PREFIX } from '@pentest-harness/dsh-shell'
-import type { ShellRunResult } from '@pentest-harness/dsh-shell'
+import { defineTool, TOOL_ABORTED } from '@fathom/tools'
+import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@fathom/tools'
+import { HarnessError } from '@fathom/llm'
+import type { Agent } from '@fathom/agent'
+import type {} from '@fathom/system-prompt'
+import type {} from '@fathom/jobs'
+import type {} from '@fathom/user-approval'
+import type {} from '@fathom/shell-env'
+import type { SandboxExecutionPolicy, SandboxMode } from '@fathom/sandbox'
+import { ESCALATION_TARGETS, approveEscalation, canonicalPath, validateEscalationArgs } from '@fathom/sandbox'
+import { toolWorkdir } from '@fathom/session-folders'
+import type { SandboxPolicyService } from '@fathom/sandbox-policy'
+import { FATHOM_ENV_PREFIX } from '@fathom/shell'
+import type { ShellRunResult } from '@fathom/shell'
 import { processOutcome } from './background.ts'
 import { parseExitStatus, renderProcessRead, renderResult } from './render.ts'
 
@@ -78,7 +78,7 @@ function bashDescription(backgroundEnabled: boolean, escalationModes: readonly S
   const base = 'Execute a bash command (`bash -c`) and return its stdout/stderr. '
     + 'Each call runs in a fresh shell: no state (cwd, variables, functions) persists between calls — '
     + 'pass `workdir` instead of using `cd`. Non-zero exits are reported as `[exit code: N]`. '
-    + `Current harness environment facts are exposed through managed \`$${DSH_ENV_PREFIX}*\` variables; inspect them when needed. `
+    + `Current harness environment facts are exposed through managed \`$${FATHOM_ENV_PREFIX}*\` variables; inspect them when needed. `
     + 'Commands may run under a file sandbox; a blocked file operation is reported as `[sandbox: file access denied under <mode> mode]` — a policy denial, not a bug in the command; do not retry another way. '
     + 'Long output is truncated to its tail; the full output is saved to a file whose path is reported when available. '
     + background
@@ -351,12 +351,12 @@ export function apply(ctx: Context, config: Config = {}): void {
       // The session folder when one is assigned inside the root, else the root itself.
       const base = await toolWorkdir(ctx, exec.agent, sessionRoot(exec, standingPolicy?.workspaceRoot))
       const workdir = resolveWorkdir(args.workdir, base)
-      const dshEnv = ctx.shellEnv.collect(exec)
+      const fathomEnv = ctx.shellEnv.collect(exec)
       const request = {
         command: args.command,
         ...workdir !== undefined ? { workdir } : {},
         ...args.timeoutMs !== undefined ? { timeoutMs: args.timeoutMs } : {},
-        dshEnv,
+        fathomEnv,
         ...policy !== undefined ? { sandboxPolicy: policy } : {},
       }
       if (args.run_in_background === true) {
@@ -366,7 +366,7 @@ export function apply(ctx: Context, config: Config = {}): void {
         }
         const jobs = ctx.get('jobs')
         if (jobs === undefined) {
-          throw new Error('background jobs unavailable: load @pentest-harness/dsh-jobs and @pentest-harness/dsh-tool-jobs')
+          throw new Error('background jobs unavailable: load @fathom/jobs and @fathom/tool-jobs')
         }
         // The caller owns cancellation until ctx.jobs commits detached ownership.
         if (exec.signal.aborted) {

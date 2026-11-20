@@ -3,19 +3,19 @@
  *
  * This package owns the Service Definition role of the skill capability seam.
  * Concrete
- * providers such as `@pentest-harness/dsh-skill-filesystem` decide where skills come
+ * providers such as `@fathom/skill-filesystem` decide where skills come
  * from; this service only merges provider catalogs, resolves the winning skill
  * for a name, and exposes the winning summaries and definitions to consumers.
  *
- * @module @pentest-harness/dsh-skill
+ * @module @fathom/skill
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { assertNever } from '@pentest-harness/dsh-llm'
-import { NamedEntries, ScopedLayers, scopeChainOf, scopeOf } from '@pentest-harness/dsh-scope'
-import type { ScopeKey, ScopeLayer } from '@pentest-harness/dsh-scope'
-import z from '@pentest-harness/schemastery'
-import type Schema from '@pentest-harness/schemastery'
+import { Context, Service } from '@fathom/cordis'
+import { assertNever } from '@fathom/llm'
+import { NamedEntries, ScopedLayers, scopeChainOf, scopeOf } from '@fathom/scope'
+import type { ScopeKey, ScopeLayer } from '@fathom/scope'
+import z from '@fathom/schemastery'
+import type Schema from '@fathom/schemastery'
 
 const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DEFAULT_COLLECT_CACHE_ENTRIES = 128
@@ -36,7 +36,7 @@ export function isSkillName(name: string): boolean {
 }
 
 /** Origin bucket for a skill contribution. The value is prompt-visible metadata, not precedence by itself. */
-export type SkillSource = 'project-dsh' | 'project-agents' | 'runtime' | 'user-dsh' | 'user-agents' | 'custom' | 'bundled' | (string & {})
+export type SkillSource = 'project-fathom' | 'project-agents' | 'runtime' | 'user-fathom' | 'user-agents' | 'custom' | 'bundled' | (string & {})
 
 /** Optional provider-specific base used by loaded skill bodies to resolve relative resources. */
 export type SkillResourceBase =
@@ -152,7 +152,7 @@ export interface SkillInvocationSource {
   readonly form: 'instructions'
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     /** A user-explicit skill invocation injected by the host. */
     'skill-invocation': SkillInvocationSource
@@ -281,7 +281,7 @@ export interface Config {
   readonly collectCacheMaxEntries?: number
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     skills: SkillRegistry
   }

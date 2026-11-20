@@ -40,7 +40,7 @@ textarea {
   font-family: inherit;
 }
 
-/* ---- Pentest Harness feel layer ----
+/* ---- Fathom feel layer ----
    Motion-aware shell polish: smooth theme crossfades, subtle button/input
    transitions, and a focused scrollbar so the harness feels alive but stays
    tasteful. All of it yields to prefers-reduced-motion. */

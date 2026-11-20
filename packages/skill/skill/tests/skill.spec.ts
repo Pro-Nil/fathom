@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { bindScopeParent, createScope, scopeOf } from '@pentest-harness/dsh-scope'
+import { Context } from '@fathom/cordis'
+import { bindScopeParent, createScope, scopeOf } from '@fathom/scope'
 import SkillRegistry, {
   isModelInvocable,
   isUserInvocable,
@@ -11,7 +11,7 @@ import SkillRegistry, {
   type SkillLookupOptions,
   type SkillProvider,
   type SkillProviderObservation,
-} from '@pentest-harness/dsh-skill'
+} from '@fathom/skill'
 
 function memorySkill(name: string, description: string, rank: number, body = `${name} body.`): SkillCandidate {
   return {

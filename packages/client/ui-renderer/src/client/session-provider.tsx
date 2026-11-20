@@ -3,7 +3,7 @@ import { createContext, useContext, type ReactNode } from 'react'
 import type {
   HostObservable, MaybeSnapshotSelectorHook, SessionMaybeProvideInfo, SessionProvideInfo,
   SlotRendererHost, SnapshotSelectorHook,
-} from '@pentest-harness/dsh-client-ui-slots'
+} from '@fathom/client-ui-slots'
 import { bindSnapshotSelector } from './bind.ts'
 
 /**

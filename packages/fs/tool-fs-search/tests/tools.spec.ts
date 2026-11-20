@@ -11,18 +11,18 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { join, sep } from 'node:path'
-import { createUserMessage, CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt, { renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@pentest-harness/dsh-tools'
-import { SubprocessRuntime } from '@pentest-harness/dsh-subprocess'
-import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import { createUserMessage, CallId } from '@fathom/llm'
+import SystemPrompt, { renderPrompt } from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@fathom/tools'
+import { SubprocessRuntime } from '@fathom/subprocess'
+import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@fathom/subprocess'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import { rgPath } from '@vscode/ripgrep'
-import { SpillLocator, SpillStore } from '@pentest-harness/dsh-spill'
-import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
-import * as ToolFsSearch from '@pentest-harness/dsh-tool-fs-search'
+import { SpillLocator, SpillStore } from '@fathom/spill'
+import type { SaveTextSpill, SpillRef } from '@fathom/spill'
+import * as ToolFsSearch from '@fathom/tool-fs-search'
 import {
   buildGlobCommand,
   buildGrepCommand,
@@ -37,7 +37,7 @@ import {
   runRipgrep,
   sampleAcrossTopLevel,
   toWorkdirRelative,
-} from '@pentest-harness/dsh-tool-fs-search'
+} from '@fathom/tool-fs-search'
 
 const testToolSignal = new AbortController().signal
 

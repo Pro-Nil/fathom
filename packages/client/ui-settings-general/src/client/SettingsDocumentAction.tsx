@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { Button } from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import { Button } from '@fathom/client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import type { SettingsDocumentStore } from './settings-document-store.ts'
 import css from './SettingsDocumentAction.module.css'
 

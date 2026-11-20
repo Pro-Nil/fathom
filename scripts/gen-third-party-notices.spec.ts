@@ -46,12 +46,11 @@ describe('tierExternalDeps', () => {
     const { manifests, names } = workspace({
       // Root tooling and test infrastructure never ship, whichever section declares them.
       'package.json': { dependencies: { 'root-runtime-looking': '^1' }, devDependencies: { 'lint-tool': '^1' } },
-      'packages/test-support/loader-smoke/package.json': { name: '@pentest-harness/dsh-loader-smoke', dependencies: { 'smoke-helper': '^1' } },
-      'packages/test-support/client-runtime/package.json': { name: '@pentest-harness/dsh-client-test-runtime', dependencies: { 'test-lib': '^1' } },
-      'website/package.json': { devDependencies: { 'site-tool': '^1' } },
+      'packages/test-support/loader-smoke/package.json': { name: '@fathom/loader-smoke', dependencies: { 'smoke-helper': '^1' } },
+      'packages/test-support/client-runtime/package.json': { name: '@fathom/client-test-runtime', dependencies: { 'test-lib': '^1' } },
       // A plugin package's runtime dependency ships even when no app mounts it by default.
-      'packages/mcp/mcp-client/package.json': { name: '@pentest-harness/dsh-mcp-client', dependencies: { 'protocol-sdk': '^1' }, devDependencies: { 'protocol-fixture-server': '^1' } },
-      'apps/cli/package.json': { name: '@pentest-harness/dsh-cli', dependencies: { 'cli-lib': '^1', '@pentest-harness/dsh-mcp-client': 'workspace:^' } },
+      'packages/mcp/mcp-client/package.json': { name: '@fathom/mcp-client', dependencies: { 'protocol-sdk': '^1' }, devDependencies: { 'protocol-fixture-server': '^1' } },
+      'apps/cli/package.json': { name: '@fathom/cli', dependencies: { 'cli-lib': '^1', '@fathom/mcp-client': 'workspace:^' } },
     })
 
     expect(tierExternalDeps(manifests, names)).toEqual(new Map([
@@ -60,7 +59,6 @@ describe('tierExternalDeps', () => {
       ['lint-tool', false],
       ['smoke-helper', false],
       ['test-lib', false],
-      ['site-tool', false],
       ['protocol-sdk', true],
       ['protocol-fixture-server', false],
       ['cli-lib', true],
@@ -70,18 +68,18 @@ describe('tierExternalDeps', () => {
   it('keeps a package runtime when any shipping area declares it, and excludes workspace links', () => {
     const { manifests, names } = workspace({
       'package.json': { devDependencies: { shared: '^1' } },
-      'packages/interaction/tui/package.json': { name: '@pentest-harness/dsh-tui', dependencies: { shared: '^1', '@pentest-harness/dsh-cli': 'workspace:^' } },
-      'apps/cli/package.json': { name: '@pentest-harness/dsh-cli' },
+      'packages/interaction/tui/package.json': { name: '@fathom/tui', dependencies: { shared: '^1', '@fathom/cli': 'workspace:^' } },
+      'apps/cli/package.json': { name: '@fathom/cli' },
     })
 
     expect(tierExternalDeps(manifests, names).get('shared')).toBe(true)
-    expect(tierExternalDeps(manifests, names).has('@pentest-harness/dsh-cli')).toBe(false)
+    expect(tierExternalDeps(manifests, names).has('@fathom/cli')).toBe(false)
   })
 })
 
 describe('virtualManifest', () => {
   it('resolves a manifest from an ordinary prefix-matching store directory', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-notices-prefix-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-notices-prefix-'))
     try {
       const name = '@scope/pkg'
       const version = '1.0.0'
@@ -97,7 +95,7 @@ describe('virtualManifest', () => {
   })
 
   it('falls back to a content scan when pnpm 11 truncates the store directory name', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-notices-truncated-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-notices-truncated-'))
     try {
       const name = '@scope/pkg'
       const version = '2.0.0'
@@ -115,7 +113,7 @@ describe('virtualManifest', () => {
   })
 
   it('returns undefined when neither the prefix nor the content scan finds the package', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-notices-miss-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-notices-miss-'))
     try {
       const store = join(root, 'store')
       const other = join(store, 'other-pkg@1.0.0', 'node_modules', 'other-pkg')
@@ -135,7 +133,7 @@ describe('parseVendoredRows', () => {
 
     expect(rows.length).toBeGreaterThan(0)
     expect(rows).toContainEqual({
-      npmName: '@pentest-harness/cordis',
+      npmName: '@fathom/cordis',
       upstreamName: 'cordis',
       upstream: 'https://github.com/cordiverse/cordis',
     })
@@ -144,7 +142,7 @@ describe('parseVendoredRows', () => {
   })
 
   it('yields nothing when the table columns change, so the generator fails loud', () => {
-    expect(parseVendoredRows('| `cordis/` | `@pentest-harness/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\n')).toEqual([])
+    expect(parseVendoredRows('| `cordis/` | `@fathom/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\n')).toEqual([])
   })
 
   it('covers every vendored directory, so no package can drop out of the notices', () => {
@@ -178,7 +176,7 @@ describe('parsePyprojectRequirements', () => {
       'docs = ["sphinx>=7"]',
       '',
       '[tool.hatch.build.targets.wheel]',
-      'packages = ["src/pentest_harness"]',
+      'packages = ["src/fathom"]',
       '',
       '[tool.pytest.ini_options]',
       'testpaths = ["tests"]',
@@ -230,8 +228,8 @@ describe('parsePyprojectRequirements', () => {
 describe('collectPythonDependencies', () => {
   it('excludes normalized local project names without exempting a third-party prefix', () => {
     const pyprojects = [
-      '[project]\nname = "pentest-harness-runtime-bin"\ndependencies = ["pydantic"]\n',
-      '[project]\nname = "pentest-harness-sdk"\ndependencies = ["Pentest.Harness_Runtime-Bin", "pentest-unrelated"]\n',
+      '[project]\nname = "fathom-runtime-bin"\ndependencies = ["pydantic"]\n',
+      '[project]\nname = "fathom-sdk"\ndependencies = ["Fathom.Runtime_Bin", "pentest-unrelated"]\n',
     ]
     expect(() => collectPythonDependencies(pyprojects)).toThrow(
       'python dependency pentest-unrelated is missing from PYTHON_METADATA',

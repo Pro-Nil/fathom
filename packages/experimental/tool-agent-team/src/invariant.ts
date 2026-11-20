@@ -1,9 +1,9 @@
 /** Package-owned invariant companion for the Team tool adapter. */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-experimental-tool-agent-team'
+const PACKAGE_NAME = '@fathom/experimental-tool-agent-team'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-team-invariant'

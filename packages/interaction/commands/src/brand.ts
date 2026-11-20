@@ -1,16 +1,16 @@
 /**
- * dsh-commands' owned branded id: command lifecycle pairing across the
+ * fathom-commands' owned branded id: command lifecycle pairing across the
  * session log, the wire admission response, and client-side flow pairing.
  *
- * The `Branded<B>` primitive lives in `@pentest-harness/dsh-brand`; this module
+ * The `Branded<B>` primitive lives in `@fathom/brand`; this module
  * is a pure type/constructor outlet (no cordis imports, no module
  * augmentation) so wire and client programs can name the brand without
- * loading the host plugin's Context merges — the `dsh-llm/brand` shape.
+ * loading the host plugin's Context merges — the `fathom-llm/brand` shape.
  *
- * @module @pentest-harness/dsh-commands/brand
+ * @module @fathom/commands/brand
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /**
  * Pairs one command execution's `command/run`/`command/done` lifecycle

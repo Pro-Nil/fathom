@@ -1,4 +1,4 @@
-import type { MessageImagesProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+import type { MessageImagesProps } from '@fathom/client-ui-conversation/client'
 import { ImageGallery } from '../MessageImage.tsx'
 import { messageImageLabels } from './labels.ts'
 

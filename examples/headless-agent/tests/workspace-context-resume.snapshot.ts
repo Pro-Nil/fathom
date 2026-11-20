@@ -7,19 +7,19 @@ import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import { normalizeSessionSnapshot, type NormalizeContext } from '@pentest-harness/dsh-acp-snapshot'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@pentest-harness/dsh-loader-smoke'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import { normalizeSessionSnapshot, type NormalizeContext } from '@fathom/acp-snapshot'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@fathom/loader-smoke'
+import { createUserMessage } from '@fathom/llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type SessionEvent,
   type SessionHeader,
-} from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import { renderWorkspaceContext } from '@pentest-harness/dsh-agent-instructions'
-import { resolveConfig, workspaceBaselineIdentity } from '@pentest-harness/dsh-agent-instructions/src/config.ts'
+} from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import { renderWorkspaceContext } from '@fathom/agent-instructions'
+import { resolveConfig, workspaceBaselineIdentity } from '@fathom/agent-instructions/src/config.ts'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = join(dirname(fileURLToPath(import.meta.url)), 'workspace-context-resume-snapshots/offline-edit')
@@ -31,7 +31,7 @@ const configPath = fileURLToPath(new URL('../workspace-context-resume.cordis.sna
 const binScript = fileURLToPath(new URL('./fixtures/headless-driver.ts', import.meta.url))
 const tsconfigPath = fileURLToPath(new URL('../../../tsconfig.json', import.meta.url))
 const sessionId = SessionId('workspace-context-resume')
-const refreshing = process.env.DSH_SNAPSHOT === 'refresh'
+const refreshing = process.env.FATHOM_SNAPSHOT === 'refresh'
 const oldInstruction = 'Old workspace instruction.'
 const newInstruction = 'New workspace instruction after offline edit.'
 
@@ -62,7 +62,7 @@ async function seedVisibleBaseline(
     content: file.content,
   })), { maxBytes: 65536 })
   const config = resolveConfig({
-    dshHome: join(cwd, '.dsh'),
+    fathomHome: join(cwd, '.fathom'),
     maxBytes: 65536,
     ...options.instructionFileCandidates === undefined
       ? {}
@@ -117,15 +117,15 @@ describe('agent-instructions resume snapshot', () => {
     let sessionPath = ''
     const result = await runLoaderSmoke({
       label: 'agent-instructions resume headless stream-json snapshot',
-      tempDirPrefix: 'dsh-workspace-context-resume-',
+      tempDirPrefix: 'fathom-workspace-context-resume-',
       binScript,
       libBinScript: binScript,
       configPath,
       binArgs: [configPath, 'Acknowledge the current workspace instruction.'],
       tsconfigPath,
       env: {
-        DSH_SNAPSHOT_FILE: replayFixture,
-        DSH_SNAPSHOT_OVERRIDE: replayOverride,
+        FATHOM_SNAPSHOT_FILE: replayFixture,
+        FATHOM_SNAPSHOT_OVERRIDE: replayOverride,
       },
       prepare: async (runCwd) => {
         cwd = runCwd
@@ -174,15 +174,15 @@ describe('agent-instructions resume snapshot', () => {
     let sessionPath = ''
     const result = await runLoaderSmoke({
       label: 'agent-instructions precedence-change resume snapshot',
-      tempDirPrefix: 'dsh-workspace-context-precedence-',
+      tempDirPrefix: 'fathom-workspace-context-precedence-',
       binScript,
       libBinScript: binScript,
       configPath,
       binArgs: [configPath, 'Acknowledge the current workspace instruction.'],
       tsconfigPath,
       env: {
-        DSH_SNAPSHOT_FILE: replayFixture,
-        DSH_SNAPSHOT_OVERRIDE: replayOverride,
+        FATHOM_SNAPSHOT_FILE: replayFixture,
+        FATHOM_SNAPSHOT_OVERRIDE: replayOverride,
       },
       prepare: async (runCwd) => {
         cwd = runCwd

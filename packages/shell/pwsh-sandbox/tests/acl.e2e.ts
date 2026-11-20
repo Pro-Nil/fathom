@@ -12,12 +12,12 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { SandboxExecutionPolicy } from '@pentest-harness/dsh-sandbox'
-import { resolvePwshPath } from '@pentest-harness/dsh-pwsh-local'
-import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
-import { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import { Context } from '@fathom/cordis'
+import type { SandboxExecutionPolicy } from '@fathom/sandbox'
+import { resolvePwshPath } from '@fathom/pwsh-local'
+import { LocalSandboxProvider } from '@fathom/sandbox-local'
+import { SandboxPolicyService } from '@fathom/sandbox-policy'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 import { SandboxPwshExecutor } from '../src/index.ts'
 
 const isWin32 = process.platform === 'win32'
@@ -38,10 +38,10 @@ describe.skipIf(!isWin32 || !pwshAvailable())('pwsh-sandbox real ACL confinement
     // The workspace escape sits under the profile. A separate directory under
     // the ambient temp root proves that the root itself is not granted: the
     // runner creates its own private child and rewrites TMP/TEMP to it.
-    scratchRoot = mkdtempSync(join(homedir(), 'dsh-pwsh-sandbox-e2e-'))
+    scratchRoot = mkdtempSync(join(homedir(), 'fathom-pwsh-sandbox-e2e-'))
     writableDir = join(scratchRoot, 'writable')
     mkdirSync(writableDir)
-    outsideTempDir = mkdtempSync(join(tmpdir(), 'dsh-pwsh-sandbox-e2e-outside-temp-'))
+    outsideTempDir = mkdtempSync(join(tmpdir(), 'fathom-pwsh-sandbox-e2e-outside-temp-'))
     secretFile = join(scratchRoot, 'secret.txt')
     writeFileSync(secretFile, 'top secret - must stay readable to prove the read boundary')
     escapeFile = join(scratchRoot, 'escaped.txt')

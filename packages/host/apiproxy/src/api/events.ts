@@ -6,20 +6,20 @@
  * signal is a local stream-control parameter, independent of the request (never on the wire).
  */
 
-import type { AskUserQuestionItem } from '@pentest-harness/dsh-user-questions/types'
-import type { ApprovalOutcome, ApprovalRequestId } from '@pentest-harness/dsh-user-approval/types'
-import type { Message } from '@pentest-harness/dsh-llm/types'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { CallId } from '@pentest-harness/dsh-llm/brand'
-import type { JsonValue, SessionEvent, SessionId } from '@pentest-harness/dsh-session/types'
-import type { ToolCallView, ToolResultView } from '@pentest-harness/dsh-tools/presentation'
+import type { AskUserQuestionItem } from '@fathom/user-questions/types'
+import type { ApprovalOutcome, ApprovalRequestId } from '@fathom/user-approval/types'
+import type { Message } from '@fathom/llm/types'
+import type { MessageId } from '@fathom/llm/brand'
+import type { CallId } from '@fathom/llm/brand'
+import type { JsonValue, SessionEvent, SessionId } from '@fathom/session/types'
+import type { ToolCallView, ToolResultView } from '@fathom/tools/presentation'
 import type { RpcError, RpcId, RpcRequest } from './rpc.ts'
 import type { JobView } from './jobs.ts'
 import type { WorkspaceView } from './workspace.ts'
 
 // Client-side consumers take the render-intent vocabulary from the contract;
-// dsh-tools remains its owner.
-export type { ToolCallView, ToolResultView } from '@pentest-harness/dsh-tools/presentation'
+// fathom-tools remains its owner.
+export type { ToolCallView, ToolResultView } from '@fathom/tools/presentation'
 
 /**
  * Host-computed render intent accompanying a `tool/call` or `tool/result`
@@ -143,7 +143,7 @@ export type HostFrame =
   | { type: 'host/archived-sessions-changed'; archivedSessionIds: SessionId[] }
   /**
    * One allowlisted host cordis event forwarded verbatim. The allowlist is
-   * owned by `@pentest-harness/dsh-api-remotes` (`API_REMOTE_FORWARDED_EVENTS`),
+   * owned by `@fathom/api-remotes` (`API_REMOTE_FORWARDED_EVENTS`),
    * which is also the only control point over what a consumer can receive.
    * `event` is the host's own event name and `args` its argument list: this
    * path applies no projection, no redaction, and no renaming, so the payload

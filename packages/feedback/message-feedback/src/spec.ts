@@ -1,12 +1,12 @@
 /**
  * Durable storage-domain declaration for lifecycle-bound message feedback.
- * @module @pentest-harness/dsh-message-feedback/src/spec
+ * @module @fathom/message-feedback/src/spec
  */
 
 import { z } from 'zod'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
-import { defineDomain, domainTable } from '@pentest-harness/dsh-storage-domain'
+import type { MessageId } from '@fathom/llm/brand'
+import type { SessionId } from '@fathom/session/types'
+import { defineDomain, domainTable } from '@fathom/storage-domain'
 import type { MessageFeedbackItem, MessageFeedbackRating, MessageFeedbackVersion } from './types.ts'
 
 const nonNegativeSafeInteger = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER)

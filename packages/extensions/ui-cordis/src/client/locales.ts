@@ -5,7 +5,7 @@ export const NS = 'cordis'
 /** Translation keys owned by the Cordis UI namespace. */
 export type CordisKey = keyof typeof en
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Dynamic Cordis UI copy. */
     cordis: CordisKey

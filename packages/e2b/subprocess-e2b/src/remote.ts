@@ -4,8 +4,8 @@
  * the ordinary-process and terminal teardown ladders.
  */
 
-import { CommandExitError, e2bControlEnvs, SandboxNotFoundError } from '@pentest-harness/dsh-e2b'
-import type { Sandbox } from '@pentest-harness/dsh-e2b'
+import { CommandExitError, e2bControlEnvs, SandboxNotFoundError } from '@fathom/e2b'
+import type { Sandbox } from '@fathom/e2b'
 
 /**
  * Normalize an unknown rejection into an Error.

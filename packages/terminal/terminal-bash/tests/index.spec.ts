@@ -1,27 +1,27 @@
 import { describe, expect, it, vi } from 'vitest'
 import { PassThrough } from 'node:stream'
 import { resolve } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox, type Agent } from '@pentest-harness/dsh-agent'
-import SandboxProvider from '@pentest-harness/dsh-sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@pentest-harness/dsh-sandbox'
-import SandboxPolicyService, { setSandboxMode } from '@pentest-harness/dsh-sandbox-policy'
-import TerminalSessionService, { TerminalBackendCleanupError, TerminalSessionId } from '@pentest-harness/dsh-terminal'
-import type { TerminalSendRequest, TerminalWaitReason } from '@pentest-harness/dsh-terminal'
-import { BashTerminalBackend, PWSH_PROMPT_SETUP } from '@pentest-harness/dsh-terminal-bash'
-import { ENCODING_PREAMBLE } from '@pentest-harness/dsh-pwsh-local'
-import * as ptyLocal from '@pentest-harness/dsh-terminal-bash'
-import type { ResolvedConfig } from '@pentest-harness/dsh-terminal-bash/src/config.ts'
-import type { LocalPtySession } from '@pentest-harness/dsh-terminal-bash/src/session.ts'
-import { SubprocessRuntime } from '@pentest-harness/dsh-subprocess'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox, type Agent } from '@fathom/agent'
+import SandboxProvider from '@fathom/sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@fathom/sandbox'
+import SandboxPolicyService, { setSandboxMode } from '@fathom/sandbox-policy'
+import TerminalSessionService, { TerminalBackendCleanupError, TerminalSessionId } from '@fathom/terminal'
+import type { TerminalSendRequest, TerminalWaitReason } from '@fathom/terminal'
+import { BashTerminalBackend, PWSH_PROMPT_SETUP } from '@fathom/terminal-bash'
+import { ENCODING_PREAMBLE } from '@fathom/pwsh-local'
+import * as ptyLocal from '@fathom/terminal-bash'
+import type { ResolvedConfig } from '@fathom/terminal-bash/src/config.ts'
+import type { LocalPtySession } from '@fathom/terminal-bash/src/session.ts'
+import { SubprocessRuntime } from '@fathom/subprocess'
 import type {
   SubprocessHandle,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@pentest-harness/dsh-subprocess'
+} from '@fathom/subprocess'
 
 class EmptySandbox extends SandboxProvider {
   confine(_argv: readonly string[], _policy: SandboxPolicy): ConfinedArgv {
@@ -210,9 +210,9 @@ describe('BashTerminalBackend startup rollback', () => {
       cwd: '/work',
       graceMs: 10,
       env: {
-        TERM: 'dumb', PAGER: 'cat', GIT_PAGER: 'cat', PS1: 'dsh> ', BASH_SILENCE_DEPRECATION_WARNING: '1',
-        PROMPT_COMMAND: 'printf "\\033]133;D;%s\\007" "$?"; PS1=\'dsh> \'',
-        DSH_SHELL: '1', DSH_SESSION_ID: 'agent', DSH_PTY_SESSION_ID: 'pty-1',
+        TERM: 'dumb', PAGER: 'cat', GIT_PAGER: 'cat', PS1: 'fathom> ', BASH_SILENCE_DEPRECATION_WARNING: '1',
+        PROMPT_COMMAND: 'printf "\\033]133;D;%s\\007" "$?"; PS1=\'fathom> \'',
+        FATHOM_SHELL: '1', FATHOM_SESSION_ID: 'agent', FATHOM_PTY_SESSION_ID: 'pty-1',
       },
     })
     expect(spawned?.env?.PTY_TEST_SECRET).toBeUndefined()
@@ -331,14 +331,14 @@ describe('BashTerminalBackend startup rollback', () => {
         outcome.resolve({ exitCode: null, signal: 'SIGTERM' })
       },
     }
-    queueMicrotask(() => { output.write(Buffer.from('\x1b]133;D;0\x07dsh> ')) })
+    queueMicrotask(() => { output.write(Buffer.from('\x1b]133;D;0\x07fathom> ')) })
     const backend = new BashTerminalBackend(
       ctx,
       config(),
       async () => terminal,
     )
     const session = await backend.spawn(spec(agent(ctx)))
-    expect(session.motd).toBe('dsh> ')
+    expect(session.motd).toBe('fathom> ')
     await session.close('test complete')
   })
 
@@ -354,7 +354,7 @@ describe('BashTerminalBackend startup rollback', () => {
         sent = request
         return {
           done: Promise.resolve({
-            viewport: 'setup-echo dsh> ', waitReason: 'stdin_read' as const,
+            viewport: 'setup-echo fathom> ', waitReason: 'stdin_read' as const,
             sessionStatus: { kind: 'running' as const }, truncated: false,
           }),
           readOutput: () => ({ delta: '', truncated: false }),
@@ -371,9 +371,9 @@ describe('BashTerminalBackend startup rollback', () => {
     )
     expect(await backend.spawn(spec(agent(ctx)))).toBe(session)
     expect(sent).toMatchObject({ text: ENCODING_PREAMBLE + PWSH_PROMPT_SETUP, submit: true })
-    expect(session.motd).toBe('setup-echo dsh> ')
+    expect(session.motd).toBe('setup-echo fathom> ')
     expect(spawned?.env).toMatchObject({
-      TERM: 'dumb', NO_COLOR: '1', DSH_SHELL: '1', DSH_SESSION_ID: 'agent', DSH_PTY_SESSION_ID: 'pty-1',
+      TERM: 'dumb', NO_COLOR: '1', FATHOM_SHELL: '1', FATHOM_SESSION_ID: 'agent', FATHOM_PTY_SESSION_ID: 'pty-1',
     })
     expect(spawned?.env?.PS1).toBeUndefined()
     expect(spawned?.env?.PROMPT_COMMAND).toBeUndefined()
@@ -391,7 +391,7 @@ describe('BashTerminalBackend startup rollback', () => {
         const second = sends.length > 1
         return {
           done: Promise.resolve({
-            viewport: second ? 'dsh> ' : 'PowerShell 7.6.4\n',
+            viewport: second ? 'fathom> ' : 'PowerShell 7.6.4\n',
             waitReason: 'inferred_idle' as const,
             sessionStatus: { kind: 'running' as const }, truncated: false,
           }),
@@ -410,7 +410,7 @@ describe('BashTerminalBackend startup rollback', () => {
     await backend.spawn(spec(agent(ctx)))
     expect(sends).toHaveLength(2)
     expect(sends[1]).toMatchObject({ text: '', submit: false })
-    expect(session.motd).toBe('dsh> ')
+    expect(session.motd).toBe('fathom> ')
   })
 
   it('rejects a pwsh bootstrap whose shell exits or times out', async () => {
@@ -446,7 +446,7 @@ describe('BashTerminalBackend startup rollback', () => {
         sends.push(request)
         return {
           done: Promise.resolve({
-            viewport: 'dsh> ', waitReason: 'stdin_read' as const,
+            viewport: 'fathom> ', waitReason: 'stdin_read' as const,
             sessionStatus: { kind: 'running' as const }, truncated: false,
           }),
           readOutput: () => ({ delta: '', truncated: false }),
@@ -463,7 +463,7 @@ describe('BashTerminalBackend startup rollback', () => {
     )
     const signal = new AbortController().signal
     const spawned = await backend.spawn({ ...spec(agent(ctx)), signal })
-    expect(spawned.motd).toBe('dsh> ')
+    expect(spawned.motd).toBe('fathom> ')
     expect(sends).toHaveLength(1)
     expect(sends[0]?.signal).toBe(signal)
   })

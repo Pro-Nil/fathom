@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractMarkdownPlainText } from '@pentest-harness/dsh-client-ui-primitives'
+import { extractMarkdownPlainText } from '@fathom/client-ui-primitives'
 
 const MARKDOWN = [
   '# Release notes',

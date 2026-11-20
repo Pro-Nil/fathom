@@ -5,7 +5,7 @@
  * TODO(acp-subagent-replay): add snapshot-tier coverage with a separate replay fixture and
  * sessions root inside each child process. Current keyless coverage uses a scripted ACP child;
  * with-key coverage drives the real ACP example.
- * @module @pentest-harness/dsh-subagent-acp/run
+ * @module @fathom/subagent-acp/run
  */
 
 import { randomUUID } from 'node:crypto'
@@ -22,11 +22,11 @@ import {
   type SessionNotification,
   type StopReason,
 } from '@agentclientprotocol/sdk'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { AssistantOutputFold } from '@pentest-harness/dsh-subagent'
-import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@pentest-harness/dsh-subagent'
-import type { SubprocessHandle, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import { AssistantOutputFold } from '@fathom/subagent'
+import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@fathom/subagent'
+import type { SubprocessHandle, SubprocessSpawnSpec } from '@fathom/subprocess'
 
 /** Fixed response to child permission requests: reject by default, or select the first allow option. */
 export type PermissionPolicy = 'allow' | 'reject'
@@ -50,8 +50,8 @@ export interface AcpRunSpec {
    * `OPENAI_API_KEY`). Merged on top of the subprocess seam's scrubbed
    * parent env. A value here is forwarded even if its name matches the
    * credential-scrub pattern (an explicit opt-in for the child's own creds).
-   * Explicit `DSH_*` entries are deployment-owned facts for the child harness
-   * (e.g. `DSH_PERMISSION_MODE`); they simply merge after the scrub that
+   * Explicit `FATHOM_*` entries are deployment-owned facts for the child harness
+   * (e.g. `FATHOM_PERMISSION_MODE`); they simply merge after the scrub that
    * dropped their stale ambient namesakes.
    */
   env: Record<string, string>
@@ -204,7 +204,7 @@ export async function startAcpRun(request: SubagentStartRequest, spec: AcpRunSpe
   const id = SessionId(randomUUID())
 
   // Keep diagnostics on parent stderr ('inherit'); only ACP output contributes
-  // to the result. The seam's scrub drops ambient credentials and DSH_* names
+  // to the result. The seam's scrub drops ambient credentials and FATHOM_* names
   // while spec.env (the child's own key, its deployment facts) merges after it.
   const child = spec.spawn({
     argv: [spec.command, ...spec.args],

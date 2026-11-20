@@ -1,11 +1,11 @@
-import { freezeMessage, MessageId } from '@pentest-harness/dsh-llm'
+import { freezeMessage, MessageId } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Events } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import * as ScopeInvariant from '@pentest-harness/dsh-scope/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { Events } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { scopeTarget } from '@fathom/scope'
+import * as ScopeInvariant from '@fathom/scope/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

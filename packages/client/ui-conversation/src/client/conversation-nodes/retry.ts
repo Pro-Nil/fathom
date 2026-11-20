@@ -1,12 +1,12 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationLocation, ConversationNodeDefinition, ModelRetryNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-llm-retry/types'
+} from '@fathom/client-runtime/client'
+import type {} from '@fathom/llm-retry/types'
 import type { RetryChatData } from '../contract/chat-nodes.ts'
 import { chatNode } from './common.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Producer-correlated model retry chain. */
     'model-retry': RetryChatData

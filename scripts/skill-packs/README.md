@@ -1,6 +1,6 @@
 # Skill packs
 
-Curated third-party skills that `scripts/install-skill-pack.ts` installs into your user skill root (`$DSH_HOME/skills`, default `~/.dsh/skills`) as flat `<name>.md` files. The `skill-filesystem` provider picks them up automatically; a running harness sees them on its next catalog refresh.
+Curated third-party skills that `scripts/install-skill-pack.ts` installs into your user skill root (`$FATHOM_HOME/skills`, default `~/.fathom/skills`) as flat `<name>.md` files. The `skill-filesystem` provider picks them up automatically; a running harness sees them on its next catalog refresh.
 
 ```sh
 pnpm skills:bug-bounty                                   # install or update

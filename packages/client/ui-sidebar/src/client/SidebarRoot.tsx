@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import {
   BrandMark, IconNewChatOutline16, IconPanelLeftOutline16, Tooltip,
-} from '@pentest-harness/dsh-client-ui-primitives'
+} from '@fathom/client-ui-primitives'
 import type { SidebarRootComponentProps } from './contract/slots.ts'
 import css from './SidebarRoot.module.css'
 
@@ -143,9 +143,9 @@ export function SidebarRoot({
                 {renderSlot('sidebar.brand.name', {}, {
                   fallback: (
                     <>
-                      <span className={css.fallbackBrandName}>Pentest Harness</span>
-                      {process.env.DSH_CLIENT_COMMIT_HASH
-                        ? <span className={css.buildRevision}>{process.env.DSH_CLIENT_COMMIT_HASH}</span>
+                      <span className={css.fallbackBrandName}>Fathom</span>
+                      {process.env.FATHOM_CLIENT_COMMIT_HASH
+                        ? <span className={css.buildRevision}>{process.env.FATHOM_CLIENT_COMMIT_HASH}</span>
                         : null}
                     </>
                   ),
@@ -154,7 +154,7 @@ export function SidebarRoot({
             </span>
           </button>
         )}
-        {/* Rail resting state is the whale mark; hovering swaps in the panel
+        {/* Rail resting state is the brand mark; hovering swaps in the panel
             icon (the expand affordance, figma sidebar-hover flow). */}
         <Tooltip label={collapsed ? t('toggle.open') : t('toggle.collapse')} delayMs={500}>
           <button

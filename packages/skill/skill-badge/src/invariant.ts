@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-skill-badge`.
- * @module @pentest-harness/dsh-skill-badge/invariant
+ * Package-owned invariant companion for `@fathom/skill-badge`.
+ * @module @fathom/skill-badge/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-skill-badge'
+const PACKAGE_NAME = '@fathom/skill-badge'
 
 /** Cordis companion plugin name. */
 export const name = 'skill-badge-invariant'

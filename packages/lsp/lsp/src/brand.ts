@@ -1,11 +1,11 @@
 /**
- * dsh-lsp's owned branded id: {@link LspProviderId}, the opaque identity a provider reserves on
- * `ctx.lsp`. The `Branded<B>` primitive lives in `@pentest-harness/dsh-brand`; keeping the type and its
+ * fathom-lsp's owned branded id: {@link LspProviderId}, the opaque identity a provider reserves on
+ * `ctx.lsp`. The `Branded<B>` primitive lives in `@fathom/brand`; keeping the type and its
  * factory together here lets `index.ts` re-export both under one name.
- * @module @pentest-harness/dsh-lsp/brand
+ * @module @fathom/lsp/brand
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /** Opaque provider identity, reserved atomically with its extension mappings at registration. */
 export type LspProviderId = Branded<'LspProviderId'>

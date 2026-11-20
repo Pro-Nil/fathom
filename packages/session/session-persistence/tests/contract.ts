@@ -5,13 +5,13 @@
  * to the same append-only / contiguous-seq / lazy-materialization / crash
  * semantics. The JSONL backend's own spec adds file-specific tests on top.
  *
- * @module @pentest-harness/dsh-session-persistence/tests/contract
+ * @module @fathom/session-persistence/tests/contract
  */
 
 import { describe, expect, it } from 'vitest'
-import { SESSION_FORMAT_VERSION, Session, SessionId, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader, SurfaceEventType, SurfaceIntent } from '@pentest-harness/dsh-session'
-import { CallId, MessageId, createMessage, freezeMessage } from '@pentest-harness/dsh-llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '@fathom/session'
+import type { SessionEvent, SessionHeader, SurfaceEventType, SurfaceIntent } from '@fathom/session'
+import { CallId, MessageId, createMessage, freezeMessage } from '@fathom/llm'
 import type { SessionPersistence } from '../src/index.ts'
 
 /** A backend under test plus its teardown. */

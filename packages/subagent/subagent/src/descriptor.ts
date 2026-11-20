@@ -18,14 +18,14 @@
  * durable descriptor, so it neither restores the prior budget nor inherits
  * the parent's current one; the resumed route's defaults apply instead.
  *
- * @module @pentest-harness/dsh-subagent/descriptor
+ * @module @fathom/subagent/descriptor
  */
 
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { ToolRestriction } from '@pentest-harness/dsh-tools'
+import { snapshotJsonValue } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import type { ToolRestriction } from '@fathom/tools'
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Durable identity and lifecycle mode of a session-backed subagent child,

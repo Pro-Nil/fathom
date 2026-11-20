@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionEventMap, SessionEventType } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent, SessionEventMap, SessionEventType } from '@fathom/session'
 import {
   applyTeamEvent,
   emptyTeamFoldState,

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@fathom/llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
-} from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader } from '@pentest-harness/dsh-session'
+} from '@fathom/session'
+import type { SessionEvent, SessionHeader } from '@fathom/session'
 import {
   buildSessionEventRecords,
   buildSessionEventSearchDocuments,
@@ -16,7 +16,7 @@ import {
   materializeSessionEventResultFilters,
   materializeSessionResultFilters,
   type SessionQueryErrorCode,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 const id = SessionId('session')

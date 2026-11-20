@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tool-jobs`.
- * @module @pentest-harness/dsh-tool-jobs/invariant
+ * Package-owned invariant companion for `@fathom/tool-jobs`.
+ * @module @fathom/tool-jobs/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-jobs'
+const PACKAGE_NAME = '@fathom/tool-jobs'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-jobs-invariant'

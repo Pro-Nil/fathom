@@ -8,15 +8,15 @@
  * `--json` record parsing, per-line preview retention, match retention,
  * grouping, and formatting; process concerns stay behind `ctx.subprocess`.
  *
- * @module @pentest-harness/dsh-tool-fs-search/grep
+ * @module @fathom/tool-fs-search/grep
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, SearchResultView, ToolResult } from '@pentest-harness/dsh-tools'
-import type { RetainedItems } from '@pentest-harness/dsh-output-retention'
-import type { SpillRef } from '@pentest-harness/dsh-spill'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, SearchResultView, ToolResult } from '@fathom/tools'
+import type { RetainedItems } from '@fathom/output-retention'
+import type { SpillRef } from '@fathom/spill'
+import type {} from '@fathom/system-prompt'
 import type { GrepMatch } from './search-core.ts'
 import { SearchError, previewLine, retainGrepMatches, runRipgrep, toWorkdirRelative, trySaveFormattedResult } from './search-core.ts'
 import { grepSearchMeta, searchViewFromMeta } from './presentation.ts'

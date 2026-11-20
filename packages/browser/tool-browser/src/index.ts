@@ -2,13 +2,13 @@
  * Model-facing browser tools (`browser_*`) over the shared browser `ctx.browser`.
  * This package owns schemas, validation, limits, prompt guidance and result
  * formatting; the browser process, tabs and live view belong to
- * `@pentest-harness/dsh-browser`.
- * @module @pentest-harness/dsh-tool-browser
+ * `@fathom/browser`.
+ * @module @fathom/tool-browser
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-browser'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/browser'
 import { applyBrowserTools } from './tools.ts'
 
 export { applyBrowserTools, capText, interactiveLines } from './tools.ts'

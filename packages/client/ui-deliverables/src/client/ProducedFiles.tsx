@@ -5,9 +5,9 @@
 // Host machine.
 
 import { useLayoutEffect, useRef, useState } from 'react'
-import type { HostDescriptionSource } from '@pentest-harness/dsh-client-connection/client'
-import type { InjectFace, PropsLocale } from '@pentest-harness/dsh-client-ui-slots'
-import type { TurnTailOwnerProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+import type { HostDescriptionSource } from '@fathom/client-connection/client'
+import type { InjectFace, PropsLocale } from '@fathom/client-ui-slots'
+import type { TurnTailOwnerProps } from '@fathom/client-ui-conversation/client'
 import { basename } from './turn-deliverables.ts'
 import type { NS } from './locales.ts'
 import css from './ProducedFiles.module.css'

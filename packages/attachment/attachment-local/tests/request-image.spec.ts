@@ -1,7 +1,7 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import sharp from 'sharp'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CompressionLimiter } from '../src/compression-limiter.ts'
@@ -10,9 +10,9 @@ import LocalAttachmentStore, { requestImageDimensions } from '../src/index.ts'
 const homes: string[] = []
 
 async function store(): Promise<LocalAttachmentStore> {
-  const dshHome = await mkdtemp(join(tmpdir(), 'dsh-request-image-'))
-  homes.push(dshHome)
-  return new LocalAttachmentStore(new Context(), { dshHome })
+  const fathomHome = await mkdtemp(join(tmpdir(), 'fathom-request-image-'))
+  homes.push(fathomHome)
+  return new LocalAttachmentStore(new Context(), { fathomHome })
 }
 
 async function image(width: number, height: number): Promise<Uint8Array> {

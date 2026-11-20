@@ -2,19 +2,19 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import * as SubagentFork from '@pentest-harness/dsh-subagent-fork-in-process'
-import type { GenerateOptions, MessageId, StreamChunk } from '@pentest-harness/dsh-llm'
-import { CallId, createUserMessage, LlmAdapter } from '@pentest-harness/dsh-llm'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import * as SubagentFork from '@fathom/subagent-fork-in-process'
+import type { GenerateOptions, MessageId, StreamChunk } from '@fathom/llm'
+import { CallId, createUserMessage, LlmAdapter } from '@fathom/llm'
+import { defineTool } from '@fathom/tools'
+import InvariantRegistry from '@fathom/invariants'
 import { MockAdapter, maxTokensResponse, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import SubagentRuntime, {
   SubagentError,
@@ -71,7 +71,7 @@ async function setupWith(adapter: LlmAdapter, options: { persistence?: boolean }
   let disposePersistence: (() => Promise<void>) | undefined
   let root: string | undefined
   if (options.persistence !== false) {
-    root = mkdtempSync(join(tmpdir(), 'dsh-subagent-continuation-'))
+    root = mkdtempSync(join(tmpdir(), 'fathom-subagent-continuation-'))
     const persistedRoot = root
     const persistenceFiber = await ctx.plugin(JsonlSessionPersistence, { root })
     disposePersistence = () => persistenceFiber.dispose()
@@ -1764,7 +1764,7 @@ describe('continuable settlement delivery', () => {
       { chunks: textResponse('parent ack') },
     ])
     const { ctx, parent } = await setupWith(adapter)
-    // The shipped durability checkpoint (`dsh-session-checkpoint-policy`) is
+    // The shipped durability checkpoint (`fathom-session-checkpoint-policy`) is
     // fail-closed at the step boundary, so a rejected write ends the turn after
     // it claimed its messages and before it entered a step.
     ctx.on('agent/pre-step', async ({ agent: subject, turn }, next) => {
@@ -2446,7 +2446,7 @@ describe('continuable errors', () => {
     const adapter = new GatedAdapter([{ chunks: textResponse('child'), gate: hold.promise }])
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx)
-    const root = mkdtempSync(join(tmpdir(), 'dsh-subagent-continuation-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-subagent-continuation-'))
     const persistenceFiber = await ctx.plugin(JsonlSessionPersistence, { root })
     cleanups.push(async () => {
       await persistenceFiber.dispose()

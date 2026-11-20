@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createScope } from '@pentest-harness/dsh-scope'
-import type { Scope } from '@pentest-harness/dsh-scope'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import CommandRuntime, { parseCommand, type CommandDefinition } from '@pentest-harness/dsh-commands'
-import { AttachmentStore } from '@pentest-harness/dsh-attachment'
+import { Context } from '@fathom/cordis'
+import { createScope } from '@fathom/scope'
+import type { Scope } from '@fathom/scope'
+import type { Agent } from '@fathom/agent'
+import SessionStore, { SessionId } from '@fathom/session'
+import CommandRuntime, { parseCommand, type CommandDefinition } from '@fathom/commands'
+import { AttachmentStore } from '@fathom/attachment'
 
 function command(name: string, text = `ran:${name}`): CommandDefinition {
   return {

@@ -5,11 +5,11 @@
  * raw JSON representation. pi-ai also reports failures as terminal stream
  * events, which this module maps into Harness finish chunks.
  *
- * @module dsh-llm-pi-ai/stream
+ * @module fathom-llm-pi-ai/stream
  */
 
-import { CallId, CONTEXT_WINDOW_EXCEEDED_CODE, EMPTY_RESPONSE_CODE, isContextWindowExceededError, isQuotaExceededError, LlmError, QUOTA_EXCEEDED_CODE } from '@pentest-harness/dsh-llm'
-import type { FinishReason, StreamChunk, TokenUsage } from '@pentest-harness/dsh-llm'
+import { CallId, CONTEXT_WINDOW_EXCEEDED_CODE, EMPTY_RESPONSE_CODE, isContextWindowExceededError, isQuotaExceededError, LlmError, QUOTA_EXCEEDED_CODE } from '@fathom/llm'
+import type { FinishReason, StreamChunk, TokenUsage } from '@fathom/llm'
 import { isContextOverflow } from '@earendil-works/pi-ai'
 import type { AssistantMessage, AssistantMessageEvent, Usage as PiUsage } from '@earendil-works/pi-ai'
 import { toPiReplayState } from './replay.ts'

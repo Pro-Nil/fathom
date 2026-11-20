@@ -4,10 +4,10 @@
  * no runtime code, and nothing here reaches a Host-only symbol, so a Client
  * compilation face reads exactly the signature the Host emits.
  *
- * @module @pentest-harness/dsh-credentials/types
+ * @module @fathom/credentials/types
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /** Nominal reference to one credential: a POSIX-style environment-variable name. */
 export type CredentialRef = Branded<'CredentialRef'>
@@ -58,7 +58,7 @@ export interface GrantRecord {
 /** One durable credential record, tagged by what the seam may do with it. */
 export type CredentialRecord = ApiKeyRecord | GrantRecord
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Committed change to a provider-managed credential source: a `set`, an

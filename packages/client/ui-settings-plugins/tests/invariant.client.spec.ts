@@ -1,9 +1,9 @@
 /** The package's node half: an empty host body and an explained empty invariant companion. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as PluginConfigInvariant from '@pentest-harness/dsh-client-ui-settings-plugins/invariant'
+import { Context } from '@fathom/cordis'
+import InvariantRegistry from '@fathom/invariants'
+import * as PluginConfigInvariant from '@fathom/client-ui-settings-plugins/invariant'
 
 describe('invariant companion', () => {
   it('reserves package ownership with an empty installer', async () => {
@@ -14,7 +14,7 @@ describe('invariant companion', () => {
   })
 
   it('has an empty node half', async () => {
-    const { apply } = await import('@pentest-harness/dsh-client-ui-settings-plugins')
+    const { apply } = await import('@fathom/client-ui-settings-plugins')
 
     // The host body exists only so the plugin appears in the host cordis.yml;
     // every surface this package ships lives in the browser half.

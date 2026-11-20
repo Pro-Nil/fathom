@@ -1,9 +1,9 @@
 /**
  * Shared cancellation helpers for the local LSP provider's host-I/O, queue, and protocol phases.
- * @module @pentest-harness/dsh-lsp-stdio/abort
+ * @module @fathom/lsp-stdio/abort
  */
 
-import { timeoutOf } from '@pentest-harness/dsh-timeout'
+import { timeoutOf } from '@fathom/timeout'
 
 /**
  * Build an abort Error carrying the signal's reason and preserving timeout classification.

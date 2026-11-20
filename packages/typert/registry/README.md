@@ -1,6 +1,6 @@
-# @pentest-harness/dsh-typert-registry
+# @fathom/typert-registry
 
-Runtime registry for generated Typert artifacts. A contribution carries one package face's business reflection and optional live Zod schemas; `ctx.typert` registers both atomically and withdraws them with the calling Cordis fiber. TypeScript analysis and code generation live in [`dsh-typert-generator`](../generator/README.md).
+Runtime registry for generated Typert artifacts. A contribution carries one package face's business reflection and optional live Zod schemas; `ctx.typert` registers both atomically and withdraws them with the calling Cordis fiber. TypeScript analysis and code generation live in [`fathom-typert-generator`](../generator/README.md).
 
 Package reflection is keyed by `<package>#<face>`. Schemas are keyed by `<package>#<name>` and retain the producer's Zod instance. JSON Schema is computed on demand at the consumer edge.
 
@@ -15,7 +15,7 @@ Package reflection is keyed by `<package>#<face>`. Schemas are keyed by `<packag
 - `toJSONSchema(key, params?)` projects a live schema with `z.toJSONSchema()` without caching the result.
 - `typertKey()` and `typertPackageKey()` compose the two stable identity forms.
 
-The `@pentest-harness/dsh-typert-registry/types` subpath contains the pure contribution and record contracts. [`dsh-typert-loader`](../loader/README.md) discovers and registers generated host artifacts in Loader compositions; direct `ctx.typert.register()` supports other composition owners.
+The `@fathom/typert-registry/types` subpath contains the pure contribution and record contracts. [`fathom-typert-loader`](../loader/README.md) discovers and registers generated host artifacts in Loader compositions; direct `ctx.typert.register()` supports other composition owners.
 
 ## Model Experience
 

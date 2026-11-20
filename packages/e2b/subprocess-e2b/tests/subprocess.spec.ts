@@ -1,5 +1,5 @@
 import { once } from 'node:events'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   CommandExitError,
   FileNotFoundError,
@@ -7,14 +7,14 @@ import {
   type CommandHandle,
   type CommandResult,
   type Sandbox,
-} from '@pentest-harness/dsh-e2b'
-import type E2BRuntime from '@pentest-harness/dsh-e2b'
-import type { SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import E2BSubprocessRuntime from '@pentest-harness/dsh-subprocess-e2b'
+} from '@fathom/e2b'
+import type E2BRuntime from '@fathom/e2b'
+import type { SubprocessSpawnSpec } from '@fathom/subprocess'
+import E2BSubprocessRuntime from '@fathom/subprocess-e2b'
 import * as E2BSubprocessInvariant from '../src/invariant.ts'
 import { E2BBase64Decoder, E2B_OUTPUT_COMPLETE_FRAME, E2BOutputReader } from '../src/output.ts'
 import { E2BSubprocessHandle } from '../src/process.ts'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import InvariantRegistry from '@fathom/invariants'
 import { describe, expect, it, vi } from 'vitest'
 
 function commandError(exitCode: number): CommandExitError {
@@ -110,7 +110,7 @@ class FakeSandbox {
   sdkKillStops = true
   alive = true
   zombieOnly = false
-  ambient = 'PATH=/ambient/bin\0KEEP=safe\0UNICODE=몴섻\0NPM_TOKEN=secret\0DSH_STALE=old\0BROKEN\0=bad\0'
+  ambient = 'PATH=/ambient/bin\0KEEP=safe\0UNICODE=몴섻\0NPM_TOKEN=secret\0FATHOM_STALE=old\0BROKEN\0=bad\0'
   environmentHome = '/home/user'
   environmentWire: string | undefined
   environmentRequest: ((signal: AbortSignal | undefined) => Promise<void>) | undefined
@@ -315,7 +315,7 @@ function spec(overrides: Partial<SubprocessSpawnSpec> = {}): SubprocessSpawnSpec
 function runtime(fake: FakeSandbox, getSandbox: () => Promise<Sandbox> = async () => fake.sandbox): E2BRuntime {
   return {
     cwd: '/workspace',
-    runtimeRoot: '/workspace/.dsh-e2b',
+    runtimeRoot: '/workspace/.fathom-e2b',
     getSandbox,
   } as unknown as E2BRuntime
 }
@@ -397,11 +397,11 @@ describe('E2BSubprocessHandle', () => {
         'FOO-BAR': 'hyphen-value',
         '--split-string': 'literal-value',
         ACME_API_KEY: 'explicit-secret',
-        DSH_MODE: 'test',
+        FATHOM_MODE: 'test',
         // The seam's tombstone: an explicit undefined removes the ambient entry.
         KEEP: undefined,
       },
-    }), '/workspace/.dsh-e2b/processes/one')
+    }), '/workspace/.fathom-e2b/processes/one')
     expect(handle.pid).toBe(-1)
     handle.stdin!.write('hello')
     handle.stdin!.end()
@@ -411,41 +411,41 @@ describe('E2BSubprocessHandle', () => {
     expect(fake.handle.sent.map(value => String(value))).toEqual(['hello'])
     expect(fake.handle.closes).toBe(1)
     const controlEnvs = fake.startOptions?.envs
-    expect(controlEnvs?.HOME).toMatch(/^\/\.dsh-e2b-control-/)
+    expect(controlEnvs?.HOME).toMatch(/^\/\.fathom-e2b-control-/)
     expect(controlEnvs).toEqual({
       TERM: 'dumb',
       NPM_TOKEN: '',
-      DSH_STALE: '',
+      FATHOM_STALE: '',
       HOME: controlEnvs?.HOME,
     })
-    const command = fake.commandsSeen.find(value => value.includes('exec "$dsh_e2b_env_bin" -i'))!
-    expect(command).toContain('"$dsh_e2b_setsid" --wait -- "$dsh_e2b_bash" -c')
+    const command = fake.commandsSeen.find(value => value.includes('exec "$fathom_e2b_env_bin" -i'))!
+    expect(command).toContain('"$fathom_e2b_setsid" --wait -- "$fathom_e2b_bash" -c')
     expect(command).not.toContain('ACME_API_KEY')
-    expect(command).not.toContain('DSH_MODE')
+    expect(command).not.toContain('FATHOM_MODE')
     expect(command).not.toContain('FOO-BAR')
     expect(command).not.toContain('explicit-secret')
     expect(command).not.toContain('hyphen-value')
-    expect(command).not.toContain('${!dsh_e2b_name}')
+    expect(command).not.toContain('${!fathom_e2b_name}')
     const environmentProbe = fake.commandsSeen.find(value => value.includes('env -0 | base64'))
     expect(environmentProbe).toContain('getent passwd "$(id -u)"')
-    expect(environmentProbe).toContain('test -n "$dsh_e2b_home" -a -d "$dsh_e2b_home"')
+    expect(environmentProbe).toContain('test -n "$fathom_e2b_home" -a -d "$fathom_e2b_home"')
     expect(environmentProbe).not.toContain('"$PWD"')
     expect(command).toContain('mapfile -d')
-    expect(command).toContain('dsh_e2b_node="$(command -v node)"')
-    expect(command).toContain('"$dsh_e2b_env_bin" -i "$dsh_e2b_node" -e')
-    expect(command).toContain('"$dsh_e2b_env_bin" -i -- "${dsh_e2b_env[@]}" "$@"')
-    expect(command).toContain('exec "$dsh_e2b_env_bin" -i -- "${dsh_e2b_env[@]}"')
+    expect(command).toContain('fathom_e2b_node="$(command -v node)"')
+    expect(command).toContain('"$fathom_e2b_env_bin" -i "$fathom_e2b_node" -e')
+    expect(command).toContain('"$fathom_e2b_env_bin" -i -- "${fathom_e2b_env[@]}" "$@"')
+    expect(command).toContain('exec "$fathom_e2b_env_bin" -i -- "${fathom_e2b_env[@]}"')
     expect(command).toContain('>&2 2>/dev/null')
     expect(command).not.toContain('2>/dev/null >&2')
     expect(command).toContain('base64')
     expect(fake.writtenFiles[0]).toEqual([
-      '/workspace/.dsh-e2b/processes/one/pid',
-      '/workspace/.dsh-e2b/processes/one/exit-code',
-      '/workspace/.dsh-e2b/processes/one/environment',
-      '/workspace/.dsh-e2b/processes/one/stderr.log',
+      '/workspace/.fathom-e2b/processes/one/pid',
+      '/workspace/.fathom-e2b/processes/one/exit-code',
+      '/workspace/.fathom-e2b/processes/one/environment',
+      '/workspace/.fathom-e2b/processes/one/stderr.log',
     ])
-    expect(fake.writtenFileData.get('/workspace/.dsh-e2b/processes/one/environment')).toBe(
-      'PATH=/bin\0UNICODE=몴섻\0HOME=/home/user\0FOO-BAR=hyphen-value\0--split-string=literal-value\0ACME_API_KEY=explicit-secret\0DSH_MODE=test\0',
+    expect(fake.writtenFileData.get('/workspace/.fathom-e2b/processes/one/environment')).toBe(
+      'PATH=/bin\0UNICODE=몴섻\0HOME=/home/user\0FOO-BAR=hyphen-value\0--split-string=literal-value\0ACME_API_KEY=explicit-secret\0FATHOM_MODE=test\0',
     )
 
     let piped = ''
@@ -456,7 +456,7 @@ describe('E2BSubprocessHandle', () => {
     await expect(handle.done).resolves.toEqual({ exitCode: 0, signal: null })
     expect(piped).toBe('pipe-data')
     expect(handle.collected.stderr!.readFrom(0)).toMatchObject({ text: 'err', lossy: false })
-    expect(fake.removed).toContain('/workspace/.dsh-e2b/processes/one/stderr.log')
+    expect(fake.removed).toContain('/workspace/.fathom-e2b/processes/one/stderr.log')
     await expect(handle.waitForExit()).resolves.toBe(true)
   })
 
@@ -766,10 +766,10 @@ describe('E2BSubprocessHandle', () => {
     await handle.done
     expect(handle.collected.stdout!.readFrom(0)).toEqual({ text: 'cd', nextOffset: 4, lossy: true })
     expect(fake.removed).toContain('/runtime/oversize/stdout.log')
-    const command = fake.commandsSeen.find(value => value.includes('dsh_e2b_tee='))!
-    expect(command).toContain('"$dsh_e2b_head" -c 3')
+    const command = fake.commandsSeen.find(value => value.includes('fathom_e2b_tee='))!
+    expect(command).toContain('"$fathom_e2b_head" -c 3')
     expect(command).toContain('/runtime/oversize/stdout.log')
-    expect(command).toContain('"$dsh_e2b_tee" --output-error=warn-nopipe')
+    expect(command).toContain('"$fathom_e2b_tee" --output-error=warn-nopipe')
     expect(command).not.toContain('tee -a')
   })
 

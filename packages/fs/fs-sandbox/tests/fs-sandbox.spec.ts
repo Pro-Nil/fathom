@@ -13,12 +13,12 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { existsSync } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
 import { join, parse } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { FsError, FsTargetKey } from '@pentest-harness/dsh-fs'
-import type { FsTarget } from '@pentest-harness/dsh-fs'
-import SandboxPolicyService from '@pentest-harness/dsh-sandbox-policy'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
-import { SandboxedFileSystem } from '@pentest-harness/dsh-fs-sandbox'
+import { Context } from '@fathom/cordis'
+import { FsError, FsTargetKey } from '@fathom/fs'
+import type { FsTarget } from '@fathom/fs'
+import SandboxPolicyService from '@fathom/sandbox-policy'
+import type { SandboxMode } from '@fathom/sandbox'
+import { SandboxedFileSystem } from '@fathom/fs-sandbox'
 
 let base: string
 let workspace: string
@@ -40,7 +40,7 @@ beforeEach(async () => {
   // would be legitimately writable. Sibling dirs under HOME are outside every
   // grant, so containment failures are real denials. (The bwrap e2e roots its
   // workspaces under HOME for the same reason.)
-  base = await mkdtemp(join(homedir(), '.dsh-fssbx-'))
+  base = await mkdtemp(join(homedir(), '.fathom-fssbx-'))
   workspace = join(base, 'ws')
   outside = join(base, 'out')
   await mkdir(workspace)
@@ -98,7 +98,7 @@ describe('workspace-write containment', () => {
   })
 
   it('a write to the platform temp area lands (parity with the bash runner grant)', async () => {
-    const path = join(await mkdtemp(join(tmpdir(), 'dsh-fssbx-tmp-')), 'temp.txt')
+    const path = join(await mkdtemp(join(tmpdir(), 'fathom-fssbx-tmp-')), 'temp.txt')
     await fs.writeText(await target(path), 'temp')
     expect(await readFile(path, 'utf8')).toBe('temp')
   })

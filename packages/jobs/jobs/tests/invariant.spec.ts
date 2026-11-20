@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { SessionId } from '@pentest-harness/dsh-session'
-import JobRegistry, { JobId } from '@pentest-harness/dsh-jobs'
-import type { JobDoneListener, JobSnapshot } from '@pentest-harness/dsh-jobs'
-import * as JobsInvariant from '@pentest-harness/dsh-jobs/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { SessionId } from '@fathom/session'
+import JobRegistry, { JobId } from '@fathom/jobs'
+import type { JobDoneListener, JobSnapshot } from '@fathom/jobs'
+import * as JobsInvariant from '@fathom/jobs/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 const BASE: JobSnapshot = {
   id: JobId('bash-1'),

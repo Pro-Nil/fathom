@@ -1,11 +1,11 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { spawnHarness, waitForIdle } from './harness.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 /** Key-gated smoke for a real parent delegating filesystem work to a real child. */
 
@@ -21,7 +21,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.ACME_API_KEY)('spawn backend with-key smoke', () => {
   it('a parent delegates to a child that writes a file on disk', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-subagent-spawn-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-subagent-spawn-e2e-'))
     ctx = await spawnHarness(workdir)
     const parent = ctx.agentLoop.create(SessionId('e2e-parent'), { provider: 'acme-official', model: 'acme-v4-flash' })
 

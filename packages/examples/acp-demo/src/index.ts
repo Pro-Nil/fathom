@@ -1,29 +1,29 @@
 /**
  * The ACP automation server app: the default agent spine
- * ({@link @pentest-harness/dsh-agent-spine-demo}), JSONL session persistence, and
- * the {@link @pentest-harness/dsh-acp} bridge. The app owns those plugins through one
+ * ({@link @fathom/agent-spine-demo}), JSONL session persistence, and
+ * the {@link @fathom/acp} bridge. The app owns those plugins through one
  * ordered lifecycle so ACP sessions quiesce before persistence detaches. It
  * writes nothing to stdout.
  * It pre-creates no agents and leaves adapters, executors, and optional tools to
  * the leaf, which must likewise avoid stdout loggers. Named exports are
  * required so Loader retains this plugin's `Config` schema (see
  * docs/postmortem/0001).
- * @module @pentest-harness/dsh-acp-demo
+ * @module @fathom/acp-demo
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { join } from 'node:path'
-import z from '@pentest-harness/schemastery'
-import * as acp from '@pentest-harness/dsh-acp'
-import * as agentCore from '@pentest-harness/dsh-agent-spine-demo'
-import * as workspaceContext from '@pentest-harness/dsh-agent-instructions'
-import ToolRuntime, { type Config as ToolsConfig } from '@pentest-harness/dsh-tools'
+import z from '@fathom/schemastery'
+import * as acp from '@fathom/acp'
+import * as agentCore from '@fathom/agent-spine-demo'
+import * as workspaceContext from '@fathom/agent-instructions'
+import ToolRuntime, { type Config as ToolsConfig } from '@fathom/tools'
 import JsonlSessionPersistence, {
   JsonlCompressionSchema,
   type JsonlCompression,
-} from '@pentest-harness/dsh-session-persistence-jsonl'
-import * as sessionCheckpointPolicy from '@pentest-harness/dsh-session-checkpoint-policy'
-import SqliteSessionQueryEngine from '@pentest-harness/dsh-session-query-sqlite'
+} from '@fathom/session-persistence-jsonl'
+import * as sessionCheckpointPolicy from '@fathom/session-checkpoint-policy'
+import SqliteSessionQueryEngine from '@fathom/session-query-sqlite'
 
 export const name = 'acp-demo'
 const DEFAULT_PERSISTENCE_ROOT = './.sessions'
@@ -45,12 +45,12 @@ export interface Config {
   maxParallelToolCalls?: number
   /** Deployment persona (the system-prompt plugin's `persona` config). */
   persona?: string
-  /** Explicit model-facing tool order (the system-prompt plugin's `toolOrder` config; see dsh-system-prompt). */
+  /** Explicit model-facing tool order (the system-prompt plugin's `toolOrder` config; see fathom-system-prompt). */
   toolOrder?: string[]
-  /** Tool-registry config — its presentation `mode` (forwarded through agent-spine-demo; see dsh-tools). */
+  /** Tool-registry config — its presentation `mode` (forwarded through agent-spine-demo; see fathom-tools). */
   tools?: ToolsConfig
-  /** Pentest Harness home directory exposed to bash and used for local skill discovery. */
-  dshHome?: string
+  /** Fathom home directory exposed to bash and used for local skill discovery. */
+  fathomHome?: string
   /** Fallback session-title limits forwarded through agent-spine-demo. */
   sessionTitle?: NonNullable<agentCore.Config['sessionTitle']>
   /** Directory for JSONL sessions and the derived query index. Defaults to `./.sessions`. */
@@ -82,11 +82,11 @@ export const Config: z<Config> = z.object({
   maxParallelToolCalls: z.number().step(1).min(1),
   persona: z.string(),
   // The array default is forced to undefined: ABSENT means "lexicographic
-  // order" (the owning dsh-system-prompt schema does the same), while
+  // order" (the owning fathom-system-prompt schema does the same), while
   // schemastery's native [] default would read as an invalid configured list.
   toolOrder: z.array(z.string()).default(undefined as unknown as string[]),
   tools: ToolRuntime.Config,
-  dshHome: z.string(),
+  fathomHome: z.string(),
   sessionTitle: agentCore.SessionTitleConfigSchema,
   persistenceRoot: z.string().default(DEFAULT_PERSISTENCE_ROOT),
   packChunks: z.boolean().default(true),

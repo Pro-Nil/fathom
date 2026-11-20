@@ -11,11 +11,11 @@ import {
   JsonTree,
   MarkdownText,
   Tooltip,
-} from '@pentest-harness/dsh-client-ui-primitives'
+} from '@fathom/client-ui-primitives'
 import { structuredPatch } from 'diff'
 import type {
   AssistantRequestConfig, ConversationPromptSnapshot,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   AssistantMetricDetail, TrajectoryCellKind, TrajectoryCellProps, TrajectorySourceBlock,
 } from './trajectory-record.ts'

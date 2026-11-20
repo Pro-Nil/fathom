@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { apply as nodeApply } from '@pentest-harness/dsh-client-locale'
-import { apply as clientApply, COMMON_NS, LocaleRuntime, inject } from '@pentest-harness/dsh-client-locale/client'
-import * as LocaleInvariant from '@pentest-harness/dsh-client-locale/invariant'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import { stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { apply as nodeApply } from '@fathom/client-locale'
+import { apply as clientApply, COMMON_NS, LocaleRuntime, inject } from '@fathom/client-locale/client'
+import * as LocaleInvariant from '@fathom/client-locale/invariant'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import InvariantRegistry from '@fathom/invariants'
+import { stubSettingsScope } from '@fathom/client-test-runtime'
 
 describe('invariant companion', () => {
   it('registers under the package name with an empty installer', async () => {

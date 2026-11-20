@@ -2,16 +2,16 @@
  * Durable session-persistence Service Definition (`ctx.sessionPersistence`). Backends store
  * {@link SessionEvent}s as the event-sourced log and carry non-replayable
  * {@link SessionHeader} metadata separately.
- * @module @pentest-harness/dsh-session-persistence
+ * @module @fathom/session-persistence
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { SessionPreparation } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionId, SessionHeader } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import { SessionPreparation } from '@fathom/session'
+import type { SessionEvent, SessionId, SessionHeader } from '@fathom/session'
 import type { SessionPersistenceRevision } from './revision.ts'
 
 // Re-export the metadata vocabulary so Consumers import it from the Service Definition.
-export type { SessionHeader } from '@pentest-harness/dsh-session'
+export type { SessionHeader } from '@fathom/session'
 export { SessionPersistenceRevision } from './revision.ts'
 
 /** Lightweight immutable source identity returned without loading a full log. */
@@ -57,7 +57,7 @@ export type {
   StoredSuffix,
 } from './coordinator.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionPersistence: SessionPersistence
   }

@@ -3,12 +3,12 @@
  * fresh official package-local Codex wrapper with `app-server --stdio` in the
  * delegating Session's workspace and publishes only after an ephemeral thread exists.
  *
- * @module @pentest-harness/dsh-subagent-codex
+ * @module @fathom/subagent-codex
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import {
   assertPositiveFinite,
   NO_START_CAPABILITIES,
@@ -16,7 +16,7 @@ import {
   type ResolvedSubagentStartRequest,
   type SubagentCapabilities,
   type SubagentProvider,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import {
   CODEX_PERMISSION_MODES,
   DEFAULT_CODEX_PERMISSION_MODE,

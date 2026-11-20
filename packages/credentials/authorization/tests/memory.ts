@@ -1,4 +1,4 @@
-import { CredentialProvider } from '@pentest-harness/dsh-credentials'
+import { CredentialProvider } from '@fathom/credentials'
 import type {
   CredentialInfo,
   CredentialKey,
@@ -7,7 +7,7 @@ import type {
   CredentialRecordInfo,
   CredentialRef,
   ResolvedCredential,
-} from '@pentest-harness/dsh-credentials'
+} from '@fathom/credentials'
 
 /**
  * In-memory credentials provider for the authorization suite. Only the record

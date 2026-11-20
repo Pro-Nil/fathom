@@ -4,10 +4,10 @@
  * projection, and snapshot reference stability.
  */
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, UserMessage } from '@pentest-harness/dsh-llm/types'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type { MessageId, MuxFrame, RpcId, SessionId } from '@pentest-harness/dsh-api-remotes/client'
+import { createUserMessage } from '@fathom/llm'
+import type { ContentBlock, UserMessage } from '@fathom/llm/types'
+import type { SessionEvent } from '@fathom/session/types'
+import type { MessageId, MuxFrame, RpcId, SessionId } from '@fathom/api-remotes/client'
 import { Session } from '../src/client/sessions/session.ts'
 import { SessionManager } from '../src/client/sessions/manager.ts'
 import { FakeApiClient, fakeRemote } from './fake-api.client.ts'

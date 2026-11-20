@@ -6,16 +6,16 @@
  */
 
 import { expect } from 'vitest'
-import { FiberState, Inject, RegistryService, ValidationError } from '@pentest-harness/cordis'
-import type { Context, Plugin } from '@pentest-harness/cordis'
-import { AttachmentStore } from '@pentest-harness/dsh-attachment'
+import { FiberState, Inject, RegistryService, ValidationError } from '@fathom/cordis'
+import type { Context, Plugin } from '@fathom/cordis'
+import { AttachmentStore } from '@fathom/attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@pentest-harness/dsh-attachment'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+} from '@fathom/attachment'
+import InvariantRegistry from '@fathom/invariants'
 
 declare global {
   interface ImportMeta {

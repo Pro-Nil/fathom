@@ -1,9 +1,9 @@
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
-import type {} from '@pentest-harness/dsh-commands/types'
+import type { SessionEvent } from '@fathom/session/types'
+import type { CommandId } from '@fathom/commands/brand'
+import type {} from '@fathom/commands/types'
 import type {
   ConversationNodeDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 
 /** Goal-owned human command input projected independently of model messages. */
 export interface GoalCommandInputData {
@@ -12,7 +12,7 @@ export interface GoalCommandInputData {
   readonly time: number
 }
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Human-entered `/goal` command input. */
     'command-input': GoalCommandInputData

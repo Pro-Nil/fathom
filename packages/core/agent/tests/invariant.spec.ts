@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import { scopeTarget } from '@fathom/scope'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

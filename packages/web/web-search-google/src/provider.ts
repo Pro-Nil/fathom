@@ -9,8 +9,8 @@
  *   search-engine id resolved per request from the credential store.
  */
 
-import { WebError } from '@pentest-harness/dsh-web'
-import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
+import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@fathom/web'
 
 /** Id of the keyless browser-backed provider. */
 export const GOOGLE_PROVIDER_ID = 'google'

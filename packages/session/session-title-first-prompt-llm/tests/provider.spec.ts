@@ -1,10 +1,10 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, LlmAdapter  } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import SessionTitleService, { type SessionTitleProvider } from '@pentest-harness/dsh-session-title'
-import * as providerPlugin from '@pentest-harness/dsh-session-title-first-prompt-llm'
+import LlmRuntime, { createUserMessage, LlmAdapter  } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import SessionTitleService, { type SessionTitleProvider } from '@fathom/session-title'
+import * as providerPlugin from '@fathom/session-title-first-prompt-llm'
 
 class RecordingAdapter extends LlmAdapter {
   readonly requests: GenerateOptions[] = []

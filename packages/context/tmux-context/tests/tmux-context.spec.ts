@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { agentEvents, Inbox, type Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { ShellExecutor } from '@pentest-harness/dsh-shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@pentest-harness/dsh-shell'
-import * as tmuxContext from '@pentest-harness/dsh-tmux-context'
-import type { Config } from '@pentest-harness/dsh-tmux-context'
+import { Context } from '@fathom/cordis'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { agentEvents, Inbox, type Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import { ShellExecutor } from '@fathom/shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@fathom/shell'
+import * as tmuxContext from '@fathom/tmux-context'
+import type { Config } from '@fathom/tmux-context'
 
 const SIGNAL = new AbortController().signal
 

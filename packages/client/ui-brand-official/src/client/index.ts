@@ -1,7 +1,7 @@
-/** Pentest Harness occupants for the generic browser-brand slots. */
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type {} from '@pentest-harness/dsh-client-ui-sidebar/client'
+/** Fathom occupants for the generic browser-brand slots. */
+import type { ClientContext } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-ui-conversation/client'
+import type {} from '@fathom/client-ui-sidebar/client'
 import { OfficialBrandMark, OfficialBrandName } from './Brand.tsx'
 
 /** Required service: the UI slot registry. */

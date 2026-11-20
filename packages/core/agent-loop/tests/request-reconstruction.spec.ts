@@ -6,15 +6,15 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, LlmError, ReasoningEffortId  } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId, foldRequestHeader } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, LlmError, ReasoningEffortId  } from '@fathom/llm'
+import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@fathom/llm'
+import SessionStore, { Session, SessionId, foldRequestHeader } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import AgentLoop from '@fathom/agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 async function harness(adapter: MockAdapter, persona = 'stable base') {

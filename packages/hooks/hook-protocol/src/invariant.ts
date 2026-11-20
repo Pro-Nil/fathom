@@ -1,11 +1,11 @@
-/** Package-owned hook invocation/result stream invariants. @module @pentest-harness/dsh-hook-protocol/invariant */
+/** Package-owned hook invocation/result stream invariants. @module @fathom/hook-protocol/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type {} from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-hook-protocol'
+const PACKAGE_NAME = '@fathom/hook-protocol'
 
 /** Cordis companion plugin name. */
 export const name = 'hook-protocol-invariant'

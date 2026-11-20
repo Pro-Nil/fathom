@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import * as AttachmentInvariant from '@pentest-harness/dsh-client-ui-attachment/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import * as AttachmentInvariant from '@fathom/client-ui-attachment/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 describe('invariant companion', () => {
   it('registers under the package name with an empty installer', async () => {

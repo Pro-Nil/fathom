@@ -5,8 +5,8 @@
  */
 
 import { useEffect, useState } from 'react'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import type { AgentPresetSettingsState } from './settings-store.ts'
 import { presetDisplayText, type AgentPresetSettingsKey } from './locales.ts'
 import { PresetMenu } from './PresetMenu.tsx'
@@ -81,7 +81,7 @@ export function AgentPresetRow({ load, select, useAgentPreset, t }: AgentPresetR
   )
 }
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Agent-preset row copy. */
     'settings.agentPreset': AgentPresetSettingsKey

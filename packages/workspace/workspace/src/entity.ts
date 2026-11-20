@@ -5,12 +5,12 @@
  * `updatedAt` stamping and invalid-account pruning happen exactly once.
  * Not re-exported from the package entrypoint — consumers see only the
  * `Workspace` interface.
- * @module @pentest-harness/dsh-workspace/src/entity
+ * @module @fathom/workspace/src/entity
  */
 
 import { stat } from 'node:fs/promises'
-import type { SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import type { KvTable } from '@pentest-harness/dsh-storage-domain'
+import type { SessionHeader, SessionId } from '@fathom/session'
+import type { KvTable } from '@fathom/storage-domain'
 import type { WorkspaceRecord } from './spec.ts'
 import type { Workspace, WorkspaceId } from './types.ts'
 import { realpathNormalize } from './paths.ts'

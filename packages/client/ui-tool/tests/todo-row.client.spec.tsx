@@ -2,13 +2,13 @@
 /** todo_write atomic Tool presentation and its plan-summary model. */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { TodoItem, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import type { TodoItem, ToolResultNode } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { TodoRow, todoToolview } from '../src/client/tool/toolviews/todo-row.tsx'
 import { planSummary } from '../src/client/tool/toolviews/plan-summary.ts'
 import { CONVERSATION_NS as NS } from '../src/client/locale.ts'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
 
 type TodoRowProps = Parameters<typeof TodoRow>[0]
 

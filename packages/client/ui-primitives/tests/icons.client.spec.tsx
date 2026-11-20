@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import * as primitives from '@pentest-harness/dsh-client-ui-primitives'
+import * as primitives from '@fathom/client-ui-primitives'
 import {
   IconApiOutline14, IconArchiveOutline20, IconFolderClose16, IconGoalOutline16, IconSendOutline16,
-} from '@pentest-harness/dsh-client-ui-primitives'
+} from '@fathom/client-ui-primitives'
 
 afterEach(cleanup)
 
@@ -66,15 +66,18 @@ describe('BrandMark', () => {
   })
 })
 
-describe('BrandWordmark', () => {
-  it('can render the name artwork with or without its leading mark', () => {
-    const view = render(<primitives.BrandWordmark />)
+describe('FathomLogo', () => {
+  it('draws the teal mark with its depth fade, or one ink shape when mono', () => {
+    const view = render(<primitives.FathomLogo size={34} />)
     const svg = view.container.querySelector('svg')!
-    expect(svg.getAttribute('width')).toBe('182')
-    expect(svg.getAttribute('viewBox')).toBe('0 0 182 24')
+    expect(svg.getAttribute('width')).toBe('34')
+    expect(svg.getAttribute('viewBox')).toBe('0 0 24 24')
+    expect(view.container.querySelectorAll('path')).toHaveLength(4)
+    expect(view.container.innerHTML).toContain(primitives.FATHOM_TEAL)
+    expect(view.container.querySelector('image')).toBeNull()
 
-    view.rerender(<primitives.BrandWordmark includeMark={false} />)
-    expect(svg.getAttribute('width')).toBe('156')
-    expect(svg.getAttribute('viewBox')).toBe('26 0 156 24')
+    view.rerender(<primitives.FathomLogo mono />)
+    expect(view.container.querySelectorAll('path')).toHaveLength(1)
+    expect(view.container.innerHTML).toContain('currentColor')
   })
 })

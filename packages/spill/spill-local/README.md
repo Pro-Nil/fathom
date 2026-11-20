@@ -1,6 +1,6 @@
-# @pentest-harness/dsh-spill-local
+# @fathom/spill-local
 
-The **local-filesystem** implementation of the [`@pentest-harness/dsh-spill`](../spill) storage seam. Registers as `ctx.spillStore` and persists a tool's oversized text to a private, session-scoped file; its locator is the file path and its retrieval hint tells the model to use `read` or `grep` on that path.
+The **local-filesystem** implementation of the [`@fathom/spill`](../spill) storage seam. Registers as `ctx.spillStore` and persists a tool's oversized text to a private, session-scoped file; its locator is the file path and its retrieval hint tells the model to use `read` or `grep` on that path.
 
 ## Storage layout
 

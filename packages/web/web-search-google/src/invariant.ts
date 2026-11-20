@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-web-search-google`.
- * @module @pentest-harness/dsh-web-search-google/invariant
+ * Package-owned invariant companion for `@fathom/web-search-google`.
+ * @module @fathom/web-search-google/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-web-search-google'
+const PACKAGE_NAME = '@fathom/web-search-google'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-google-invariant'

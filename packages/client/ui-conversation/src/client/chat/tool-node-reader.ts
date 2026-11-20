@@ -1,7 +1,7 @@
 import type {
   ConversationSnapshot, ToolCallBlock,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { conversationContextKey } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
+import { conversationContextKey } from '@fathom/client-runtime/client'
 import type { ChatNode } from '../contract/chat-nodes.ts'
 
 function toolNode(node: ReturnType<ConversationSnapshot['chat']['nodes']['get']>): ChatNode<'tool-call'> | undefined {

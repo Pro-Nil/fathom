@@ -2,18 +2,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentListEntry } from '@pentest-harness/dsh-subagent'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { LlmAdapter } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubagentListEntry } from '@fathom/subagent'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { LlmAdapter } from '@fathom/llm'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as tool from '../src/list-agents.ts'
 import { parkParent } from './park-parent.ts'
@@ -54,7 +54,7 @@ afterEach(() => {
 async function setupWith(adapter: MockAdapter | GatedAdapter) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  const root = mkdtempSync(join(tmpdir(), 'dsh-tool-list-agents-'))
+  const root = mkdtempSync(join(tmpdir(), 'fathom-tool-list-agents-'))
   roots.push(root)
   await ctx.plugin(JsonlSessionPersistence, { root })
   await ctx.plugin(AgentLoop, { agents: [] })
@@ -100,7 +100,7 @@ async function waitNoActivation(ctx: Context, childId: SessionId): Promise<void>
   }, { timeout: 5_000 })
 }
 
-describe('dsh-tool-subagent-control/list-agents', () => {
+describe('fathom-tool-subagent-control/list-agents', () => {
   it('registers list_agents once, globally, with only the optional scope parameter', async () => {
     const { ctx } = await setup([])
     const schemas = ctx.tools.schemas().filter(schema => schema.name === 'list_agents')

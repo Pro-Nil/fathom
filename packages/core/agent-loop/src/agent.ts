@@ -1,7 +1,7 @@
 /**
  * Default Agent driver over queued turns and step-boundary input. Every request
  * is derived from the session log.
- * @module dsh-agent-loop/agent
+ * @module fathom-agent-loop/agent
  */
 
 import type {
@@ -14,9 +14,9 @@ import type {
   InboxTarget,
   PreStepDecision,
   RequestErrorAction,
-} from '@pentest-harness/dsh-agent'
-import { Inbox, agentEvents, assembleContextFor } from '@pentest-harness/dsh-agent'
-import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@pentest-harness/dsh-llm'
+} from '@fathom/agent'
+import { Inbox, agentEvents, assembleContextFor } from '@fathom/agent'
+import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@fathom/llm'
 import {
   BlockAssembler,
   LlmError,
@@ -24,14 +24,14 @@ import {
   deepFreeze,
   errorChain,
   markAgentLoopRequest,
-} from '@pentest-harness/dsh-llm'
-import type { Scope } from '@pentest-harness/dsh-scope'
-import { createScope } from '@pentest-harness/dsh-scope'
-import type { EpochHeader, RequestContext, Session, SessionId, TurnEndReason, UserMessage } from '@pentest-harness/dsh-session'
-import { canonicalHeader, headerEquals } from '@pentest-harness/dsh-session'
-import { joinContextSections, renderContextSections, renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import type { PromptAssembly } from '@pentest-harness/dsh-system-prompt'
-import type { Context } from '@pentest-harness/cordis'
+} from '@fathom/llm'
+import type { Scope } from '@fathom/scope'
+import { createScope } from '@fathom/scope'
+import type { EpochHeader, RequestContext, Session, SessionId, TurnEndReason, UserMessage } from '@fathom/session'
+import { canonicalHeader, headerEquals } from '@fathom/session'
+import { joinContextSections, renderContextSections, renderPrompt } from '@fathom/system-prompt'
+import type { PromptAssembly } from '@fathom/system-prompt'
+import type { Context } from '@fathom/cordis'
 import { RuntimeContextProjection } from './runtime-context.ts'
 import { executeToolCalls } from './tool-calls.ts'
 

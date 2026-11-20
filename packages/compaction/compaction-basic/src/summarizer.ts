@@ -1,15 +1,15 @@
 /**
  * Default one-shot summarization and durable checkpoint framing.
  *
- * @module @pentest-harness/dsh-compaction-basic/summarizer
+ * @module @fathom/compaction-basic/summarizer
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { contentHasImage, createUserMessage, BlockAssembler, LlmError } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import { contentHasImage, createUserMessage, BlockAssembler, LlmError } from '@fathom/llm'
 import type {
   ContentBlock, FinishReason, GenerateOptions, Message, TokenUsage, ToolSchema,
-} from '@pentest-harness/dsh-llm'
-import type { Agent } from '@pentest-harness/dsh-agent'
+} from '@fathom/llm'
+import type { Agent } from '@fathom/agent'
 
 interface SummaryConfig {
   readonly summarizationProvider: string
@@ -150,7 +150,7 @@ export async function summarizeWithLlm(
     ...input.messages,
     createUserMessage({
       content: [{ type: 'text', text: COMPACTION_INSTRUCTION }],
-      source: { kind: 'plugin', plugin: 'dsh-compaction-basic' },
+      source: { kind: 'plugin', plugin: 'fathom-compaction-basic' },
     }),
   ]
   const options: GenerateOptions = {

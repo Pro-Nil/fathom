@@ -7,25 +7,25 @@
  * addresses the session's agent by sessionId — sessions are always
  * agent-backed.
  */
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (`commands/change` rides the allowlist) into this program.
-import type {} from '@pentest-harness/dsh-api-remotes/client'
-import type { CommandResult } from '@pentest-harness/dsh-commands/types'
-import type { ClientContext, ISessions, SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { TranslateNS } from '@pentest-harness/dsh-client-locale/client'
+import type {} from '@fathom/api-remotes/client'
+import type { CommandResult } from '@fathom/commands/types'
+import type { ClientContext, ISessions, SessionId } from '@fathom/client-runtime/client'
+import type { TranslateNS } from '@fathom/client-locale/client'
 import type {
   CandidateRequest, ClientSessionContext, CommandClaim, PickOutcome, InputTriggerCandidate, InputTriggerPick,
   SubmitEnvelope, SubmitImageAttachment, SubmitOutcome,
-} from '@pentest-harness/dsh-client-ui-input-trigger/client'
+} from '@fathom/client-ui-input-trigger/client'
 import type { CommandContribution, CommandDecoration, CommandUiContract } from './contract.ts'
 import type { CommandDescriptor } from './directory.ts'
 import { CommandDirectory } from './directory.ts'
 import { PopupSelectController } from './popup.ts'
 import type { TokenSegment } from './popup.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * This browser client completed one admitted Host command execution.

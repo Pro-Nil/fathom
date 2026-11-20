@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// Settings kept in settings.json in the app data folder. Created with
@@ -9,8 +9,16 @@ namespace PentestHarness.Desktop;
 /// </summary>
 internal sealed class AppSettings
 {
-    /// <summary>Harness checkout that contains apps/cli.</summary>
-    public string Repo { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "pentest-harness");
+    /// <summary>Harness checkout that contains apps/cli: ~/fathom, or a checkout still in its pre-rename folder.</summary>
+    public string Repo { get; set; } = DefaultRepo();
+
+    private static string DefaultRepo()
+    {
+        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var current = Path.Combine(home, "fathom");
+        var legacy = Path.Combine(home, LegacyName.Checkout);
+        return !Directory.Exists(current) && Directory.Exists(legacy) ? legacy : current;
+    }
 
     /// <summary>Port the web UI listens on.</summary>
     public int Port { get; set; } = 2323;
@@ -41,14 +49,34 @@ internal sealed class AppSettings
     public string? LastBuiltCommit { get; set; }
 
     /// <summary>
-    /// App data folder: %LOCALAPPDATA%\PentestHarness on Windows,
-    /// ~/.local/share/PentestHarness on Linux. PENTEST_HARNESS_APP_DIR
+    /// App data folder: %LOCALAPPDATA%\Fathom on Windows,
+    /// ~/.local/share/Fathom on Linux. FATHOM_APP_DIR
     /// overrides it (a second, isolated app instance for testing).
     /// </summary>
     [JsonIgnore]
-    public static string Folder { get; } = Environment.GetEnvironmentVariable("PENTEST_HARNESS_APP_DIR") is { Length: > 0 } dir
+    public static string Folder { get; } = Environment.GetEnvironmentVariable("FATHOM_APP_DIR") is { Length: > 0 } dir
         ? dir
-        : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PentestHarness");
+        : MigratedFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fathom"));
+
+    /// <summary>
+    /// Move the pre-rename app folder (settings, logs, the in-app browser
+    /// profile) to the Fathom one the first time. If it cannot move (a file is
+    /// still open), keep using the old folder; the move is retried next start.
+    /// </summary>
+    private static string MigratedFolder(string target)
+    {
+        var legacy = Path.Combine(Path.GetDirectoryName(target)!, LegacyName.AppFolder);
+        if (Directory.Exists(target) || !Directory.Exists(legacy)) return target;
+        try
+        {
+            Directory.Move(legacy, target);
+            return target;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            return legacy;
+        }
+    }
 
     [JsonIgnore]
     private static string FilePath => Path.Combine(Folder, "settings.json");

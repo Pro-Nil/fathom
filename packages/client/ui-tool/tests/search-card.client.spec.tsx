@@ -8,22 +8,22 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ToolResultView } from '@pentest-harness/dsh-api-remotes/client'
-import type { SelectionTarget } from '@pentest-harness/dsh-client-ui-conversation/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+} from '@fathom/client-runtime/client'
+import type { ToolResultView } from '@fathom/api-remotes/client'
+import type { SelectionTarget } from '@fathom/client-ui-conversation/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { CHAT_SEARCH_MAX_LINES, searchCardModel } from '../src/client/tool/models/search-card-model.ts'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
-import { createChatStore } from '@pentest-harness/dsh-client-ui-conversation/src/client/stores.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
+import { createChatStore } from '@fathom/client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { DetailsPanel } from '@pentest-harness/dsh-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { DetailsPanel } from '@fathom/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { SearchRow, searchToolview } from '../src/client/tool/toolviews/search-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
 

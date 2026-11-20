@@ -1,15 +1,15 @@
 // Sessions remain resident after creation so they continue consuming mux frames off-screen.
 
-import type { Context } from '@pentest-harness/cordis'
-import type { AttachmentIdType, ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
+import type { Context } from '@fathom/cordis'
+import type { AttachmentIdType, ImageAttachmentRef } from '@fathom/attachment'
+import type { SessionEvent } from '@fathom/session/types'
 import type {
   HistoryEntry, IApiClient, MessageId, MuxFrame, PromptContentPart, QueueAction, RpcError,
   RpcId, RpcResponse, RpcResult, SessionId, SubagentAddress, ToolEventView,
-} from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
 // Value import from the inline-safe wire layer (not the connection plugin):
 // plugin-to-plugin value imports are a bundle purity error.
-import { transportError } from '@pentest-harness/dsh-host-apiproxy/api'
+import { transportError } from '@fathom/host-apiproxy/api'
 import type { SessionFace } from '../contract/session.ts'
 import { ConversationNodeAssembler } from './conversation-assembler.ts'
 import type { ConversationRuntime } from './conversation-assembler.ts'
@@ -21,7 +21,7 @@ import { EMPTY_CHAT_SNAPSHOT } from './conversation.ts'
 import type { PendingInteraction } from './pending.ts'
 import { PendingWait } from './pending.ts'
 import { Notifier } from './notifier.ts'
-import type { RemoteResult } from '@pentest-harness/dsh-typert-protocol'
+import type { RemoteResult } from '@fathom/typert-protocol'
 import type { SessionRemotes } from './remotes.ts'
 import { ProjectionValueStore } from './projection-store.ts'
 import type { ProjectionsBaseline } from './projection-store.ts'

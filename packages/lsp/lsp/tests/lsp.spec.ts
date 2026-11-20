@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import Lsp, {
   finalExtension,
   LspError,
@@ -7,7 +7,7 @@ import Lsp, {
   type LspProvider,
   type LspProviderQuery,
   type LspQueryResult,
-} from '@pentest-harness/dsh-lsp'
+} from '@fathom/lsp'
 
 /** A scripted provider that records the queries it receives. */
 function makeProvider(

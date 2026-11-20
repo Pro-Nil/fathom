@@ -12,7 +12,7 @@
  */
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { PropsRenderSlots, PropsRuntime, PropsStore } from '@pentest-harness/dsh-client-ui-slots'
+import type { PropsRenderSlots, PropsRuntime, PropsStore } from '@fathom/client-ui-slots'
 import { ASIDE_DEFAULT_RATIO, CENTER_MIN_BESIDE_ASIDE, computeColumnsWithAside, SIDEBAR_AUTO_COLLAPSE, SIDEBAR_DEFAULT } from './columns.ts'
 import type { createLayoutStore } from './stores.ts'
 import css from './AppFrame.module.css'

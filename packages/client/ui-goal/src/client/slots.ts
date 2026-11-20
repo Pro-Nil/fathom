@@ -7,7 +7,7 @@
  * (callbacks from inject, live state from useProjection).
  */
 
-import type { RemoteResult } from '@pentest-harness/dsh-typert-protocol'
+import type { RemoteResult } from '@fathom/typert-protocol'
 
 /**
  * Settled outcome of one goal mutation, rendered inline by the strip. The

@@ -1,11 +1,11 @@
 # Add Code Mode and Cordis tools to the headless spawn/workflow stack.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: agent-spine
-        name: '@pentest-harness/dsh-agent-spine-demo'
+        name: '@fathom/agent-spine-demo'
         config:
           agents:
             - id: main
@@ -21,14 +21,14 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: persistence
-        name: '@pentest-harness/dsh-session-persistence-jsonl'
+        name: '@fathom/session-persistence-jsonl'
         config:
           root: './.sessions'
-          compression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
+          compression: !!js "process.env.FATHOM_SNAPSHOT === undefined ? 'zstd' : 'none'"
       - insert:
           - id: code-runtime
-            name: '@pentest-harness/dsh-code-runtime-worker-thread'
+            name: '@fathom/code-runtime-worker-thread'
           - id: cordis-host-runner
-            name: '@pentest-harness/dsh-cordis-host-runner'
+            name: '@fathom/cordis-host-runner'
           - id: tool-cordis
-            name: '@pentest-harness/dsh-tool-cordis'
+            name: '@fathom/tool-cordis'

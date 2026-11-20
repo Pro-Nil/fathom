@@ -2,7 +2,7 @@
  * The shared browser: one persistent Chromium-family context (the harness's own Chromium by default)
  * driven through Playwright. The agent's tools and the user's live view act on
  * the same tabs, so either side can see and continue the other's work.
- * @module @pentest-harness/dsh-browser/src/runtime
+ * @module @fathom/browser/src/runtime
  */
 
 import { spawn } from 'node:child_process'

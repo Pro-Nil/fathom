@@ -1,8 +1,8 @@
 /** Assistant block classifier (moved here with sessions/conversation.ts). */
 
 import { describe, expect, it } from 'vitest'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
-import type { ContentBlock } from '@pentest-harness/dsh-api-remotes/client'
+import { AttachmentId } from '@fathom/attachment'
+import type { ContentBlock } from '@fathom/api-remotes/client'
 import { toAssistantBlock, toAssistantBlocks } from '../src/client/sessions/conversation.ts'
 
 describe('toAssistantBlock', () => {

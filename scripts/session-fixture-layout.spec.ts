@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { type SessionEvent } from '@pentest-harness/dsh-session'
-import { parseSessionLog } from '@pentest-harness/dsh-llm-replay'
+import { type SessionEvent } from '@fathom/session'
+import { parseSessionLog } from '@fathom/llm-replay'
 import { canonicalSessionFixture } from './session-fixture-layout.ts'
 
 const HEADER = '  {"type":"session","version":0,"id":"fixture","createdAt":1,"delegationDepth":0}  '

@@ -1,15 +1,15 @@
 /**
- * Loader export-shape guard for @pentest-harness/dsh-tool-lsp. It is a NAMESPACE plugin with `inject`, so a
+ * Loader export-shape guard for @fathom/tool-lsp. It is a NAMESPACE plugin with `inject`, so a
  * stray `export default apply` would make the Loader's `unwrapExports` collapse the module to the
  * bare `apply`, dropping `inject` (postmortem 0001). This verifies the namespace survives
  * `Loader.prototype.unwrapExports`; the `lsp-definition` ACP snapshot owns full app composition.
  */
 
 import { describe, expect, it } from 'vitest'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import * as toolLsp from '@pentest-harness/dsh-tool-lsp'
+import Loader from '@fathom/cordis-plugin-loader'
+import * as toolLsp from '@fathom/tool-lsp'
 
-describe('dsh-tool-lsp Loader export-shape guard', () => {
+describe('fathom-tool-lsp Loader export-shape guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {
     expect('default' in toolLsp).toBe(false)
 

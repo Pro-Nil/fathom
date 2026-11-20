@@ -1,6 +1,6 @@
 /** Pure replay-safe render intents for Cordis tools. */
 
-import type { GenericCallView } from '@pentest-harness/dsh-tools'
+import type { GenericCallView } from '@fathom/tools'
 
 /**
  * Render a runtime-inspection call.

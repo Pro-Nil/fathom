@@ -9,8 +9,8 @@
  */
 import { Fragment, useEffect, useRef, useSyncExternalStore } from 'react'
 import clsx from 'clsx'
-import { useAnchoredMaxHeight } from '@pentest-harness/dsh-client-ui-primitives'
-import type { PropsLocale } from '@pentest-harness/dsh-client-ui-slots'
+import { useAnchoredMaxHeight } from '@fathom/client-ui-primitives'
+import type { PropsLocale } from '@fathom/client-ui-slots'
 import css from './MenuView.module.css'
 import type { MenuViewInjected } from './slots.ts'
 import type { MenuKey } from './locales.ts'
@@ -23,7 +23,7 @@ const MAX_HEIGHT = 320
 
 /** DOM id of one option row (the aria-activedescendant target). */
 function optionId(source: string, index: number): string {
-  return `dsh-slash-option-${source}-${index}`
+  return `fathom-slash-option-${source}-${index}`
 }
 
 /**

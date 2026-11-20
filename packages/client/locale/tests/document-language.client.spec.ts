@@ -9,12 +9,12 @@
  * document language rather than merely looking untidy.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { apply as settingsApply, inject as settingsInject } from '@pentest-harness/dsh-client-ui-settings/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import { apply, inject } from '@pentest-harness/dsh-client-locale/client'
-import type { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
+import { Context } from '@fathom/cordis'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { apply as settingsApply, inject as settingsInject } from '@fathom/client-ui-settings/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import { apply, inject } from '@fathom/client-locale/client'
+import type { LocaleRuntime } from '@fathom/client-locale/client'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from '../src/locale-settings.ts'
 
 /** Boot the plugin over a stub Host settings document. */

@@ -1,12 +1,12 @@
 /**
  * Test-only direct-agent turn driver shared by assembled Loader fixtures.
- * @module @pentest-harness/dsh-loader-smoke/agent-turn
+ * @module @fathom/loader-smoke/agent-turn
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage, type TokenUsage } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage, type TokenUsage } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 
 /** Result envelope consumed only by snapshot and composition tests. */
 export interface FixtureTurnResult {

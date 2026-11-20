@@ -4,7 +4,7 @@
  * most password managers write one). Rows are encrypted with this browser's own
  * storage key and written to its `Login Data` store while it is closed, exactly
  * as Chromium stores a saved password. Other browsers' stores are never read.
- * @module @pentest-harness/dsh-browser/src/passwords
+ * @module @fathom/browser/src/passwords
  */
 
 import { spawn } from 'node:child_process'

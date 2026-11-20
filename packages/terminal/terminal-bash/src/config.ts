@@ -1,8 +1,8 @@
 /** Validated configuration for the local PTY backend. */
 
-import z from '@pentest-harness/schemastery'
-import { resolvePwshPath } from '@pentest-harness/dsh-pwsh-local'
-import { resolveBashPath } from '@pentest-harness/dsh-bash-local'
+import z from '@fathom/schemastery'
+import { resolvePwshPath } from '@fathom/pwsh-local'
+import { resolveBashPath } from '@fathom/bash-local'
 
 /** One supported interactive shell dialect. */
 export type ShellDialect = 'bash' | 'pwsh'

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-acp-snapshot`.
- * @module @pentest-harness/dsh-acp-snapshot/invariant
+ * Package-owned invariant companion for `@fathom/acp-snapshot`.
+ * @module @fathom/acp-snapshot/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-acp-snapshot'
+const PACKAGE_NAME = '@fathom/acp-snapshot'
 
 /** Cordis companion plugin name. */
 export const name = 'acp-snapshot-invariant'

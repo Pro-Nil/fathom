@@ -9,12 +9,12 @@
 import { useSyncExternalStore } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
-import type { MessageId } from '@pentest-harness/dsh-client-connection/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
+import type { MessageId } from '@fathom/client-connection/client'
 import type {
   MessageFeedbackItem, MessageFeedbackRating, MessageFeedbackVersion,
-} from '@pentest-harness/dsh-message-feedback/types'
+} from '@fathom/message-feedback/types'
 import { MessageFeedbackActions } from '../src/client/MessageFeedbackActions.tsx'
 import type { MessageFeedbackActionResult, MessageFeedbackView } from '../src/client/controller.ts'
 import { en } from '../src/client/locales.ts'

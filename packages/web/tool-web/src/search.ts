@@ -5,15 +5,15 @@
  * never provider selection or network access.
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, JsonValue, ToolResult, WebSearchResultView, WebSource } from '@pentest-harness/dsh-tools'
-import type { WebSearchResult, WebSearchSource } from '@pentest-harness/dsh-web'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, JsonValue, ToolResult, WebSearchResultView, WebSource } from '@fathom/tools'
+import type { WebSearchResult, WebSearchSource } from '@fathom/web'
+import type {} from '@fathom/system-prompt'
 
 /**
  * Default upper bound on returned sources (the `searchMaxResults` config).
- * Owned by the consumer (not the provider or model), mirroring `dsh-tool-fs`'s
+ * Owned by the consumer (not the provider or model), mirroring `fathom-tool-fs`'s
  * `READ_LIMIT`. The model just asks a question; the product controls how much
  * context returns. The default `8` aligns with OpenCode's Exa default.
  */
@@ -302,7 +302,7 @@ function mergeSearchResults(
  *   request's `maxResults`.
  * @param maxQueries - the deployment's query cap enforced before provider calls.
  * @param timeoutMs - the cooperative tool-call budget (ms) attached as the tool's
- *   `ToolDefinition.timeoutMs` for `@pentest-harness/dsh-tool-call-timeout-policy` to enforce.
+ *   `ToolDefinition.timeoutMs` for `@fathom/tool-call-timeout-policy` to enforce.
  * @param fetchEnabled - whether the same composition exposes `web_fetch`, which
  *   controls whether search guidance may recommend that follow-up tool.
  */

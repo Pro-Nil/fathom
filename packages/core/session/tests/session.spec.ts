@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId, createMessage, createToolResultMessage, MessageId, ReasoningEffortId } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId, createMessage, createToolResultMessage, MessageId, ReasoningEffortId } from '@fathom/llm'
 import SessionStore, {
   adoptSessionEvent,
   SESSION_FORMAT_VERSION,
@@ -8,8 +8,8 @@ import SessionStore, {
   SessionEvent,
   SessionId,
   snapshotSessionEvent,
-} from '@pentest-harness/dsh-session'
-import type { CreateSessionOptions, SessionEventType, SessionHeader, SessionSurface, TodoItem } from '@pentest-harness/dsh-session'
+} from '@fathom/session'
+import type { CreateSessionOptions, SessionEventType, SessionHeader, SessionSurface, TodoItem } from '@fathom/session'
 
 describe('Session', () => {
   it('exposes one stable readonly surface view', () => {

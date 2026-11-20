@@ -1,7 +1,7 @@
 /**
- * Integration: the real fetch backend (`dsh-web-fetch-http`) + a real search provider
- * (`dsh-web-search-exa`) + the real seam (`dsh-web`) + the model tool (`dsh-tool-web`) + the
- * tool-call timeout policy (`dsh-tool-call-timeout-policy`), exercised through `ctx.tools.execute()` —
+ * Integration: the real fetch backend (`fathom-web-fetch-http`) + a real search provider
+ * (`fathom-web-search-exa`) + the real seam (`fathom-web`) + the model tool (`fathom-tool-web`) + the
+ * tool-call timeout policy (`fathom-tool-call-timeout-policy`), exercised through `ctx.tools.execute()` —
  * nothing bypasses the tool registry. Fetch verifies world effects against loopback HTTP; search
  * uses the real Exa provider with only its network boundary stubbed.
  */
@@ -9,15 +9,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
 import { AddressInfo } from 'node:net'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import WebRuntime from '@pentest-harness/dsh-web'
-import * as WebFetchLocal from '@pentest-harness/dsh-web-fetch-http'
-import * as WebSearchExa from '@pentest-harness/dsh-web-search-exa'
-import * as ToolWeb from '@pentest-harness/dsh-tool-web'
-import * as TimeoutPolicy from '@pentest-harness/dsh-tool-call-timeout-policy'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@fathom/tools'
+import WebRuntime from '@fathom/web'
+import * as WebFetchLocal from '@fathom/web-fetch-http'
+import * as WebSearchExa from '@fathom/web-search-exa'
+import * as ToolWeb from '@fathom/tool-web'
+import * as TimeoutPolicy from '@fathom/tool-call-timeout-policy'
 
 const testToolSignal = new AbortController().signal
 
@@ -151,7 +151,7 @@ describe('tool-call timeout returns TOOL_TIMEOUT (deadline wins over a slow fetc
   it('returns a structured TOOL_TIMEOUT (not the provider WEB_FETCH_TIMEOUT) when the tool-call budget wins', async () => {
     const out = await tctx.tools.execute({ signal: testToolSignal, callId: CallId('slow-1'), name: 'web_fetch', arguments: { url: slowBase } })
     expect(out.isError).toBe(true)
-    // The outer tool-call deadline won: TOOL_TIMEOUT, owned by dsh-tool-call-timeout-policy,
+    // The outer tool-call deadline won: TOOL_TIMEOUT, owned by fathom-tool-call-timeout-policy,
     // NOT the provider's own WEB_FETCH_TIMEOUT (its 30s backstop never fired).
     expect(out.error?.info?.code).toBe('TOOL_TIMEOUT')
     const text = out.content.map(b => (b.type === 'text' ? b.text : '')).join('')

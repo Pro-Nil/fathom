@@ -8,12 +8,12 @@
  * Activation disposal, so no installation outlives either owner and no removed
  * contribution can be installed after revocation reports completion.
  *
- * @module @pentest-harness/dsh-subagent/activation-setup-registry
+ * @module @fathom/subagent/activation-setup-registry
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { AgentSetupCommit } from '@pentest-harness/dsh-agent'
-import { errorChain } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import type { AgentSetupCommit } from '@fathom/agent'
+import { errorChain } from '@fathom/llm'
 import { SubagentError } from './error.ts'
 
 /**

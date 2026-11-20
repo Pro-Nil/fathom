@@ -1,19 +1,19 @@
 /**
  * Replay-safe, model-free tool-result pruning service.
  *
- * @module @pentest-harness/dsh-compaction-tool-result-pruner
+ * @module @fathom/compaction-tool-result-pruner
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { freezeMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { Session, SessionEvent, ToolResultMessage } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { freezeMessage } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
+import type { Session, SessionEvent, ToolResultMessage } from '@fathom/session'
 // Type-only: the `compaction/*` SessionEventMap merges (the shadow-price event).
-import type {} from '@pentest-harness/dsh-compaction'
+import type {} from '@fathom/compaction'
 // Type-only: the `ctx.tokenMeter` Context merge for the declared injection.
-import type {} from '@pentest-harness/dsh-token-meter'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import type {} from '@fathom/token-meter'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 import { codePointLength, DEFAULTS, PRUNE_MARKER, resolveConfig } from './config.ts'
 import type {
   PrunedEntry,
@@ -30,7 +30,7 @@ export type {
   ToolResultPruneConfig,
 } from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     toolResultPruner: ToolResultPruner
   }

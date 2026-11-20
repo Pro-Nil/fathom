@@ -1,14 +1,14 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition,
   RunningToolCall, ToolCallBlock, ToolResultNode,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { isAppendSurfaceEvent } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-tools/types'
+} from '@fathom/client-runtime/client'
+import { isAppendSurfaceEvent } from '@fathom/client-runtime/client'
+import type {} from '@fathom/tools/types'
 import type { ToolChatData } from '../contract/chat-nodes.ts'
 import { CHAT_SYNTHETIC_SEQ_OFFSETS, chatNode } from './common.ts'
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Root Tool lifecycle with recursively nested subcalls. */
     'tool-call': ToolChatData

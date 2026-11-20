@@ -1,20 +1,20 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context, symbols, type EffectMeta } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import { SessionId } from '@pentest-harness/dsh-session'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import SubagentRuntime, { type SubagentStartRequest } from '@pentest-harness/dsh-subagent'
+import { Context, symbols, type EffectMeta } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import { SessionId } from '@fathom/session'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import InvariantRegistry from '@fathom/invariants'
+import * as SessionInvariant from '@fathom/session/invariant'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
+import SubagentRuntime, { type SubagentStartRequest } from '@fathom/subagent'
 import { MockAdapter, maxTokensResponse, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as spawn from '../src/index.ts'
-import { STRUCTURED_OUTPUT_TOOL } from '@pentest-harness/dsh-subagent-in-process-driver'
-import { defineContentToolFixture } from '@pentest-harness/dsh-tools'
+import { STRUCTURED_OUTPUT_TOOL } from '@fathom/subagent-in-process-driver'
+import { defineContentToolFixture } from '@fathom/tools'
 
 type Script = ConstructorParameters<typeof MockAdapter>[0]
 
@@ -64,7 +64,7 @@ function disposeChildLifecycle(parent: Agent): void {
   void lifecycle()
 }
 
-describe('dsh-subagent-spawn-in-process', () => {
+describe('fathom-subagent-spawn-in-process', () => {
   it('runs a fresh child to completion and returns its final assistant output', async () => {
     // One model call for the child: a plain text answer.
     const { ctx, parent } = await setup([textResponse('child answer')])

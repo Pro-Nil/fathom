@@ -1,11 +1,11 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { codingHarness, TODO_SYSTEM_PROMPT, waitForIdle } from './harness.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 /**
  * A REAL model drives the REAL todo_write tool: verify the WORLD (the session
@@ -25,7 +25,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.ACME_API_KEY)('todo_write: real model records a plan', () => {
   it('appends a todo/write event with the model-produced task list', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-todo-write-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-todo-write-e2e-'))
     ctx = await codingHarness(workdir, { persona: TODO_SYSTEM_PROMPT })
     const agent = ctx.agentLoop.create(SessionId('e2e-todo'), { provider: 'acme-official', model: 'acme-v4-flash' })
 

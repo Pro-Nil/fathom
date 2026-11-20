@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /** Snapshot-only Loader driver: stream one fixture turn as canonical JSONL. */
 
-import type { Context } from '@pentest-harness/cordis'
-import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@pentest-harness/dsh-app-boot'
-import { runFixtureTurn } from '@pentest-harness/dsh-loader-smoke'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@fathom/app-boot'
+import { runFixtureTurn } from '@fathom/loader-smoke'
+import type { SessionEvent } from '@fathom/session'
 
 const NAME = 'headless-test-driver'
 const [configPath, ...taskParts] = process.argv.slice(2)

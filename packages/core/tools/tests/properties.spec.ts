@@ -7,9 +7,9 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { isJsonValue } from '@pentest-harness/dsh-session'
-import { parameterSchemaSpecToJsonSchema, validateArgs } from '@pentest-harness/dsh-tools'
-import type { ParameterPropertySpec, ParameterSchemaSpec, ValueSchemaSpec } from '@pentest-harness/dsh-tools'
+import { isJsonValue } from '@fathom/session'
+import { parameterSchemaSpecToJsonSchema, validateArgs } from '@fathom/tools'
+import type { ParameterPropertySpec, ParameterSchemaSpec, ValueSchemaSpec } from '@fathom/tools'
 
 /** Remove parameter-only requiredness before nesting a schema as an array item. */
 function asValueSchema(prop: ParameterPropertySpec): ValueSchemaSpec {

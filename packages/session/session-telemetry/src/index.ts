@@ -1,5 +1,5 @@
 /**
- * SessionTelemetryBackend Service Definition for the Pentest Harness.
+ * SessionTelemetryBackend Service Definition for the Fathom.
  *
  * This package owns the CAPTURE side of session-event reporting — which records
  * exist (the chunk projection), what they carry (the logical record), when
@@ -11,12 +11,12 @@
  * design and its trade-offs are pinned in
  * .agents/notes/implemented/feature/2026-07-23-session-telemetry-otel-revival.md.
  *
- * @module @pentest-harness/dsh-session-telemetry
+ * @module @fathom/session-telemetry
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionTelemetry: SessionTelemetryBackend
   }

@@ -1,16 +1,16 @@
 /** Web subagent catalog, navigation, and addressed-session composer owner. */
 import type {
   ClientContext, SessionId, SubagentAddress,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ComposerChainProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-runtime/client'
+import type { ComposerChainProps } from '@fathom/client-ui-conversation/client'
 import { SubagentHeaderLineage, type SubagentCatalogInjected } from './SubagentHeaderLineage.tsx'
 import {
   SubagentReadOnlyComposer, type SubagentReadOnlyMatch,
 } from './SubagentReadOnlyComposer.tsx'
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type {} from '@fathom/client-locale/client'
 import { en, NS, type SubagentKey } from './locales.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Subagent catalog and read-only composer copy. */
     'subagent': SubagentKey

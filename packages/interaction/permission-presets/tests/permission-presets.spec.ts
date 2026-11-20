@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
-import type { ApprovalPolicy } from '@pentest-harness/dsh-user-approval'
+import { Context } from '@fathom/cordis'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import type { SandboxMode } from '@fathom/sandbox'
+import type { ApprovalPolicy } from '@fathom/user-approval'
 import PermissionPresetService, {
   CUSTOM_PRESET, effectivePermissionPreset, PERMISSION_SETTINGS_NAMESPACE,
-} from '@pentest-harness/dsh-permission-presets'
-import type { Config } from '@pentest-harness/dsh-permission-presets'
-import { SettingsProvider } from '@pentest-harness/dsh-settings'
-import type { SettingsNamespace } from '@pentest-harness/dsh-settings'
+} from '@fathom/permission-presets'
+import type { Config } from '@fathom/permission-presets'
+import { SettingsProvider } from '@fathom/settings'
+import type { SettingsNamespace } from '@fathom/settings'
 
 /** Writable memory provider for the permission/settings lifecycle specs. */
 class MemorySettings extends SettingsProvider {

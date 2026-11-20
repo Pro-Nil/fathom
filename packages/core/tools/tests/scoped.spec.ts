@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Events } from '@pentest-harness/cordis'
-import { bindScopeParent, createScope } from '@pentest-harness/dsh-scope'
-import type { Scope } from '@pentest-harness/dsh-scope'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import type { PreToolDecision, ToolDefinition, ToolExecution, ToolExecutionInput, ToolExecutionToken } from '@pentest-harness/dsh-tools'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import type { Events } from '@fathom/cordis'
+import { bindScopeParent, createScope } from '@fathom/scope'
+import type { Scope } from '@fathom/scope'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import type { PreToolDecision, ToolDefinition, ToolExecution, ToolExecutionInput, ToolExecutionToken } from '@fathom/tools'
+import type { Agent } from '@fathom/agent'
 
-import { CallId } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import { CallId } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
 
 const testToolSignal = new AbortController().signal
 

@@ -1,7 +1,7 @@
 import type {
   AssistantBlock, AssistantMessageNode, ChatConversationViewNode, CommandNode,
   CompactionSummaryNode, ModelRetryNode, RunningToolCall, ToolCallBlock,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 
 /** Merge-extensible payload registry keyed by final Chat renderer kind. */
 export interface ChatNodeDataMap {}

@@ -8,10 +8,10 @@
 
 import type {
   ConfigurableProviderView, CredentialView, IApiClient, SettingsNamespaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { SettingsDescribeFace } from '@pentest-harness/dsh-client-ui-settings/client'
+} from '@fathom/api-remotes/client'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import type { SettingsDescribeFace } from '@fathom/client-ui-settings/client'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
 
 /**

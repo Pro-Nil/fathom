@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { credentialKey } from '@pentest-harness/dsh-credentials'
+import { Context } from '@fathom/cordis'
+import { credentialKey } from '@fathom/credentials'
 import AuthorizationService, {
   AuthorizationDeclinedError,
   type AuthorizationFlow,
   type AuthorizationInteraction,
   type AuthorizationSession,
-} from '@pentest-harness/dsh-authorization'
+} from '@fathom/authorization'
 import { MemoryCredentials } from './memory.ts'
 
 const KEY = credentialKey('llm-pi-ai', 'openai-codex')

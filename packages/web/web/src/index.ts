@@ -3,12 +3,12 @@
  * fetch. Duplicate ids are rejected. At execution time, a configured provider must exist and
  * be usable; without one, exactly one usable provider is required, so selection never depends
  * on registration order.
- * @module @pentest-harness/dsh-web
+ * @module @fathom/web
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 import type {
   WebFetchProvider,
   WebFetchRequest,
@@ -33,7 +33,7 @@ export type {
   WebSearchSource,
 } from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     web: WebRuntime
   }
@@ -106,7 +106,7 @@ export const SEARCH_FALLBACK_ORDER: readonly string[] = ['google', 'google-api',
 export class WebRuntime extends Service {
   /**
    * Provider selection config. Operational env overrides feed the SAME fields:
-   * `$DSH_WEB_SEARCH_PROVIDER` / `$DSH_WEB_FETCH_PROVIDER` are equivalent to
+   * `$FATHOM_WEB_SEARCH_PROVIDER` / `$FATHOM_WEB_FETCH_PROVIDER` are equivalent to
    * `searchProvider` / `fetchProvider` and are NOT a hidden priority chain.
    */
   static Config: z<WebRuntimeConfig> = z.object({
@@ -123,13 +123,13 @@ export class WebRuntime extends Service {
 
   constructor(ctx: Context, config: WebRuntimeConfig = {}) {
     super(ctx, 'web')
-    const searchProvider = config.searchProvider ?? process.env.DSH_WEB_SEARCH_PROVIDER
+    const searchProvider = config.searchProvider ?? process.env.FATHOM_WEB_SEARCH_PROVIDER
     const entry: WebSearchSettings = {
       ...searchProvider === undefined ? {} : { searchProvider },
       searchFallback: config.searchFallback ?? false,
     }
     this.searchSettings = () => entry
-    this.fetchProviderId = config.fetchProvider ?? process.env.DSH_WEB_FETCH_PROVIDER
+    this.fetchProviderId = config.fetchProvider ?? process.env.FATHOM_WEB_FETCH_PROVIDER
     if (config.settings === true) {
       installSettingsSection(ctx, settingsNamespace(WEB_SEARCH_SETTINGS_NAMESPACE), WEB_SEARCH_SETTINGS_SCHEMA, entry, {
         setSource: (current) => { this.searchSettings = current },

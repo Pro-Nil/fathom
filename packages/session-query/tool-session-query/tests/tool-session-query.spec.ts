@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage, CallId, HarnessError , createMessage } from '@pentest-harness/dsh-llm'
-import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@pentest-harness/dsh-timeout'
-import * as TimeoutPolicy from '@pentest-harness/dsh-tool-call-timeout-policy'
+import { Context, type Fiber } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage, CallId, HarnessError , createMessage } from '@fathom/llm'
+import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@fathom/timeout'
+import * as TimeoutPolicy from '@fathom/tool-call-timeout-policy'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type Session,
   type SessionHeader,
   type SessionId as SessionIdValue,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import SessionQueryEngine, {
   SessionQueryError,
   SessionSearchCursor,
@@ -23,10 +23,10 @@ import SessionQueryEngine, {
   type SessionSearchPage,
   type SessionSearchRequest,
   type SessionTitleObservationResult,
-} from '@pentest-harness/dsh-session-query'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import * as ToolSessionQuery from '@pentest-harness/dsh-tool-session-query'
+} from '@fathom/session-query'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@fathom/tools'
+import * as ToolSessionQuery from '@fathom/tool-session-query'
 
 const activeContexts: Context[] = []
 

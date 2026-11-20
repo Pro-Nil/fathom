@@ -1,13 +1,13 @@
 {
-  "name": "@pentest-harness/dsh-spill-local",
-  "description": "Local-filesystem implementation of the Pentest Harness spill storage seam (private session-scoped files)",
+  "name": "@fathom/spill-local",
+  "description": "Local-filesystem implementation of the Fathom spill storage seam (private session-scoped files)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/spill/spill-local"
   },
   "type": "module",
@@ -32,19 +32,19 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-spill": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/invariants": "workspace:^",
+    "@fathom/spill": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   },
   "dependencies": {
-    "@pentest-harness/schemastery": "workspace:^"
+    "@fathom/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@pentest-harness/dsh-brand": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-spill": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/brand": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/spill": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   }
 }

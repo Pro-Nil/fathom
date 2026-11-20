@@ -1,16 +1,16 @@
 /**
  * Dynamic Cordis Plugin service: immutable package definitions, one active run
  * per Plugin, human-approved Client activation, and Host/Client invocation.
- * @module @pentest-harness/dsh-cordis-host-runner
+ * @module @fathom/cordis-host-runner
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { Fiber } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { JsonValue } from '@pentest-harness/dsh-session/types'
-import { TypertRemoteService, Remote } from '@pentest-harness/dsh-typert-protocol'
+import { Context } from '@fathom/cordis'
+import type { Fiber } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { JsonValue } from '@fathom/session/types'
+import { TypertRemoteService, Remote } from '@fathom/typert-protocol'
 import { isPlugin, normalizeHandler } from './guard.ts'
 import { CordisInspectRegistryService } from './inspect-registry.ts'
 import { missingServices, startHostHalf } from './lifecycle.ts'
@@ -77,7 +77,7 @@ export function ApprovalRequestId(id: string): ApprovalRequestId {
   return id as ApprovalRequestId
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Process-local dynamic Plugin registry and lifecycle service. */
     dynamicCordisRunner: DynamicCordisRunnerService
@@ -1245,7 +1245,7 @@ function missingFor(ctx: Context, run: DynamicCordisRun): string[] {
 }
 
 function missingPluginMessage(id: CordisDynamicPluginId): string {
-  return `no dynamic plugin "${id}" in this process — it may have been removed or lost on DSH restart`
+  return `no dynamic plugin "${id}" in this process — it may have been removed or lost on FATHOM restart`
 }
 
 function errorDetails(error: unknown): CordisErrorDetails {

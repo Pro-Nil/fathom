@@ -1,4 +1,4 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import base from '../styles/base.css?inline'
 import designPlatform from '../styles/design-platform.css?inline'
 import scrollbar from '../styles/scrollbar.css?inline'
@@ -6,7 +6,7 @@ import gradientShadowText from '../styles/gradient-shadow-text.css?inline'
 import shiki from '../styles/shiki.css?inline'
 import carbon from '../styles/carbon.css?inline'
 
-const PLUGIN_ID = '@pentest-harness/dsh-client-ui-theme'
+const PLUGIN_ID = '@fathom/client-ui-theme'
 
 const STYLES = [
   ['base.css', base],

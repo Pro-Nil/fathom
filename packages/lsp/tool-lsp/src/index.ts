@@ -3,21 +3,21 @@
  * (`goToDefinition`/`findReferences`/`goToImplementation`/`hover`); it converts one-based UTF-16
  * cursor coordinates to the seam's zero-based positions, requires the session workspace with no
  * fallback, caps and renders results, and attaches a configurable timeout budget for
- * `dsh-tool-call-timeout-policy` to enforce. It runtime-injects only `tools`, `lsp`, and `systemPrompt` and
+ * `fathom-tool-call-timeout-policy` to enforce. It runtime-injects only `tools`, `lsp`, and `systemPrompt` and
  * imports no provider.
  *
  * Namespace plugin (named exports, no default export).
- * @module @pentest-harness/dsh-tool-lsp
+ * @module @fathom/tool-lsp
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import { assertNever } from '@pentest-harness/dsh-llm'
-import { LspError } from '@pentest-harness/dsh-lsp'
-import type {} from '@pentest-harness/dsh-lsp'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { defineTool } from '@fathom/tools'
+import { assertNever } from '@fathom/llm'
+import { LspError } from '@fathom/lsp'
+import type {} from '@fathom/lsp'
+import type {} from '@fathom/system-prompt'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import {
   DEFAULT_MAX_LOCATIONS,
   DEFAULT_MAX_RESULT_CHARS,

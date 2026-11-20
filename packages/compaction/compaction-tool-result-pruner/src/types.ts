@@ -1,4 +1,4 @@
-import type { CallId } from '@pentest-harness/dsh-llm'
+import type { CallId } from '@fathom/llm'
 
 /** Character-budget policy for deterministic tool-result pruning. */
 export interface ToolResultPruneConfig {

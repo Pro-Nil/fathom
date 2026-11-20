@@ -3,15 +3,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentStatus } from '@pentest-harness/dsh-agent'
-import CommandRuntime from '@pentest-harness/dsh-commands'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import * as CommandFeedback from '@pentest-harness/dsh-command-feedback'
-import { getOrCreateAnonymousUserId } from '@pentest-harness/dsh-anonymous-user-id'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentStatus } from '@fathom/agent'
+import CommandRuntime from '@fathom/commands'
+import SessionStore, { SessionId } from '@fathom/session'
+import * as CommandFeedback from '@fathom/command-feedback'
+import { getOrCreateAnonymousUserId } from '@fathom/anonymous-user-id'
 
 let root: string | undefined
 let context: Context | undefined
@@ -52,14 +52,14 @@ function agent(ctx: Context): Agent {
 
 describe('/feedback real Loader composition through cordis.yml', () => {
   it('boots cordis.yml and records feedback without model-visible output', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-command-feedback-loader-'))
-    vi.stubEnv('DSH_HOME', root)
+    root = await mkdtemp(join(tmpdir(), 'fathom-command-feedback-loader-'))
+    vi.stubEnv('FATHOM_HOME', root)
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-agent'",
-      "- name: '@pentest-harness/dsh-session'",
-      "- name: '@pentest-harness/dsh-commands'",
-      "- name: '@pentest-harness/dsh-command-feedback'",
+      "- name: '@fathom/agent'",
+      "- name: '@fathom/session'",
+      "- name: '@fathom/commands'",
+      "- name: '@fathom/command-feedback'",
       '',
     ].join('\n'))
 
@@ -68,10 +68,10 @@ describe('/feedback real Loader composition through cordis.yml', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@pentest-harness/dsh-agent', AgentRegistry],
-      ['@pentest-harness/dsh-session', SessionStore],
-      ['@pentest-harness/dsh-commands', CommandRuntime],
-      ['@pentest-harness/dsh-command-feedback', CommandFeedback],
+      ['@fathom/agent', AgentRegistry],
+      ['@fathom/session', SessionStore],
+      ['@fathom/commands', CommandRuntime],
+      ['@fathom/command-feedback', CommandFeedback],
     ])
     context.loader.internal = {
       version: 'v2',
@@ -90,7 +90,7 @@ describe('/feedback real Loader composition through cordis.yml', () => {
     expect(context.commands.list(owner).map(command => command.name)).toContain('feedback')
 
     const accepted = await context.commands.execute(owner, '/feedback the diff view is unreadable', [], signal)
-    const userId = getOrCreateAnonymousUserId({ env: { DSH_HOME: root } })
+    const userId = getOrCreateAnonymousUserId({ env: { FATHOM_HOME: root } })
     expect(accepted?.result).toEqual({
       kind: 'success',
       text: `Feedback recorded for session feedback-loader-agent\nAnonymous user: ${userId}. Session sharing is not configured.`,

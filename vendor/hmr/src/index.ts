@@ -1,18 +1,18 @@
-import { Context, Service, type Plugin } from '@pentest-harness/cordis'
-import type { Dict } from '@pentest-harness/cosmokit'
-import { ModuleLoader, type ModuleJob, type ResolveResult } from '@pentest-harness/cordis-plugin-loader'
-import type { Include } from '@pentest-harness/cordis-plugin-include'
+import { Context, Service, type Plugin } from '@fathom/cordis'
+import type { Dict } from '@fathom/cosmokit'
+import { ModuleLoader, type ModuleJob, type ResolveResult } from '@fathom/cordis-plugin-loader'
+import type { Include } from '@fathom/cordis-plugin-include'
 import { FSWatcher, watch, type ChokidarOptions } from 'chokidar'
 import { dirname, relative, resolve } from 'node:path'
 import { realpath, stat } from 'node:fs/promises'
 import { handleError } from './error.ts'
-import type {} from '@pentest-harness/cordis-plugin-timer'
+import type {} from '@fathom/cordis-plugin-timer'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createRequire } from 'node:module'
 import picomatch from 'picomatch'
-import z from '@pentest-harness/schemastery'
+import z from '@fathom/schemastery'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     hmr: Hmr
   }
@@ -568,7 +568,7 @@ namespace Hmr {
     ]),
     debounce: z.natural().role('ms').default(100),
   })
-  // [pentest-harness] vendored modification: removed `.i18n({ 'en-US': enUS, 'zh-CN': zhCN })`
+  // [fathom] vendored modification: removed `.i18n({ 'en-US': enUS, 'zh-CN': zhCN })`
   // and the corresponding `./locales/*.yml` imports, to avoid a runtime YAML import hook
   // (@cordisjs/unyaml) that we don't vendor. See vendor/README.md.
 }

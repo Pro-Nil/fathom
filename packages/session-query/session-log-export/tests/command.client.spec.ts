@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { CommandDefinition, CommandInvocation } from '@pentest-harness/dsh-commands'
+import { Context } from '@fathom/cordis'
+import type { CommandDefinition, CommandInvocation } from '@fathom/commands'
 import * as SessionLogDownload from '../src/index.ts'
 
 describe('/export Web download command', () => {

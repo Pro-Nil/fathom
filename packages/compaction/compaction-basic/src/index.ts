@@ -1,22 +1,22 @@
 /**
  * Basic replay-aware compaction backend.
  *
- * @module @pentest-harness/dsh-compaction-basic
+ * @module @fathom/compaction-basic
  */
 
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { CompactionEngine, ManualCompactionError } from '@pentest-harness/dsh-compaction'
-import type { CompactionResult, CompactionTrigger } from '@pentest-harness/dsh-compaction'
-import type { TokenMeter } from '@pentest-harness/dsh-token-meter'
-import type { Session } from '@pentest-harness/dsh-session'
-import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@pentest-harness/dsh-llm'
-import type { LlmCallConfig } from '@pentest-harness/dsh-llm'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { CompactionEngine, ManualCompactionError } from '@fathom/compaction'
+import type { CompactionResult, CompactionTrigger } from '@fathom/compaction'
+import type { TokenMeter } from '@fathom/token-meter'
+import type { Session } from '@fathom/session'
+import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@fathom/llm'
+import type { LlmCallConfig } from '@fathom/llm'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import type { CommandId } from '@fathom/commands/brand'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 // Type-only: makes the optional sibling service available to `ctx.get()`.
-import type {} from '@pentest-harness/dsh-compaction-tool-result-pruner'
+import type {} from '@fathom/compaction-tool-result-pruner'
 import {
   resolveCompactSpec,
   resolveConfig,

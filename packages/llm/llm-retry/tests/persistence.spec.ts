@@ -2,11 +2,11 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SqliteSessionPersistence from '@pentest-harness/dsh-session-persistence-sqlite'
-import { RetryId } from '@pentest-harness/dsh-llm-retry'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SqliteSessionPersistence from '@fathom/session-persistence-sqlite'
+import { RetryId } from '@fathom/llm-retry'
 import type {} from '../src/index.ts'
 
 const dirs: string[] = []
@@ -19,7 +19,7 @@ async function backend(kind: 'jsonl' | 'sqlite'): Promise<Context> {
   const ctx = new Context()
   await ctx.plugin(SessionStore)
   if (kind === 'jsonl') {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-llm-retry-jsonl-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-llm-retry-jsonl-'))
     dirs.push(root)
     await ctx.plugin(JsonlSessionPersistence, { root })
   } else {

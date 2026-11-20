@@ -8,18 +8,18 @@
 import { mkdtempSync, realpathSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { type AgentFactory } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore, { SessionId, type Session } from '@pentest-harness/dsh-session'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { type AgentFactory } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore, { SessionId, type Session } from '@fathom/session'
+import UserQuestionService from '@fathom/user-questions'
 import { RpcId, type RpcRequest } from '../src/api/rpc.ts'
 import type { HostFrame } from '../src/api/events.ts'
 import {
   InvalidPresetIdError, PresetExistsError, resolveSessionPreset, UnknownPresetError,
-} from '@pentest-harness/dsh-agent-presets'
-import type {} from '@pentest-harness/dsh-agent-presets/types'
-import { GoalId } from '@pentest-harness/dsh-goal'
+} from '@fathom/agent-presets'
+import type {} from '@fathom/agent-presets/types'
+import { GoalId } from '@fathom/goal'
 import { createApiProxy } from '../src/api-proxy.ts'
 import { describe, expect, it } from 'vitest'
 
@@ -106,7 +106,7 @@ async function harness(
   persistence?: unknown,
   options: { userIds?: readonly string[]; defaults?: Record<string, unknown> } = {},
 ) {
-  const cwd = realpathSync(mkdtempSync(join(tmpdir(), 'dsh-apiproxy-preset-')))
+  const cwd = realpathSync(mkdtempSync(join(tmpdir(), 'fathom-apiproxy-preset-')))
   const ctx = new Context()
   await ctx.plugin(SessionStore)
   await ctx.plugin(AgentRegistry)

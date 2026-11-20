@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-sandbox-windows-acl`.
- * @module @pentest-harness/dsh-sandbox-windows-acl/invariant
+ * Package-owned invariant companion for `@fathom/sandbox-windows-acl`.
+ * @module @fathom/sandbox-windows-acl/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-sandbox-windows-acl'
+const PACKAGE_NAME = '@fathom/sandbox-windows-acl'
 
 /** Cordis companion plugin name. */
 export const name = 'sandbox-windows-acl-invariant'

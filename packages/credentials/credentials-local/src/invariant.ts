@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-credentials-local`.
- * @module @pentest-harness/dsh-credentials-local/invariant
+ * Package-owned invariant companion for `@fathom/credentials-local`.
+ * @module @fathom/credentials-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-credentials-local'
+const PACKAGE_NAME = '@fathom/credentials-local'
 
 /** Cordis companion plugin name. */
 export const name = 'credentials-local-invariant'
@@ -15,7 +15,7 @@ export const name = 'credentials-local-invariant'
 export const inject = ['invariants']
 
 /**
- * No runtime invariant: the Service Definition companion (`dsh-credentials/invariant`) owns the
+ * No runtime invariant: the Service Definition companion (`fathom-credentials/invariant`) owns the
  * `credentials/reference-updated` lifecycle contract; this provider's file/environment layering is
  * asynchronous I/O pinned by its unit suite.
  */

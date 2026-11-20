@@ -1,4 +1,4 @@
-import type { Dict } from '@pentest-harness/cosmokit'
+import type { Dict } from '@fathom/cosmokit'
 import { EventsService } from './events.ts'
 import { LoggerService } from './logger.ts'
 import { ReflectService } from './reflect.ts'

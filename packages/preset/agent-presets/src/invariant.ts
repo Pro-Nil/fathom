@@ -1,20 +1,20 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-agent-presets`.
- * @module @pentest-harness/dsh-agent-presets/invariant
+ * Package-owned invariant companion for `@fathom/agent-presets`.
+ * @module @fathom/agent-presets/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 // Type-only: resolves the `system-prompt/assemble` waterfall this companion
-// joins, and the `agent` field `dsh-agent` merges into its context.
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type {} from '@pentest-harness/dsh-agent'
+// joins, and the `agent` field `fathom-agent` merges into its context.
+import type {} from '@fathom/system-prompt'
+import type {} from '@fathom/agent'
 // Imported through the package name, not `./mount.ts`: a module shared between
 // the two build entry points becomes a third chunk that the published `files`
 // list does not carry, which `verify-built-package-invariants` rejects.
-import { leakedServices, livePresetMounts } from '@pentest-harness/dsh-agent-presets'
+import { leakedServices, livePresetMounts } from '@fathom/agent-presets'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-presets'
+const PACKAGE_NAME = '@fathom/agent-presets'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-presets-invariant'

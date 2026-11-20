@@ -1,10 +1,10 @@
-/** Package-owned permission-preset event invariants. @module @pentest-harness/dsh-permission-presets/invariant */
+/** Package-owned permission-preset event invariants. @module @fathom/permission-presets/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-permission-presets'
+const PACKAGE_NAME = '@fathom/permission-presets'
 
 /** Cordis companion plugin name. */
 export const name = 'permission-presets-invariant'

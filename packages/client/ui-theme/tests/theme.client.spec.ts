@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { stubSettingsScope, type StubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+import { Context } from '@fathom/cordis'
+import { stubSettingsScope, type StubSettingsScope } from '@fathom/client-test-runtime'
 import type {
   ThemeSettings,
   ThemeSnapshot,
   ThemeTokenOverrides,
-} from '@pentest-harness/dsh-client-ui-theme/client'
-import { ThemeRuntime } from '@pentest-harness/dsh-client-ui-theme/client'
+} from '@fathom/client-ui-theme/client'
+import { ThemeRuntime } from '@fathom/client-ui-theme/client'
 
 const make = (host = stubSettingsScope<ThemeSettings>()): {
   ctx: Context

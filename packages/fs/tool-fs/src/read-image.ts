@@ -5,17 +5,17 @@
  * image-reading tool is useful only when the exact calling route can inspect
  * its result, so unknown capability refuses instead of relying on an adapter
  * failure after filesystem and attachment work.
- * @module @pentest-harness/dsh-tool-fs/src/read-image
+ * @module @fathom/tool-fs/src/read-image
  */
 
 import { basename, extname } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import { AttachmentError, AttachmentId } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentRef, ImageMediaType } from '@pentest-harness/dsh-attachment'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, ToolExecution } from '@pentest-harness/dsh-tools'
-import type {} from '@pentest-harness/dsh-fs'
+import type { Context } from '@fathom/cordis'
+import { AttachmentError, AttachmentId } from '@fathom/attachment'
+import type { ImageAttachmentRef, ImageMediaType } from '@fathom/attachment'
+import type { ContentBlock } from '@fathom/llm'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, ToolExecution } from '@fathom/tools'
+import type {} from '@fathom/fs'
 import { resolveRegularReadTarget } from './read-target.ts'
 
 /** Extensions `read_image` accepts; magic-byte validation at the attachment service stays authoritative. */

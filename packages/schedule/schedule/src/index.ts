@@ -1,11 +1,11 @@
 /**
  * Agent-scoped durable one-shot and fixed-rate reminders over the session event log.
- * @module @pentest-harness/dsh-schedule
+ * @module @fathom/schedule
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-session-persistence'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type {} from '@fathom/session-persistence'
 import { ScheduleRuntime } from './runtime.ts'
 import { registerScheduleTools } from './tools.ts'
 

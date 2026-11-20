@@ -1,15 +1,15 @@
 /**
  * Semantic durability checkpoints for model requests, top-level tool dispatch,
  * and completed agent steps.
- * @module @pentest-harness/dsh-session-checkpoint-policy
+ * @module @fathom/session-checkpoint-policy
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session } from '@pentest-harness/dsh-session'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import type { PreStepDecision } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-session-persistence'
+import type { Context } from '@fathom/cordis'
+import type { Session } from '@fathom/session'
+import type { StreamChunk } from '@fathom/llm'
+import { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecutionResult } from '@fathom/tools'
+import type { PreStepDecision } from '@fathom/agent'
+import type {} from '@fathom/session-persistence'
 
 /** Cordis plugin name used by Loader diagnostics. */
 export const name = 'session-checkpoint-policy'

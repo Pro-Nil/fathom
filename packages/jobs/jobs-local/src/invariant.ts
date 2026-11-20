@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-jobs-local`.
- * @module @pentest-harness/dsh-jobs-local/invariant
+ * Package-owned invariant companion for `@fathom/jobs-local`.
+ * @module @fathom/jobs-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-jobs-local'
+const PACKAGE_NAME = '@fathom/jobs-local'
 
 /** Cordis companion plugin name. */
 export const name = 'jobs-local-invariant'
@@ -15,7 +15,7 @@ export const name = 'jobs-local-invariant'
 export const inject = ['invariants']
 
 /**
- * No runtime invariant: `@pentest-harness/dsh-jobs/invariant` owns per-snapshot identity, status,
+ * No runtime invariant: `@fathom/jobs/invariant` owns per-snapshot identity, status,
  * timestamp, and owner checks. This provider's admission decision uses private configuration and
  * must fail before a backend starter runs; `LocalJobRegistry.start()` enforces it synchronously
  * for current producers. Repeating an aggregate after publication would expose private

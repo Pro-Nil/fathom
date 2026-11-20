@@ -7,11 +7,11 @@
  * rendered from real session events so a running agent updates the view live.
  */
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import type { PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { ConversationNode, RunningToolCall } from '@pentest-harness/dsh-client-runtime/client'
-import type { TrajectorySnapshot } from '@pentest-harness/dsh-client-ui-trajectory/src/client/trajectory-contract.ts'
-import { PentestLogo } from '@pentest-harness/dsh-client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
+import type { SessionId } from '@fathom/client-runtime/client'
+import type { ConversationNode, RunningToolCall } from '@fathom/client-runtime/client'
+import type { TrajectorySnapshot } from '@fathom/client-ui-trajectory/src/client/trajectory-contract.ts'
+import { FathomLogo } from '@fathom/client-ui-primitives'
 import { NS } from './locales.ts'
 import css from './WorkflowView.module.css'
 
@@ -221,7 +221,7 @@ export function WorkflowView({ useSession }: WorkflowViewProps): JSX.Element {
     <div className={css.wrap}>
       <div className={css.header}>
         <div className={css.brand}>
-          <span className={css.logoMark}><PentestLogo size={22} mono /></span>
+          <span className={css.logoMark}><FathomLogo size={22} mono /></span>
           <div>
             <div className={css.kicker}>LIVE WORKFLOW</div>
             <h2 className={css.title}>Agent Run</h2>

@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-authorization`.
- * @module @pentest-harness/dsh-authorization/invariant
+ * Package-owned invariant companion for `@fathom/authorization`.
+ * @module @fathom/authorization/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-authorization'
+const PACKAGE_NAME = '@fathom/authorization'
 
 /** Cordis companion plugin name. */
 export const name = 'authorization-invariant'

@@ -1,21 +1,21 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, CallId  } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, CallId  } from '@fathom/llm'
 import SessionStore, {
   SessionId,
   type SessionEvent,
   type TurnEndReason,
   type UserMessage,
-} from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture, type PostToolDecision, type PreToolDecision } from '@pentest-harness/dsh-tools'
+} from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture, type PostToolDecision, type PreToolDecision } from '@fathom/tools'
 import AgentRegistry, {
   type Agent,
   type PreStepDecision,
   type SessionStartSource,
-} from '@pentest-harness/dsh-agent'
+} from '@fathom/agent'
 
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import AgentLoop from '@fathom/agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 /**
@@ -717,7 +717,7 @@ describe('tools/pre-execute gate (native-plugin permission pattern, end-to-end t
 })
 
 describe('worked example: a native hook plugin is just a cordis plugin on the seams', () => {
-  // The whole point of the interception taxonomy: a "native hook" needs no dsh-hook-protocol,
+  // The whole point of the interception taxonomy: a "native hook" needs no fathom-hook-protocol,
   // no external command, no hook/* log — it is an ordinary cordis plugin subscribing to the
   // canonical events and returning typed decisions.
   const NativeGuard = {

@@ -5,20 +5,20 @@
  * and opener wiring, and the plugin registrations' fiber-teardown removal
  * (HMR safety) against the real SlotRegistry.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { act, cleanup, fireEvent, render, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   ConversationEventRegistry, ConversationNodeAssembler, SlotRegistry,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ConversationEventInput, ConversationLocationDataStore, ConversationMatch, ConversationNodeDefinition,
   ConversationTimelineSnapshot, ConversationTurnDataMap, ConversationViewDefinition,
   ConversationViewNode, ToolResultNode, TurnLocation,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { apply as applyLocale, inject as localeInject } from '@pentest-harness/dsh-client-locale/client'
-import type { ChatFileMentions, TurnTailOwnerProps } from '@pentest-harness/dsh-client-ui-conversation/client'
-import { makeTranslate, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
+} from '@fathom/client-runtime/client'
+import { apply as applyLocale, inject as localeInject } from '@fathom/client-locale/client'
+import type { ChatFileMentions, TurnTailOwnerProps } from '@fathom/client-ui-conversation/client'
+import { makeTranslate, stubSettingsScope } from '@fathom/client-test-runtime'
 import {
   fitProducedFiles, ProducedFiles, type ProducedFilesProps,
 } from '../src/client/ProducedFiles.tsx'
@@ -445,7 +445,7 @@ describe('package shells', () => {
       register: (pkg: string) => { registered.push(pkg); return () => {} },
     } as never)
     const dispose = await applyInvariant(ctx)
-    expect(registered).toEqual(['@pentest-harness/dsh-client-ui-deliverables'])
+    expect(registered).toEqual(['@fathom/client-ui-deliverables'])
     expect(dispose).toBeTypeOf('function')
   })
 })

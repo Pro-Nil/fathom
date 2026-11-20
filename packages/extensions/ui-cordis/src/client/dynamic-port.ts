@@ -1,6 +1,6 @@
 /** Host operations used directly by the frame-wide Cordis panel. */
 
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
+import type { SessionId } from '@fathom/client-connection/client'
 import type {
   CordisDynamicPluginId, DynamicCordisInventoryRow,
 } from './events.ts'

@@ -2,19 +2,19 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { assembleContextFor } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { CallId, LlmAdapter, createUserMessage } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import * as control from '@pentest-harness/dsh-tool-subagent-control'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { assembleContextFor } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { CallId, LlmAdapter, createUserMessage } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SubagentRuntime from '@fathom/subagent'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import * as control from '@fathom/tool-subagent-control'
 import { textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as tool from '../src/index.ts'
 
@@ -65,7 +65,7 @@ afterEach(async () => {
 async function setup(options: { load?: boolean; config?: tool.Config } = {}) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  const root = mkdtempSync(join(tmpdir(), 'dsh-tool-subagent-report-'))
+  const root = mkdtempSync(join(tmpdir(), 'fathom-tool-subagent-report-'))
   await ctx.plugin(JsonlSessionPersistence, { root })
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(SubagentRuntime)
@@ -159,7 +159,7 @@ async function sectionNames(ctx: Context, agent: Agent): Promise<string[]> {
   return assembly.sections.map(section => section.name)
 }
 
-describe('dsh-tool-subagent-report', () => {
+describe('fathom-tool-subagent-report', () => {
   it('registers report only in continuable child scopes', async () => {
     const { ctx, parent } = await setup()
     expect(ctx.tools.schemas().map(schema => schema.name)).not.toContain('report')
@@ -587,7 +587,7 @@ function userTexts(events: readonly SessionEvent[]): string[] {
     : [])
 }
 
-describe('dsh-tool-subagent-report result independence', () => {
+describe('fathom-tool-subagent-report result independence', () => {
   it('does not report a final assistant answer automatically or create Jobs', async () => {
     const { ctx, parent, adapter } = await setup()
     const { started } = await startChild(ctx, parent)

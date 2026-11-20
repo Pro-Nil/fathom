@@ -4,23 +4,23 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import TerminalSessionService from '@pentest-harness/dsh-terminal'
-import * as TerminalBash from '@pentest-harness/dsh-terminal-bash'
-import SandboxProvider from '@pentest-harness/dsh-sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@pentest-harness/dsh-sandbox'
-import SandboxPolicyService from '@pentest-harness/dsh-sandbox-policy'
-import LocalSubprocessService from '@pentest-harness/dsh-subprocess-local'
-import { resolvePwshPath } from '@pentest-harness/dsh-pwsh-local/src/resolve.ts'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRegistry from '@pentest-harness/dsh-tools'
-import * as ToolPwshPersistent from '@pentest-harness/dsh-tool-pwsh-persistent'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import TerminalSessionService from '@fathom/terminal'
+import * as TerminalBash from '@fathom/terminal-bash'
+import SandboxProvider from '@fathom/sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@fathom/sandbox'
+import SandboxPolicyService from '@fathom/sandbox-policy'
+import LocalSubprocessService from '@fathom/subprocess-local'
+import { resolvePwshPath } from '@fathom/pwsh-local/src/resolve.ts'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRegistry from '@fathom/tools'
+import * as ToolPwshPersistent from '@fathom/tool-pwsh-persistent'
 
 const hasPwsh = spawnSync(
   resolvePwshPath(), ['-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$true'],
@@ -72,20 +72,20 @@ function text(result: { content: { type: string; text?: string }[] }): string {
 
 describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader composition', () => {
   it('preserves cwd and environment across calls', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-persistent-pwsh-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'fathom-persistent-pwsh-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-agent'",
-      "- name: '@pentest-harness/dsh-system-prompt'",
-      "- name: '@pentest-harness/dsh-tools'",
-      "- name: '@pentest-harness/dsh-terminal'",
-      "- name: '@pentest-harness/dsh-test-sandbox'",
-      "- name: '@pentest-harness/dsh-sandbox-policy'",
+      "- name: '@fathom/agent'",
+      "- name: '@fathom/system-prompt'",
+      "- name: '@fathom/tools'",
+      "- name: '@fathom/terminal'",
+      "- name: '@fathom/test-sandbox'",
+      "- name: '@fathom/sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
       `    workspaceRoot: ${JSON.stringify(root)}`,
-      "- name: '@pentest-harness/dsh-subprocess-local'",
-      "- name: '@pentest-harness/dsh-terminal-bash'",
+      "- name: '@fathom/subprocess-local'",
+      "- name: '@fathom/terminal-bash'",
       '  config:',
       '    shellDialect: pwsh',
       '    pollIntervalMs: 10',
@@ -95,7 +95,7 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
       '    scrollbackLines: 20000',
       '    timeoutMs: 8000',
       '    disposeGraceMs: 500',
-      "- name: '@pentest-harness/dsh-tool-pwsh-persistent'",
+      "- name: '@fathom/tool-pwsh-persistent'",
       '  config:',
       '    timeoutMs: 20000',
       '',
@@ -106,15 +106,15 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@pentest-harness/dsh-agent', AgentRegistry],
-      ['@pentest-harness/dsh-system-prompt', SystemPrompt],
-      ['@pentest-harness/dsh-tools', ToolRegistry],
-      ['@pentest-harness/dsh-terminal', TerminalSessionService],
-      ['@pentest-harness/dsh-test-sandbox', PassthroughSandbox],
-      ['@pentest-harness/dsh-sandbox-policy', SandboxPolicyService],
-      ['@pentest-harness/dsh-subprocess-local', LocalSubprocessService],
-      ['@pentest-harness/dsh-terminal-bash', TerminalBash],
-      ['@pentest-harness/dsh-tool-pwsh-persistent', ToolPwshPersistent],
+      ['@fathom/agent', AgentRegistry],
+      ['@fathom/system-prompt', SystemPrompt],
+      ['@fathom/tools', ToolRegistry],
+      ['@fathom/terminal', TerminalSessionService],
+      ['@fathom/test-sandbox', PassthroughSandbox],
+      ['@fathom/sandbox-policy', SandboxPolicyService],
+      ['@fathom/subprocess-local', LocalSubprocessService],
+      ['@fathom/terminal-bash', TerminalBash],
+      ['@fathom/tool-pwsh-persistent', ToolPwshPersistent],
     ])
     context.loader.internal = {
       version: 'v2',
@@ -140,14 +140,14 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     await execute('state', '$env:KEEP = "loader"; New-Item -ItemType Directory -Force -Path nested | Out-Null; Set-Location nested')
     const observed = text(await execute('observe', 'Write-Output "cwd=$PWD keep=$env:KEEP"'))
     expect(observed).toContain(`cwd=${join(root, 'nested')} keep=loader`)
-    expect(observed).not.toContain('DSH_PERSISTENT_PWSH')
+    expect(observed).not.toContain('FATHOM_PERSISTENT_PWSH')
 
     const multiline = text(await execute(
       'multiline',
       '$value = "line one"\nWrite-Output "${value}:it\'s fine"',
     ))
     expect(multiline).toBe("line one:it's fine")
-    expect(multiline).not.toContain('DSH_PERSISTENT_PWSH')
+    expect(multiline).not.toContain('FATHOM_PERSISTENT_PWSH')
 
     const hereString = text(await execute(
       'here-string',

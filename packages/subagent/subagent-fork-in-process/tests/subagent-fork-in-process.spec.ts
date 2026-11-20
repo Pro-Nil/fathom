@@ -1,20 +1,20 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import { SessionId } from '@pentest-harness/dsh-session'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import SubagentRuntime, { type SubagentStartRequest } from '@pentest-harness/dsh-subagent'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import AgentRegistry from '@fathom/agent'
+import { SessionId } from '@fathom/session'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import InvariantRegistry from '@fathom/invariants'
+import * as SessionInvariant from '@fathom/session/invariant'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
+import SubagentRuntime, { type SubagentStartRequest } from '@fathom/subagent'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
+import type { StreamChunk } from '@fathom/llm'
 import * as fork from '../src/index.ts'
-import { STRUCTURED_OUTPUT_TOOL } from '@pentest-harness/dsh-subagent-in-process-driver'
+import { STRUCTURED_OUTPUT_TOOL } from '@fathom/subagent-in-process-driver'
 
 type Script = ConstructorParameters<typeof MockAdapter>[0]
 
@@ -55,7 +55,7 @@ function text(blocks: { type: string; text?: string }[]): string {
   return blocks.filter(b => b.type === 'text').map(b => b.text).join('')
 }
 
-describe('dsh-subagent-fork-in-process', () => {
+describe('fathom-subagent-fork-in-process', () => {
   it('emits subagent/start only after the seeded child is published', async () => {
     const { ctx, parent } = await setup([textResponse('child answer')])
     let childAtStart: ReturnType<typeof ctx.agents.get>

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tool-bash`.
- * @module @pentest-harness/dsh-tool-bash/invariant
+ * Package-owned invariant companion for `@fathom/tool-bash`.
+ * @module @fathom/tool-bash/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-bash'
+const PACKAGE_NAME = '@fathom/tool-bash'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-bash-invariant'

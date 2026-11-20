@@ -7,11 +7,11 @@
  * select the accumulated assistant text. Selection is independent of the
  * run's stop reason.
  *
- * @module @pentest-harness/dsh-subagent/assistant-output
+ * @module @fathom/subagent/assistant-output
  */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 
 /**
  * Incremental fold of the selection rule, for backends that observe a child's

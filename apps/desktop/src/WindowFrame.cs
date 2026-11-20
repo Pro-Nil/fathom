@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Avalonia.Controls;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// Windows only: removes the native caption so the page's own bar is the

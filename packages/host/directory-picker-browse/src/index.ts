@@ -6,20 +6,20 @@
  * serves remote clients the dialog backend cannot. Policy decisions (hidden
  * entries flagged but returned, symlinks followed, whole-filesystem scope) are
  * recorded in the directory-picker seam Agent Note.
- * @module @pentest-harness/dsh-host-directory-picker-browse
+ * @module @fathom/host-directory-picker-browse
  */
 
 import { mkdir, opendir, stat } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { basename, dirname, join, posix, resolve, win32 } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import {
   DirectoryPicker, DirectoryPickerError,
-} from '@pentest-harness/dsh-host-directory-picker'
+} from '@fathom/host-directory-picker'
 import type {
   DirectoryEntry, DirectoryListing, DirectoryPickerCapability,
-} from '@pentest-harness/dsh-host-directory-picker'
+} from '@fathom/host-directory-picker'
 
 /**
  * Ancestor chain from the filesystem root to `target` inclusive — the

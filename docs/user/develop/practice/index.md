@@ -10,13 +10,13 @@ When a capability is general enough to need replaceable providers, such as Bash 
 
 The Bash execution capability consists of:
 
-- **Service Definition** (`dsh-shell`) — defines the Cordis service and Bash request and result types
-- **Service Provider** (`dsh-bash-local`) — executes commands on the local machine
-- **Consumer** (`dsh-tool-bash`) — exposes the capability as a model-callable tool
+- **Service Definition** (`fathom-shell`) — defines the Cordis service and Bash request and result types
+- **Service Provider** (`fathom-bash-local`) — executes commands on the local machine
+- **Consumer** (`fathom-tool-bash`) — exposes the capability as a model-callable tool
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
-│  dsh-shell   │────▶│  dsh-bash-local  │     │ dsh-tool-bash│
+│  fathom-shell   │────▶│  fathom-bash-local  │     │ fathom-tool-bash│
 │(definition) │     │    (provider)     │     │(consumer/tool)│
 └─────────────┘     └──────────────────┘     └──────────────┘
        ▲                                            │
@@ -32,7 +32,7 @@ One Service Definition can have multiple providers selected through `cordis.yml`
 
 ```yaml
 # Local execution
-- name: '@pentest-harness/dsh-bash-local'
+- name: '@fathom/bash-local'
 
 # Replace this row with another package that provides the same service.
 ```
@@ -59,9 +59,9 @@ The [capability-seam reference](../../../capability-seams.md) owns the current b
 
 ```ts ignore-check
 // packages/my-cap/my-cap/src/index.ts
-import { Service, type Context } from '@pentest-harness/cordis'
+import { Service, type Context } from '@fathom/cordis'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     myCap: MyCapService
   }
@@ -89,8 +89,8 @@ export interface MyCapResult {
 
 ```ts ignore-check
 // packages/my-cap/my-cap-local/src/index.ts
-import type { Context } from '@pentest-harness/cordis'
-import { MyCapService, type MyCapRequest, type MyCapResult } from '@pentest-harness/dsh-my-cap'
+import type { Context } from '@fathom/cordis'
+import { MyCapService, type MyCapRequest, type MyCapResult } from '@fathom/my-cap'
 
 class MyCapLocal extends MyCapService {
   async execute(request: MyCapRequest): Promise<MyCapResult> {
@@ -110,8 +110,8 @@ export function apply(ctx: Context) {
 
 ```ts ignore-check
 // packages/my-cap/tool-my-cap/src/index.ts
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
 
 export const name = 'tool-my-cap'
 export const inject = ['tools', 'myCap']
@@ -138,8 +138,8 @@ export function apply(ctx: Context) {
 ### Compose them in cordis.yml
 
 ```yaml
-- name: '@pentest-harness/dsh-my-cap-local'
-- name: '@pentest-harness/dsh-tool-my-cap'
+- name: '@fathom/my-cap-local'
+- name: '@fathom/tool-my-cap'
 ```
 
 ## Design points

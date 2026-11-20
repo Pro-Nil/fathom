@@ -1,14 +1,14 @@
 /**
  * Package-owned request-reconstruction invariant for loop-built LLM calls.
- * @module @pentest-harness/dsh-agent-loop/invariant
+ * @module @fathom/agent-loop/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { isAgentLoopRequest, type GenerateOptions } from '@pentest-harness/dsh-llm'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import { foldRequestHeader } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import { isAgentLoopRequest, type GenerateOptions } from '@fathom/llm'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
+import { foldRequestHeader } from '@fathom/session'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-loop'
+const PACKAGE_NAME = '@fathom/agent-loop'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-loop-invariant'

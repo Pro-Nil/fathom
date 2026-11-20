@@ -1,16 +1,22 @@
 /** Canonical session URI and inline mention encoding. */
 
-import { SessionId, type SessionId as SessionIdType } from '@pentest-harness/dsh-session'
+import { SessionId, type SessionId as SessionIdType } from '@fathom/session'
 import { SessionReferenceError } from './config.ts'
 import type { SessionReferenceInput } from './types.ts'
 
-/** URI scheme reserved for Pentest Harness session snapshots. */
-export const SESSION_REFERENCE_SCHEME = 'dsh-session:'
+/** URI scheme reserved for Fathom session snapshots. */
+export const SESSION_REFERENCE_SCHEME = 'fathom-session:'
+
+/**
+ * The scheme mentions used before the project was renamed. Drafts and
+ * messages written then still carry it, so it is read (never written).
+ */
+export const LEGACY_SESSION_REFERENCE_SCHEME = 'dsh' + '-session:'
 
 /**
  * Encode any JavaScript session-id string as a canonical lossless URI.
  * @param sessionId - opaque session id to serialize.
- * @returns canonical `dsh-session:` URI.
+ * @returns canonical `fathom-session:` URI.
  */
 export function encodeSessionReferenceUri(sessionId: SessionIdType): string {
   const payload = Buffer.from(JSON.stringify(sessionId), 'utf8').toString('base64url')
@@ -23,16 +29,17 @@ export function encodeSessionReferenceUri(sessionId: SessionIdType): string {
  * @returns decoded session id.
  */
 export function decodeSessionReferenceUri(uri: string): SessionIdType {
-  if (!uri.startsWith(SESSION_REFERENCE_SCHEME)) {
+  const scheme = [SESSION_REFERENCE_SCHEME, LEGACY_SESSION_REFERENCE_SCHEME].find(prefix => uri.startsWith(prefix))
+  if (scheme === undefined) {
     throw invalidUri(uri)
   }
-  const payload = uri.slice(SESSION_REFERENCE_SCHEME.length)
+  const payload = uri.slice(scheme.length)
   if (!/^[A-Za-z0-9_-]+$/.test(payload)) throw invalidUri(uri)
   try {
     const parsed: unknown = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'))
     if (typeof parsed !== 'string') throw new TypeError('decoded session id is not a string')
     const sessionId = SessionId(parsed)
-    if (encodeSessionReferenceUri(sessionId) !== uri) throw new TypeError('URI is not canonical')
+    if (scheme + encodeSessionReferenceUri(sessionId).slice(SESSION_REFERENCE_SCHEME.length) !== uri) throw new TypeError('URI is not canonical')
     return sessionId
   } catch (error: unknown) {
     throw invalidUri(uri, error)
@@ -67,7 +74,8 @@ export interface ParsedSessionReferenceText {
  */
 export function parseSessionReferenceText(text: string): ParsedSessionReferenceText {
   const references: SessionReferenceInput[] = []
-  const pattern = /@\[((?:\\.|[^\\\]])*)\]\((dsh-session:[^\s)]*)\)|(dsh-session:[A-Za-z0-9_-]+)/gu
+  // Both the current and the pre-rename scheme (see LEGACY_SESSION_REFERENCE_SCHEME).
+  const pattern = /@\[((?:\\.|[^\\\]])*)\]\(((?:fathom|dsh)-session:[^\s)]*)\)|((?:fathom|dsh)-session:[A-Za-z0-9_-]+)/gu
   const rendered = text.replace(pattern, (
     _match,
     rawLabel: string | undefined,

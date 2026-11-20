@@ -7,7 +7,7 @@
  * derives its PropsStore share from the return type, and the service face
  * receives the bound actions through the registration's inject hook.
  */
-import { defineStore, type EngineStoreHandle } from '@pentest-harness/dsh-client-runtime/client'
+import { defineStore, type EngineStoreHandle } from '@fathom/client-runtime/client'
 import {
   ASIDE_MAX, ASIDE_MIN, clampWidth, DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
   SIDEBAR_DEFAULT, SIDEBAR_MAX, SIDEBAR_MIN,

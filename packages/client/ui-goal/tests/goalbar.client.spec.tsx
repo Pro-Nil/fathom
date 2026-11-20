@@ -5,9 +5,9 @@
 
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { GoalSnapshot } from '@pentest-harness/dsh-goal/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import type { GoalSnapshot } from '@fathom/goal/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { GoalBar } from '../src/client/GoalBar.tsx'
 import type { GoalActionResult, GoalBarActions } from '../src/client/slots.ts'
 import { en } from '../src/client/locales.ts'

@@ -1,10 +1,10 @@
 /**
  * Configuration vocabulary for the replay-aware basic compaction backend.
  *
- * @module @pentest-harness/dsh-compaction-basic/types
+ * @module @fathom/compaction-basic/types
  */
 
-import type { LlmCallConfig } from '@pentest-harness/dsh-llm'
+import type { LlmCallConfig } from '@fathom/llm'
 
 /** Policy fields shared by the default policy and exact model overrides. */
 export interface CompactionPolicyConfig {

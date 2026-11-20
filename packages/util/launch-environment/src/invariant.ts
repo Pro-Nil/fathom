@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-launch-environment`.
- * @module @pentest-harness/dsh-launch-environment/invariant
+ * Package-owned invariant companion for `@fathom/launch-environment`.
+ * @module @fathom/launch-environment/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-launch-environment'
+const PACKAGE_NAME = '@fathom/launch-environment'
 
 /** Cordis companion plugin name. */
 export const name = 'launch-environment-invariant'

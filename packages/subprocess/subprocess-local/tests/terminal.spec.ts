@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { IDisposable, IPty } from 'node-pty'
-import { LocalTerminalHandle } from '@pentest-harness/dsh-subprocess-local/src/terminal.ts'
+import { LocalTerminalHandle } from '@fathom/subprocess-local/src/terminal.ts'
 import type {
   ProcessIdentity,
   ProcessInspector,
-} from '@pentest-harness/dsh-subprocess-local/src/process-inspector.ts'
-import type { SubprocessTerminalSignal } from '@pentest-harness/dsh-subprocess'
+} from '@fathom/subprocess-local/src/process-inspector.ts'
+import type { SubprocessTerminalSignal } from '@fathom/subprocess'
 
 class FakePty {
   pid = 123

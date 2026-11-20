@@ -4,14 +4,14 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { SandboxPolicy } from '@pentest-harness/dsh-sandbox'
-import { launcherPath } from '@pentest-harness/node-addon-landlock-run'
-import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
+import { Context } from '@fathom/cordis'
+import type { SandboxPolicy } from '@fathom/sandbox'
+import { launcherPath } from '@fathom/node-addon-landlock-run'
+import { LocalSandboxProvider } from '@fathom/sandbox-local'
 
 /**
  * Keyless backend integration through `confine()` and the workspace `landlock-run` launcher, with
- * bwrap forced off. Tests assert real world effects; consumer coverage lives in dsh-bash-sandbox.
+ * bwrap forced off. Tests assert real world effects; consumer coverage lives in fathom-bash-sandbox.
  * Skips when the platform package or enforcing kernel is unavailable. HOME-based workspaces avoid
  * Landlock's wholesale `/tmp` grant, so workspace-write proves the workspace-root grant itself.
  */
@@ -31,7 +31,7 @@ afterEach(async () => {
 })
 
 async function tempDir(base: string): Promise<string> {
-  const dir = await mkdtemp(join(base, 'dsh-landlock-e2e-'))
+  const dir = await mkdtemp(join(base, 'fathom-landlock-e2e-'))
   tempDirs.push(dir)
   return dir
 }
@@ -75,7 +75,7 @@ describe.skipIf(!landlockUsable)('sandbox-local: real Landlock confinement throu
     // the persistent host effect read-only promises never happen.
     const workdir = await tempDir(tmpdir())
     const sandbox = await provider()
-    const target = `/dev/shm/dsh-landlock-e2e-${process.pid}`
+    const target = `/dev/shm/fathom-landlock-e2e-${process.pid}`
     const { result } = runConfined(sandbox, `echo hi > ${target}`, { mode: 'read-only', workspaceRoot: workdir })
     expect(result.status).not.toBe(0)
     expect(existsSync(target)).toBe(false)

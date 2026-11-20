@@ -1,8 +1,8 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
+import ToolRuntime from '@fathom/tools'
+import SystemPrompt from '@fathom/system-prompt'
+import UserQuestionService from '@fathom/user-questions'
 import { apply } from '../src/index.ts'
 
 let ctx: Context | undefined

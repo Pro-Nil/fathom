@@ -2,7 +2,7 @@
  * Public records for exact reads and relationship traces over the
  * live-preferred logical session corpus.
  *
- * @module @pentest-harness/dsh-session-query/types
+ * @module @fathom/session-query/types
  */
 
 import type {
@@ -11,8 +11,8 @@ import type {
   SessionHeader,
   SessionId,
   SurfaceEvent,
-} from '@pentest-harness/dsh-session'
-import type { SessionTitleSnapshot } from '@pentest-harness/dsh-session-title'
+} from '@fathom/session'
+import type { SessionTitleSnapshot } from '@fathom/session-title'
 import type { SessionSearchCursor } from './cursor.ts'
 
 export type { SessionSearchCursor } from './cursor.ts'

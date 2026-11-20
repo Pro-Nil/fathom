@@ -1,14 +1,14 @@
 /**
  * Model-facing, workspace-authorized session-history search and read tools.
  *
- * @module @pentest-harness/dsh-tool-session-query
+ * @module @fathom/tool-session-query
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
+import { defineTool } from '@fathom/tools'
+import type {} from '@fathom/system-prompt'
 import { toolInput } from './input.ts'
 import { operations } from './operations.ts'
 import { presentation } from './presentation.ts'

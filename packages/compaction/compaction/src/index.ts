@@ -4,12 +4,12 @@
  * {@link CompactionEngine}. This interface necessarily depends on session and LLM
  * vocabulary; the rationale is in the
  * [compaction Agent Note](../../../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md).
- * @module @pentest-harness/dsh-compaction
+ * @module @fathom/compaction
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Session } from '@pentest-harness/dsh-session'
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
+import { Context, Service } from '@fathom/cordis'
+import type { Session } from '@fathom/session'
+import type { CommandId } from '@fathom/commands/brand'
 import type { CompactionResult } from './types.ts'
 
 export type { CompactionResult } from './types.ts'
@@ -78,7 +78,7 @@ export interface ManualCompactAgentContext extends CompactionAgentContext {
   runMaintenance<T>(task: (signal: AbortSignal) => Promise<T>): Promise<T>
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     compaction: CompactionEngine
   }

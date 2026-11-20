@@ -1,4 +1,4 @@
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /** Stable identity shared by one compact start/summary/checkpoint/end transaction. */
 export type CompactionId = Branded<'CompactionId'>

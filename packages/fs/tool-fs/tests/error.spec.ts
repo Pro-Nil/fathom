@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { FsError } from '@pentest-harness/dsh-fs'
+import { FsError } from '@fathom/fs'
 import { remediateFsError } from '../src/error.ts'
 
 describe('remediateFsError', () => {

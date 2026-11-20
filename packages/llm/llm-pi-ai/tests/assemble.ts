@@ -5,9 +5,9 @@
  * one-shot convenience method.
  */
 
-import { BlockAssembler } from '@pentest-harness/dsh-llm'
-import type { Context } from '@pentest-harness/cordis'
-import type { FinishReason, GenerateOptions, Message, TokenUsage } from '@pentest-harness/dsh-llm'
+import { BlockAssembler } from '@fathom/llm'
+import type { Context } from '@fathom/cordis'
+import type { FinishReason, GenerateOptions, Message, TokenUsage } from '@fathom/llm'
 
 export interface AssembledResult {
   message: Message

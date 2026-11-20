@@ -1,10 +1,10 @@
 // Title-source invariant: `messageSeqs` is empty iff `source.kind` is `user`.
 // — the durable relationship every appended session/title event must keep.
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import * as SessionTitleInvariantCompanion from '@pentest-harness/dsh-session-title/invariant'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import * as SessionTitleInvariantCompanion from '@fathom/session-title/invariant'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId } from '@fathom/session'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()
@@ -31,13 +31,13 @@ describe('session-title source invariant', () => {
       session.append('session/title', { title: 'auto', messageSeqs: [], source: { kind: 'fallback' } })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-session-title',
+      packageName: '@fathom/session-title',
     }))
     expect(() => {
       session.append('session/title', { title: 'named', messageSeqs: [1], source: { kind: 'user' } })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-session-title',
+      packageName: '@fathom/session-title',
     }))
     expect(session.seq).toBe(0)
   })

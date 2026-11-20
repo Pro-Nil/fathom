@@ -8,15 +8,15 @@
  * composes and drives them directly, so this driver owns exactly one turn with
  * one result.
  *
- * @module @pentest-harness/dsh-subagent-in-process-driver
+ * @module @fathom/subagent-in-process-driver
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import { foldConsumedWork } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentHandle } from '@pentest-harness/dsh-agent'
-import { SessionId, type SessionEvent, type TurnEndReason } from '@pentest-harness/dsh-session'
-import { createUserMessage, type ContentBlock } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import { foldConsumedWork } from '@fathom/agent'
+import type { Agent, AgentHandle } from '@fathom/agent'
+import { SessionId, type SessionEvent, type TurnEndReason } from '@fathom/session'
+import { createUserMessage, type ContentBlock } from '@fathom/llm'
 import {
   appendDelegatedPolicyOverrides,
   applyChildComposition,
@@ -26,14 +26,14 @@ import {
   finalAssistantOutput,
   resolveChildAgentOptions,
   resolveChildDepth,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import type {
   ResolvedSubagentStartRequest,
   SubagentDescriptorData,
   SubagentResult,
   SubagentRun,
   SubagentStopReason,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import {
   attachStructuredRuntime,
   type StructuredAttachment,

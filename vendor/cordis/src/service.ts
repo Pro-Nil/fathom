@@ -1,4 +1,4 @@
-import { defineProperty } from '@pentest-harness/cosmokit'
+import { defineProperty } from '@fathom/cosmokit'
 import { Context } from './context.ts'
 import { createCallable, joinPrototype, symbols, type Tracker } from './utils.ts'
 

@@ -2,12 +2,12 @@
  * Public session-reference request, candidate, and preparation records.
  * Imports stay on type-only subpaths so generated Remote clients can consume
  * this module without Host runtime code.
- * @module @pentest-harness/dsh-session-reference/types
+ * @module @fathom/session-reference/types
  */
 
-import type { UserMessage } from '@pentest-harness/dsh-llm/message'
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { UserMessage } from '@fathom/llm/message'
+import type { ContentBlock } from '@fathom/llm/types'
+import type { SessionId } from '@fathom/session/types'
 
 /** Durable source session, cited event seqs, and snapshot facts for prepared cross-session context. */
 export interface SessionReferenceSource {
@@ -29,7 +29,7 @@ export interface SessionReferenceSource {
   }[]
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     'session-reference': SessionReferenceSource
   }
@@ -57,7 +57,7 @@ export interface SessionReferenceCandidate {
 
 /** One discovery candidate carrying its canonical prompt mention. */
 export interface SessionReferenceMentionCandidate extends SessionReferenceCandidate {
-  /** Canonical `@[label](dsh-session:…)` mention serialized into the prompt draft. */
+  /** Canonical `@[label](fathom-session:…)` mention serialized into the prompt draft. */
   mention: string
 }
 

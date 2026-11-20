@@ -8,7 +8,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// The app window: the harness web UI in the system web view. Closing it hides
@@ -51,7 +51,7 @@ internal sealed class MainWindow : Window
         server.Exited += code => Dispatcher.UIThread.Post(() => OnServerExited(code));
         updater = new Updater(settings);
 
-        Title = "Pentest Harness";
+        Title = "Fathom";
         Icon = new WindowIcon(Embedded.Open("app.png"));
         Background = new SolidColorBrush(Dark);
         MinWidth = 720;
@@ -127,7 +127,7 @@ internal sealed class MainWindow : Window
                 // WebKitGTK cannot be reparented into an Avalonia window; it
                 // renders offscreen and Avalonia composites the frames instead.
                 gtk.ExperimentalOffscreen = true;
-                gtk.ApplicationNameForUserAgent = "PentestHarness";
+                gtk.ApplicationNameForUserAgent = "Fathom";
                 break;
             case LinuxWpeWebViewEnvironmentRequestedEventArgs wpe:
                 wpe.DataDirectory = data;
@@ -153,7 +153,7 @@ internal sealed class MainWindow : Window
             uiLoaded = true;
             serverState = server.Owned ? "running" : "attached";
             web.Navigate(server.Url);
-            TipChanged?.Invoke(server.Owned ? "Pentest Harness" : "Pentest Harness (attached to a running server)");
+            TipChanged?.Invoke(server.Owned ? "Fathom" : "Fathom (attached to a running server)");
             StartUpdateChecks();
         }
         catch (OperationCanceledException)
@@ -202,7 +202,7 @@ internal sealed class MainWindow : Window
         if (quitting) return;
         serverState = "stopped";
         PushChrome();
-        Notify("Pentest Harness stopped", $"The harness exited (code {code}). Use Restart harness in the tray menu.", "stopped", urgent: false);
+        Notify("Fathom stopped", $"The harness exited (code {code}). Use Restart harness in the tray menu.", "stopped", urgent: false);
         PlayChime();
     }
 
@@ -235,19 +235,19 @@ internal sealed class MainWindow : Window
         if (notice.Kind == "resolved")
         {
             waiting = Math.Max(0, waiting - 1);
-            TipChanged?.Invoke(waiting == 0 ? "Pentest Harness" : $"Pentest Harness — {waiting} waiting for you");
+            TipChanged?.Invoke(waiting == 0 ? "Fathom" : $"Fathom — {waiting} waiting for you");
             PushChrome();
             return;
         }
         if (!test)
         {
             waiting++;
-            TipChanged?.Invoke($"Pentest Harness — {waiting} waiting for you");
+            TipChanged?.Invoke($"Fathom — {waiting} waiting for you");
             PushChrome();
         }
         PlayChime();
         var focused = IsVisible && WindowState != WindowState.Minimized && IsActive;
-        if (test || !focused || settings.NotifyWhenFocused) Notify(notice.Title ?? "Pentest Harness needs you", notice.Body ?? "", notice.Kind ?? "input", urgent: true);
+        if (test || !focused || settings.NotifyWhenFocused) Notify(notice.Title ?? "Fathom needs you", notice.Body ?? "", notice.Kind ?? "input", urgent: true);
         if (!focused) Platform.RequestAttention(this);
     }
 
@@ -256,8 +256,8 @@ internal sealed class MainWindow : Window
         switch (action)
         {
             case "ready": PushChrome(); break;
-            // Taskbar / Alt-Tab (and the Linux title bar) follow the page: "<session> — Pentest Harness".
-            case "title": Title = string.IsNullOrWhiteSpace(title) ? "Pentest Harness" : title; break;
+            // Taskbar / Alt-Tab (and the Linux title bar) follow the page: "<session> — Fathom".
+            case "title": Title = string.IsNullOrWhiteSpace(title) ? "Fathom" : title; break;
             case "minimize": WindowState = WindowState.Minimized; break;
             case "maximize": WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized; break;
             case "close": Close(); break;
@@ -342,7 +342,7 @@ internal sealed class MainWindow : Window
         {
             settings.TrayHintShown = true;
             settings.Save();
-            Notify("Still running in the tray", "Pentest Harness keeps working in the background. Use the tray icon's Quit to close it.", "tray", urgent: false);
+            Notify("Still running in the tray", "Fathom keeps working in the background. Use the tray icon's Quit to close it.", "tray", urgent: false);
         }
     }
 
@@ -376,7 +376,7 @@ internal sealed class MainWindow : Window
 
     private IEnumerable<(string? Label, Action? Action)> MenuEntries()
     {
-        yield return ("Open Pentest Harness", ShowFromTray);
+        yield return ("Open Fathom", ShowFromTray);
         yield return (null, null);
         if (updateStep is not null) yield return ($"Updating: {updateStep}", () => Platform.OpenExternal(Updater.LogPath));
         else if (updateStatus?.Available == true) yield return (UpdateLabel(updateStatus), () => _ = ConfirmUpdateAsync());
@@ -429,7 +429,7 @@ internal sealed class MainWindow : Window
             PushChrome();
             if (!announce) return;
             if (status.Problem is not null) Notify("Cannot update", status.Problem, "update", urgent: false);
-            else if (!status.Available) Notify("Pentest Harness is up to date", status.Upstream is null ? "No upstream branch is set, and the build matches the checkout." : $"Nothing new on {status.Upstream}.", "update", urgent: false);
+            else if (!status.Available) Notify("Fathom is up to date", status.Upstream is null ? "No upstream branch is set, and the build matches the checkout." : $"Nothing new on {status.Upstream}.", "update", urgent: false);
         });
     }
 
@@ -499,7 +499,7 @@ internal sealed class MainWindow : Window
     public void SendTestNotification()
     {
         lastChime = DateTime.MinValue;
-        HandleNotice(new Notice("question", "A question needs your answer", "Test: this is how Pentest Harness asks for your input.", null), test: true);
+        HandleNotice(new Notice("question", "A question needs your answer", "Test: this is how Fathom asks for your input.", null), test: true);
     }
 
     /// <summary>Bring the window forward (tray click, second launch, notification).</summary>

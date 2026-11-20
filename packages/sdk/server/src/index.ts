@@ -6,13 +6,13 @@
  * owns EOF and signal exits. Keep named plugin exports with no default export so
  * Loader `unwrapExports` preserves `name`, `inject`, `Config`, and `apply`.
  *
- * @module @pentest-harness/dsh-sdk-jsonrpc-server
+ * @module @fathom/sdk-jsonrpc-server
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type { Readable, Writable } from 'node:stream'
-import Schema from '@pentest-harness/schemastery'
-import { JsonRpcLineTransport } from '@pentest-harness/dsh-sdk-protocol'
+import Schema from '@fathom/schemastery'
+import { JsonRpcLineTransport } from '@fathom/sdk-protocol'
 import { HarnessSdkJsonRpcServer } from './server.ts'
 
 export * from './server.ts'

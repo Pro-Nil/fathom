@@ -6,14 +6,14 @@
  * and a subject-less root dispatch stays unfiltered. Scope-owned listeners
  * dispose with the fiber.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import type { SessionId } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionId } from '@fathom/api-remotes/client'
 import { createScope, scopeOf } from '../src/client/agents/scope.ts'
 
 const sid = (k: string): SessionId => k as SessionId
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Test-only routed probe event.

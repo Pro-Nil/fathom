@@ -18,8 +18,8 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { SessionEvent, SessionId } from '@fathom/session'
+import type { Agent } from '@fathom/agent'
 import {
   acknowledgeReloadConnectionLoss, assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, watchConsole, webSnapshotMode, type WebScaffold,
@@ -93,7 +93,7 @@ describe.skipIf(MODE === 'record')('web e2e: composer interrupt for a running co
   const apiCalls: string[] = []
 
   beforeAll(async () => {
-    sidecarRoot = await mkdtemp(join(tmpdir(), 'dsh-web-subagent-interrupt-ui-'))
+    sidecarRoot = await mkdtemp(join(tmpdir(), 'fathom-web-subagent-interrupt-ui-'))
     const readyFile = join(sidecarRoot, 'hang-ready')
     rearmedReadyFile = join(sidecarRoot, 'hang-rearmed-ready')
     // The child claims this whole-script replacement: the offline and online

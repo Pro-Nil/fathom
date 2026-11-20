@@ -4,8 +4,8 @@
  * @module subagent-report-fence
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/dsh-agent-loop'
+import type { Context } from '@fathom/cordis'
+import type {} from '@fathom/agent-loop'
 
 /** Fixture plugin name. */
 export const name = 'subagent-report-fence'

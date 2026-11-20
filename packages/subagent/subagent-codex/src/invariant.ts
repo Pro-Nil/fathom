@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-subagent-codex`.
- * @module @pentest-harness/dsh-subagent-codex/invariant
+ * Package-owned invariant companion for `@fathom/subagent-codex`.
+ * @module @fathom/subagent-codex/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subagent-codex'
+const PACKAGE_NAME = '@fathom/subagent-codex'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-codex-invariant'

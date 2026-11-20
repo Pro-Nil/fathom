@@ -8,11 +8,11 @@
  * Unsupported or misplaced keywords reject rather than being accepted without
  * enforcement. Consumers that require an object root apply
  * {@link assertObjectJsonSchema} before accepting input.
- * @module dsh-tools/json-schema
+ * @module fathom-tools/json-schema
  */
 
-import { assertNever, HarnessError } from '@pentest-harness/dsh-llm'
-import { isJsonValue, type JsonValue } from '@pentest-harness/dsh-session'
+import { assertNever, HarnessError } from '@fathom/llm'
+import { isJsonValue, type JsonValue } from '@fathom/session'
 
 /** Scalar JSON values supported by `enum` and `const`. */
 export type JsonSchemaScalar = string | number | boolean | null

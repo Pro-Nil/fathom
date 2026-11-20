@@ -3,7 +3,7 @@
 
 - insert:
     - id: time-context
-      name: '@pentest-harness/dsh-time-context'
+      name: '@fathom/time-context'
 
     - id: schedule
-      name: '@pentest-harness/dsh-schedule'
+      name: '@fathom/schedule'

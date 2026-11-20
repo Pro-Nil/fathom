@@ -1,12 +1,12 @@
 /** Host registry for model-visible, read-only Cordis capability queries. */
 
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type { JsonValue } from '@pentest-harness/dsh-session/types'
-import { assertSupportedJsonSchema, validateJsonSchemaValue } from '@pentest-harness/dsh-tools'
-import type { JsonSchemaNode } from '@pentest-harness/dsh-tools'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { snapshotJsonValue } from '@fathom/session'
+import type { JsonValue } from '@fathom/session/types'
+import { assertSupportedJsonSchema, validateJsonSchemaValue } from '@fathom/tools'
+import type { JsonSchemaNode } from '@fathom/tools'
 import type {
   CordisInspectMethodManifest, CordisInspectPlatform, CordisInspectProviderManifest,
   CordisInspectProviderView, CordisInspectQueryRequest, CordisInspectQueryResolution,
@@ -35,7 +35,7 @@ interface PendingClientQuery {
   settle(resolution: CordisInspectQueryResolution): void
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Host registry for Cordis inspect providers and Client manifest/query routing. */
     cordisInspect: CordisInspectRegistryService

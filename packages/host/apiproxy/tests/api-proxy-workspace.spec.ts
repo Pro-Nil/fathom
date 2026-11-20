@@ -2,21 +2,21 @@ import { existsSync, mkdirSync, mkdtempSync, realpathSync } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentFactory } from '@pentest-harness/dsh-agent'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import Storage from '@pentest-harness/dsh-storage'
-import { DomainFacility } from '@pentest-harness/dsh-storage-domain'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import { DirectoryPickerError } from '@pentest-harness/dsh-host-directory-picker'
-import type { DirectoryPickerCapability } from '@pentest-harness/dsh-host-directory-picker'
-import WorkspaceRegistry from '@pentest-harness/dsh-workspace'
-import type { HostFrame, WorkspaceId } from '@pentest-harness/dsh-host-apiproxy/api'
-import type { RpcRequest, RpcResponse } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentFactory } from '@fathom/agent'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session } from '@fathom/session'
+import Storage from '@fathom/storage'
+import { DomainFacility } from '@fathom/storage-domain'
+import UserQuestionService from '@fathom/user-questions'
+import { DirectoryPickerError } from '@fathom/host-directory-picker'
+import type { DirectoryPickerCapability } from '@fathom/host-directory-picker'
+import WorkspaceRegistry from '@fathom/workspace'
+import type { HostFrame, WorkspaceId } from '@fathom/host-apiproxy/api'
+import type { RpcRequest, RpcResponse } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 import { MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 
 let nextRpc = 1
@@ -59,7 +59,7 @@ function stubAgent(session: Session): Agent {
 
 /** Compose the API over real Session, Agent, Storage, Domain, and Workspace services. */
 async function harness(
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'dsh-apiproxy-workspace-'))),
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'fathom-apiproxy-workspace-'))),
   picker: DirectoryPickerCapability = { kind: 'native', pick: async () => null },
   extras: {
     openPath?: (path: string, signal: AbortSignal) => Promise<void>

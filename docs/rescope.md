@@ -1,30 +1,30 @@
 # Vendored package rescope
 
-The Cordis framework and its foundation libraries are vendored under [`vendor/`](../vendor/README.md) and published under the `@pentest-harness` scope, because every harness package declares the framework as a peer dependency: publishing the harness publishes this layer with it, and under the upstream names that publication would squat them on the registry. This page is the name mapping; the decision and its consequences live in the [rescope Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md), and the upstream commits in [`vendor/README.md`](../vendor/README.md).
+The Cordis framework and its foundation libraries are vendored under [`vendor/`](../vendor/README.md) and published under the `@fathom` scope, because every harness package declares the framework as a peer dependency: publishing the harness publishes this layer with it, and under the upstream names that publication would squat them on the registry. This page is the name mapping; the decision and its consequences live in the [rescope Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md), and the upstream commits in [`vendor/README.md`](../vendor/README.md).
 
 ## Name mapping
 
 | Directory | Upstream name | Published name | Version | Role |
 |---|---|---|---|---|
-| `vendor/cordis/` | `cordis` | `@pentest-harness/cordis` | 4.0.0-rc.7 | Framework core: `Context`, `Service`, `Fiber`, events |
-| `vendor/cosmokit/` | `cosmokit` | `@pentest-harness/cosmokit` | 1.8.1 | Shared utilities the framework and Schemastery build on |
-| `vendor/schemastery/` | `schemastery` | `@pentest-harness/schemastery` | 3.18.0 | Config schemas (`Schema`) behind every plugin's `Config` |
-| `vendor/loader/` | `@cordisjs/plugin-loader` | `@pentest-harness/cordis-plugin-loader` | 1.0.0-rc.5 | `cordis.yml` loading, plugin resolution, repository cache |
-| `vendor/include/` | `@cordisjs/plugin-include` | `@pentest-harness/cordis-plugin-include` | 1.0.4 | Config includes and patch overlays |
-| `vendor/group/` | `@cordisjs/plugin-group` | `@pentest-harness/cordis-plugin-group` | 1.0.0 | Nested plugin groups |
-| `vendor/timer/` | `@cordisjs/plugin-timer` | `@pentest-harness/cordis-plugin-timer` | 1.1.2 | Disposal-aware timers on `ctx` |
-| `vendor/hmr/` | `@cordisjs/plugin-hmr` | `@pentest-harness/cordis-plugin-hmr` | 1.0.15 | Hot module replacement for plugins and config |
-| `vendor/logger-console/` | `@cordisjs/plugin-logger-console` | `@pentest-harness/cordis-plugin-logger-console` | 1.0.0 | Console logger exporter |
+| `vendor/cordis/` | `cordis` | `@fathom/cordis` | 4.0.0-rc.7 | Framework core: `Context`, `Service`, `Fiber`, events |
+| `vendor/cosmokit/` | `cosmokit` | `@fathom/cosmokit` | 1.8.1 | Shared utilities the framework and Schemastery build on |
+| `vendor/schemastery/` | `schemastery` | `@fathom/schemastery` | 3.18.0 | Config schemas (`Schema`) behind every plugin's `Config` |
+| `vendor/loader/` | `@cordisjs/plugin-loader` | `@fathom/cordis-plugin-loader` | 1.0.0-rc.5 | `cordis.yml` loading, plugin resolution, repository cache |
+| `vendor/include/` | `@cordisjs/plugin-include` | `@fathom/cordis-plugin-include` | 1.0.4 | Config includes and patch overlays |
+| `vendor/group/` | `@cordisjs/plugin-group` | `@fathom/cordis-plugin-group` | 1.0.0 | Nested plugin groups |
+| `vendor/timer/` | `@cordisjs/plugin-timer` | `@fathom/cordis-plugin-timer` | 1.1.2 | Disposal-aware timers on `ctx` |
+| `vendor/hmr/` | `@cordisjs/plugin-hmr` | `@fathom/cordis-plugin-hmr` | 1.0.15 | Hot module replacement for plugins and config |
+| `vendor/logger-console/` | `@cordisjs/plugin-logger-console` | `@fathom/cordis-plugin-logger-console` | 1.0.0 | Console logger exporter |
 
-Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@pentest-harness/cordis-plugin-loader/repository`.
+Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@fathom/cordis-plugin-loader/repository`.
 
 ## What the rename does not touch
 
 - **Directory names and versions.** `vendor/hmr/` stays `vendor/hmr/`, and every package keeps the upstream version its manifest table row records, so the vendored tree still reads as an upstream snapshot.
-- **Dependency ranges.** A dependency entry changes its key, never its range: `"cordis": "^4.0.0-rc.7"` becomes `"@pentest-harness/cordis": "^4.0.0-rc.7"`. `linkWorkspacePackages` resolves those preserved ranges to the pinned workspaces.
+- **Dependency ranges.** A dependency entry changes its key, never its range: `"cordis": "^4.0.0-rc.7"` becomes `"@fathom/cordis": "^4.0.0-rc.7"`. `linkWorkspacePackages` resolves those preserved ranges to the pinned workspaces.
 - **The Loader's `cordis:` builtin prefix.** `cordis:include` and `cordis:group` are a protocol prefix, not a package name.
 - **The `cordis.yml` configuration family**, including `*.cordis.yml`, `*.cordis.snapshot.yml`, and `cordis.patch.yml`.
-- **Harness packages whose own names contain the word**, such as `@pentest-harness/dsh-tool-cordis`.
+- **Harness packages whose own names contain the word**, such as `@fathom/tool-cordis`.
 - **Upstream runtime identifiers**, such as Schemastery's `Symbol.for('schemastery')` and its `vendor:` metadata field.
 - **Prose outside `docs/`.** `vendor/*/README.md`, package READMEs, and Agent Notes keep the names they were written with; a bare `cordis` there can also be the Python SDK's option name or an agent-preset id. Inside `docs/`, prose and every Markdown fence follow the rename.
 
@@ -32,10 +32,10 @@ Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@
 
 | Site | Before | After |
 |---|---|---|
-| Module import | `import { Context } from 'cordis'` | `import { Context } from '@pentest-harness/cordis'` |
-| Typed-event merge | `declare module 'cordis'` | `declare module '@pentest-harness/cordis'` |
-| `package.json` dependency key | `"@cordisjs/plugin-hmr": "^1.0.15"` | `"@pentest-harness/cordis-plugin-hmr": "^1.0.15"` |
-| `cordis.yml` plugin entry | `name: '@cordisjs/plugin-include'` | `name: '@pentest-harness/cordis-plugin-include'` |
+| Module import | `import { Context } from 'cordis'` | `import { Context } from '@fathom/cordis'` |
+| Typed-event merge | `declare module 'cordis'` | `declare module '@fathom/cordis'` |
+| `package.json` dependency key | `"@cordisjs/plugin-hmr": "^1.0.15"` | `"@fathom/cordis-plugin-hmr": "^1.0.15"` |
+| `cordis.yml` plugin entry | `name: '@cordisjs/plugin-include'` | `name: '@fathom/cordis-plugin-include'` |
 
 ## Applying, verifying, and reverting
 

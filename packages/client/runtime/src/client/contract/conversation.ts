@@ -1,5 +1,5 @@
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type { ToolEventView } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionEvent } from '@fathom/session/types'
+import type { ToolEventView } from '@fathom/api-remotes/client'
 
 /* oxlint-disable typescript/no-duplicate-type-constituents, typescript/no-redundant-type-constituents --
  * The unaugmented declaration-merge maps intentionally resolve to never in the Runtime program;

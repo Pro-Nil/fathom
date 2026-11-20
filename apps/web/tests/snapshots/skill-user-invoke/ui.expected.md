@@ -12,10 +12,10 @@
 - text: /user-invoke-demo and confirm the fixture wiring {{clock}}
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - button "Context injection user-invoke-demo":
   - img
   - img

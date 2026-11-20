@@ -1,131 +1,57 @@
 <div align="center">
 
-<img src="docs/images/pentest-harness-banner-1200.png" alt="Pentest Harness — Heaven for Hackers" width="100%" />
-
-# Pentest Harness
-
-**Heaven for Hackers** — the professional security testing workspace.
-
-An open-source, dark-first AI agent harness for authorized penetration tests, bug bounty
-research, security labs, and CTF engagements. Built on a plugin architecture where every
-layer — model adapters, tools, sessions, settings, and credentials — is replaceable from
-configuration.
-
-**Works with any AI model API.** Bring your own key from OpenAI, Anthropic,
-Google, Mistral, Groq, OpenRouter, Azure OpenAI, or any OpenAI-compatible gateway — one
-click auto-discovers your models and you're running.
+<img src="docs/images/fathom-banner.png" alt="Fathom" width="100%" />
 
 </div>
 
----
+**Fathom** is an AI agent workspace for authorized security testing: penetration tests, bug bounty research, labs and CTFs. You bring any AI model; Fathom gives it a shell, a real browser, a pentest toolkit and a disciplined way of working, in a local web UI or a desktop app for Windows and Linux.
 
-## Screenshots
-
-| Workspace | Provider cards |
+| Workspace | Models |
 |:---:|:---:|
-| <img src="docs/images/screenshot-hero.png" alt="Pentest Harness workspace" width="420" /> | <img src="docs/images/screenshot-models.png" alt="Pentest Harness provider cards" width="420" /> |
+| <img src="docs/images/screenshot-hero.png" alt="Fathom workspace" width="420" /> | <img src="docs/images/screenshot-models.png" alt="Fathom model providers" width="420" /> |
 
----
+## What it does
 
-## Features
-
-- **Multi-provider LLM engine** — OpenAI Chat Completions & Responses, Anthropic Messages, and any custom OpenAI-compatible gateway with one-click model auto-discovery
-- **Full agent toolset** — shell, filesystem, web research, skills, goals, subagents, background jobs, and workflow control
-- **Pentest Mode** — a professional offensive-security operating standard for authorized engagements
-- **Provider cards** — live connection testing, enabled/disabled toggles, per-model context badges
-- **Durable sessions** — JSONL/SQLite persistence with replay; resume exactly where you left off
-- **Context that never dies** — token metering, automatic compaction, and tool-result pruning
-- **Secure by default** — API keys live in an owner-only credential store as references; never in settings files or logs
-- **Dark-only theme** — a focused, low-glare interface built for long engagements
-- **Everything is a plugin** — built on Cordis; no closed core to fight
-
----
-
-## Demo
-
-<img src="docs/media/pentest-harness-demo.gif" alt="Pentest Harness demo" width="100%" />
-
-Download the full video
-
----
+- **Any model.** OpenAI, Anthropic, Google, Mistral, Groq, OpenRouter, Azure, or any OpenAI-compatible gateway. Paste a base URL and key; models are discovered for you.
+- **Pentest Mode.** An agent persona and tool set for engagements: recon first, evidence for every finding, a running notes ledger so long sessions don't repeat work.
+- **Real tools.** Shell, files, web search and fetch, a shared Chromium the agent drives while you watch (and take over for CAPTCHAs and sign-ins), and a pentest toolkit installed for you (natively on Linux, natively or through WSL on Windows).
+- **Long sessions.** Sessions are saved and resumable; context is compacted automatically and finished work survives compaction.
+- **Desktop app.** A native window with notifications when the agent needs you, a tray icon, and an **Update** button that pulls, builds and restarts for you.
+- **Keys stay local.** Credentials live in an owner-only store in `~/.fathom`, never in settings files or logs.
 
 ## Quick start
 
+Requires Git, [Node.js](https://nodejs.org) 20+ (22 recommended) and pnpm (`npm i -g pnpm`).
+
 ```sh
-git clone https://github.com/Pro-Nil/pentest-harness.git
-cd pentest-harness
+git clone https://github.com/Pro-Nil/fathom.git
+cd fathom
 pnpm install
 pnpm build
-pnpm dsh web
+pnpm fathom web
 ```
 
-The Web UI opens at **http://127.0.0.1:2323** in your browser.
+Open **http://127.0.0.1:2323**, go to **Settings → Models**, add a provider, and start a session. Use `pnpm fathom web --port 3000` for another port.
 
-> If `pnpm dsh` is not on your PATH, use `pnpm exec dsh web` or
-> `node apps/cli/lib/index.js web`.
+**Desktop app, Linux, and updating:** see **[docs/UPDATING.md](docs/UPDATING.md)**. It covers first installs (web or desktop, Windows or Linux), updates, and upgrade notes.
 
-### Requirements
+## Where things live
 
-- **Node.js 20+** (Node 22 recommended)
-- **pnpm** (`npm i -g pnpm`)
-
-### Desktop app and updating
-
-Want the desktop app (Windows or Linux), or already installed and updating? **[docs/UPDATING.md](docs/UPDATING.md)** covers every case: first install with or without the app, updating the web version, adding the app to a web install, and updating the app.
-
-### Run on another port
-
-```sh
-pnpm dsh web --port 3000
-```
-
----
-
-## First run — connect any AI model
-
-1. Open **Settings → Models**.
-2. Click **Add a custom provider** (or **Edit** an existing one).
-3. Paste your API base URL — the provider ID and display name auto-fill.
-4. Enter your API key (stored in your local credential store, never in settings).
-5. Models auto-discover from the endpoint — click one to add it, or add by hand.
-6. Pick a model in the composer and start your engagement.
-
----
-
-## Defaults
-
-| Setting | Value |
+| | |
 |---|---|
 | Web UI | `http://127.0.0.1:2323` |
-| Settings file | `$DSH_HOME/settings.yaml` (default `~/.dsh/settings.yaml`) |
-| Credentials | `$DSH_HOME/.credentials.yaml` (owner-only permissions) |
+| Your data (sessions, settings, keys, tools) | `~/.fathom` (override with `FATHOM_HOME`) |
+| Settings | `~/.fathom/settings.yaml` |
+| Credentials | `~/.fathom/.credentials.yaml` (owner-only) |
 
----
+## Use it responsibly
+
+Fathom is for systems you own or are explicitly authorized to test. Authorization and scope are your responsibility.
+
+## Contributing and docs
+
+Architecture and development guides are in [`docs/`](docs/) (start with [architecture](docs/architecture.md) and [development](docs/development.md)); contribution notes are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT
-
----
-
-<div align="center">
-
-### ⚡ Sponsored by HackWithClaude
-
-<br/>
-
-<p>
-  <a href="https://hackwithclaude.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/HackWithClaude-Elevate%20Your%20AI%20Game-4D6BFE?style=for-the-badge&logo=claude&logoColor=white&labelColor=18181B"
-         alt="HackWithClaude — Elevate Your AI Game" />
-  </a>
-</p>
-
-**Unlimited AI models · One platform · Zero limits**
-
-Access every major model — Claude, GPT, Gemini, and more — in one place.
-Built for builders who ship.
-
-🚀 Visit HackWithClaude.com · 💡 Explore the models
-
-</div>
+[MIT](LICENSE). Fathom builds on an MIT-licensed upstream project; its copyright notice is kept in the license. Third-party software is listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

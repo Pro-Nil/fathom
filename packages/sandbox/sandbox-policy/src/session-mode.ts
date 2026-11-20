@@ -15,13 +15,13 @@
  * filesystem alike), so it lives here in the policy package rather than in any
  * one capability's seam.
  *
- * @module dsh-sandbox-policy/session-mode
+ * @module fathom-sandbox-policy/session-mode
  */
 
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { SandboxMode } from '@fathom/sandbox'
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * The session's sandbox mode was switched — log-only (like `approval/*`;

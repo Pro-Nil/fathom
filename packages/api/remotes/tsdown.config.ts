@@ -1,7 +1,7 @@
 import { clientBundle } from '../../client/tsdown.client.ts'
 
 export default clientBundle(
-  '@pentest-harness/dsh-api-remotes',
+  '@fathom/api-remotes',
   ['lib/types/index.js', 'lib/types/invariant.js'],
   { hostPhase: true },
 )

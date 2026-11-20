@@ -3,14 +3,14 @@
  * tools through nested executions scheduled under the native concurrency
  * contract; each sub-dispatch is logged for reconstruction, while only the
  * outer curated result enters model history.
- * @module @pentest-harness/dsh-tools/src/code-mode
+ * @module @fathom/tools/src/code-mode
  */
 
-import { CallId, createUserMessage, HarnessError } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { CodeBindingFunction, CodeRunResult, CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type { JsonValue } from '@pentest-harness/dsh-session'
+import { CallId, createUserMessage, HarnessError } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
+import type { CodeBindingFunction, CodeRunResult, CodeRuntime } from '@fathom/code-runtime'
+import { snapshotJsonValue } from '@fathom/session'
+import type { JsonValue } from '@fathom/session'
 import { defineTool, parameterSchemaSpecToJsonSchema } from './schema.ts'
 import { TOOL_RUNTIME_SCHEDULER } from './index.ts'
 import type { CodeDispatchLog, ToolDefinition, ToolExecutionResult, ToolRuntime, ToolRunContext } from './index.ts'
@@ -126,7 +126,7 @@ function resolveFlavor(peekRuntime: () => CodeRuntime | undefined): RunCodeFlavo
   const flavor = RUN_CODE_FLAVORS[runtime.language]
   if (!Object.hasOwn(RUN_CODE_FLAVORS, runtime.language) || flavor === undefined) {
     const known = Object.keys(RUN_CODE_FLAVORS).map(name => JSON.stringify(name)).join(', ')
-    throw new Error(`dsh-tools: no run_code schema flavor registered for runtime language ${JSON.stringify(runtime.language)} (known: ${known})`)
+    throw new Error(`fathom-tools: no run_code schema flavor registered for runtime language ${JSON.stringify(runtime.language)} (known: ${known})`)
   }
   return flavor
 }

@@ -1,11 +1,11 @@
 /** Browser registry for read-only Cordis capability providers. */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   CordisInspectProviderManifest, CordisInspectQueryRequest, CordisInspectQueryResolution,
   CordisInspectRequestId, JsonValue,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
 
 /** Context supplied to a Client inspect provider query. */
 export interface ClientCordisInspectQueryContext {
@@ -133,7 +133,7 @@ export class ClientCordisInspectRegistry {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Browser registry for pre-definition Cordis capability discovery. */
     cordisInspect: ClientCordisInspectRegistry

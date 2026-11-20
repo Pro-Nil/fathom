@@ -4,7 +4,7 @@
  * `.agents/notes/implemented/architecture/2026-06-21-mandatory-app-attribution-headers.md`.
  *
  * App-attribution vocabulary for provider requests.
- * @module @pentest-harness/dsh-llm/attribution
+ * @module @fathom/llm/attribution
  */
 
 import { createRequire } from 'node:module'
@@ -38,9 +38,9 @@ export interface AppIdentity {
  * can suppress attribution entirely.
  */
 export const APP_IDENTITY: AppIdentity = {
-  product: 'pentest-harness',
+  product: 'fathom',
   version,
-  url: 'https://github.com/S1N6H/pentest-harness',
+  url: 'https://github.com/Pro-Nil/fathom',
 }
 
 /**

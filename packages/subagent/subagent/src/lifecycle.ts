@@ -11,15 +11,15 @@
  * between this module and one in-package caller, not something a plugin may
  * depend on.
  *
- * @module @pentest-harness/dsh-subagent/lifecycle
+ * @module @fathom/subagent/lifecycle
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { foldConsumedWork } from '@pentest-harness/dsh-agent'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { ContentBlock } from '@fathom/llm'
+import { foldConsumedWork } from '@fathom/agent'
+import type { SessionEvent, SessionId } from '@fathom/session'
 import { finalAssistantOutput } from './assistant-output.ts'
 import { SubagentRunId } from './types.ts'
 import type { SubagentResult, SubagentRun, SubagentRunEndInfo, SubagentRunInfo } from './types.ts'

@@ -5,13 +5,13 @@
  * already validates every mutable value before `currentSelection()` can observe it.
  * The empty installer keeps that absence explicit in composed invariant sets.
  *
- * @module @pentest-harness/dsh-agent-default-model/invariant
+ * @module @fathom/agent-default-model/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-default-model'
+const PACKAGE_NAME = '@fathom/agent-default-model'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-default-model-invariant'

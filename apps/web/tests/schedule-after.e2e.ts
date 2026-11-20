@@ -5,17 +5,17 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { AgentHandle } from '@pentest-harness/dsh-agent'
-import { CallId, createUserMessage, LlmAdapter } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
+import type { AgentHandle } from '@fathom/agent'
+import { CallId, createUserMessage, LlmAdapter } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import { SessionId, type SessionEvent } from '@fathom/session'
 import {
   ScheduleId,
   createEveryScheduleRecord,
   foldScheduleEvents,
   resolveEveryOccurrence,
   type EveryScheduleRecord,
-} from '@pentest-harness/dsh-schedule'
+} from '@fathom/schedule'
 import {
   assertFixtureInventory,
   captureStableAria,
@@ -233,7 +233,7 @@ describe.skipIf(MODE === 'record')('web e2e: conversational reminders', () => {
       locale: 'en-US',
       timezoneId: AT_BROWSER_ZONE,
     })
-    await page.addInitScript(() => { localStorage.setItem('dsh.locale', 'en') })
+    await page.addInitScript(() => { localStorage.setItem('fathom.locale', 'en') })
     tripwire = watchConsole(page)
     await page.goto(scaffold.baseUrl, { waitUntil: 'load' })
     await page.waitForSelector('[class*="frame"]', { timeout: 30_000 })

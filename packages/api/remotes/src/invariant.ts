@@ -1,10 +1,10 @@
-/** Package-owned invariant companion for `@pentest-harness/dsh-api-remotes`. */
+/** Package-owned invariant companion for `@fathom/api-remotes`. */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-api-remotes'
+const PACKAGE_NAME = '@fathom/api-remotes'
 
 /** Cordis companion plugin name. */
 export const name = 'api-remotes-invariant'

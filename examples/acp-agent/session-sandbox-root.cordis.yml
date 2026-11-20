@@ -3,12 +3,12 @@
 # /tmp. A workspace-write mutation can therefore succeed only when the calling
 # session's cwd replaces the process-level fallback root.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: sandbox-policy
-        name: '@pentest-harness/dsh-sandbox-policy'
+        name: '@fathom/sandbox-policy'
         config:
-          mode: !!js "process.env.DSH_PERMISSION_MODE ?? (process.env.DSH_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
+          mode: !!js "process.env.FATHOM_PERMISSION_MODE ?? (process.env.FATHOM_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
           workspaceRoot: /tmp

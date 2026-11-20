@@ -1,11 +1,11 @@
 /**
  * Human-facing `/compact` command over the backend-independent compaction seam.
- * @module @pentest-harness/dsh-command-compact
+ * @module @fathom/command-compact
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { ManualCompactionError } from '@pentest-harness/dsh-compaction'
-import type { CommandInvocation, CommandResult } from '@pentest-harness/dsh-commands'
+import type { Context } from '@fathom/cordis'
+import { ManualCompactionError } from '@fathom/compaction'
+import type { CommandInvocation, CommandResult } from '@fathom/commands'
 
 export const name = 'command-compact'
 export const inject = ['commands', 'compaction']

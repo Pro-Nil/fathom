@@ -1,8 +1,8 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConversationNodeDefinition, ConversationPreviousContext,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { InboxTarget } from '@pentest-harness/dsh-agent/types'
+} from '@fathom/client-runtime/client'
+import type { InboxTarget } from '@fathom/agent/types'
 
 interface InboxIdentity {
   readonly id: string

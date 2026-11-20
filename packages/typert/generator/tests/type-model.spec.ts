@@ -834,7 +834,7 @@ describe('WorkspaceAnalyzer', { timeout: 60_000 }, () => {
     writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
     writeFileSync(join(hostRoot, 'src/index.ts'), [
       'export {}',
-      "declare module '@pentest-harness/cordis' {",
+      "declare module '@fathom/cordis' {",
       '  interface Context {}',
       '  interface Events {}',
       '  interface Ignored {}',
@@ -869,7 +869,7 @@ describe('WorkspaceAnalyzer', { timeout: 60_000 }, () => {
       .toEqual(['@fixture/host'])
   })
 
-  it('keeps both runtime faces for an ordinary dsh.client project', () => {
+  it('keeps both runtime faces for an ordinary fathom.client project', () => {
     const root = copyFixture('typert-dual-runtime-')
     configureDualRuntimeClient(root, false)
 
@@ -1227,20 +1227,20 @@ function configureDualRuntimeClient(root: string, splitProjects: boolean): void 
   const packageRoot = join(root, 'packages/client')
   const manifestPath = join(packageRoot, 'package.json')
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-    dsh?: { client?: object }
+    fathom?: { client?: object }
     exports: Record<string, unknown>
   }
-  manifest.dsh = { client: {} }
+  manifest.fathom = { client: {} }
   manifest.exports['./client'] = {
     types: './lib/types/client.d.ts',
     default: './lib/client.js',
   }
   writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
   writeFileSync(join(packageRoot, 'src/client.ts'), [
-    "import { Service } from '@pentest-harness/cordis'",
+    "import { Service } from '@fathom/cordis'",
     'export interface ClientOnlyMarker { readonly client: true }',
     'export class BrowserBridge extends Service {}',
-    "declare module '@pentest-harness/cordis' { interface Context { browserBridge: BrowserBridge } }",
+    "declare module '@fathom/cordis' { interface Context { browserBridge: BrowserBridge } }",
     '',
   ].join('\n'))
   const indexPath = join(packageRoot, 'src/index.ts')
@@ -1338,14 +1338,14 @@ function addExplicitServicePackage(root: string, annotation: string, withProtoco
       '  /** Report protocol readiness. */',
       '  ready(): boolean',
       '}',
-      "declare module '@pentest-harness/cordis' {",
+      "declare module '@fathom/cordis' {",
       '  interface Context { detached: DetachedProtocol }',
       '}',
       '',
     ].join('\n'))
   }
   writeFileSync(join(packageRoot, 'src/index.ts'), [
-    "import { Service } from '@pentest-harness/cordis'",
+    "import { Service } from '@fathom/cordis'",
     ...(withProtocol ? ["export type { DetachedProtocol } from './types.ts'"] : []),
     '/**',
     ' * Service implementation discovered independently of its protocol package.',

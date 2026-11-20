@@ -1,8 +1,8 @@
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Fiber } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
+import type { Fiber } from '@fathom/cordis'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { z } from 'zod'
-import type { ConnectionHandle } from '@pentest-harness/dsh-client-connection/client'
+import type { ConnectionHandle } from '@fathom/client-connection/client'
 import type {
   InvocationDescriptor,
   RemoteResult,
@@ -10,12 +10,12 @@ import type {
   TypertContext,
   TypertRemoteScopeApi,
   TypertRemoteNamespace,
-} from '@pentest-harness/dsh-typert-protocol'
-import TypertRegistry from '@pentest-harness/dsh-typert-registry'
+} from '@fathom/typert-protocol'
+import TypertRegistry from '@fathom/typert-registry'
 import type { ClientRemote } from '../src/client/index.ts'
 import { apply, inject } from '../src/client/index.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Test-only forwarded Host event.
@@ -35,7 +35,7 @@ declare module '@pentest-harness/cordis' {
   }
 }
 
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   interface TypertRemoteEventSelection extends Record<'fixture/changed' | 'fixture/idle', true> {}
 
   interface TypertContextMap {

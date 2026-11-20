@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { scopeTarget } from '@pentest-harness/dsh-scope'
-import { SessionId } from '@pentest-harness/dsh-session'
-import SubagentRuntime, { SubagentRunId } from '@pentest-harness/dsh-subagent'
+import { Context } from '@fathom/cordis'
+import { scopeTarget } from '@fathom/scope'
+import { SessionId } from '@fathom/session'
+import SubagentRuntime, { SubagentRunId } from '@fathom/subagent'
 import type {
   SubagentProvider,
   SubagentRunEndInfo,
   SubagentRunInfo,
-} from '@pentest-harness/dsh-subagent'
-import * as SubagentInvariant from '@pentest-harness/dsh-subagent/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+} from '@fathom/subagent'
+import * as SubagentInvariant from '@fathom/subagent/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

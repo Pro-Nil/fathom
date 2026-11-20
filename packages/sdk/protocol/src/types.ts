@@ -1,16 +1,16 @@
 /**
- * Named wire types for the Pentest Harness SDK runtime protocol: the three
+ * Named wire types for the Fathom SDK runtime protocol: the three
  * request/result pairs and the four server-to-client notification payloads
  * exchanged over the newline-delimited JSON-RPC stdio transport. The server
- * plugin (`@pentest-harness/dsh-sdk-jsonrpc-server`) and SDK clients share these shapes;
- * `serverInfo.name` stays the wire-stable `pentest-harness-sdk-runtime`.
+ * plugin (`@fathom/sdk-jsonrpc-server`) and SDK clients share these shapes;
+ * `serverInfo.name` stays the wire-stable `fathom-sdk-runtime`.
  *
- * @module @pentest-harness/dsh-sdk-protocol/types
+ * @module @fathom/sdk-protocol/types
  */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { SubagentStopReason } from '@pentest-harness/dsh-subagent'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
+import type { SubagentStopReason } from '@fathom/subagent'
 
 /** Parameters for the process-wide SDK handshake. */
 export interface InitializeParams {
@@ -26,7 +26,7 @@ export interface InitializeParams {
 
 /** Wire-stable server identity returned by initialization. */
 export interface InitializeResult {
-  /** Wire-stable server identity (`pentest-harness-sdk-runtime`) and version. */
+  /** Wire-stable server identity (`fathom-sdk-runtime`) and version. */
   serverInfo: { name: string; version: string }
 }
 

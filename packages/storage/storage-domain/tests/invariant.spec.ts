@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { z } from 'zod'
-import Storage from '@pentest-harness/dsh-storage'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import * as DomainInvariantCompanion from '@pentest-harness/dsh-storage-domain/invariant'
+import Storage from '@fathom/storage'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import * as DomainInvariantCompanion from '@fathom/storage-domain/invariant'
 import { DomainFacility, defineDomain, domainTable } from '../src/index.ts'
 import type { DomainChanged } from '../src/events.ts'
 import { MemoryStorageBackend } from './helpers/memory-backend.ts'
@@ -31,7 +31,7 @@ async function setup() {
 
 const invariantViolation: unknown = expect.objectContaining<Partial<InvariantError>>({
   code: 'INVARIANT',
-  packageName: '@pentest-harness/dsh-storage-domain',
+  packageName: '@fathom/storage-domain',
 })
 
 describe('domain change-event invariants', () => {

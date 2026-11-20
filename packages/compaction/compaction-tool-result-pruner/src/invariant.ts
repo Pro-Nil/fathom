@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-compaction-tool-result-pruner`.
- * @module @pentest-harness/dsh-compaction-tool-result-pruner/invariant
+ * Package-owned invariant companion for `@fathom/compaction-tool-result-pruner`.
+ * @module @fathom/compaction-tool-result-pruner/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-compaction-tool-result-pruner'
+const PACKAGE_NAME = '@fathom/compaction-tool-result-pruner'
 
 /** Cordis companion plugin name. */
 export const name = 'compaction-tool-result-pruner-invariant'

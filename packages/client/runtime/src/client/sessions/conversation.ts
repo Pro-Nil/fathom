@@ -5,15 +5,15 @@
 // views. callId/approvalId stay plain string here (narrow to real brands when
 // convenient).
 
-import type { CommandId } from '@pentest-harness/dsh-commands/brand'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { ContentBlock } from '@pentest-harness/dsh-llm/types'
-import type { ImageAttachmentRef } from '@pentest-harness/dsh-attachment'
-import type { LlmRetryEventData } from '@pentest-harness/dsh-llm-retry/types'
-import type { TodoItem } from '@pentest-harness/dsh-session/types'
+import type { CommandId } from '@fathom/commands/brand'
+import type { MessageId } from '@fathom/llm/brand'
+import type { ContentBlock } from '@fathom/llm/types'
+import type { ImageAttachmentRef } from '@fathom/attachment'
+import type { LlmRetryEventData } from '@fathom/llm-retry/types'
+import type { TodoItem } from '@fathom/session/types'
 import type {
   RpcError, SessionId, SubagentAddress, ToolCallView, ToolResultView,
-} from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
 import type { PendingInteraction } from './pending.ts'
 import type { ContextProvenanceView, KnownContextForm } from './context-provenance.ts'
 import type {

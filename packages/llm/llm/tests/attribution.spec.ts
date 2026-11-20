@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import { describe, expect, it } from 'vitest'
-import { APP_IDENTITY, attributionHeaders, userAgent } from '@pentest-harness/dsh-llm'
-import type { AppIdentity } from '@pentest-harness/dsh-llm'
+import { APP_IDENTITY, attributionHeaders, userAgent } from '@fathom/llm'
+import type { AppIdentity } from '@fathom/llm'
 
 const manifest = createRequire(import.meta.url)('../package.json') as { version: string }
 
@@ -19,9 +19,9 @@ describe('APP_IDENTITY', () => {
 
   it('carries only static public product facts', () => {
     expect(APP_IDENTITY).toEqual({
-      product: 'pentest-harness',
+      product: 'fathom',
       version: manifest.version,
-      url: 'https://github.com/S1N6H/pentest-harness',
+      url: 'https://github.com/Pro-Nil/fathom',
     })
   })
 })
@@ -29,7 +29,7 @@ describe('APP_IDENTITY', () => {
 describe('userAgent', () => {
   it('renders product/version with the +url comment', () => {
     expect(userAgent()).toBe(
-      `pentest-harness/${manifest.version} (+https://github.com/S1N6H/pentest-harness)`,
+      `fathom/${manifest.version} (+https://github.com/Pro-Nil/fathom)`,
     )
   })
 

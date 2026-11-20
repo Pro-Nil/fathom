@@ -9,10 +9,10 @@
  * with `removedCount` and marks a cancellation `outcome: 'canceled'`, which
  * separates a turn claiming its input from work being dropped unrun.
  *
- * @module @pentest-harness/dsh-agent/consumed-work
+ * @module @fathom/agent/consumed-work
  */
 
-import type { SessionEvent, TurnEndReason } from '@pentest-harness/dsh-session'
+import type { SessionEvent, TurnEndReason } from '@fathom/session'
 
 /** How one agent log accounts for the work it consumed. */
 export interface ConsumedWork {

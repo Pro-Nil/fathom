@@ -14,13 +14,13 @@
  * armed claim folds with zero delta because bounded state cannot reconstruct
  * the replaced range; this preserves replay at the cost of possible drift.
  *
- * @module @pentest-harness/dsh-token-meter/surface-projection
+ * @module @fathom/token-meter/surface-projection
  */
 
-import { deriveEventMessage, isSurfaceEvent } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import { deriveEventMessage, isSurfaceEvent } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
 // Type-only: the `compaction/*` SessionEventMap merges (shadow-price events).
-import type {} from '@pentest-harness/dsh-compaction'
+import type {} from '@fathom/compaction'
 import { estimateMessage } from './estimate.ts'
 
 /**

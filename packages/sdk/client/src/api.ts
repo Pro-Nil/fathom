@@ -1,25 +1,25 @@
 /**
- * High-level run API over {@link HarnessClient}: `PentestHarness` owns one
+ * High-level run API over {@link HarnessClient}: `Fathom` owns one
  * runtime subprocess across many sessions; `HarnessSession.run` sends a
  * prompt and settles when the whole agent next becomes idle.
- * Mirrors the Python SDK's `PentestHarness`/`Session` pair.
+ * Mirrors the Python SDK's `Fathom`/`Session` pair.
  *
- * @module @pentest-harness/dsh-sdk-client/api
+ * @module @fathom/sdk-client/api
  */
 
 import { randomUUID } from 'node:crypto'
 import { resolve } from 'node:path'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 import { HarnessClient, isRecord, SdkProtocolError } from './client.ts'
-import type { ContentBlock, PentestHarnessOptions, HarnessClientOptions, HarnessNotification, RunResult } from './types.ts'
+import type { ContentBlock, FathomOptions, HarnessClientOptions, HarnessNotification, RunResult } from './types.ts'
 
 /**
- * Reusable SDK for running Pentest Harness agent turns in a runtime
+ * Reusable SDK for running Fathom agent turns in a runtime
  * subprocess. The subprocess starts lazily on first use and stays owned by
  * this instance until {@link close}; always close (or `await using`) so the
  * child is reaped.
  */
-export class PentestHarness implements AsyncDisposable {
+export class Fathom implements AsyncDisposable {
   private clientInstance: HarnessClient
   private readonly launch: HarnessClientOptions
   private readonly cwd: string
@@ -30,7 +30,7 @@ export class PentestHarness implements AsyncDisposable {
   private closed = false
 
   /** @param options - runtime launch spec plus the session route (cwd/provider/model). */
-  constructor(options: PentestHarnessOptions) {
+  constructor(options: FathomOptions) {
     this.launch = options.launch
     this.clientInstance = new HarnessClient(options.launch)
     // Absolute before the handshake: the child spawns relative to THIS
@@ -134,7 +134,7 @@ export class HarnessSession {
    * @param harness - the owning harness (supplies the client and handshake).
    * @param id - the wire session id this handle runs on.
    */
-  constructor(readonly harness: PentestHarness, readonly id: string) {}
+  constructor(readonly harness: Fathom, readonly id: string) {}
 
   /**
    * Queue one prompt, then observe the whole session through its next idle.

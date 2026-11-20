@@ -3,11 +3,11 @@
  * pure context-breakdown projection, so both surfaces price identical content
  * to identical numbers.
  *
- * @module @pentest-harness/dsh-token-meter/estimate
+ * @module @fathom/token-meter/estimate
  */
 
-import type { ContentBlock, Message } from '@pentest-harness/dsh-llm'
-import type { EpochHeader } from '@pentest-harness/dsh-session'
+import type { ContentBlock, Message } from '@fathom/llm'
+import type { EpochHeader } from '@fathom/session'
 
 /** Fixed text-density estimate used until exact tokenization is needed. */
 const CHARS_PER_TOKEN = 4

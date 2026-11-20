@@ -4,16 +4,16 @@
 # the parent turn without list_agents, send_message, or a Task collector.
 
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
 
 # Prevent platform scheduling from choosing a streamed-chunk interleave. The
 # fence releases only after the real manager notice enters the parent inbox.

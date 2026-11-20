@@ -7,13 +7,13 @@
  * `sidebar.settings` registrant's (ui-settings), followed by optional footer
  * actions in `sidebar.footer.action`.
  */
-import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@fathom/client-ui-slots'
 // Type-only: pulls ui-layout's SlotMap merge (the 'sidebar' entry) into every
 // program that sees this contract, so PropsRuntime<'sidebar'> resolves.
-import type {} from '@pentest-harness/dsh-client-ui-layout/client'
-import type { WorkspaceId } from '@pentest-harness/dsh-client-runtime/client'
+import type {} from '@fathom/client-ui-layout/client'
+import type { WorkspaceId } from '@fathom/client-runtime/client'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     /**
      * Brand mark rendered in the expanded brand row and collapsed rail.

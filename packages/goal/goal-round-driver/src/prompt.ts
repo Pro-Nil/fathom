@@ -1,7 +1,7 @@
 /** Model-visible continuation prompt for one same-session goal round. */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { GoalView } from '@pentest-harness/dsh-goal'
+import type { ContentBlock } from '@fathom/llm'
+import type { GoalView } from '@fathom/goal'
 
 /**
  * Render the complete goal-round instruction retained in session history.

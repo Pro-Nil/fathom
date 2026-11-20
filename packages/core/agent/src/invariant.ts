@@ -1,10 +1,10 @@
-/** Package-owned agent lifecycle invariants. @module @pentest-harness/dsh-agent/invariant */
+/** Package-owned agent lifecycle invariants. @module @fathom/agent/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import type { Agent, AgentStatus } from '@pentest-harness/dsh-agent'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
+import type { Agent, AgentStatus } from '@fathom/agent'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent'
+const PACKAGE_NAME = '@fathom/agent'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-invariant'

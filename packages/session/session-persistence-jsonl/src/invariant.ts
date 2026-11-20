@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-persistence-jsonl`.
- * @module @pentest-harness/dsh-session-persistence-jsonl/invariant
+ * Package-owned invariant companion for `@fathom/session-persistence-jsonl`.
+ * @module @fathom/session-persistence-jsonl/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-persistence-jsonl'
+const PACKAGE_NAME = '@fathom/session-persistence-jsonl'
 
 /** Cordis companion plugin name. */
 export const name = 'session-persistence-jsonl-invariant'

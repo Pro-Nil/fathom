@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { zstdCompressSync } from 'node:zlib'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import { CallId, type StreamChunk } from '@pentest-harness/dsh-llm'
+import type { SessionEvent } from '@fathom/session'
+import { CallId, type StreamChunk } from '@fathom/llm'
 import {
   decodeStorageRecord,
   MAX_PACKED_DATA_BYTES,

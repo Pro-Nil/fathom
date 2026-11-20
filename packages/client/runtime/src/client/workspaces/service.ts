@@ -1,10 +1,10 @@
 /** WorkspaceRuntime projects the Workspace object manager for UI consumers. */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   DirectoryListing, IApiClient, RpcError,
   SessionId, WorkspaceId, WorkspaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
 import type { SnapshotStore } from '../contract/store.ts'
 import { createSnapshotStore } from '../contract/store.ts'
 import type { SessionsPort, SessionsPortList } from '../contract/sessions-port.ts'

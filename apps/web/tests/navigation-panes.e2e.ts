@@ -13,8 +13,8 @@ import type { Browser, Page, Response } from 'playwright'
 import { chromium } from 'playwright'
 import { strFromU8, unzipSync } from 'fflate'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, onTestFailed, vi } from 'vitest'
-import { parseSessionLog } from '@pentest-harness/dsh-llm-replay'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import { parseSessionLog } from '@fathom/llm-replay'
+import type { SessionEvent } from '@fathom/session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
@@ -309,7 +309,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     const response = await responsePromise
     expect(response.status()).toBe(200)
     const download = await downloadPromise
-    expect(download.suggestedFilename()).toMatch(/^dsh-session-.+\.zip$/)
+    expect(download.suggestedFilename()).toMatch(/^fathom-session-.+\.zip$/)
     const dialog = page.getByRole('dialog', { name: 'Session download started' })
     await dialog.waitFor({ timeout: 30_000 })
     // The real host streamed the ZIP; its root entry is the persisted log

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { AttachmentError } from '@pentest-harness/dsh-attachment'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { AttachmentError } from '@fathom/attachment'
+import { SessionId } from '@fathom/session'
 import { makeBridgeHarness, textResponse, type BridgeHarness } from './harness.ts'
 
 describe('automation-only ACP bridge', () => {
@@ -21,7 +21,7 @@ describe('automation-only ACP bridge', () => {
 
     expect(response).toEqual({
       protocolVersion: PROTOCOL_VERSION,
-      agentInfo: { name: 'pentest-harness-acp', version: '0.0.1' },
+      agentInfo: { name: 'fathom-acp', version: '0.0.1' },
       agentCapabilities: {
         promptCapabilities: { image: false, audio: false, embeddedContext: false },
       },

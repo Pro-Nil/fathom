@@ -6,18 +6,18 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import LlmRuntime, { LlmAdapter } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, LlmModelInfo, LlmProviderInfo, StreamChunk } from '@pentest-harness/dsh-llm'
-import { SettingsProvider, settingsNamespace } from '@pentest-harness/dsh-settings'
-import type { SettingsNamespace } from '@pentest-harness/dsh-settings'
-import { CredentialProvider } from '@pentest-harness/dsh-credentials'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import AgentRegistry from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import UserQuestionService from '@fathom/user-questions'
+import LlmRuntime, { LlmAdapter } from '@fathom/llm'
+import type { GenerateOptions, LlmModelInfo, LlmProviderInfo, StreamChunk } from '@fathom/llm'
+import { SettingsProvider, settingsNamespace } from '@fathom/settings'
+import type { SettingsNamespace } from '@fathom/settings'
+import { CredentialProvider } from '@fathom/credentials'
 import type {
   CredentialInfo,
   CredentialKey,
@@ -26,11 +26,11 @@ import type {
   CredentialRecordInfo,
   CredentialRef,
   ResolvedCredential,
-} from '@pentest-harness/dsh-credentials'
+} from '@fathom/credentials'
 import type { HostFrame } from '../src/api/index.ts'
 import type { RpcRequest, RpcResponse } from '../src/api/rpc.ts'
 import { RpcId } from '../src/api/rpc.ts'
-import { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '@pentest-harness/dsh-agent-default-model'
+import { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '@fathom/agent-default-model'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 const DEFAULTS = { defaultModelSelection: () => ({ provider: 'p', model: 'm' }), cwd: '/tmp' }
@@ -273,7 +273,7 @@ describe('settings domain', () => {
     const api = createApiProxy(ctx, DEFAULTS)
     const error = expectErr(await api.settings.describe(request({})))
     expect(error.code).toBe('internal')
-    expect(error.message).toContain('dsh-settings-file')
+    expect(error.message).toContain('@fathom/settings-file')
   })
 
   it('describes layered redacted namespaces with their secret slots', async () => {
@@ -616,7 +616,7 @@ describe('credentials domain', () => {
     const api = createApiProxy(ctx, DEFAULTS)
     const error = expectErr(await api.credentials.describe(request({ refs: ['A'] })))
     expect(error.code).toBe('internal')
-    expect(error.message).toContain('dsh-credentials-local')
+    expect(error.message).toContain('@fathom/credentials-local')
   })
 
   it('describes value-free views and flips state through set/unset with frames', async () => {

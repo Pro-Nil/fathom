@@ -3,11 +3,11 @@
  * the one-shot background path uses Jobs; continuable children have no Task,
  * no per-message result, and no Task cancellation.
  *
- * @module @pentest-harness/dsh-subagent/run-settlement
+ * @module @fathom/subagent/run-settlement
  */
 
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JobOutcome } from '@pentest-harness/dsh-jobs'
+import type { ContentBlock } from '@fathom/llm'
+import type { JobOutcome } from '@fathom/jobs'
 import type { SubagentResult, SubagentRun } from './types.ts'
 
 /** Flatten a child's final output blocks to the task's final text. */

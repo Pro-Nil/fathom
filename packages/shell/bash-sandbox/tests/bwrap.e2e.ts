@@ -4,18 +4,18 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { LocalSandboxProvider } from '@pentest-harness/dsh-sandbox-local'
-import { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import { bwrapProfileArgs } from '@pentest-harness/dsh-sandbox-local/src/profiles.ts'
-import { SandboxBashExecutor } from '@pentest-harness/dsh-bash-sandbox'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import { Context } from '@fathom/cordis'
+import { LocalSandboxProvider } from '@fathom/sandbox-local'
+import { SandboxPolicyService } from '@fathom/sandbox-policy'
+import { bwrapProfileArgs } from '@fathom/sandbox-local/src/profiles.ts'
+import { SandboxBashExecutor } from '@fathom/bash-sandbox'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 
 /**
  * Keyless integration of the real provider and executor through public run/start paths. With
  * no rung forced, a passing bwrap probe selects the ladder's first rung. The tests check world
  * effects and stamped facts, including EROFS classification through the wrap-carried dialect;
- * backend-only confinement is covered by `@pentest-harness/dsh-sandbox-local`.
+ * backend-only confinement is covered by `@fathom/sandbox-local`.
  *
  * Skips when bwrap or unprivileged user namespaces are unavailable. HOME-based paths are
  * intentional because bwrap replaces `/tmp`, which cannot prove the workspace-root boundary.
@@ -34,7 +34,7 @@ afterEach(async () => {
 })
 
 async function tempDir(base: string): Promise<string> {
-  const dir = await mkdtemp(join(base, 'dsh-bwrap-e2e-'))
+  const dir = await mkdtemp(join(base, 'fathom-bwrap-e2e-'))
   tempDirs.push(dir)
   return dir
 }

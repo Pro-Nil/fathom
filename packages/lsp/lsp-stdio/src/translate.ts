@@ -2,7 +2,7 @@
  * Pure protocol translation for the local host: what the server's capabilities allow, and how its
  * `Location`/`LocationLink`/`Hover` payloads normalize into the seam's closed result unions. No I/O
  * or process state — every function here is a pure transform, which the fake-stdio tests pin exactly.
- * @module @pentest-harness/dsh-lsp-stdio/translate
+ * @module @fathom/lsp-stdio/translate
  */
 
 import type {
@@ -10,9 +10,9 @@ import type {
   LspLocation,
   LspOperation,
   LspRange,
-} from '@pentest-harness/dsh-lsp'
-import { LspError } from '@pentest-harness/dsh-lsp'
-import { assertNever } from '@pentest-harness/dsh-llm'
+} from '@fathom/lsp'
+import { LspError } from '@fathom/lsp'
+import { assertNever } from '@fathom/llm'
 import type {
   WireHover,
   WireLocation,

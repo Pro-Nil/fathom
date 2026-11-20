@@ -1,7 +1,7 @@
 /** Typed Agent Teams failures. */
 
 import { inspect } from 'node:util'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import { HarnessError } from '@fathom/llm'
 
 /** Stable failure raised by the Team domain. */
 export class TeamError extends HarnessError {

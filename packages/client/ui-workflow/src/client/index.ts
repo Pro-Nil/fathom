@@ -5,10 +5,10 @@
  * same trajectory node stream the Bounty console consumes, so it reflects the
  * session in real time.
  */
-import type { Context } from '@pentest-harness/cordis'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-locale/client'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
+import type { Context } from '@fathom/cordis'
+import type { SessionId } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-locale/client'
+import type {} from '@fathom/client-ui-conversation/client'
 import { WorkflowView, type WorkflowViewInjected } from './WorkflowView.tsx'
 import { en, NS } from './locales.ts'
 

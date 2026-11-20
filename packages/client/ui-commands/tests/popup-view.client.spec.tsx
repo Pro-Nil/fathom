@@ -14,8 +14,8 @@ import type { SelectOption } from '../src/client/contract.ts'
 import type { PopupSpec, TokenSegment } from '../src/client/popup.ts'
 import { PopupSelectController } from '../src/client/popup.ts'
 import { PopupSelectView } from '../src/client/PopupSelectView.tsx'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { en } from '../src/client/locales.ts'
 
 // The framework-injected t seat, stubbed over the en dictionaries (the default locale).

@@ -8,11 +8,11 @@
 import { globSync, readFileSync } from 'node:fs'
 import { dirname, resolve, sep } from 'node:path'
 
-const SCOPE = '@pentest-harness/dsh-'
+const SCOPE = '@fathom/'
 
 /** One harness package and its in-repo peer-dependency edges. */
 export interface PackageGraphNode {
-  /** Package name with the `@pentest-harness/dsh-` prefix removed. */
+  /** Package name with the `@fathom/` prefix removed. */
   short: string
   /** Full npm package name. */
   name: string
@@ -53,6 +53,11 @@ export function collectPackageGraph(root: string, groupOrder: readonly string[],
       deps,
     })
   }
+  // Edges only between graph nodes: source-vendored libraries share the
+  // @fathom scope (for example @fathom/cordis) but live under vendor/, outside
+  // this graph, as they did before the rename.
+  const shorts = new Set(packages.map(pkg => pkg.short))
+  for (const pkg of packages) pkg.deps = pkg.deps.filter(dep => shorts.has(dep))
   return topoSort(packages, groupOrder, gate)
 }
 

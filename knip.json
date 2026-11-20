@@ -66,9 +66,9 @@
         "acp-agent/tests/fixtures/subagent/subagent-claude-code/driver.ts",
         "acp-agent/tests/fixtures/subagent/subagent-codex/fixture.ts",
         "acp-agent/tests/fixtures/subagent/subagent-codex/driver.ts",
-        "jsonrpc-agent/tests/fixtures/subagent/subagent-dsh-sdk/driver.ts",
-        "jsonrpc-agent/tests/fixtures/subagent/subagent-dsh-sdk/child-mock-llm.ts",
-        "jsonrpc-agent/tests/fixtures/subagent/subagent-dsh-sdk/mock-delegating-llm.ts",
+        "jsonrpc-agent/tests/fixtures/subagent/subagent-fathom-sdk/driver.ts",
+        "jsonrpc-agent/tests/fixtures/subagent/subagent-fathom-sdk/child-mock-llm.ts",
+        "jsonrpc-agent/tests/fixtures/subagent/subagent-fathom-sdk/mock-delegating-llm.ts",
         "*/tests/**/*.e2e.ts",
         "*/tests/**/*.snapshot.ts"
       ],
@@ -76,13 +76,13 @@
         "**/*.ts"
       ],
       "ignoreDependencies": [
-        "@pentest-harness/.+"
+        "@fathom/.+"
       ]
     },
     "packages/host/directory-picker-auto": {
       "ignoreDependencies": [
-        "@pentest-harness/dsh-client-ui-directory-picker-browse",
-        "@pentest-harness/dsh-client-ui-directory-picker-native"
+        "@fathom/client-ui-directory-picker-browse",
+        "@fathom/client-ui-directory-picker-native"
       ]
     },
     "packages/extensions/cordis-host-runner": {
@@ -116,7 +116,7 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@pentest-harness/dsh-api-gateway"
+        "@fathom/api-gateway"
       ]
     },
     "packages/client/ui-primitives": {
@@ -199,18 +199,6 @@
         "src/**/*.tsx",
         "tests/**/*.ts",
         "tests/**/*.tsx"
-      ]
-    },
-    "website": {
-      "project": [
-        "**/*.ts"
-      ],
-      "ignoreDependencies": [
-        "@braintree/sanitize-url",
-        "cytoscape",
-        "cytoscape-cose-bilkent",
-        "dayjs",
-        "debug"
       ]
     },
     "packages/*/*": {
@@ -609,8 +597,8 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@pentest-harness/dsh-client-ui-primitives",
-        "@pentest-harness/dsh-client-ui-slots",
+        "@fathom/client-ui-primitives",
+        "@fathom/client-ui-slots",
         "@types/react",
         "@types/react-dom",
         "react",
@@ -628,10 +616,10 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@pentest-harness/.+"
+        "@fathom/.+"
       ]
     },
-    "packages/subagent/subagent-dsh-sdk": {
+    "packages/subagent/subagent-fathom-sdk": {
       "entry": [
         "tests/**/*.spec.ts",
         "tests/**/*.e2e.ts"
@@ -643,17 +631,17 @@
     },
     "packages/bundle/base": {
       "ignoreDependencies": [
-        "@pentest-harness/.+"
+        "@fathom/.+"
       ]
     },
     "packages/bundle/headless": {
       "ignoreDependencies": [
-        "@pentest-harness/dsh-code-runtime-worker-thread"
+        "@fathom/code-runtime-worker-thread"
       ]
     },
     "packages/bundle/web-app": {
       "ignoreDependencies": [
-        "@pentest-harness/.+"
+        "@fathom/.+"
       ]
     }
   }

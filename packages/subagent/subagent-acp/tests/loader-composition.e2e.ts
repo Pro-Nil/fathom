@@ -3,8 +3,8 @@ import { readFile, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { type SessionEvent } from '@pentest-harness/dsh-session'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@pentest-harness/dsh-loader-smoke'
+import { type SessionEvent } from '@fathom/session'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@fathom/loader-smoke'
 
 /**
  * Keyless REAL-composition coverage for parent-session cwd inheritance: a
@@ -47,7 +47,7 @@ describe('ACP subagent cwd inheritance through a real cordis.yml', () => {
       libBinScript: driver,
       configPath,
       tsconfigPath: repoTsconfig,
-      env: { DSH_TEST_MOCK_ACP_SERVER: mockServer },
+      env: { FATHOM_TEST_MOCK_ACP_SERVER: mockServer },
       inspect: async (cwd) => {
         // The child reports realpaths; canonicalize the temp workspace to match.
         workspace = realpathSync(cwd)

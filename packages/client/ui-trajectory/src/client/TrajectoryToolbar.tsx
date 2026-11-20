@@ -1,7 +1,7 @@
 /** Trajectory toolbar: timeline and ledger fold controls. */
 
-import type { TranslateNS } from '@pentest-harness/dsh-client-ui-slots'
-import { IconSearchOutline16 } from '@pentest-harness/dsh-client-ui-primitives'
+import type { TranslateNS } from '@fathom/client-ui-slots'
+import { IconSearchOutline16 } from '@fathom/client-ui-primitives'
 import type { NS } from './locales.ts'
 import css from './TrajectoryToolbar.module.css'
 

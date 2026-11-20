@@ -1,9 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import { remoteMethods } from '@pentest-harness/dsh-typert-protocol'
+import { Context } from '@fathom/cordis'
+import type { MessageId } from '@fathom/llm/brand'
+import { Session, SessionId } from '@fathom/session'
+import { remoteMethods } from '@fathom/typert-protocol'
 import MessageFeedbackService, { messageFeedbackRowSchema } from '../src/index.ts'
 import type {
   MessageFeedbackItem,

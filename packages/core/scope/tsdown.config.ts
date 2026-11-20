@@ -22,6 +22,6 @@ export default defineConfig([
     dts: false,
     clean: false,
     // Preserve the root entry's carrier WeakMap identity across bundles.
-    deps: { neverBundle: ['@pentest-harness/dsh-scope'] },
+    deps: { neverBundle: ['@fathom/scope'] },
   },
 ])

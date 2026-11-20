@@ -7,15 +7,15 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createScope } from '@pentest-harness/dsh-scope'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
-import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@pentest-harness/dsh-tools'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { apply, Config, inject, name } from '@pentest-harness/dsh-agent-tool-presentation'
+import { Context } from '@fathom/cordis'
+import { createScope } from '@fathom/scope'
+import SystemPrompt from '@fathom/system-prompt'
+import { CodeRuntime } from '@fathom/code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@fathom/code-runtime'
+import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@fathom/tools'
+import type { Agent } from '@fathom/agent'
+import { SessionId } from '@fathom/session'
+import { apply, Config, inject, name } from '@fathom/agent-tool-presentation'
 
 /** A runtime that never runs anything: presentation never dispatches. */
 class StubRuntime extends CodeRuntime {
@@ -103,7 +103,7 @@ describe('the tool-presentation row', () => {
 
     const { agent, row } = await mount(ctx, { mode: 'code' })
 
-    // Pending, not applied: `dsh-agent-presets` rejects a mount holding a row
+    // Pending, not applied: `fathom-agent-presets` rejects a mount holding a row
     // that never reached a usable state, naming this id — so the preset fails
     // where the operator can act, instead of at the first request.
     expect(row.ctx.get('codeRuntime')).toBeUndefined()

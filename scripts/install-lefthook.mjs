@@ -17,10 +17,18 @@ import { dirname, isAbsolute, join, resolve } from 'node:path'
 import lefthookPackage from 'lefthook/package.json' with { type: 'json' }
 
 const MINIMUM_GIT = [2, 26, 0]
-const HOOKS_DIRECTORY = 'dsh-hooks'
-const OWNERSHIP_MARKER = '.dsh-lefthook-owned'
+const HOOKS_DIRECTORY = 'fathom-hooks'
+const OWNERSHIP_MARKER = '.fathom-lefthook-owned'
 const OWNERSHIP_MARKER_VERSION = 1
-const OWNERSHIP_MARKER_OWNER = 'pentest-harness worktree-local lefthook hooks'
+const OWNERSHIP_MARKER_OWNER = 'fathom worktree-local lefthook hooks'
+/**
+ * Hooks directory and marker names from before the project was renamed to
+ * Fathom. A clone installed then has its core.hooksPath pointing at the old
+ * directory; it is recognised as this installer's own and moved to the new
+ * one instead of being refused as a user-owned path.
+ */
+const LEGACY_HOOKS_DIRECTORY = 'dsh' + '-hooks'
+const LEGACY_OWNERSHIP_MARKER = '.dsh' + '-lefthook-owned'
 
 /**
  * Whether a marker's owner names this repository's hooks. Clones made before
@@ -31,13 +39,14 @@ const OWNERSHIP_MARKER_OWNER = 'pentest-harness worktree-local lefthook hooks'
  * @returns true for this repository's own hooks directory.
  */
 function isOwnershipMarkerOwner(owner) {
-  return typeof owner === 'string' && /^[a-z0-9-]+-harness worktree-local lefthook hooks$/u.test(owner)
+  return typeof owner === 'string'
+    && (owner === OWNERSHIP_MARKER_OWNER || /^[a-z0-9-]+-harness worktree-local lefthook hooks$/u.test(owner))
 }
-const INSTALL_LOCK = 'dsh-lefthook-install.lock'
+const INSTALL_LOCK = 'fathom-lefthook-install.lock'
 const INSTALL_LOCK_TIMEOUT_MS = 30_000
 const INSTALL_LOCK_INITIALIZATION_TIMEOUT_MS = 5_000
 const INSTALL_LOCK_POLL_MS = 50
-const ALLOW_HOOKS_PATH_OVERRIDE = 'DSH_LEFTHOOK_ALLOW_HOOKS_PATH_OVERRIDE'
+const ALLOW_HOOKS_PATH_OVERRIDE = 'FATHOM_LEFTHOOK_ALLOW_HOOKS_PATH_OVERRIDE'
 const REPOSITORY_EXTENSION_PATTERN = '^extensions\\.'
 function errorCode(error) {
   return typeof error === 'object' && error !== null && 'code' in error
@@ -387,7 +396,7 @@ async function acquireInstallLock(commonDirectory) {
       let ownedStat
       try {
         ownedStat = fstatSync(lockHandle)
-        const writeDelay = Number(process.env.DSH_TEST_LEFTHOOK_LOCK_WRITE_DELAY_MS ?? 0)
+        const writeDelay = Number(process.env.FATHOM_TEST_LEFTHOOK_LOCK_WRITE_DELAY_MS ?? 0)
         if (writeDelay > 0) {
           await new Promise(resolveWait => setTimeout(resolveWait, writeDelay))
         }
@@ -483,7 +492,10 @@ function parseOwnershipMarker(content) {
 }
 
 function inspectOwnedHooksDirectory(hooksPath) {
-  const markerPath = join(hooksPath, OWNERSHIP_MARKER)
+  const markerName = !existsSync(join(hooksPath, OWNERSHIP_MARKER)) && existsSync(join(hooksPath, LEGACY_OWNERSHIP_MARKER))
+    ? LEGACY_OWNERSHIP_MARKER
+    : OWNERSHIP_MARKER
+  const markerPath = join(hooksPath, markerName)
   if (!existsSync(hooksPath)) return undefined
   const hooksStat = lstatSync(hooksPath)
   if (!hooksStat.isDirectory() || hooksStat.isSymbolicLink()) {
@@ -500,7 +512,7 @@ function inspectOwnedHooksDirectory(hooksPath) {
     throw new Error(`refusing to overwrite hooks directory with an invalid ownership marker: ${hooksPath}`)
   }
   for (const name of readdirSync(hooksPath)) {
-    if (name === OWNERSHIP_MARKER) continue
+    if (name === markerName) continue
     const entryPath = join(hooksPath, name)
     const entryStat = lstatSync(entryPath)
     if (!entryStat.isFile() || entryStat.isSymbolicLink() || entryStat.nlink !== 1) {
@@ -515,7 +527,9 @@ function inspectOwnedHooksDirectory(hooksPath) {
 function isRegisteredOwnedHooksPath(commonDirectory, hooksPath) {
   const normalizedHooksPath = normalizedPath(hooksPath)
   const isRegistered = registeredWorktreeConfigPaths(commonDirectory).some(
-    configPath => normalizedPath(join(dirname(configPath), HOOKS_DIRECTORY)) === normalizedHooksPath,
+    configPath => [HOOKS_DIRECTORY, LEGACY_HOOKS_DIRECTORY].some(
+      directory => normalizedPath(join(dirname(configPath), directory)) === normalizedHooksPath,
+    ),
   )
   if (!isRegistered) return false
   return inspectOwnedHooksDirectory(hooksPath)?.hooksPath === hooksPath

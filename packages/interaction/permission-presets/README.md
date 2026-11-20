@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-permission-presets
+# @fathom/permission-presets
 
 User-facing permission presets through `ctx.permissionPresets` ([`PermissionPresetService`](src/index.ts)). Each configured name bundles `sandbox/mode` with `approval/policy`; the defaults are `workspace-write` (`workspace-write` + `ask`) and `danger-full-access` (`danger-full-access` + `never`). UI adapters may expose the table as one selector, while sandbox execution and approval continue to consume their own knobs.
 
@@ -12,7 +12,7 @@ Two optional children ship the product surfaces over the same service: a `permis
 
 ## Model Experience
 
-Indirectly, through `dsh-user-approval` and `dsh-tool-bash`, which render the approval-policy prompt, switch notice, and sandboxed tool outcomes selected by this service's knob events; `permissionPresets/preset` itself is log-only.
+Indirectly, through `fathom-user-approval` and `fathom-tool-bash`, which render the approval-policy prompt, switch notice, and sandboxed tool outcomes selected by this service's knob events; `permissionPresets/preset` itself is log-only.
 
 #### KV Cache effect
 

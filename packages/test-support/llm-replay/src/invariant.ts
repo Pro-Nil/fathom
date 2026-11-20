@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-llm-replay`.
- * @module @pentest-harness/dsh-llm-replay/invariant
+ * Package-owned invariant companion for `@fathom/llm-replay`.
+ * @module @fathom/llm-replay/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-llm-replay'
+const PACKAGE_NAME = '@fathom/llm-replay'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-replay-invariant'

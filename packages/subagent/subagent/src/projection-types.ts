@@ -1,7 +1,7 @@
 /**
  * Pure client-safe subagent projection vocabulary.
  *
- * @module @pentest-harness/dsh-subagent/projection-types
+ * @module @fathom/subagent/projection-types
  */
 
 /** Durable active-turn timing for one descriptor-backed child session. */
@@ -46,7 +46,7 @@ export type SubagentIdentityProjection =
     seq: number
   }
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionMap {
     /** Active-turn duration for a descriptor-backed subagent session. */
     subagentTiming: SubagentTimingProjection

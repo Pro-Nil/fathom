@@ -1,6 +1,6 @@
 // Web e2e scenarios: live-turn interactions — cancellation, error surfacing,
 // transient-retry recovery, and retry exhaustion, all through the real
-// composition and wire. The model adapter is dsh-llm-replay with override
+// composition and wire. The model adapter is fathom-llm-replay with override
 // sidecars: `hang` (+ a readyFile marker) makes mid-stream cancel
 // deterministic by construction, `throw` entries express provider failures by
 // stable code, and `{ patches }` augmentation injects transient throws before
@@ -17,10 +17,10 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterEach, describe, expect, it, onTestFailed } from 'vitest'
-import type { RetryPolicyConfig } from '@pentest-harness/dsh-llm'
-import { deriveReplayScript, parseSessionLog } from '@pentest-harness/dsh-llm-replay'
-import type { ReplayEntry, ReplayOverrideDoc } from '@pentest-harness/dsh-llm-replay'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { RetryPolicyConfig } from '@fathom/llm'
+import { deriveReplayScript, parseSessionLog } from '@fathom/llm-replay'
+import type { ReplayEntry, ReplayOverrideDoc } from '@fathom/llm-replay'
+import type { SessionEvent } from '@fathom/session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,
@@ -87,7 +87,7 @@ describe('web e2e: live-turn interactions (cancel / error / retry)', () => {
       // The sidecar CONTENT is authored in this spec; the file is a per-run
       // artifact minted in a spec-owned temp dir. It must exist BEFORE the
       // scaffold boots — installLlmReplay resolves the script at install.
-      sidecarDir = await mkdtemp(join(tmpdir(), 'dsh-web-e2e-sidecar-'))
+      sidecarDir = await mkdtemp(join(tmpdir(), 'fathom-web-e2e-sidecar-'))
       overridePath = join(sidecarDir, 'replay.override.json')
       await writeFile(overridePath, JSON.stringify(buildOverride(sidecarDir)))
     }

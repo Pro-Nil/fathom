@@ -1,11 +1,11 @@
-/** Package-owned tool-pipeline invariants. @module @pentest-harness/dsh-tools/invariant */
+/** Package-owned tool-pipeline invariants. @module @fathom/tools/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { ToolExecution, ToolExecutionResult } from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tools'
+const PACKAGE_NAME = '@fathom/tools'
 
 /** Cordis companion plugin name. */
 export const name = 'tools-invariant'

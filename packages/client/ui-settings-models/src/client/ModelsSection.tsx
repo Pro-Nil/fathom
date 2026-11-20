@@ -14,9 +14,9 @@
 
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import type { IApiClient } from '@pentest-harness/dsh-api-remotes/client'
-import { Button, IconPlusOutline16, Modal } from '@pentest-harness/dsh-client-ui-primitives'
-import type { InjectFace } from '@pentest-harness/dsh-client-ui-slots'
+import type { IApiClient } from '@fathom/api-remotes/client'
+import { Button, IconPlusOutline16, Modal } from '@fathom/client-ui-primitives'
+import type { InjectFace } from '@fathom/client-ui-slots'
 import { CustomProviderCard } from './CustomProviderCard.tsx'
 import { formatCapacity } from './model-catalog.ts'
 import { deriveKeyRef, messageOf, protocolChoices, protocolLabel, providerUsable } from './store.ts'

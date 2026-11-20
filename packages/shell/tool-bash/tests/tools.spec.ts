@@ -2,31 +2,31 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { ShellExecutor } from '@pentest-harness/dsh-shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@pentest-harness/dsh-shell'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
-import ApprovalService from '@pentest-harness/dsh-user-approval'
-import type { ApprovalOutcome } from '@pentest-harness/dsh-user-approval'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import SandboxPolicyService from '@pentest-harness/dsh-sandbox-policy'
-import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import { ShellExecutor } from '@fathom/shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@fathom/shell'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore, { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as ToolTasks from '@fathom/tool-jobs'
+import ApprovalService from '@fathom/user-approval'
+import type { ApprovalOutcome } from '@fathom/user-approval'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import SandboxPolicyService from '@fathom/sandbox-policy'
+import * as ToolBash from '@fathom/tool-bash'
+import * as BashEnvPlugin from '@fathom/shell-env'
 import { processOutcome } from '../src/background.ts'
 import { renderProcessRead, renderResult } from '../src/render.ts'
 
 const testToolSignal = new AbortController().signal
 
-const spillDir = mkdtempSync(join(tmpdir(), 'dsh-tool-bash-spec-'))
+const spillDir = mkdtempSync(join(tmpdir(), 'fathom-tool-bash-spec-'))
 
 /** Foreground-only harness: no job runtime (backgrounding fails loud here). */
 async function setup() {
@@ -300,7 +300,7 @@ describe('bash tool', () => {
 
   it('surfaces spawn failures as isError', async () => {
     const ctx = await setup()
-    const result = await call(ctx, 'bash', { command: 'true', description: 'test command', workdir: '/nonexistent-dsh' })
+    const result = await call(ctx, 'bash', { command: 'true', description: 'test command', workdir: '/nonexistent-fathom' })
     expect(result.isError).toBe(true)
     expect(text(result)).toMatch(/ENOENT/)
   })
@@ -500,7 +500,7 @@ describe('background execution through the job runtime', () => {
     const ctx = await setup() // no LocalJobRegistry / ToolTasks
     const result = await call(ctx, 'bash', { command: 'sleep 60', description: 'test command', run_in_background: true })
     expect(result.isError).toBe(true)
-    expect(text(result)).toContain('background jobs unavailable: load @pentest-harness/dsh-jobs and @pentest-harness/dsh-tool-jobs')
+    expect(text(result)).toContain('background jobs unavailable: load @fathom/jobs and @fathom/tool-jobs')
   })
 
   it('a pre-aborted call is skipped before the process starts', async () => {
@@ -1059,7 +1059,7 @@ describe('tool-owned UI presentation (presentCall / presentResult)', () => {
 })
 
 describe('the model-facing bash tool builds its request from named args only (no {...args} forward)', () => {
-  const recordingDshHome = join(spillDir, 'dsh-home')
+  const recordingFathomHome = join(spillDir, 'fathom-home')
 
   /**
    * Records every {@link ShellExecRequest} the consumer hands to `resolve()`, so a
@@ -1070,7 +1070,7 @@ describe('the model-facing bash tool builds its request from named args only (no
    * future refactor that blindly forwards `...args` — which would silently thread
    * model input into the post-scrub `env` merge or per-run capture budget — NOT
    * to defend a trust boundary
-   * (the credential scrub in dsh-bash-local is the security control; see the
+   * (the credential scrub in fathom-bash-local is the security control; see the
    * bash-stdin-env Agent Note). Foreground `run()` returns a canned result; `start()`
    * hands back an already-settled fake handle so the task registration completes.
    */
@@ -1086,7 +1086,7 @@ describe('the model-facing bash tool builds its request from named args only (no
         ...request.signal ? { signal: request.signal } : {},
         ...request.stdin !== undefined ? { stdin: request.stdin } : {},
         ...request.env !== undefined ? { env: request.env } : {},
-        ...request.dshEnv !== undefined ? { dshEnv: request.dshEnv } : {},
+        ...request.fathomEnv !== undefined ? { fathomEnv: request.fathomEnv } : {},
         sandboxPolicy: request.sandboxPolicy,
       }
     }
@@ -1119,7 +1119,7 @@ describe('the model-facing bash tool builds its request from named args only (no
     }
     await ctx.plugin(LocalJobRegistry)
     await ctx.plugin(ToolTasks)
-    await ctx.plugin(BashEnvPlugin, { dshHome: recordingDshHome })
+    await ctx.plugin(BashEnvPlugin, { fathomHome: recordingFathomHome })
     await ctx.plugin(RecordingBashExecutor)
     await ctx.plugin(ToolBash)
     return { ctx, bash: ctx.shell as RecordingBashExecutor }
@@ -1128,8 +1128,8 @@ describe('the model-facing bash tool builds its request from named args only (no
   it('describes the managed harness environment namespace to the model', async () => {
     const { ctx } = await setupRecording()
     const description = ctx.tools.get('bash')?.description ?? ''
-    expect(description).toContain('$DSH_*')
-    expect(description).not.toContain('DSH_SESSION_JSONL')
+    expect(description).toContain('$FATHOM_*')
+    expect(description).not.toContain('FATHOM_SESSION_JSONL')
   })
 
   it('injects the session id and JSONL target path into a foreground request', async () => {
@@ -1145,11 +1145,11 @@ describe('the model-facing bash tool builds its request from named args only (no
       agent,
     })
 
-    expect(bash.requests[0]?.dshEnv).toEqual({
-      DSH_HOME: recordingDshHome,
-      DSH_SESSION_ID: 'request-fg',
-      DSH_SESSION_JSONL: path,
-      DSH_SHELL: '1',
+    expect(bash.requests[0]?.fathomEnv).toEqual({
+      FATHOM_HOME: recordingFathomHome,
+      FATHOM_SESSION_ID: 'request-fg',
+      FATHOM_SESSION_JSONL: path,
+      FATHOM_SHELL: '1',
     })
   })
 
@@ -1166,24 +1166,24 @@ describe('the model-facing bash tool builds its request from named args only (no
         command: 'sleep 1',
         description: 'run command',
         run_in_background: true,
-        env: { DSH_SESSION_ID: 'spoofed', DSH_SESSION_JSONL: '/tmp/spoofed' },
+        env: { FATHOM_SESSION_ID: 'spoofed', FATHOM_SESSION_JSONL: '/tmp/spoofed' },
       },
       agent,
     })
 
     expect(bash.requests[0]?.env).toBeUndefined()
-    expect(bash.requests[0]?.dshEnv).toEqual({
-      DSH_HOME: recordingDshHome,
-      DSH_SESSION_ID: 'request-bg',
-      DSH_SESSION_JSONL: path,
-      DSH_SHELL: '1',
+    expect(bash.requests[0]?.fathomEnv).toEqual({
+      FATHOM_HOME: recordingFathomHome,
+      FATHOM_SESSION_ID: 'request-bg',
+      FATHOM_SESSION_JSONL: path,
+      FATHOM_SHELL: '1',
     })
   })
 
   it('injects built-ins and the stable session id when no JSONL locator is available', async () => {
     const { ctx, bash } = await setupRecording()
     const agent = registerFakeAgent(ctx, 'request-id-only', () => undefined)
-    const ambient = process.env.DSH_SESSION_ID
+    const ambient = process.env.FATHOM_SESSION_ID
 
     await ctx.tools.execute({
       signal: testToolSignal,
@@ -1193,12 +1193,12 @@ describe('the model-facing bash tool builds its request from named args only (no
       agent,
     })
 
-    expect(bash.requests[0]?.dshEnv).toEqual({
-      DSH_HOME: recordingDshHome,
-      DSH_SESSION_ID: 'request-id-only',
-      DSH_SHELL: '1',
+    expect(bash.requests[0]?.fathomEnv).toEqual({
+      FATHOM_HOME: recordingFathomHome,
+      FATHOM_SESSION_ID: 'request-id-only',
+      FATHOM_SHELL: '1',
     })
-    expect(process.env.DSH_SESSION_ID).toBe(ambient)
+    expect(process.env.FATHOM_SESSION_ID).toBe(ambient)
   })
 
   it('keeps parent and child agent session environments isolated', async () => {
@@ -1216,21 +1216,21 @@ describe('the model-facing bash tool builds its request from named args only (no
       })
     }
 
-    expect(bash.requests.map(request => request.dshEnv)).toEqual([
+    expect(bash.requests.map(request => request.fathomEnv)).toEqual([
       {
-        DSH_HOME: recordingDshHome,
-        DSH_SESSION_ID: 'request-parent',
-        DSH_SESSION_JSONL: ctx.sessionPersistence.locate(parent.session.header)?.path,
-        DSH_SHELL: '1',
+        FATHOM_HOME: recordingFathomHome,
+        FATHOM_SESSION_ID: 'request-parent',
+        FATHOM_SESSION_JSONL: ctx.sessionPersistence.locate(parent.session.header)?.path,
+        FATHOM_SHELL: '1',
       },
       {
-        DSH_HOME: recordingDshHome,
-        DSH_SESSION_ID: 'request-child',
-        DSH_SESSION_JSONL: ctx.sessionPersistence.locate(child.session.header)?.path,
-        DSH_SHELL: '1',
+        FATHOM_HOME: recordingFathomHome,
+        FATHOM_SESSION_ID: 'request-child',
+        FATHOM_SESSION_JSONL: ctx.sessionPersistence.locate(child.session.header)?.path,
+        FATHOM_SHELL: '1',
       },
     ])
-    expect(bash.requests[0]?.dshEnv?.DSH_SESSION_JSONL).not.toBe(bash.requests[1]?.dshEnv?.DSH_SESSION_JSONL)
+    expect(bash.requests[0]?.fathomEnv?.FATHOM_SESSION_JSONL).not.toBe(bash.requests[1]?.fathomEnv?.FATHOM_SESSION_JSONL)
   })
 
   it('does not forward trusted-only fields even when the model includes them as extra arguments', async () => {

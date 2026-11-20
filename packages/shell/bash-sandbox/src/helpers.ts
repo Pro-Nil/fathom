@@ -1,12 +1,12 @@
 /**
  * Internal sandbox-result classification helpers.
  *
- * @module @pentest-harness/dsh-bash-sandbox/helpers
+ * @module @fathom/bash-sandbox/helpers
  */
 
 import { accessSync, constants, statSync } from 'node:fs'
-import type { ShellRunResult } from '@pentest-harness/dsh-shell'
-import type { RunnerFailureRule } from '@pentest-harness/dsh-sandbox'
+import type { ShellRunResult } from '@fathom/shell'
+import type { RunnerFailureRule } from '@fathom/sandbox'
 
 /** Node-local spawn codes proven to identify executable resolution or permission failure. */
 const EXECUTABLE_SPAWN_CODES = new Set(['EACCES', 'ENOENT'])

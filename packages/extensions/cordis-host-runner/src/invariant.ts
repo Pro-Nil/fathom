@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-cordis-host-runner`.
- * @module @pentest-harness/dsh-cordis-host-runner/invariant
+ * Package-owned invariant companion for `@fathom/cordis-host-runner`.
+ * @module @fathom/cordis-host-runner/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-cordis-host-runner'
+const PACKAGE_NAME = '@fathom/cordis-host-runner'
 
 /** Cordis companion plugin name. */
 export const name = 'cordis-host-runner-invariant'

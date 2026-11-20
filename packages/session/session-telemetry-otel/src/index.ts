@@ -1,5 +1,5 @@
 /**
- * OpenTelemetry Service Provider for the Pentest Harness telemetry capability.
+ * OpenTelemetry Service Provider for the Fathom telemetry capability.
  *
  * Composes the OTel JS SDK as-is — a `LoggerProvider` with a
  * `BatchLogRecordProcessor` and an OTLP/HTTP log exporter — and maps each
@@ -9,13 +9,13 @@
  * capture mode and an outer shutdown deadline: the SDK's export timeout does
  * not bound its preceding `forceFlush()` wait.
  *
- * @module @pentest-harness/dsh-session-telemetry-otel
+ * @module @fathom/session-telemetry-otel
  */
 
 import { createRequire } from 'node:module'
-import z from '@pentest-harness/schemastery'
-import type { Context } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/dsh-command-feedback'
+import z from '@fathom/schemastery'
+import type { Context } from '@fathom/cordis'
+import type {} from '@fathom/command-feedback'
 import {
   SessionTelemetryBackend,
   SessionTelemetryCoordinator,
@@ -23,9 +23,9 @@ import {
   type SessionTelemetryRecord,
   type SessionTelemetrySeverity,
   type SessionTelemetrySharingStatus,
-} from '@pentest-harness/dsh-session-telemetry'
-import { APP_IDENTITY } from '@pentest-harness/dsh-llm'
-import { getOrCreateAnonymousUserId } from '@pentest-harness/dsh-anonymous-user-id'
+} from '@fathom/session-telemetry'
+import { APP_IDENTITY } from '@fathom/llm'
+import { getOrCreateAnonymousUserId } from '@fathom/anonymous-user-id'
 import {
   BatchLogRecordProcessor,
   LoggerProvider,
@@ -37,7 +37,7 @@ import { SeverityNumber, type AnyValue, type Logger } from '@opentelemetry/api-l
 import { resourceFromAttributes } from '@opentelemetry/resources'
 
 // The package's own manifest is the single source of the instrumentation-scope
-// version (same pattern as dsh-llm's attribution identity).
+// version (same pattern as fathom-llm's attribution identity).
 const { version } = createRequire(import.meta.url)('../package.json') as { version: string }
 
 /** Session-sharing policy selected by {@link Config.mode}. */
@@ -85,7 +85,7 @@ function sharingStatusFor(mode: SessionTelemetryMode): SessionTelemetrySharingSt
 
 /**
  * Plugin configuration: one sharing policy, two verbatim SDK option objects,
- * and one DSH-owned shutdown bound. Uploading modes validate their endpoint
+ * and one FATHOM-owned shutdown bound. Uploading modes validate their endpoint
  * and shutdown deadline at plugin load; `DISABLED` reads neither.
  */
 export interface Config {
@@ -216,8 +216,8 @@ export class OpenTelemetrySessionBackend extends SessionTelemetryBackend {
         }),
       ],
     })
-    const ledger = this.provider.getLogger('@pentest-harness/dsh-session-telemetry-otel', version)
-    const ops = this.provider.getLogger('@pentest-harness/dsh-session-telemetry-otel/ops', version)
+    const ledger = this.provider.getLogger('@fathom/session-telemetry-otel', version)
+    const ops = this.provider.getLogger('@fathom/session-telemetry-otel/ops', version)
     const enqueue: SessionTelemetrySink['emit'] = (record) => {
       const logger: Logger = record.channel === 'ops' ? ops : ledger
       logger.emit({

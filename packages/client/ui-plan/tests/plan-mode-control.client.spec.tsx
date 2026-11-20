@@ -7,12 +7,12 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import type { PlanProjection } from '@pentest-harness/dsh-plan-mode/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import type { PlanProjection } from '@fathom/plan-mode/client'
 import { PlanChip, type PlanChipProps } from '../src/client/PlanModeControl.tsx'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { en } from '../src/client/locales.ts'
 
 afterEach(cleanup)

@@ -3,11 +3,11 @@
  * consumes and produces, plus the fields in the `workflow/*` event payloads.
  * Types only (plus the id-brand factory), per the package convention.
  *
- * @module @pentest-harness/dsh-workflow/types
+ * @module @fathom/workflow/types
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { Branded } from '@fathom/brand'
+import type { SessionId } from '@fathom/session/types'
 
 /** Identifies one workflow run. */
 export type WorkflowRunId = Branded<'WorkflowRunId'>

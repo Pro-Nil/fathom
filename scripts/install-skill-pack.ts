@@ -1,6 +1,6 @@
 /**
  * Install a curated, pinned skill pack into the user skill root
- * (`$DSH_HOME/skills`, default `~/.dsh/skills`) as flat `<name>.md` files.
+ * (`$FATHOM_HOME/skills`, default `~/.fathom/skills`) as flat `<name>.md` files.
  *
  * A pack manifest (`scripts/skill-packs/<pack>.json`) pins a GitHub
  * repository commit and the SHA-256 of every file, so the installer only ever
@@ -178,10 +178,10 @@ export function uninstallPack(dest: string, pack: string, dryRun = false): { rem
   return { removed, kept }
 }
 
-/** `$DSH_HOME/skills`, falling back to `~/.dsh/skills` (a blank `$DSH_HOME` counts as unset). */
+/** `$FATHOM_HOME/skills`, falling back to `~/.fathom/skills` (a blank `$FATHOM_HOME` counts as unset). */
 export function defaultSkillRoot(env: NodeJS.ProcessEnv = process.env): string {
-  const home = env.DSH_HOME?.trim()
-  return join(home ? resolve(home) : join(homedir(), '.dsh'), 'skills')
+  const home = env.FATHOM_HOME?.trim()
+  return join(home ? resolve(home) : join(homedir(), '.fathom'), 'skills')
 }
 
 async function main(argv: string[]): Promise<void> {

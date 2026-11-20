@@ -4,19 +4,19 @@ using Microsoft.Win32;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// Real Windows toast notifications for an unpackaged app. The app registers
 /// its AppUserModelID (name + icon) under HKCU so toasts show as
-/// "Pentest Harness" and stay in the notification centre, and registers the
-/// <c>pentestharness:</c> protocol so clicking a toast brings the window back.
+/// "Fathom" and stay in the notification centre, and registers the
+/// <c>fathom:</c> protocol so clicking a toast brings the window back.
 /// Toasts are silent: the app plays its own sound.
 /// </summary>
 internal static class Toasts
 {
-    public const string AppId = "PentestHarness.Desktop";
-    public const string Protocol = "pentestharness";
+    public const string AppId = "Fathom.Desktop";
+    public const string Protocol = "fathom";
 
     /// <summary>Register the app identity and the click-to-open protocol for the current user.</summary>
     public static void Register(string iconPath)
@@ -25,13 +25,13 @@ internal static class Toasts
         var exe = Environment.ProcessPath ?? "";
         using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\AppUserModelId\{AppId}"))
         {
-            key.SetValue("DisplayName", "Pentest Harness");
+            key.SetValue("DisplayName", "Fathom");
             key.SetValue("IconUri", iconPath);
             key.SetValue("IconBackgroundColor", "FF0B0B0D");
         }
         using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{Protocol}"))
         {
-            key.SetValue("", "URL:Pentest Harness");
+            key.SetValue("", "URL:Fathom");
             key.SetValue("URL Protocol", "");
             using var icon = key.CreateSubKey("DefaultIcon");
             icon.SetValue("", $"\"{exe}\",0");

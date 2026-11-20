@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-subprocess-e2b`.
- * @module @pentest-harness/dsh-subprocess-e2b/invariant
+ * Package-owned invariant companion for `@fathom/subprocess-e2b`.
+ * @module @fathom/subprocess-e2b/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subprocess-e2b'
+const PACKAGE_NAME = '@fathom/subprocess-e2b'
 
 /** Cordis companion plugin name. */
 export const name = 'subprocess-e2b-invariant'

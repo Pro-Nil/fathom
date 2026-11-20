@@ -13,8 +13,8 @@ export const WELCOME_NOTICE_VERSION = '2026-08-26.1'
 /** The complete welcome notice. */
 export const WELCOME_NOTICE_COPY = {
   en: {
-    title: 'Welcome to Pentest Harness',
-    body: 'Pentest Harness is a professional security testing workspace for authorized penetration tests, bug bounty research, security labs, and CTF engagements. Test only targets you own or are explicitly authorized to assess.\n\nOpen source, open, reusable, and composable — welcome to the community.',
+    title: 'Welcome to Fathom',
+    body: 'Fathom is a professional security testing workspace for authorized penetration tests, bug bounty research, security labs, and CTF engagements. Test only targets you own or are explicitly authorized to assess.\n\nOpen source, open, reusable, and composable — welcome to the community.',
     continueLabel: 'Continue',
   },
 } as const

@@ -1,6 +1,6 @@
 /**
  * Host transport for the settings-namespace scope contract. The contract types
- * live in `dsh-client-runtime` (the common dependency of every feature that
+ * live in `fathom-client-runtime` (the common dependency of every feature that
  * owns a preference); this file owns the per-namespace derivation over the
  * shared {@link SettingsDescribeMirror} and the serialized write path, both of
  * which are Settings-surface concerns. Reads never touch the wire here: the
@@ -8,16 +8,16 @@
  * over its snapshot.
  */
 
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   ConnectionHandle, IApiClient, SettingsNamespaceView, SettingsPathOpView,
-} from '@pentest-harness/dsh-api-remotes/client'
+} from '@fathom/api-remotes/client'
 import {
   createSnapshotStore, type SettingsScope, type SettingsScopeSnapshot,
   type SettingsScopeSpec, type SnapshotStore,
-} from '@pentest-harness/dsh-client-runtime/client'
-// Type-only, and deliberately NOT `@pentest-harness/dsh-api-remotes/client`: this
+} from '@fathom/client-runtime/client'
+// Type-only, and deliberately NOT `@fathom/api-remotes/client`: this
 // package is reachable from the Host build graph through its feature-package
 // callers, and api-remotes' Client face imports a Host-tsdown-generated
 // `/remote` artifact, which would deadlock the Host tsc phase. The gateway's
@@ -26,13 +26,13 @@ import {
 // `$on` and its key face without dragging a build artifact in. The runtime
 // `remote` injection belongs to the providing plugin's apply, which registers
 // the mirror's invalidation subscriptions.
-import type {} from '@pentest-harness/dsh-api-remotes/client'
-import type {} from '@pentest-harness/dsh-api-remotes/types'
+import type {} from '@fathom/api-remotes/client'
+import type {} from '@fathom/api-remotes/types'
 // The forwarded event's own declaration: `$on`'s key face is
 // `Extract<keyof Events, keyof Selection>`, so the allowlist alone resolves to
 // never — the owning package's client-safe, type-only subpath supplies the
 // cordis `Events` entry (and with it the branded `SettingsNamespace`).
-import type {} from '@pentest-harness/dsh-settings/types'
+import type {} from '@fathom/settings/types'
 import type { SettingsSchemaService } from './schema.ts'
 import { SettingsDescribeMirror, type SettingsDescribeFace } from './settings-mirror.ts'
 
@@ -223,7 +223,7 @@ export class SettingsScopeController<T> implements SettingsScope<T> {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     settingsScope: SettingsScopeBinder
   }

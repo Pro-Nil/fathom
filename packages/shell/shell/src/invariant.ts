@@ -1,9 +1,9 @@
-/** Package-owned invariant companion for the bash seam. @module @pentest-harness/dsh-shell/invariant */
+/** Package-owned invariant companion for the bash seam. @module @fathom/shell/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-shell'
+const PACKAGE_NAME = '@fathom/shell'
 
 /** Cordis companion plugin name. */
 export const name = 'shell-invariant'

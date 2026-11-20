@@ -1,11 +1,11 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { codingHarness, finalText, SYSTEM_PROMPT, waitForIdle } from './harness.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 /**
  * The first place a REAL model meets the REAL bash tool: the cheap canary
@@ -27,7 +27,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.ACME_API_KEY)('full loop: real model + real bash tool', () => {
   it('runs a bash command on request and reports its output', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-full-loop-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-full-loop-e2e-'))
     ctx = await codingHarness(workdir, { persona: SYSTEM_PROMPT })
     const agent = ctx.agentLoop.create(SessionId('e2e-loop'), { provider: 'acme-official', model: 'acme-v4-flash' })
 

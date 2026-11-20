@@ -1,4 +1,4 @@
-# Pentest Harness desktop app (Windows and Linux)
+# Fathom desktop app (Windows and Linux)
 
 A small native window around the harness web UI, built with [Avalonia](https://avaloniaui.net) 12 on .NET 10. The page is shown by the system web view (Edge WebView2 on Windows, WebKitGTK or WPE WebKit on Linux), so no Chromium is bundled. On Linux, WebKitGTK renders offscreen and Avalonia draws its frames into the window (the WebView package marks this mode experimental).
 
@@ -17,17 +17,17 @@ Tray menu: Open, Update and restart (or Check for updates), Restart harness, Ope
 Windows (PowerShell, from the checkout):
 
 ```powershell
-dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\PentestHarness"
+dotnet publish apps/desktop -f net10.0-windows10.0.19041.0 -c Release -r win-x64 --self-contained false -o "$env:LOCALAPPDATA\Programs\Fathom"
 ```
 
 Linux (from the checkout; full package list and per-distribution commands in [docs/UPDATING.md](../../docs/UPDATING.md#linux-setup)):
 
 ```sh
-dotnet publish apps/desktop -f net10.0 -c Release -r linux-x64 --self-contained false -o ~/.local/share/pentest-harness-app
-~/.local/share/pentest-harness-app/PentestHarness
+dotnet publish apps/desktop -f net10.0 -c Release -r linux-x64 --self-contained false -o ~/.local/share/fathom-app
+~/.local/share/fathom-app/Fathom
 ```
 
-On Linux the first launch adds **Pentest Harness** to the desktop's application menu (`~/.local/share/applications/pentest-harness.desktop`).
+On Linux the first launch adds **Fathom** to the desktop's application menu (`~/.local/share/applications/fathom.desktop`).
 
 `python apps/desktop/tools/make_assets.py` regenerates the icon and the chime.
 
@@ -38,7 +38,7 @@ Requirements:
 
 ## Files
 
-The app folder is `%LOCALAPPDATA%\PentestHarness` on Windows and `~/.local/share/PentestHarness` on Linux (`PENTEST_HARNESS_APP_DIR` overrides it, for a separate test instance).
+The app folder is `%LOCALAPPDATA%\Fathom` on Windows and `~/.local/share/Fathom` on Linux (`FATHOM_APP_DIR` overrides it, for a separate test instance).
 
 | Path in the app folder | Purpose |
 | --- | --- |

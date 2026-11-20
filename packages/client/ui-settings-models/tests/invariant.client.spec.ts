@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import * as ModelsInvariant from '@pentest-harness/dsh-client-ui-settings-models/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import * as ModelsInvariant from '@fathom/client-ui-settings-models/invariant'
+import InvariantRegistry from '@fathom/invariants'
 import { ModelsSection } from '../src/client/ModelsSection.tsx'
 
 describe('invariant companion', () => {
@@ -12,7 +12,7 @@ describe('invariant companion', () => {
   })
 
   it('node-half apply is a no-op host placeholder', async () => {
-    const { apply } = await import('@pentest-harness/dsh-client-ui-settings-models')
+    const { apply } = await import('@fathom/client-ui-settings-models')
     apply()
     expect(true).toBe(true) // reaching here without throw is the contract
   })

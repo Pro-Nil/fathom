@@ -3,8 +3,8 @@
  * @module workspace-context-resume-agent
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { SessionId } from '@fathom/session'
 
 /** Fixture plugin name. */
 export const name = 'workspace-context-resume-agent'

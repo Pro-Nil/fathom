@@ -8,10 +8,10 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import { CallId } from '@pentest-harness/dsh-llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@pentest-harness/dsh-llm-replay'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { StreamChunk } from '@fathom/llm'
+import { CallId } from '@fathom/llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@fathom/llm-replay'
+import type { SessionEvent } from '@fathom/session'
 import { createChatScrollFixture, type ChatScrollFixture } from './chat-scroll-fixture.ts'
 import {
   launchWebScaffold,
@@ -148,7 +148,7 @@ async function launchScrollWorld(options: ScrollWorldOptions): Promise<ScrollWor
   let page: Page | undefined
   try {
     if (options.replay !== undefined) {
-      replayDir = await mkdtemp(join(tmpdir(), 'dsh-chat-scroll-replay-'))
+      replayDir = await mkdtemp(join(tmpdir(), 'fathom-chat-scroll-replay-'))
       const replayOverride = join(replayDir, 'replay.override.json')
       await writeFile(replayOverride, JSON.stringify(options.replay))
       scaffold = await launchWebScaffold({

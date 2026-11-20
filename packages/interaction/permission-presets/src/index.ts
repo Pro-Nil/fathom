@@ -7,24 +7,24 @@
  * `permissions` session projection; the write side ships as the
  * `/permission` command — both optional children over the same service.
  *
- * @module dsh-permission-presets
+ * @module fathom-permission-presets
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { z as zod } from 'zod'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
-import { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@pentest-harness/dsh-sandbox-policy'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { SandboxMode } from '@fathom/sandbox'
+import { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@fathom/sandbox-policy'
 // Side-effect type import: declaration-merges `ctx.shell` (the capability fact
 // `sandboxMode` this service reads), without a value dependency on the seam.
-import type {} from '@pentest-harness/dsh-shell'
-import type { ApprovalPolicy } from '@pentest-harness/dsh-user-approval'
-import { APPROVAL_POLICIES, effectiveApprovalPolicy, setApprovalPolicy } from '@pentest-harness/dsh-user-approval'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import type {} from '@fathom/shell'
+import type { ApprovalPolicy } from '@fathom/user-approval'
+import { APPROVAL_POLICIES, effectiveApprovalPolicy, setApprovalPolicy } from '@fathom/user-approval'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 // Type-only: resolves ctx.sessionProjections / ctx.commands for the optional children.
-import type {} from '@pentest-harness/dsh-session-projection'
-import type {} from '@pentest-harness/dsh-commands'
+import type {} from '@fathom/session-projection'
+import type {} from '@fathom/commands'
 import type { PermissionSelect, PresetOption } from './types.ts'
 
 // The `permissions` projection-key declaration lives in src/types.ts (its one
@@ -33,13 +33,13 @@ import type { PermissionSelect, PresetOption } from './types.ts'
 // consuming the declarations still receive the SessionProjectionMap merge.
 export type * from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     permissionPresets: PermissionPresetService
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Records the selected preset as durable, log-only user intent. The knob
@@ -100,7 +100,7 @@ export interface KnobState {
   approval: ApprovalPolicy | null
 }
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     permissions: KnobState
   }

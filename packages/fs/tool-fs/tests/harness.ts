@@ -1,11 +1,11 @@
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import * as FsPolicy from '@pentest-harness/dsh-fs-observation-policy'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import LocalFileSystem from '@fathom/fs-local'
+import * as FsPolicy from '@fathom/fs-observation-policy'
+import * as ToolFs from '@fathom/tool-fs'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
 
 /** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
 function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {

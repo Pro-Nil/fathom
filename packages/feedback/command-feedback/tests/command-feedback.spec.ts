@@ -1,19 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentStatus } from '@pentest-harness/dsh-agent'
-import CommandRuntime from '@pentest-harness/dsh-commands'
-import SessionStore, { foldSurface, Session, SessionId } from '@pentest-harness/dsh-session'
-import { SessionTelemetryBackend, type SessionTelemetrySharingStatus } from '@pentest-harness/dsh-session-telemetry'
-import * as commandFeedback from '@pentest-harness/dsh-command-feedback'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentStatus } from '@fathom/agent'
+import CommandRuntime from '@fathom/commands'
+import SessionStore, { foldSurface, Session, SessionId } from '@fathom/session'
+import { SessionTelemetryBackend, type SessionTelemetrySharingStatus } from '@fathom/session-telemetry'
+import * as commandFeedback from '@fathom/command-feedback'
 
 const { USER_ID, getOrCreateAnonymousUserId } = vi.hoisted(() => {
   const USER_ID = '01234567-89ab-4cde-8f01-23456789abcd'
   return { USER_ID, getOrCreateAnonymousUserId: vi.fn(() => USER_ID) }
 })
 
-vi.mock('@pentest-harness/dsh-anonymous-user-id', () => ({
+vi.mock('@fathom/anonymous-user-id', () => ({
   getOrCreateAnonymousUserId,
 }))
 
@@ -99,7 +99,7 @@ function feedbackTexts(session: Session): string[] {
     .map(event => event.data.text)
 }
 
-describe('@pentest-harness/dsh-command-feedback registration', () => {
+describe('@fathom/command-feedback registration', () => {
   it('registers one global command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandFeedback.name).toBe('command-feedback')

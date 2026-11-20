@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { type Agent } from '@pentest-harness/dsh-agent'
-import SubagentRuntime, { type SubagentStartRequest } from '@pentest-harness/dsh-subagent'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import { type Agent } from '@fathom/agent'
+import SubagentRuntime, { type SubagentStartRequest } from '@fathom/subagent'
+import { SessionId } from '@fathom/session'
 import * as scripted from './scripted-provider.ts'
 
 /** A minimal parent; the scripted provider only reads its id. */

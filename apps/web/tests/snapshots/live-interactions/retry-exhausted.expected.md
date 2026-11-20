@@ -12,10 +12,10 @@
 - text: Reply with a one-sentence description of event sourcing, then stop. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - group:
   - status: Retried model request (2/2) · {{duration}}
 - status:

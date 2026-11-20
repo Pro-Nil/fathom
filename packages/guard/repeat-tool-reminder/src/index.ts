@@ -3,17 +3,17 @@
  * with logged model context without vetoing or rewriting calls. Configuration
  * and chain semantics live in the package README; rationale lives in the
  * repeat-tool-reminder Agent Note.
- * @module @pentest-harness/dsh-repeat-tool-reminder
+ * @module @fathom/repeat-tool-reminder
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { MessageSource } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-session'
-import type { PostToolDecision, ToolExecution, ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { MessageSource } from '@fathom/llm'
+import type { UserMessage } from '@fathom/session'
+import type { PostToolDecision, ToolExecution, ToolExecutionResult } from '@fathom/tools'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 
 export const name = 'repeat-tool-reminder'
 

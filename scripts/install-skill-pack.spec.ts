@@ -139,8 +139,8 @@ describe('helpers', () => {
     expect(frontmatterName('no frontmatter')).toBeUndefined()
   })
 
-  it('resolves the skill root from DSH_HOME, treating a blank value as unset', () => {
-    expect(defaultSkillRoot({ DSH_HOME: join(tmpdir(), 'h') })).toBe(join(tmpdir(), 'h', 'skills'))
-    expect(defaultSkillRoot({ DSH_HOME: '  ' }).endsWith(join('.dsh', 'skills'))).toBe(true)
+  it('resolves the skill root from FATHOM_HOME, treating a blank value as unset', () => {
+    expect(defaultSkillRoot({ FATHOM_HOME: join(tmpdir(), 'h') })).toBe(join(tmpdir(), 'h', 'skills'))
+    expect(defaultSkillRoot({ FATHOM_HOME: '  ' }).endsWith(join('.fathom', 'skills'))).toBe(true)
   })
 })

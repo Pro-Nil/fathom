@@ -3,12 +3,12 @@
  * children. Kept apart from the service so composition helpers can read it
  * without importing the registry.
  *
- * @module @pentest-harness/dsh-subagent/depth
+ * @module @fathom/subagent/depth
  */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Agent } from '@fathom/agent'
 
-declare module '@pentest-harness/dsh-agent' {
+declare module '@fathom/agent' {
   interface AgentOptions {
     /** Delegation depth: zero for a top-level agent and parent depth + 1 for a child. */
     subagentDepth?: number

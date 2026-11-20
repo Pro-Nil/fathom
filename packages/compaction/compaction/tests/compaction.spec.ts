@@ -1,16 +1,16 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   CompactionId,
   CompactionEngine,
   compactCheckpointSource,
   isCompactCheckpointSource,
-} from '@pentest-harness/dsh-compaction'
-import type { CompactionResult, CompactionTrigger } from '@pentest-harness/dsh-compaction'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { CompactionAgentContext } from '@pentest-harness/dsh-compaction'
-import type { ManualCompactAgentContext } from '@pentest-harness/dsh-compaction'
+} from '@fathom/compaction'
+import type { CompactionResult, CompactionTrigger } from '@fathom/compaction'
+import { Session, SessionId } from '@fathom/session'
+import type { CompactionAgentContext } from '@fathom/compaction'
+import type { ManualCompactAgentContext } from '@fathom/compaction'
 
 /**
  * A trivial concrete CompactionEngine implementing the abstract contract. The

@@ -1,6 +1,6 @@
 /**
  * Path canonicalization for workspace identity.
- * @module @pentest-harness/dsh-workspace/src/paths
+ * @module @fathom/workspace/src/paths
  */
 
 import { realpath } from 'node:fs/promises'

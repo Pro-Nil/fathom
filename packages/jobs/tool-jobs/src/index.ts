@@ -4,19 +4,19 @@
  * producers. It also delivers unreported completions to the owning agent:
  * injected into a busy owner's next step, or opening a turn on an idle one
  * under the default `wakeup` delivery, bounded per owner.
- * @module @pentest-harness/dsh-tool-jobs
+ * @module @fathom/tool-jobs
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { boundContextSummary, createUserMessage, type ContentBlock } from '@pentest-harness/dsh-llm'
-import { TextRetainer } from '@pentest-harness/dsh-output-retention'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, ToolDefinition, ToolExecution } from '@pentest-harness/dsh-tools'
-import { JobId } from '@pentest-harness/dsh-jobs'
-import type { JobSnapshot } from '@pentest-harness/dsh-jobs'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { boundContextSummary, createUserMessage, type ContentBlock } from '@fathom/llm'
+import { TextRetainer } from '@fathom/output-retention'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, ToolDefinition, ToolExecution } from '@fathom/tools'
+import { JobId } from '@fathom/jobs'
+import type { JobSnapshot } from '@fathom/jobs'
+import type {} from '@fathom/system-prompt'
+import type { Agent } from '@fathom/agent'
 
 export const name = 'tool-jobs'
 export const inject = ['tools', 'jobs', 'systemPrompt']

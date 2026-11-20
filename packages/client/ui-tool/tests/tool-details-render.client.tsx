@@ -1,10 +1,10 @@
 /** Test adapter for the production conversation.details.tool registration. */
-import type { HostDescription } from '@pentest-harness/dsh-client-connection/client'
+import type { HostDescription } from '@fathom/client-connection/client'
 import type {
   ChatConversationViewNode, ChatSnapshot, ConversationNode, RunningToolCall, SessionId,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionProviderComponent, TranslateNS } from '@pentest-harness/dsh-client-ui-slots'
-import type { DetailsSlotProps, DetailsToolOwnerProps } from '@pentest-harness/dsh-client-ui-conversation/src/client/contract/slots.ts'
+} from '@fathom/client-runtime/client'
+import type { SessionProviderComponent, TranslateNS } from '@fathom/client-ui-slots'
+import type { DetailsSlotProps, DetailsToolOwnerProps } from '@fathom/client-ui-conversation/src/client/contract/slots.ts'
 import { ToolDetails } from '../src/client/tool/ToolDetails.tsx'
 
 /** Framework session-area seat used by direct DetailsPanel tests. */

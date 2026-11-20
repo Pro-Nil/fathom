@@ -1,20 +1,20 @@
 /**
  * Log-backed session title service, deterministic fallback, and provider contract.
- * @module @pentest-harness/dsh-session-title
+ * @module @fathom/session-title
  */
 
-import { Context, FiberState, Service, type Fiber } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context, FiberState, Service, type Fiber } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { z as zod } from 'zod'
-import type { Branded } from '@pentest-harness/dsh-brand'
-import { assertNever, deepFreeze, isAgentLoopRequest } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions } from '@pentest-harness/dsh-llm'
+import type { Branded } from '@fathom/brand'
+import { assertNever, deepFreeze, isAgentLoopRequest } from '@fathom/llm'
+import type { GenerateOptions } from '@fathom/llm'
 import type {
   Session,
   SessionEvent,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@pentest-harness/dsh-session-projection'
+import type {} from '@fathom/session-projection'
 // The `title` projection-key declaration lives in src/types.ts (its one home);
 // this re-export projects the type face onto the package root AND keeps the
 // module edge in the emitted index.d.ts, so aggregate programs consuming the
@@ -85,13 +85,13 @@ export interface Config {
   readonly maxTitleBytes: number
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionTitle: SessionTitleService
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Latest-wins session title snapshot. Log-only: it never enters the model

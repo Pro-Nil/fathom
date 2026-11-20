@@ -4,19 +4,19 @@
  * version this controller last observed, and a `version-conflict` reply carries
  * the authoritative item, so a lost race reconciles from the reply itself
  * instead of refetching the whole Session.
- * @module @pentest-harness/dsh-client-ui-message-feedback/client/controller
+ * @module @fathom/client-ui-message-feedback/client/controller
  */
 
-import type { RemoteResult } from '@pentest-harness/dsh-typert-protocol'
-import type { HostObservable } from '@pentest-harness/dsh-client-ui-slots'
-import type { MessageId, SessionId } from '@pentest-harness/dsh-client-connection/client'
+import type { RemoteResult } from '@fathom/typert-protocol'
+import type { HostObservable } from '@fathom/client-ui-slots'
+import type { MessageId, SessionId } from '@fathom/client-connection/client'
 import type {
   MessageFeedbackDeleteResult,
   MessageFeedbackItem,
   MessageFeedbackListResult,
   MessageFeedbackPutResult,
   MessageFeedbackRating,
-} from '@pentest-harness/dsh-message-feedback/types'
+} from '@fathom/message-feedback/types'
 
 /**
  * The three Remote calls this controller needs. The generated face wraps every

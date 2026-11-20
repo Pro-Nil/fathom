@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-headless`.
- * @module @pentest-harness/dsh-headless/invariant
+ * Package-owned invariant companion for `@fathom/headless`.
+ * @module @fathom/headless/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-headless'
+const PACKAGE_NAME = '@fathom/headless'
 
 /** Cordis companion plugin name. */
 export const name = 'headless-invariant'

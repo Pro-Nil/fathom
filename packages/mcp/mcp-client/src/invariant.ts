@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-mcp-client`.
- * @module @pentest-harness/dsh-mcp-client/invariant
+ * Package-owned invariant companion for `@fathom/mcp-client`.
+ * @module @fathom/mcp-client/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-mcp-client'
+const PACKAGE_NAME = '@fathom/mcp-client'
 
 /** Cordis companion plugin name. */
 export const name = 'mcp-client-invariant'

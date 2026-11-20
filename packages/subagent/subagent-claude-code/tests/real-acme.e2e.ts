@@ -10,12 +10,12 @@ import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubprocessHandle } from '@pentest-harness/dsh-subprocess'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
+import type { Agent } from '@fathom/agent'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubprocessHandle } from '@fathom/subprocess'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
 import * as claudeCode from '../src/index.ts'
 
 const execFileAsync = promisify(execFile)
@@ -69,7 +69,7 @@ describe.skipIf(!process.env.ACME_API_KEY)(
     it('returns one unique nonce through the production provider and real SDK/CLI', async () => {
       const apiKey = process.env.ACME_API_KEY
       if (apiKey === undefined) throw new Error('e2e ran without ACME_API_KEY')
-      const root = mkdtempSync(join(tmpdir(), 'dsh-claude-acme-e2e-'))
+      const root = mkdtempSync(join(tmpdir(), 'fathom-claude-acme-e2e-'))
       roots.push(root)
       const workspace = join(root, 'workspace')
       const claudeConfig = join(root, 'claude-config')
@@ -131,7 +131,7 @@ describe.skipIf(!process.env.ACME_API_KEY)(
       })
       expect(version.stdout.trim()).toBe('2.1.220 (Claude Code)')
 
-      const nonce = `DSH_CLAUDE_ACME_${randomUUID()}`
+      const nonce = `FATHOM_CLAUDE_ACME_${randomUUID()}`
       const parent = {
         id: 'acme-e2e-parent',
         session: { header: { cwd: workspace } },

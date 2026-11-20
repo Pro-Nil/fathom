@@ -38,7 +38,7 @@ export type {
 } from './contract/slots.ts'
 // Export discipline: packages/client/AGENTS.md.
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** The outward face only; the concrete service stays inside this plugin. */
     conversation: import('./service.ts').IConversation

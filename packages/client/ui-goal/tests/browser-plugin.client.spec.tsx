@@ -10,16 +10,16 @@
  * plugin fiber (HMR safety). The node half and the invariant companion are
  * exercised over the same Context.
  */
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { SlotRegistry, type SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { ConversationEventRegistry } from '@pentest-harness/dsh-client-runtime/src/client/conversation/event-registry.ts'
-import type { GoalProjection } from '@pentest-harness/dsh-goal/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { SlotRegistry, type SessionId } from '@fathom/client-runtime/client'
+import { ConversationEventRegistry } from '@fathom/client-runtime/src/client/conversation/event-registry.ts'
+import type { GoalProjection } from '@fathom/goal/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type { GoalBarActions } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
 import { GoalDock } from '../src/client/GoalBar.tsx'

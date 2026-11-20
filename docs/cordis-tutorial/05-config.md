@@ -7,8 +7,8 @@ Each `cordis.yml` entry can carry a `config` block, and the plugin declares a sc
 Create `config-demo.ts` in `tmp/cordis-tutorial`:
 
 ```ts
-import type { Context } from '@pentest-harness/cordis'
-import Schema from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import Schema from '@fathom/schemastery'
 
 export const name = 'config-demo'
 
@@ -79,4 +79,4 @@ The loader used in this repo supports a `!!js` tag for config values that must b
 
 Next: [Composition and HMR](06-composition-and-hmr.md) — treating `cordis.yml` as the application.
 
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/S1N6H/pentest-harness)
+[![](https://img.shields.io/badge/powered_by-fathom-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/Pro-Nil/fathom)

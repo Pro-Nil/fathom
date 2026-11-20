@@ -26,12 +26,12 @@ The example keeps the producer declarations and client contribution in one block
 
 ```ts ignore-check
 import { createElement } from 'react'
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 import type {
   ClientContext, ConversationLocation, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ChatNodeViewProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-runtime/client'
+import type { ChatNodeViewProps } from '@fathom/client-ui-conversation/client'
 
 type ReviewId = Branded<'ReviewId'>
 
@@ -56,7 +56,7 @@ interface ReviewEndData {
   readonly summary: string
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * Opens one durable review job.
@@ -86,13 +86,13 @@ interface ReviewChatData {
   readonly summary?: string
 }
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     'review-job': ReviewChatData
   }
 }
 
-declare module '@pentest-harness/dsh-client-runtime/client' {
+declare module '@fathom/client-runtime/client' {
   interface ConversationStepDataMap {
     'review-job': ReviewChatData
   }

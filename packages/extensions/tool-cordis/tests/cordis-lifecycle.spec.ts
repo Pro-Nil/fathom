@@ -1,4 +1,4 @@
-import { Context, CordisError, FiberState, type Fiber } from '@pentest-harness/cordis'
+import { Context, CordisError, FiberState, type Fiber } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
 
 /**

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { stubSettingsScope, type StubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import type { LocaleSettings, LocaleSnapshot } from '@pentest-harness/dsh-client-locale/client'
-import { FALLBACK_LOCALE, LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
+import { Context } from '@fathom/cordis'
+import { stubSettingsScope, type StubSettingsScope } from '@fathom/client-test-runtime'
+import type { LocaleSettings, LocaleSnapshot } from '@fathom/client-locale/client'
+import { FALLBACK_LOCALE, LocaleRuntime } from '@fathom/client-locale/client'
 const make = (host?: StubSettingsScope<LocaleSettings>): {
   ctx: Context
   svc: LocaleRuntime
@@ -18,7 +18,7 @@ const make = (host?: StubSettingsScope<LocaleSettings>): {
 /**
  * Pin the browser environment a fresh service reads its initial locale from.
  * This package's own specs stub the globals directly instead of using
- * `usePinnedBrowserLanguages` (dsh-client-test-runtime): they need the shapes
+ * `usePinnedBrowserLanguages` (fathom-client-test-runtime): they need the shapes
  * that helper deliberately cannot express — a missing `languages` list, a
  * list decoupled from `language`, and a non-browser run with no `window`.
  */

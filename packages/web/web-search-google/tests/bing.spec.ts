@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { WebError } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
 import {
   BING_DEFAULT_SEARCH_URL, BingBrowserSearchProvider, cleanBingHits, isNoResultsPage, resolveBingUrl,
-} from '@pentest-harness/dsh-web-search-google'
-import type { RawBingHit, ScratchPageRunner, SearchPage } from '@pentest-harness/dsh-web-search-google'
+} from '@fathom/web-search-google'
+import type { RawBingHit, ScratchPageRunner, SearchPage } from '@fathom/web-search-google'
 
 /** Bing's click tracker: `u` is `a1` plus the destination in base64url. */
 function tracked(destination: string): string {

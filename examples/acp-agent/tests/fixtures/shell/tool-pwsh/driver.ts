@@ -7,8 +7,8 @@
  */
 
 import { writeFile } from 'node:fs/promises'
-import { boot, resolveConfigPath } from '@pentest-harness/dsh-app-boot'
-import { CallId } from '@pentest-harness/dsh-llm'
+import { boot, resolveConfigPath } from '@fathom/app-boot'
+import { CallId } from '@fathom/llm'
 
 const configPath = process.argv[2]
 if (configPath === undefined) throw new Error('tool-pwsh driver requires a config path')

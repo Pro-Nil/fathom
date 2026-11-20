@@ -1,23 +1,23 @@
 # Keyless replay counterpart to pty.cordis.yml.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - insert:
           - id: pty
-            name: '@pentest-harness/dsh-terminal'
+            name: '@fathom/terminal'
           - id: pty-snapshot-backend
             name: './pty-snapshot-backend.mjs'
           - id: tool-terminal
-            name: '@pentest-harness/dsh-tool-terminal'
+            name: '@fathom/tool-terminal'
             config:
               maxResultBytes: 64
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               providers:
                 - id: acme-official

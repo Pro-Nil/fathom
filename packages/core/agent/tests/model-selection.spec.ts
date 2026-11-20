@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
+import { Context } from '@fathom/cordis'
+import SystemPrompt from '@fathom/system-prompt'
 import {
   agentEvents,
   installModelSelection,
   type Agent,
   type ModelSelectionRef,
 } from '../src/index.ts'
-import { ReasoningEffortId, type LlmCallConfig } from '@pentest-harness/dsh-llm'
+import { ReasoningEffortId, type LlmCallConfig } from '@fathom/llm'
 
 describe('installModelSelection()', () => {
   it('snapshots prompt variables and request routing together, then disposes both listeners', async () => {

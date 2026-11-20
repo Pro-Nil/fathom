@@ -1,4 +1,4 @@
-import type { AssistantBlock } from '@pentest-harness/dsh-client-runtime/client'
+import type { AssistantBlock } from '@fathom/client-runtime/client'
 
 /**
  * Collect visible prose from one Assistant lifecycle.

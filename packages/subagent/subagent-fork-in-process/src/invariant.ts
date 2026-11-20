@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-subagent-fork-in-process`.
- * @module @pentest-harness/dsh-subagent-fork-in-process/invariant
+ * Package-owned invariant companion for `@fathom/subagent-fork-in-process`.
+ * @module @fathom/subagent-fork-in-process/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subagent-fork-in-process'
+const PACKAGE_NAME = '@fathom/subagent-fork-in-process'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-fork-in-process-invariant'

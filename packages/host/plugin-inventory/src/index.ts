@@ -1,8 +1,8 @@
 /** Read-only projection of the current Cordis Loader plugin entries. */
 
-import type { Context, FiberState } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/cordis-plugin-loader'
-import { TypertRemoteService, Remote } from '@pentest-harness/dsh-typert-protocol'
+import type { Context, FiberState } from '@fathom/cordis'
+import type {} from '@fathom/cordis-plugin-loader'
+import { TypertRemoteService, Remote } from '@fathom/typert-protocol'
 // Typert-generated ./typert and ./remote artifacts import Zod at runtime.
 import type {} from 'zod'
 import type {

@@ -6,16 +6,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as ToolTodo from '@pentest-harness/dsh-tool-todo'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import * as ToolTodo from '@fathom/tool-todo'
 
 let root: string | undefined
 let context: Context | undefined
@@ -52,13 +52,13 @@ function resultText(result: { content: { type: string; text?: string }[] }): str
  * @returns the booted context.
  */
 async function boot(configLines: readonly string[]): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-todo-loader-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-todo-loader-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@pentest-harness/dsh-agent'",
-    "- name: '@pentest-harness/dsh-system-prompt'",
-    "- name: '@pentest-harness/dsh-tools'",
-    "- name: '@pentest-harness/dsh-tool-todo'",
+    "- name: '@fathom/agent'",
+    "- name: '@fathom/system-prompt'",
+    "- name: '@fathom/tools'",
+    "- name: '@fathom/tool-todo'",
     ...configLines.length > 0 ? ['  config:', ...configLines] : [],
     '',
   ].join('\n'))
@@ -69,10 +69,10 @@ async function boot(configLines: readonly string[]): Promise<Context> {
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-agent', AgentRegistry],
-    ['@pentest-harness/dsh-system-prompt', SystemPrompt],
-    ['@pentest-harness/dsh-tools', ToolRuntime],
-    ['@pentest-harness/dsh-tool-todo', ToolTodo],
+    ['@fathom/agent', AgentRegistry],
+    ['@fathom/system-prompt', SystemPrompt],
+    ['@fathom/tools', ToolRuntime],
+    ['@fathom/tool-todo', ToolTodo],
   ])
   ctx.loader.internal = {
     version: 'v2',

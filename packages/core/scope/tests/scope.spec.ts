@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { bindScopeParent, carrierKeyOf, createScope, isScopeCarrier, scopeChainOf, scopeOf, scopeParentOf, scopeTarget } from '@pentest-harness/dsh-scope'
-import type { Scope, Scoped } from '@pentest-harness/dsh-scope'
+import { Context } from '@fathom/cordis'
+import { bindScopeParent, carrierKeyOf, createScope, isScopeCarrier, scopeChainOf, scopeOf, scopeParentOf, scopeTarget } from '@fathom/scope'
+import type { Scope, Scoped } from '@fathom/scope'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Test-only event for scope-filtered dispatch.

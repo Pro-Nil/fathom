@@ -1,5 +1,5 @@
-import { defineProperty, isNullable } from '@pentest-harness/cosmokit'
-import type { Awaitable, Dict } from '@pentest-harness/cosmokit'
+import { defineProperty, isNullable } from '@fathom/cosmokit'
+import type { Awaitable, Dict } from '@fathom/cosmokit'
 import { Context } from './context.ts'
 import type { Plugin } from './registry.ts'
 import { buildOuterStack, composeError, DisposableList, getTraceable, isConstructor, isObject, symbols } from './utils.ts'

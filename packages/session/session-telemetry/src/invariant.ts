@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-telemetry`.
- * @module @pentest-harness/dsh-session-telemetry/invariant
+ * Package-owned invariant companion for `@fathom/session-telemetry`.
+ * @module @fathom/session-telemetry/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-telemetry'
+const PACKAGE_NAME = '@fathom/session-telemetry'
 
 /** Cordis companion plugin name. */
 export const name = 'session-telemetry-invariant'

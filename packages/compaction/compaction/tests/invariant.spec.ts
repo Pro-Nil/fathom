@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { CompactionId, compactCheckpointSource } from '@pentest-harness/dsh-compaction'
-import * as CompactionInvariant from '@pentest-harness/dsh-compaction/invariant'
-import { CommandId } from '@pentest-harness/dsh-commands/brand'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import { createUserMessage } from '@fathom/llm'
+import { CompactionId, compactCheckpointSource } from '@fathom/compaction'
+import * as CompactionInvariant from '@fathom/compaction/invariant'
+import { CommandId } from '@fathom/commands/brand'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

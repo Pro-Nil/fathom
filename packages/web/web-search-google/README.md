@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-web-search-google
+# @fathom/web-search-google
 
 Google search for the web seam (`ctx.web`). Two providers register:
 
@@ -13,7 +13,7 @@ A CAPTCHA or "unusual traffic" page, an HTTP error or a timeout is reported as a
 
 ```yaml
 - id: web-search-google
-  name: '@pentest-harness/dsh-web-search-google'
+  name: '@fathom/web-search-google'
   config:
     language: en              # `hl` for the keyless provider
     apiKeyEnv: GOOGLE_API_KEY # credential reference of the API key

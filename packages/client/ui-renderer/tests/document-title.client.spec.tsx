@@ -11,26 +11,26 @@ afterEach(() => {
 
 describe('DocumentTitle', () => {
   it('projects a durable title and restores the product title', () => {
-    vi.stubEnv('DSH_CLIENT_TITLE', 'Pentest Harness')
+    vi.stubEnv('FATHOM_CLIENT_TITLE', 'Fathom')
     document.title = 'stale title'
     const mounted = render(<DocumentTitle />)
-    expect(document.title).toBe('Pentest Harness')
+    expect(document.title).toBe('Fathom')
     mounted.rerender(<DocumentTitle title="First title" />)
-    expect(document.title).toBe('First title — Pentest Harness')
+    expect(document.title).toBe('First title — Fathom')
     mounted.rerender(<DocumentTitle title="Revised title" />)
-    expect(document.title).toBe('Revised title — Pentest Harness')
+    expect(document.title).toBe('Revised title — Fathom')
     mounted.rerender(<DocumentTitle />)
-    expect(document.title).toBe('Pentest Harness')
+    expect(document.title).toBe('Fathom')
     mounted.unmount()
-    expect(document.title).toBe('Pentest Harness')
+    expect(document.title).toBe('Fathom')
   })
 
   it('uses the generic title when the build provides no title', () => {
-    vi.stubEnv('DSH_CLIENT_TITLE', '')
-    delete process.env.DSH_CLIENT_TITLE
+    vi.stubEnv('FATHOM_CLIENT_TITLE', '')
+    delete process.env.FATHOM_CLIENT_TITLE
     const mounted = render(<DocumentTitle title="First title" />)
-    expect(document.title).toBe('First title — Pentest Harness')
+    expect(document.title).toBe('First title — Fathom')
     mounted.unmount()
-    expect(document.title).toBe('Pentest Harness')
+    expect(document.title).toBe('Fathom')
   })
 })

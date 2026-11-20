@@ -7,12 +7,12 @@
  * payload, the scoped consume-token dispatch, per-session popupFor
  * lifecycle, and the directory invalidation event subscriptions.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { CommandResult } from '@pentest-harness/dsh-commands/types'
-import { createScope, scopeOf } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { ClientSessionContext, ConsumeTokenRequest, InputTriggerPick, InputTriggerSource, SubmitImageAttachment } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import type { CommandResult } from '@fathom/commands/types'
+import { createScope, scopeOf } from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import type { ClientSessionContext, ConsumeTokenRequest, InputTriggerPick, InputTriggerSource, SubmitImageAttachment } from '@fathom/client-ui-input-trigger/client'
 import type { CommandContribution, CommandDecoration, CommandUiSpec, SelectOption } from '../src/client/contract.ts'
 import type { CommandDescriptor } from '../src/client/directory.ts'
 import { CommandUiRuntime } from '../src/client/service.ts'

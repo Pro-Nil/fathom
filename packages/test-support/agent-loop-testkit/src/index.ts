@@ -2,17 +2,17 @@
  * Shared mounting for the services required before tests load the concrete
  * agent loop. The caller retains ownership of the context, loop, adapters,
  * optional plugins, and teardown.
- * @module @pentest-harness/dsh-agent-loop-testkit
+ * @module @fathom/agent-loop-testkit
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import type { Config as SystemPromptConfig } from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import type { Config as ToolRuntimeConfig } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import AgentRegistry from '@fathom/agent'
+import LlmRuntime from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import type { Config as SystemPromptConfig } from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import type { Config as ToolRuntimeConfig } from '@fathom/tools'
 
 /** Configuration forwarded to the prerequisite service plugins. */
 export interface AgentLoopTestDependenciesOptions {

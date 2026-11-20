@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { RequestView } from '@pentest-harness/dsh-client-runtime/client'
+import type { RequestView } from '@fathom/client-runtime/client'
 import type {
   TrajectoryContribution, TrajectoryConversationViewNode, TrajectoryRequestHeaderState,
 } from '../src/client/trajectory-contract.ts'

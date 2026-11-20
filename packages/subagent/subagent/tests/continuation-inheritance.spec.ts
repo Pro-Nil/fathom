@@ -10,18 +10,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SandboxPolicyService, { effectiveSandboxMode, setSandboxMode } from '@pentest-harness/dsh-sandbox-policy'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import * as SubagentFork from '@pentest-harness/dsh-subagent-fork-in-process'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import ApprovalService, { effectiveApprovalPolicy } from '@pentest-harness/dsh-user-approval'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { createUserMessage } from '@fathom/llm'
+import SandboxPolicyService, { effectiveSandboxMode, setSandboxMode } from '@fathom/sandbox-policy'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import * as SubagentFork from '@fathom/subagent-fork-in-process'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import ApprovalService, { effectiveApprovalPolicy } from '@fathom/user-approval'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import SubagentRuntime from '../src/index.ts'
 
@@ -39,7 +39,7 @@ async function setup(script: Script) {
   const ctx = new Context()
   contexts.push(ctx)
   await mountAgentLoopTestDependencies(ctx)
-  const root = mkdtempSync(join(tmpdir(), 'dsh-continuation-inherit-'))
+  const root = mkdtempSync(join(tmpdir(), 'fathom-continuation-inherit-'))
   roots.push(root)
   await ctx.plugin(JsonlSessionPersistence, { root })
   await ctx.plugin(SandboxPolicyService, { mode: 'workspace-write', workspaceRoot: root })
@@ -104,7 +104,7 @@ describe('continuable policy inheritance', () => {
     const runtimeContext = loaded.events.find(
       (event): event is SessionEvent<'user/message'> => event.type === 'user/message'
         && event.data.source.kind === 'plugin'
-        && event.data.source.plugin === '@pentest-harness/dsh-system-prompt',
+        && event.data.source.plugin === '@fathom/system-prompt',
     )
     const contextText = runtimeContext?.data.content
       .flatMap(block => block.type === 'text' ? [block.text] : [])

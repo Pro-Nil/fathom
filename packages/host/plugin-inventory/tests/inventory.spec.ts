@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context, type Plugin } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { remoteMethods } from '@pentest-harness/dsh-typert-protocol'
+import { Context, type Plugin } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { remoteMethods } from '@fathom/typert-protocol'
 import PluginInventoryGateway from '../src/index.ts'
 
 const contexts: Context[] = []

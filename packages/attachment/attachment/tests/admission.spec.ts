@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { AttachmentStore } from '@pentest-harness/dsh-attachment'
-import { admitEncodedImages } from '@pentest-harness/dsh-attachment'
-import type { ImageAttachmentRef, SaveImageAttachment } from '@pentest-harness/dsh-attachment/types'
+import type { AttachmentStore } from '@fathom/attachment'
+import { admitEncodedImages } from '@fathom/attachment'
+import type { ImageAttachmentRef, SaveImageAttachment } from '@fathom/attachment/types'
 
 const PNG = 'AAAA' // canonical base64, 3 bytes
 

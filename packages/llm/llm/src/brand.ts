@@ -1,16 +1,16 @@
 /**
- * dsh-llm's owned branded ids: tool-call correlation and provider request
+ * fathom-llm's owned branded ids: tool-call correlation and provider request
  * diagnostics.
  *
- * The `Branded<B>` primitive itself lives in `@pentest-harness/dsh-brand` (a
+ * The `Branded<B>` primitive itself lives in `@fathom/brand` (a
  * zero-dependency type-only package) so every owner of a cross-boundary id can
- * brand it without depending on dsh-llm; see that package's README for the
+ * brand it without depending on fathom-llm; see that package's README for the
  * nominal-typing policy.
  *
- * @module @pentest-harness/dsh-llm/brand
+ * @module @fathom/llm/brand
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /** Stable identity carried by one message across inbox, log, and model-request boundaries. */
 export type MessageId = Branded<'MessageId'>

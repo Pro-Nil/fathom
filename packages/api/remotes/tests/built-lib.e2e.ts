@@ -45,7 +45,7 @@ describe.skipIf(!requiredArtifacts)('Goal Remote built LIB chain', () => {
     }).map(([key, path]) => [key, artifactUrl(path)]))
     const script = `
       import { createServer } from 'node:http'
-      import * as cordis from '@pentest-harness/cordis'
+      import * as cordis from '@fathom/cordis'
 
       const urls = ${JSON.stringify(urls)}
       const { Context } = cordis
@@ -123,16 +123,16 @@ describe.skipIf(!requiredArtifacts)('Goal Remote built LIB chain', () => {
         const handoff = handoffs.get(id)
         if (handoff === undefined) throw new Error('missing Client bundle handoff ' + id)
         return handoff.factory(specifier => {
-          if (specifier === '@pentest-harness/cordis') return cordis
+          if (specifier === '@fathom/cordis') return cordis
           throw new Error('unexpected Client external ' + specifier)
         })
       }
       const client = new Context()
       for (const id of [
-        '@pentest-harness/dsh-typert-registry',
-        '@pentest-harness/dsh-client-connection',
-        '@pentest-harness/dsh-api-gateway',
-        '@pentest-harness/dsh-api-remotes',
+        '@fathom/typert-registry',
+        '@fathom/client-connection',
+        '@fathom/api-gateway',
+        '@fathom/api-remotes',
       ]) {
         const plugin = instantiate(id)
         await client.plugin({ inject: plugin.inject, apply: plugin.apply })

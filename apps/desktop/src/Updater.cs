@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace PentestHarness.Desktop;
+namespace Fathom.Desktop;
 
 /// <summary>
 /// The in-app update: everything the update guide asks you to type, behind
@@ -143,7 +143,7 @@ internal sealed class Updater
     public static void SwapAndRelaunch(string staged)
     {
         var install = AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
-        var exe = Environment.ProcessPath ?? Path.Combine(install, OperatingSystem.IsWindows() ? "PentestHarness.exe" : "PentestHarness");
+        var exe = Environment.ProcessPath ?? Path.Combine(install, OperatingSystem.IsWindows() ? "Fathom.exe" : "Fathom");
         var pid = Environment.ProcessId;
         ProcessStartInfo info;
         if (OperatingSystem.IsWindows())

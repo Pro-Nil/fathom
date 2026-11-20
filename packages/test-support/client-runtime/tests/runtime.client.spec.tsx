@@ -9,12 +9,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { stubSettingsScope } from '../src/settings-scope.ts'
 import { cleanup } from '@testing-library/react'
-import { defineStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId, WorkspaceId } from '@pentest-harness/dsh-client-runtime/client'
-import type { PropsRenderSlots, SessionStandardProps } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotTestRuntime } from '@pentest-harness/dsh-client-test-runtime'
+import { defineStore } from '@fathom/client-runtime/client'
+import type { SessionId, WorkspaceId } from '@fathom/client-runtime/client'
+import type { PropsRenderSlots, SessionStandardProps } from '@fathom/client-ui-slots'
+import { SlotTestRuntime } from '@fathom/client-test-runtime'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     'trt.panel': { kind: 'single'; scope: 'root'; owner: { label?: string } }
     'trt.chat': { kind: 'single'; scope: 'session' }

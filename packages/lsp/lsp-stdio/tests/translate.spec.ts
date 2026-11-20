@@ -6,8 +6,8 @@ import {
   requestMethod,
   supportsOperation,
   supportsTransientOpen,
-} from '@pentest-harness/dsh-lsp-stdio'
-import type { WireServerCapabilities } from '@pentest-harness/dsh-lsp-stdio/src/protocol.ts'
+} from '@fathom/lsp-stdio'
+import type { WireServerCapabilities } from '@fathom/lsp-stdio/src/protocol.ts'
 
 const RANGE = { start: { line: 1, character: 2 }, end: { line: 1, character: 5 } }
 

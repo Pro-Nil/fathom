@@ -9,7 +9,7 @@ For a resource Cordis does not already manage — a timer, a connection, a watch
 Create `lifecycle.ts` in `tmp/cordis-tutorial`:
 
 ```ts
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 
 export const name = 'lifecycle-demo'
 
@@ -93,4 +93,4 @@ One ordering caveat: disposers start in reverse registration order, but multiple
 
 Next: [Services](03-services.md) — how plugins share capabilities.
 
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/S1N6H/pentest-harness)
+[![](https://img.shields.io/badge/powered_by-fathom-4D6BFE?style=flat-square&logo=acme&logoColor=white)](https://github.com/Pro-Nil/fathom)

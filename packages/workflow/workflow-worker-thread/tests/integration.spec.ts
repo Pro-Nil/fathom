@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { SessionId } from '@pentest-harness/dsh-session'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
-import * as SessionInvariant from '@pentest-harness/dsh-session/invariant'
-import * as AgentInvariant from '@pentest-harness/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@pentest-harness/dsh-agent-loop/invariant'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import * as spawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import { STRUCTURED_OUTPUT_TOOL } from '@pentest-harness/dsh-subagent-in-process-driver'
+import { Context } from '@fathom/cordis'
+import { SessionId } from '@fathom/session'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import InvariantRegistry from '@fathom/invariants'
+import * as SessionInvariant from '@fathom/session/invariant'
+import * as AgentInvariant from '@fathom/agent/invariant'
+import * as AgentLoopInvariant from '@fathom/agent-loop/invariant'
+import SubagentRuntime from '@fathom/subagent'
+import * as spawn from '@fathom/subagent-spawn-in-process'
+import { STRUCTURED_OUTPUT_TOOL } from '@fathom/subagent-in-process-driver'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import WorkerThreadWorkflowEngine from '../src/index.ts'
 
@@ -44,7 +44,7 @@ async function setup(script: Script) {
   return { ctx, parent, adapter }
 }
 
-describe('dsh-workflow-worker-thread over the real in-process stack', () => {
+describe('fathom-workflow-worker-thread over the real in-process stack', () => {
   it('runs a two-stage workflow: a plain child, then a schema child through the structured runtime', async () => {
     const { ctx, parent } = await setup([
       textResponse('the file list is a.ts'),

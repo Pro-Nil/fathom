@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@pentest-harness/dsh-llm'
-import { toolPairingBalancedAfter, toolPairingBalancedBefore } from '@pentest-harness/dsh-compaction'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@fathom/llm'
+import { toolPairingBalancedAfter, toolPairingBalancedBefore } from '@fathom/compaction'
+import { Session, SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
 
 const SURFACE = { surfaceOp: 'append' as const }
 

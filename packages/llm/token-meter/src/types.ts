@@ -1,10 +1,10 @@
 /**
  * Public configuration and measurement vocabulary for replay token metering.
  *
- * @module @pentest-harness/dsh-token-meter/types
+ * @module @fathom/token-meter/types
  */
 
-import type { TokenUsage } from '@pentest-harness/dsh-llm'
+import type { TokenUsage } from '@fathom/llm'
 
 export type { ContextBreakdownProjection, ContextPressureProjection, TokenUsageProjection } from './projection.ts'
 

@@ -15,15 +15,15 @@
 // chat-toolview-slot.spec.tsx.
 
 import { describe, expect, it, vi } from 'vitest'
-import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import type { SessionBehaviorOverrides } from '@pentest-harness/dsh-client-test-runtime'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import type { ISession, SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { apply, inject } from '@pentest-harness/dsh-client-ui-conversation/client'
+import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@fathom/client-test-runtime'
+import type { SessionBehaviorOverrides } from '@fathom/client-test-runtime'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import type { ISession, SessionId } from '@fathom/client-runtime/client'
+import { apply, inject } from '@fathom/client-ui-conversation/client'
 import type {
   ChatViewInjected, ComposerBarInjected, ConversationInjected, ConversationSessionHeaderInjected,
   ConversationSessionInjected, DetailsInjected,
-} from '@pentest-harness/dsh-client-ui-conversation/client'
+} from '@fathom/client-ui-conversation/client'
 import type { createChatStore } from '../src/client/stores.ts'
 
 // The service reads its initial locale from the browser; these specs assert

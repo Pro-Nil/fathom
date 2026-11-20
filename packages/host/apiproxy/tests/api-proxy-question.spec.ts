@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { ApiProxy, MuxFrame, RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import UserQuestionService from '@fathom/user-questions'
+import type { ApiProxy, MuxFrame, RpcRequest } from '@fathom/host-apiproxy/api'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 async function harness(): Promise<{ ctx: Context; api: ApiProxy }> {

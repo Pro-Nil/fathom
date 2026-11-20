@@ -4,12 +4,12 @@
  * `unit_globals` table. Each primitive is a single statement, so atomicity
  * comes from SQLite itself — no explicit transactions, and no write queue
  * (write ordering is the caller's responsibility per the KV contract).
- * @module @pentest-harness/dsh-storage-sqlite/unit
+ * @module @fathom/storage-sqlite/unit
  */
 
 import type { DatabaseSync, StatementSync } from 'node:sqlite'
-import { StorageError } from '@pentest-harness/dsh-storage'
-import type { KvUnit, KvUnitDescriptor } from '@pentest-harness/dsh-storage'
+import { StorageError } from '@fathom/storage'
+import type { KvUnit, KvUnitDescriptor } from '@fathom/storage'
 import { recordTableName } from './schema.ts'
 
 /** Prepared statements for one declared table. */

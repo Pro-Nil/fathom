@@ -1,8 +1,8 @@
 /** Serialized Team transactions over the exact live Lead Session log. */
 
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { Context } from '@pentest-harness/cordis'
-import type { SessionEventMap, SessionId } from '@pentest-harness/dsh-session'
+import type { Agent } from '@fathom/agent'
+import type { Context } from '@fathom/cordis'
+import type { SessionEventMap, SessionId } from '@fathom/session'
 import { foldTeam } from './fold.ts'
 import type { TeamEventType, TeamFoldState } from './fold.ts'
 

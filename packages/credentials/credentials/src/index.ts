@@ -5,10 +5,10 @@
  * operation, so a changed credential reaches the next operation without any
  * plugin restart, and configuration surfaces describe a reference without
  * ever seeing its value.
- * @module @pentest-harness/dsh-credentials
+ * @module @fathom/credentials
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import type { CredentialKey, CredentialRecord, CredentialRef } from './types.ts'
 
 export type { ApiKeyRecord, CredentialKey, CredentialRecord, CredentialRef, GrantRecord } from './types.ts'
@@ -152,7 +152,7 @@ export interface CredentialRecordEntry {
   kind: CredentialRecord['kind']
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     credentials: CredentialProvider
   }

@@ -1,15 +1,15 @@
-/** Package-owned compaction log-stream invariants. @module @pentest-harness/dsh-compaction/invariant */
+/** Package-owned compaction log-stream invariants. @module @fathom/compaction/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import { isReplacementSurfaceEvent } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import { isReplacementSurfaceEvent } from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { CompactionId } from './brand.ts'
 import { isCompactCheckpointSource } from './checkpoint.ts'
 import type { CompactionCheckpointSource } from './checkpoint.ts'
 import type {} from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-compaction'
+const PACKAGE_NAME = '@fathom/compaction'
 
 /** Cordis companion plugin name. */
 export const name = 'compaction-invariant'

@@ -1,27 +1,27 @@
 # Minimal tool-pwsh composition: real app boot path, real pwsh executor, real
 # foreground + background tool calls; driven by the package's loader.spec.ts.
 - id: system-prompt
-  name: '@pentest-harness/dsh-system-prompt'
+  name: '@fathom/system-prompt'
 
 - id: tools
-  name: '@pentest-harness/dsh-tools'
+  name: '@fathom/tools'
 
 - id: subprocess
-  name: '@pentest-harness/dsh-subprocess-local'
+  name: '@fathom/subprocess-local'
 
 - id: bash
-  name: '@pentest-harness/dsh-pwsh-local'
+  name: '@fathom/pwsh-local'
   config:
     graceMs: 200
 
 - id: shell-env
-  name: '@pentest-harness/dsh-shell-env'
+  name: '@fathom/shell-env'
 
 - id: tasks
-  name: '@pentest-harness/dsh-jobs-local'
+  name: '@fathom/jobs-local'
 
 - id: tool-jobs
-  name: '@pentest-harness/dsh-tool-jobs'
+  name: '@fathom/tool-jobs'
 
 - id: tool-pwsh
-  name: '@pentest-harness/dsh-tool-pwsh'
+  name: '@fathom/tool-pwsh'

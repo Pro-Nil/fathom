@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { renderPrompt } from '@pentest-harness/dsh-system-prompt'
+import { Context } from '@fathom/cordis'
+import AgentLoop from '@fathom/agent-loop'
+import { renderPrompt } from '@fathom/system-prompt'
 import { mountAgentLoopTestDependencies } from '../src/index.ts'
 
-describe('dsh-agent-loop-testkit', () => {
+describe('fathom-agent-loop-testkit', () => {
   it('mounts a configurable prerequisite spine that can activate AgentLoop', async () => {
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx, {

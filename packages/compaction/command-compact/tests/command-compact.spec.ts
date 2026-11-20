@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import CommandRuntime, { type CommandResult } from '@pentest-harness/dsh-commands'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import type { Agent } from '@fathom/agent'
+import CommandRuntime, { type CommandResult } from '@fathom/commands'
 import {
   CompactionId,
   CompactionEngine,
@@ -11,9 +11,9 @@ import {
   type CompactionResult,
   type CompactionTrigger,
   type ManualCompactAgentContext,
-} from '@pentest-harness/dsh-compaction'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import * as commandCompact from '@pentest-harness/dsh-command-compact'
+} from '@fathom/compaction'
+import { Session, SessionId } from '@fathom/session'
+import * as commandCompact from '@fathom/command-compact'
 
 const COMPACTION_ID = CompactionId('command-compact-test')
 
@@ -153,7 +153,7 @@ function expectLastLifecycle(
   return runEvent.data.commandId
 }
 
-describe('@pentest-harness/dsh-command-compact registration', () => {
+describe('@fathom/command-compact registration', () => {
   it('registers one argument-free command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandCompact.name).toBe('command-compact')

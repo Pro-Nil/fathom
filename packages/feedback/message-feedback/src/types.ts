@@ -2,12 +2,12 @@
  * Public request, value, and failure vocabulary for per-message feedback.
  * This module contains types only so generated Remote clients can consume it
  * without importing Host runtime code.
- * @module @pentest-harness/dsh-message-feedback/types
+ * @module @fathom/message-feedback/types
  */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { MessageId } from '@pentest-harness/dsh-llm/brand'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+import type { Branded } from '@fathom/brand'
+import type { MessageId } from '@fathom/llm/brand'
+import type { SessionId } from '@fathom/session/types'
 
 /** Opaque compare-and-set token for one exact feedback item revision. */
 export type MessageFeedbackVersion = Branded<'MessageFeedbackVersion'>

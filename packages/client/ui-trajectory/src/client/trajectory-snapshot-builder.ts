@@ -1,9 +1,9 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   AssistantMessageNode, ConversationNode, ConversationPromptSnapshot,
   ConversationViewBuilder, ConversationViewDefinition, RequestView,
   ToolCallBlock,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   TrajectoryConversationViewNode, TrajectoryRequestHeaderState,
   TrajectorySnapshot,

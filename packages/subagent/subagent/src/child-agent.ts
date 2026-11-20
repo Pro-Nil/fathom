@@ -5,26 +5,26 @@
  * provider driver and the continuation manager compose children this way, so
  * depth accounting, lineage stamping, and delegation policy have one home.
  *
- * @module @pentest-harness/dsh-subagent/child-agent
+ * @module @fathom/subagent/child-agent
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent, AgentOptions, CreateAgentOptions } from '@pentest-harness/dsh-agent'
-import type { SandboxMode } from '@pentest-harness/dsh-sandbox'
-import type { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { ToolRestriction } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import type { Agent, AgentOptions, CreateAgentOptions } from '@fathom/agent'
+import type { SandboxMode } from '@fathom/sandbox'
+import type { Session, SessionId } from '@fathom/session'
+import type { ToolRestriction } from '@fathom/tools'
 // Type-only: make `ctx.get('sandboxPolicy')` / `ctx.get('approval')` resolve
 // to the policy services when composed — delegation consumes both
 // opportunistically (the documented `ctx.get` pattern), never as a hard dep —
 // and merge the `sandbox/mode` / `approval/policy` session-event payloads.
-import type {} from '@pentest-harness/dsh-sandbox-policy'
-import type {} from '@pentest-harness/dsh-user-approval'
+import type {} from '@fathom/sandbox-policy'
+import type {} from '@fathom/user-approval'
 // Type-only: make `ctx.get('agentPresets')` resolve to the preset roster when
 // composed — a child inherits its parent's composition opportunistically (the
 // documented `ctx.get` pattern), never as a hard dep. A rosterless deployment
 // keeps its model-facing rows on the host plane, where the child already sees
 // them through the tool registry's global layer.
-import type {} from '@pentest-harness/dsh-agent-presets'
+import type {} from '@fathom/agent-presets'
 import { delegationDepthOf } from './depth.ts'
 
 /** Thrown when starting a child would exceed the requested depth cap. */

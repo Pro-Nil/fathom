@@ -1,12 +1,12 @@
 /**
  * Model-facing PowerShell Consumer of the `ctx.shell` capability seam. Intended for
  * Windows compositions where a PowerShell executor (e.g.
- * `@pentest-harness/dsh-pwsh-local`) backs `ctx.shell`; the tool contract is
+ * `@fathom/pwsh-local`) backs `ctx.shell`; the tool contract is
  * PowerShell-dialect: native `C:\...` paths and `$env:NAME` variables.
  *
- * Behavior mirrors `dsh-tool-bash` call-for-call: foreground and
+ * Behavior mirrors `fathom-tool-bash` call-for-call: foreground and
  * `run_in_background` execution (background handles register with the
- * generic `ctx.jobs` runtime), the managed `DSH_*` environment through the
+ * generic `ctx.jobs` runtime), the managed `FATHOM_*` environment through the
  * shared `shell-env` registry, the per-call sandbox policy resolution (the
  * calling session's mode and cwd travel to the confining executor), the
  * sandbox-denial rendering with the same-turn escalation surface
@@ -14,32 +14,32 @@
  * `ctx.approval`), and the bash marker/truncation rendering story. UI
  * presentation mirrors the bash tool's too: a completed foreground call is
  * a terminal card with the parsed exit-status pill, using the shared
- * exit-status parse from `@pentest-harness/dsh-shell`.
+ * exit-status parse from `@fathom/shell`.
  *
- * @module @pentest-harness/dsh-tool-pwsh
+ * @module @fathom/tool-pwsh
  */
 
 import { isAbsolute, resolve as resolvePath } from 'node:path'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { defineTool, TOOL_ABORTED } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@pentest-harness/dsh-tools'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import type {} from '@pentest-harness/dsh-jobs'
-import type {} from '@pentest-harness/dsh-shell-env'
-import type {} from '@pentest-harness/dsh-user-approval'
-import type { SandboxExecutionPolicy, SandboxMode } from '@pentest-harness/dsh-sandbox'
-import { ESCALATION_TARGETS, approveEscalation, validateEscalationArgs } from '@pentest-harness/dsh-sandbox'
-import { toolWorkdir } from '@pentest-harness/dsh-session-folders'
-import type { SandboxPolicyService } from '@pentest-harness/dsh-sandbox-policy'
-import type { ShellRunResult } from '@pentest-harness/dsh-shell'
-import { parseExitStatus } from '@pentest-harness/dsh-shell'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { defineTool, TOOL_ABORTED } from '@fathom/tools'
+import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@fathom/tools'
+import { HarnessError } from '@fathom/llm'
+import type {} from '@fathom/system-prompt'
+import type {} from '@fathom/jobs'
+import type {} from '@fathom/shell-env'
+import type {} from '@fathom/user-approval'
+import type { SandboxExecutionPolicy, SandboxMode } from '@fathom/sandbox'
+import { ESCALATION_TARGETS, approveEscalation, validateEscalationArgs } from '@fathom/sandbox'
+import { toolWorkdir } from '@fathom/session-folders'
+import type { SandboxPolicyService } from '@fathom/sandbox-policy'
+import type { ShellRunResult } from '@fathom/shell'
+import { parseExitStatus } from '@fathom/shell'
 import { processOutcome } from './background.ts'
 import { renderPwshProcessRead, renderPwshResult } from './render.ts'
 import type { RenderablePwshResult } from './render.ts'
 
-declare module '@pentest-harness/dsh-jobs' {
+declare module '@fathom/jobs' {
   interface JobKindMap {
     pwsh: 'pwsh'
   }
@@ -83,7 +83,7 @@ interface PwshForegroundResult {
   sandbox?: { mode: string; denied: boolean; enforcement?: string; runnerFailed?: boolean }
 }
 
-/* jscpd:ignore-start -- minimal mirror of dsh-tool-bash's validation and execute plumbing (Agent Note). */
+/* jscpd:ignore-start -- minimal mirror of fathom-tool-bash's validation and execute plumbing (Agent Note). */
 function validatePwshArgs(args: PwshToolArgs): void {
   if (args.command.trim().length === 0) {
     throw new Error('invalid command: expected a non-empty string')
@@ -108,7 +108,7 @@ function pwshDescription(backgroundEnabled: boolean, escalationModes: readonly S
     + 'Each call runs in a fresh pwsh process: no state (cwd, variables, functions) persists between calls — '
     + 'pass `workdir` instead of using `cd`. Paths use native Windows form (`C:\\...`); read environment '
     + 'variables with `$env:NAME`. Non-zero exits are reported as `[exit code: N]`. '
-    + 'Current harness environment facts are exposed through managed `$env:DSH_*` variables; inspect them when needed. '
+    + 'Current harness environment facts are exposed through managed `$env:FATHOM_*` variables; inspect them when needed. '
     + 'Commands may run under a file sandbox; a blocked file operation is reported as `[sandbox: file access denied under <mode> mode]` — a policy denial, not a bug in the command; do not retry another way. '
     + 'Long output is truncated to its tail; the full output is saved to a file whose path is reported when available. '
     + 'On Windows a force-killed command settles as `[exit code: 1]` without a signal marker — treat it as an interruption, not a command failure. '
@@ -170,7 +170,7 @@ function canonicalPwshResult(result: ShellRunResult): PwshForegroundResult {
     timedOut: result.timedOut,
     aborted: result.aborted,
     timeoutMs: result.timeoutMs,
-    /* jscpd:ignore-start -- the canonical projection and background-handle shape mirror dsh-tool-bash's by design (Agent Note). */
+    /* jscpd:ignore-start -- the canonical projection and background-handle shape mirror fathom-tool-bash's by design (Agent Note). */
     stdout: output(result.stdout),
     stderr: output(result.stderr),
     ...result.sandbox !== undefined ? {
@@ -191,7 +191,7 @@ const BACKGROUND_OUTPUT_PROPERTIES = {
 } as const
 /* jscpd:ignore-end */
 
-/* jscpd:ignore-start -- deliberate mirror of dsh-tool-bash's apply() preamble (pwsh-tool-and-executor Agent Note). */
+/* jscpd:ignore-start -- deliberate mirror of fathom-tool-bash's apply() preamble (pwsh-tool-and-executor Agent Note). */
 export function apply(ctx: Context, config: Config = {}): void {
   const backgroundEnabled = config.enableRunInBackground ?? true
   const defaultMode = ctx.shell.sandboxMode
@@ -205,7 +205,7 @@ export function apply(ctx: Context, config: Config = {}): void {
   const resolveSandboxPolicy = (exec: ToolExecution): SandboxExecutionPolicy | undefined =>
     sandboxPolicy?.resolve(exec.agent === undefined ? {} : { session: exec.agent.session })
 
-  /* jscpd:ignore-start -- deliberate mirror of dsh-tool-bash's escalation resolver (pwsh-tool-and-executor Agent Note). */
+  /* jscpd:ignore-start -- deliberate mirror of fathom-tool-bash's escalation resolver (pwsh-tool-and-executor Agent Note). */
   /**
    * Resolve a sandbox-escalation request through `ctx.approval` BEFORE
    * anything executes, delegating the shared fail-closed sequence (strict
@@ -251,7 +251,7 @@ export function apply(ctx: Context, config: Config = {}): void {
   ctx.tools.register(defineTool({
     name: 'pwsh',
     description: pwshDescription(backgroundEnabled, escalationModes),
-    /* jscpd:ignore-start -- deliberate mirror of dsh-tool-bash's parameter surface (pwsh-tool-and-executor Agent Note). */
+    /* jscpd:ignore-start -- deliberate mirror of fathom-tool-bash's parameter surface (pwsh-tool-and-executor Agent Note). */
     parameters: {
       command: { type: 'string', required: true, description: 'The PowerShell command to execute.' },
       description: {
@@ -280,10 +280,10 @@ export function apply(ctx: Context, config: Config = {}): void {
     },
     /* jscpd:ignore-end */
     output: {
-      // The foreground result wire shape mirrors dsh-tool-bash's by contract —
+      // The foreground result wire shape mirrors fathom-tool-bash's by contract —
       // consumers of one must accept the other (see the pwsh-tool-and-executor
       // Agent Note).
-      /* jscpd:ignore-start -- deliberate result-schema symmetry with dsh-tool-bash. */
+      /* jscpd:ignore-start -- deliberate result-schema symmetry with fathom-tool-bash. */
       schema: {
         oneOf: [
           {
@@ -343,7 +343,7 @@ export function apply(ctx: Context, config: Config = {}): void {
           : renderPwshResult(value as RenderablePwshResult, escalationModes),
       }],
     },
-    /* jscpd:ignore-start -- the execute path mirrors dsh-tool-bash's by design (see the pwsh-tool-and-executor Agent Note). */
+    /* jscpd:ignore-start -- the execute path mirrors fathom-tool-bash's by design (see the pwsh-tool-and-executor Agent Note). */
     async execute(args: PwshToolArgs, exec) {
       validatePwshArgs(args)
       // Description is display metadata; workdir defaults to the caller's session.
@@ -361,7 +361,7 @@ export function apply(ctx: Context, config: Config = {}): void {
         command: args.command,
         ...workdir !== undefined ? { workdir } : {},
         ...args.timeoutMs !== undefined ? { timeoutMs: args.timeoutMs } : {},
-        dshEnv: ctx.shellEnv.collect(exec),
+        fathomEnv: ctx.shellEnv.collect(exec),
         ...policy !== undefined ? { sandboxPolicy: policy } : {},
       }
       if (args.run_in_background === true) {
@@ -371,7 +371,7 @@ export function apply(ctx: Context, config: Config = {}): void {
         }
         const jobs = ctx.get('jobs')
         if (jobs === undefined) {
-          throw new Error('background jobs unavailable: load @pentest-harness/dsh-jobs and @pentest-harness/dsh-tool-jobs')
+          throw new Error('background jobs unavailable: load @fathom/jobs and @fathom/tool-jobs')
         }
         // The caller owns cancellation until ctx.jobs commits detached ownership.
         if (exec.signal.aborted) {

@@ -1,11 +1,11 @@
 /**
  * Load-time validation and routed-model policy resolution for compaction-basic.
  *
- * @module @pentest-harness/dsh-compaction-basic/config
+ * @module @fathom/compaction-basic/config
  */
 
-import { deepFreeze } from '@pentest-harness/dsh-llm'
-import type { LlmCallConfig } from '@pentest-harness/dsh-llm'
+import { deepFreeze } from '@fathom/llm'
+import type { LlmCallConfig } from '@fathom/llm'
 import type {
   BasicCompactionConfig,
   CompactionPolicyConfig,

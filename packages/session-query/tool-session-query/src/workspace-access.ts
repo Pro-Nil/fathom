@@ -1,22 +1,22 @@
 /**
  * Caller identity, workspace authorization, and visible lineage projection.
  *
- * @module @pentest-harness/dsh-tool-session-query/workspace-access
+ * @module @fathom/tool-session-query/workspace-access
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import type { Context } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
 import {
   SessionId,
   type SessionEvent,
   type SessionHeader,
   type SessionId as SessionIdValue,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import type {
   SessionLineageNode,
   SessionRecord,
-} from '@pentest-harness/dsh-session-query'
-import type { ToolRunContext } from '@pentest-harness/dsh-tools'
+} from '@fathom/session-query'
+import type { ToolRunContext } from '@fathom/tools'
 import { serviceBoundary } from './service-boundary.ts'
 
 interface Caller {

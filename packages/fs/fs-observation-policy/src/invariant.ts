@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-fs-observation-policy`.
- * @module @pentest-harness/dsh-fs-observation-policy/invariant
+ * Package-owned invariant companion for `@fathom/fs-observation-policy`.
+ * @module @fathom/fs-observation-policy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-fs-observation-policy'
+const PACKAGE_NAME = '@fathom/fs-observation-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'fs-observation-policy-invariant'

@@ -1,5 +1,5 @@
-import { defineProperty } from '@pentest-harness/cosmokit'
-import type { Dict } from '@pentest-harness/cosmokit'
+import { defineProperty } from '@fathom/cosmokit'
+import type { Dict } from '@fathom/cosmokit'
 import type { StandardSchemaV1 } from '@standard-schema/spec'
 import { Context } from './context.ts'
 import { Fiber } from './fiber.ts'

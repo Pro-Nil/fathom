@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import TerminalSessionService from '@pentest-harness/dsh-terminal'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import TerminalSessionService from '@fathom/terminal'
 import type {
   TerminalBackend,
   TerminalBackendSession,
@@ -14,10 +14,10 @@ import type {
   TerminalSessionStatus,
   TerminalSignal,
   TerminalWaitReason,
-} from '@pentest-harness/dsh-terminal'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as ToolBashPersistent from '@pentest-harness/dsh-tool-bash-persistent'
+} from '@fathom/terminal'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import * as ToolBashPersistent from '@fathom/tool-bash-persistent'
 
 const contexts: Context[] = []
 let callNumber = 0
@@ -133,8 +133,8 @@ class StubPtySession implements TerminalBackendSession {
     if (this.mode === 'wait-for-abort' || this.mode === 'end-on-abort') {
       const done = new Promise<ReturnType<StubPtySession['result']>>((resolve) => {
         request.signal?.addEventListener('abort', () => {
-          const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
-          const end = /__DSH_PERSISTENT_BASH_END_[^:]+:/.exec(request.text)?.[0]
+          const start = /__FATHOM_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
+          const end = /__FATHOM_PERSISTENT_BASH_END_[^:]+:/.exec(request.text)?.[0]
           const output = this.mode === 'end-on-abort'
             ? `${start ?? ''}\ninterrupted\n${end ?? ''}130\n${this.motd}`
             : 'partial output'
@@ -151,7 +151,7 @@ class StubPtySession implements TerminalBackendSession {
     }
     if (this.mode === 'prompt-after-idle') {
       if (request.text.length > 0) {
-        const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
+        const start = /__FATHOM_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(request.text)?.[0]
         const output = `${start ?? ''}\npartial syntax output\n`
         this.scrollback += output
         return this.operation(Promise.resolve(this.result(output, 'inferred_idle')))
@@ -168,8 +168,8 @@ class StubPtySession implements TerminalBackendSession {
     }
     const sent = request.text.length > 0 ? request.text : this.pendingText
     this.pendingText = ''
-    const start = /__DSH_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(sent)?.[0]
-    const end = /__DSH_PERSISTENT_BASH_END_[^:]+:/.exec(sent)?.[0]
+    const start = /__FATHOM_PERSISTENT_BASH_START_[^_]+(?:-[^_]+)*__/.exec(sent)?.[0]
+    const end = /__FATHOM_PERSISTENT_BASH_END_[^:]+:/.exec(sent)?.[0]
     if (this.mode === 'incremental-fallback') {
       const incremental = `${start ?? ''}\nincrement\n${this.motd}`
       return this.operation(Promise.resolve(this.result(this.motd, 'stdin_read')), incremental)
@@ -474,7 +474,7 @@ describe('tool-bash-persistent', () => {
     expect(result).toContain('bash: syntax error')
     // The backend owns the prompt text, so the fallback retains it verbatim.
     expect(result.endsWith('stub> ')).toBe(true)
-    expect(result).not.toContain('DSH_PERSISTENT_BASH_START')
+    expect(result).not.toContain('FATHOM_PERSISTENT_BASH_START')
   })
 
   it('does not attribute old scrollback truncation to a complete current command', async () => {

@@ -1,13 +1,13 @@
-/** Package-owned goal-round prompt invariants. @module @pentest-harness/dsh-goal-round-driver/invariant */
+/** Package-owned goal-round prompt invariants. @module @fathom/goal-round-driver/invariant */
 
 import { isDeepStrictEqual } from 'node:util'
-import type { Context } from '@pentest-harness/cordis'
-import { foldGoal, type FoldedGoal, type GoalMessageSource, type GoalView } from '@pentest-harness/dsh-goal'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import { foldGoal, type FoldedGoal, type GoalMessageSource, type GoalView } from '@fathom/goal'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
+import type { Session, SessionEvent } from '@fathom/session'
 import { renderGoalRoundPrompt } from './prompt.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-goal-round-driver'
+const PACKAGE_NAME = '@fathom/goal-round-driver'
 
 /** Cordis companion plugin name. */
 export const name = 'goal-round-driver-invariant'

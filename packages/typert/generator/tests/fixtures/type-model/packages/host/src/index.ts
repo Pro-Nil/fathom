@@ -1,4 +1,4 @@
-import { Service } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
 import type { ZodType } from 'zod'
 import type { AgentPhase, Box, Entity, Flags, Payload, Present, SyntaxZoo } from './models.ts'
 
@@ -95,7 +95,7 @@ export class DemoService extends Service {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     demo: DemoService
     aliased: AliasedService
@@ -130,7 +130,7 @@ declare module '@pentest-harness/cordis' {
   type IgnoredDeclaration = string
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     demo: DemoService
   }

@@ -1,6 +1,6 @@
-/** Durable attachment storage seam (`ctx.attachments`). @module @pentest-harness/dsh-attachment */
+/** Durable attachment storage seam (`ctx.attachments`). @module @fathom/attachment */
 
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 import { AttachmentError } from './error.ts'
 import type {
   ImageAttachmentLimits,
@@ -27,7 +27,7 @@ export type {
   StoredImageAttachment,
 } from './types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     attachments: AttachmentStore
   }

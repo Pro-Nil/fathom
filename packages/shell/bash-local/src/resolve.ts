@@ -5,7 +5,7 @@
  * resolved differently from the code under test could exempt a file whose
  * suites actually run.
  *
- * @module @pentest-harness/dsh-bash-local/resolve
+ * @module @fathom/bash-local/resolve
  */
 
 import { existsSync } from 'node:fs'

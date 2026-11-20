@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup } from '@testing-library/react'
-import { Context } from '@pentest-harness/cordis'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import { TestSessions, TestWorkspaces } from '@pentest-harness/dsh-client-test-runtime'
-import type { Stabilizer } from '@pentest-harness/dsh-client-test-runtime'
-import { apply as nodeApply } from '@pentest-harness/dsh-client-ui-renderer'
+import { Context } from '@fathom/cordis'
+import { SlotRegistry } from '@fathom/client-runtime/client'
+import { TestSessions, TestWorkspaces } from '@fathom/client-test-runtime'
+import type { Stabilizer } from '@fathom/client-test-runtime'
+import { apply as nodeApply } from '@fathom/client-ui-renderer'
 import * as UiRenderer from '../src/client/index.ts'
 
 const mounted: (() => void)[] = []
@@ -55,7 +55,7 @@ describe('UI renderer plugin', () => {
     const { ctx, slots } = await bench()
     slots.register({ name: 'root' }, () => <div data-testid="root-probe" />)
     const el = container()
-    el.innerHTML = '<div class="boot" data-dsh-boot=""><div><div class="spinner" data-dsh-boot-spinner="" style="--dsh-boot-arc: 180deg"></div><div>Loading plugins…</div></div></div>'
+    el.innerHTML = '<div class="boot" data-fathom-boot=""><div><div class="spinner" data-fathom-boot-spinner="" style="--fathom-boot-arc: 180deg"></div><div>Loading plugins…</div></div></div>'
     const boot = el.firstElementChild
     const observer = new MutationObserver(() => {})
     observer.observe(el, { childList: true, subtree: true })

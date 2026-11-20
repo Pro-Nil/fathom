@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-hooks-claude-code`.
- * @module @pentest-harness/dsh-hooks-claude-code/invariant
+ * Package-owned invariant companion for `@fathom/hooks-claude-code`.
+ * @module @fathom/hooks-claude-code/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-hooks-claude-code'
+const PACKAGE_NAME = '@fathom/hooks-claude-code'
 
 /** Cordis companion plugin name. */
 export const name = 'hooks-claude-code-invariant'

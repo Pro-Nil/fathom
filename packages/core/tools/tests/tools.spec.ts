@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId, HarnessError, type ContentBlock  } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import ApprovalService, { type ApprovalOutcome, type ApprovalRequest } from '@pentest-harness/dsh-user-approval'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId, HarnessError, type ContentBlock  } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import type { Agent } from '@fathom/agent'
+import ApprovalService, { type ApprovalOutcome, type ApprovalRequest } from '@fathom/user-approval'
 import ToolRuntime, {
   defineContentToolFixture, defineTool, JsonSchemaError, parameterSchemaSpecToJsonSchema, validateArgs, ToolArgsError, ToolNotFoundError,
   TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH,
   type InferArgs, type JsonValue, type ParameterSchemaSpec, type PreToolDecision, type PostToolDecision,
   type JsonSchemaNode, type ToolDefinition, type ToolDispatchExecution, type ToolExecutionResult, type ToolExecutionToken,
-} from '@pentest-harness/dsh-tools'
+} from '@fathom/tools'
 
 const testToolSignal = new AbortController().signal
 
@@ -665,7 +665,7 @@ describe('ToolRuntime', () => {
   })
 
   it('ToolNotFoundError carries a stable message and code', async () => {
-    const { HarnessError } = await import('@pentest-harness/dsh-llm')
+    const { HarnessError } = await import('@fathom/llm')
     const err = new ToolNotFoundError('ghost')
     expect(err).toBeInstanceOf(HarnessError)
     expect(err.name).toBe('ToolNotFoundError')
@@ -2631,7 +2631,7 @@ describe('defineTool validation (the runtime-validation Agent Note, part 1)', ()
   })
 
   it('a tool throwing a HarnessError surfaces its name and code', async () => {
-    const { HarnessError } = await import('@pentest-harness/dsh-llm')
+    const { HarnessError } = await import('@fathom/llm')
     const ctx = await setup()
     ctx.tools.register({
       ...echoTool,

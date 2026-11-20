@@ -1,14 +1,14 @@
 /**
  * Package-owned invariant companion for
- * `@pentest-harness/dsh-subagent-claude-code`.
- * @module @pentest-harness/dsh-subagent-claude-code/invariant
+ * `@fathom/subagent-claude-code`.
+ * @module @fathom/subagent-claude-code/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subagent-claude-code'
+const PACKAGE_NAME = '@fathom/subagent-claude-code'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-claude-code-invariant'

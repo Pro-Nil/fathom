@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import UserQuestionService, { type AskUserQuestionRequest } from '@pentest-harness/dsh-user-questions'
-import * as toolAskUser from '@pentest-harness/dsh-tool-ask-user'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import UserQuestionService, { type AskUserQuestionRequest } from '@fathom/user-questions'
+import * as toolAskUser from '@fathom/tool-ask-user'
 
 const testToolSignal = new AbortController().signal
 

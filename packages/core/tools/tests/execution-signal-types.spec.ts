@@ -1,13 +1,13 @@
 import { describe, expectTypeOf, it } from 'vitest'
-import type { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { defineTool } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import { defineTool } from '@fathom/tools'
 import type {
   ToolDispatchExecution,
   ToolExecution,
   ToolExecutionInput,
   ToolRunContext,
-} from '@pentest-harness/dsh-tools'
+} from '@fathom/tools'
 
 function inputAndExecutionContracts(
   input: ToolExecutionInput,

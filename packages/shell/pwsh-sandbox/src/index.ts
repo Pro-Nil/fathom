@@ -1,6 +1,6 @@
 /**
  * Sandbox-consuming PowerShell executor — the pwsh twin of
- * `@pentest-harness/dsh-bash-sandbox`. It wraps the exact local pwsh argv through
+ * `@fathom/bash-sandbox`. It wraps the exact local pwsh argv through
  * `ctx.sandbox` (which on Windows resolves to the ACL restricted-token runner
  * chain), inherits local process mechanics, and reports the selected mode,
  * enforcement, and denial facts. Positive runner-launch evidence means the
@@ -9,12 +9,12 @@
  * local-executor semantics. The tool layer owns the escalation approval flow
  * through `ctx.approval`; this executor reports the sandbox facts the tool
  * renders.
- * @module @pentest-harness/dsh-pwsh-sandbox
+ * @module @fathom/pwsh-sandbox
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@pentest-harness/dsh-shell'
-import { SandboxUnavailableError } from '@pentest-harness/dsh-sandbox'
+import { Context } from '@fathom/cordis'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@fathom/shell'
+import { SandboxUnavailableError } from '@fathom/sandbox'
 import type {
   ConfinedArgv,
   ConfinedSandboxMode,
@@ -23,16 +23,16 @@ import type {
   SandboxExecutionPolicy,
   SandboxMode,
   SandboxPolicy,
-} from '@pentest-harness/dsh-sandbox'
-import type {} from '@pentest-harness/dsh-sandbox-policy'
-import { PwshLocalExecutor } from '@pentest-harness/dsh-pwsh-local'
-import type { Config as LocalConfig } from '@pentest-harness/dsh-pwsh-local'
+} from '@fathom/sandbox'
+import type {} from '@fathom/sandbox-policy'
+import { PwshLocalExecutor } from '@fathom/pwsh-local'
+import type { Config as LocalConfig } from '@fathom/pwsh-local'
 import { classifyDenial, classifyRunnerFailure, isRunnerSpawnFailure, matchesSignature } from './helpers.ts'
 
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@pentest-harness/dsh-sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@fathom/sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The
  * runner choice is likewise the `ctx.sandbox` provider's config, not this
  * executor's.

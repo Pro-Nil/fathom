@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context, Service } from '@pentest-harness/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@pentest-harness/dsh-session'
-import * as PermissionInvariant from '@pentest-harness/dsh-permission-presets/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context, Service } from '@fathom/cordis'
+import SessionStore, { type Session, type SessionEvent } from '@fathom/session'
+import * as PermissionInvariant from '@fathom/permission-presets/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 class PermissionProbe extends Service {
   readonly names = ['safe', 'trusted']

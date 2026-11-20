@@ -1,13 +1,13 @@
 {
-  "name": "@pentest-harness/dsh-web-search-google",
-  "description": "Google search providers for the Pentest Harness web capability seam (ctx.web): keyless through the shared browser, or the Programmable Search JSON API",
+  "name": "@fathom/web-search-google",
+  "description": "Google search providers for the Fathom web capability seam (ctx.web): keyless through the shared browser, or the Programmable Search JSON API",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pro-Nil/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/web/web-search-google"
   },
   "type": "module",
@@ -32,20 +32,20 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-browser": "workspace:^",
-    "@pentest-harness/dsh-credentials": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-web": "workspace:^"
+    "@fathom/cordis": "workspace:^",
+    "@fathom/browser": "workspace:^",
+    "@fathom/credentials": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/web": "workspace:^"
   },
   "dependencies": {
-    "@pentest-harness/schemastery": "workspace:^"
+    "@fathom/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-browser": "workspace:^",
-    "@pentest-harness/dsh-credentials": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-web": "workspace:^"
+    "@fathom/cordis": "workspace:^",
+    "@fathom/browser": "workspace:^",
+    "@fathom/credentials": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/web": "workspace:^"
   }
 }

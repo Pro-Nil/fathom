@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-host-frontend-static`.
- * @module @pentest-harness/dsh-host-frontend-static/invariant
+ * Package-owned invariant companion for `@fathom/host-frontend-static`.
+ * @module @fathom/host-frontend-static/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-host-frontend-static'
+const PACKAGE_NAME = '@fathom/host-frontend-static'
 
 /** Cordis companion plugin name. */
 export const name = 'host-frontend-static-invariant'

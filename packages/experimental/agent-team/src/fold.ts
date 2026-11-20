@@ -1,9 +1,9 @@
 /** Strict replay fold for Agent Teams log-only events. */
 
 import { z } from 'zod'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionEventMap } from '@pentest-harness/dsh-session'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent, SessionEventMap } from '@fathom/session'
 import type {
   TeamId,
   TeamMemberSnapshot,

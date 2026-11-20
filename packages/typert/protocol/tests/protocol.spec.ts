@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import {
   bindTypertRemote,
@@ -11,9 +11,9 @@ import {
   type TypertContext,
   type TypertForwardableEvent,
   type TypertRemoteEvent,
-} from '@pentest-harness/dsh-typert-protocol'
+} from '@fathom/typert-protocol'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Events {
     /**
      * Test-only one-way event: bound to no Scope and returning nothing.
@@ -34,7 +34,7 @@ declare module '@pentest-harness/cordis' {
   }
 }
 
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   interface TypertContextMap {
     metaFixture: TypertContext<string>
   }

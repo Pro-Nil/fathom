@@ -1,20 +1,20 @@
-# dsh-atomic-write
+# fathom-atomic-write
 
-Zero-dependency atomic file replacement shared by file-backed stores that must never leave partial, symlink-hijacked, or wider-than-intended content on disk — the user-settings document (`dsh-settings-file`) and the credentials store (`dsh-credentials-local`).
+Zero-dependency atomic file replacement shared by file-backed stores that must never leave partial, symlink-hijacked, or wider-than-intended content on disk — the user-settings document (`fathom-settings-file`) and the credentials store (`fathom-credentials-local`).
 
 ## Surface
 
 ```ts
-import { withFileLock, writeFileAtomic } from '@pentest-harness/dsh-atomic-write'
+import { withFileLock, writeFileAtomic } from '@fathom/atomic-write'
 
 declare const text: string
 declare const render: (previous: string) => string
 
-await writeFileAtomic('/home/u/.dsh/settings.yaml', text, { mode: 0o600 })
+await writeFileAtomic('/home/u/.fathom/settings.yaml', text, { mode: 0o600 })
 
 // Read-modify-write against the same file from several processes.
-await withFileLock('/home/u/.dsh/settings.yaml', async () => {
-  await writeFileAtomic('/home/u/.dsh/settings.yaml', render(text), { mode: 0o600 })
+await withFileLock('/home/u/.fathom/settings.yaml', async () => {
+  await writeFileAtomic('/home/u/.fathom/settings.yaml', render(text), { mode: 0o600 })
 })
 ```
 

@@ -1,25 +1,25 @@
 /**
- * @pentest-harness/dsh-headless — one-shot direct Agent driver. The bundle patch
- * rides over dsh-base without Host, HTTP, or browser plugins; this runner
+ * @fathom/headless — one-shot direct Agent driver. The bundle patch
+ * rides over fathom-base without Host, HTTP, or browser plugins; this runner
  * creates one Agent through the core registry, drives the task to quiescence,
  * flushes its Session, prints the final assistant text, and exits.
  *
- * @module @pentest-harness/dsh-headless
+ * @module @fathom/headless
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { installModelSelection } from '@pentest-harness/dsh-agent'
-import type { ModelSelectionRef } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-agent-default-model'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { installModelSelection } from '@fathom/agent'
+import type { ModelSelectionRef } from '@fathom/agent'
+import type {} from '@fathom/agent-default-model'
+import { createUserMessage } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
 // Empty type imports carry the loader Context merge for the settlement await
 // and the cmdline Context merge for the appExit host value.
-import type {} from '@pentest-harness/cordis-plugin-loader'
-import type {} from '@pentest-harness/dsh-cmdline'
+import type {} from '@fathom/cordis-plugin-loader'
+import type {} from '@fathom/cmdline'
 
 /** Stable Cordis plugin name. */
 export const name = 'headless-runner'
@@ -83,7 +83,7 @@ function summarize(events: readonly SessionEvent[], firstSeq: number): RunOutcom
 
 /** Report an unexpected direct-driver failure and request a failing exit. */
 function fail(io: HeadlessIo, error: unknown): void {
-  io.stderr.write(`dsh: ${error instanceof Error ? error.message : String(error)}\n`)
+  io.stderr.write(`fathom: ${error instanceof Error ? error.message : String(error)}\n`)
   io.exit(1)
 }
 
@@ -107,7 +107,7 @@ async function run(ctx: Context, task: string, io: HeadlessIo): Promise<void> {
   // This bundle composes no preset roster, so the model-facing rows sit in the
   // host plane and the agent reads them from the global layer. A deployment
   // that DOES configure one has to join it here first
-  // (@pentest-harness/dsh-agent-presets README, "Composing a child agent").
+  // (@fathom/agent-presets README, "Composing a child agent").
   const { agent } = await agents.create({
     sessionId: SessionId(`session-${randomUUID()}`),
     meta: { cwd: process.cwd() },
@@ -128,7 +128,7 @@ async function run(ctx: Context, task: string, io: HeadlessIo): Promise<void> {
   const outcome = summarize(agent.session.events, firstSeq)
   io.stdout.write(outcome.text + '\n')
   if (outcome.reason?.kind === 'error') {
-    io.stderr.write(`dsh: ${outcome.reason.error.code}: ${outcome.reason.error.message}\n`)
+    io.stderr.write(`fathom: ${outcome.reason.error.code}: ${outcome.reason.error.message}\n`)
   }
   io.exit(outcome.reason?.kind === 'completed' ? 0 : 1)
 }

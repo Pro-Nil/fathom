@@ -1,11 +1,11 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SessionTitleService from '@pentest-harness/dsh-session-title'
-import * as FirstMessageTitleProvider from '@pentest-harness/dsh-session-title-first-prompt-llm'
+import { Context } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import SessionStore, { SessionId } from '@fathom/session'
+import SessionTitleService from '@fathom/session-title'
+import * as FirstMessageTitleProvider from '@fathom/session-title-first-prompt-llm'
 
 /** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
 function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {

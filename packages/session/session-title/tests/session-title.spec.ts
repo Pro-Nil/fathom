@@ -1,14 +1,14 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { Context } from '@pentest-harness/cordis'
+import { createUserMessage } from '@fathom/llm'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
+import SessionStore, { Session, SessionId } from '@fathom/session'
 import SessionTitleService, {
   SessionTitleProviderId,
   fallbackSessionTitle,
   foldSessionTitle,
   normalizeSessionTitle,
   truncateTitleUtf8,
-} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

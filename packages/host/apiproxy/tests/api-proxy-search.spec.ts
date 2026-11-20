@@ -5,21 +5,21 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { stat } from 'node:fs/promises'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
+import AgentRegistry from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import type { SessionHeader, SessionId } from '@fathom/session'
+import UserQuestionService from '@fathom/user-questions'
 import {
   SessionQueryError,
   type SessionSearchHit,
   type SessionSearchRequest,
-} from '@pentest-harness/dsh-session-query'
-import type { RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+} from '@fathom/session-query'
+import type { RpcRequest } from '@fathom/host-apiproxy/api'
+import { RpcId } from '@fathom/host-apiproxy/api'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 vi.mock('node:fs/promises', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:fs/promises')>()

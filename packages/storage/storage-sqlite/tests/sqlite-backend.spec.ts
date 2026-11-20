@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
-import Storage, { storageBackendServiceKey } from '@pentest-harness/dsh-storage'
-import type { KvUnitDescriptor } from '@pentest-harness/dsh-storage'
+import Storage, { storageBackendServiceKey } from '@fathom/storage'
+import type { KvUnitDescriptor } from '@fathom/storage'
 import { runKvBackendContract } from '../../storage/tests/contract.ts'
 import * as StorageSqlite from '../src/index.ts'
 import { Config, SqliteStorageBackend, STORAGE_SQLITE_SCHEMA_VERSION } from '../src/index.ts'
@@ -19,7 +19,7 @@ const dirs: string[] = []
 afterEach(async () => { for (const d of dirs.splice(0)) await rm(d, { recursive: true, force: true }) })
 
 async function freshDbPath(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-storage-sqlite-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-storage-sqlite-'))
   dirs.push(dir)
   return join(dir, 'storage.db')
 }
@@ -208,7 +208,7 @@ describe('sqlite backend specifics', () => {
 
   it('propagates filesystem errors other than an existing database file', async () => {
     if (process.platform === 'win32') return
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-storage-sqlite-'))
+    const dir = await mkdtemp(join(tmpdir(), 'fathom-storage-sqlite-'))
     dirs.push(dir)
     await chmod(dir, 0o500)
     const backend = backendAt(join(dir, 'storage.db'))

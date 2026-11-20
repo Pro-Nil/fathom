@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { JobId, JobRegistry } from '@pentest-harness/dsh-jobs'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { JobId, JobRegistry } from '@fathom/jobs'
 import type {
   JobDoneListener, JobRead, JobSnapshot, JobStart, JobsChangedListener,
-} from '@pentest-harness/dsh-jobs'
+} from '@fathom/jobs'
 
 /**
  * Minimal concrete registry: one canned record. The Service Definition owns the contract
  * only (ids, snapshots, authorization-shaped signatures); the registry
- * behavior suite lives with `@pentest-harness/dsh-jobs-local`.
+ * behavior suite lives with `@fathom/jobs-local`.
  */
 class StubJobRegistry extends JobRegistry {
   snapshotOf(id: JobId): JobSnapshot {
@@ -91,6 +91,6 @@ describe('JobRegistry seam', () => {
   it('mounting the abstract seam directly fails loudly at load (stale-composition fence)', async () => {
     const ctx = new Context()
     await expect(ctx.plugin(JobRegistry as unknown as typeof StubJobRegistry))
-      .rejects.toThrow(/abstract job registry seam; load an implementation such as @pentest-harness\/dsh-jobs-local/)
+      .rejects.toThrow(/abstract job registry seam; load an implementation such as @fathom\/jobs-local/)
   })
 })

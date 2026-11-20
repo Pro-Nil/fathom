@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
-    from pentest_harness import RunResult
+    from fathom import RunResult
 
 
 EXPECTED_TEXT = "runtime smoke ok"
@@ -80,13 +80,13 @@ MINIMAL_SNAPSHOT_DIRECTORY = (
 MINIMAL_SNAPSHOT_FILENAMES = ("model-visible.json",)
 # The agent loop's dynamic runtime-context snapshot is the one model-visible message this
 # expected output cannot carry: the same composition emits it on macOS and not on Linux
-# (pentest-harness#2488), and the file must replay on both. Everything else is compared.
+# (fathom#2488), and the file must replay on both. Everything else is compared.
 RUNTIME_CONTEXT_PREFIX = "Current runtime context"
 CUSTOM_CORDIS = """\
 - id: sdk-jsonrpc-server
-  name: '@pentest-harness/dsh-sdk-jsonrpc-server'
+  name: '@fathom/sdk-jsonrpc-server'
 - id: agent-core
-  name: '@pentest-harness/dsh-agent-spine-demo'
+  name: '@fathom/agent-spine-demo'
   config:
     workspaceContext: false
     skills:
@@ -95,38 +95,38 @@ CUSTOM_CORDIS = """\
     tools:
       mode: both
 - id: sessions
-  name: '@pentest-harness/dsh-session-persistence-jsonl'
+  name: '@fathom/session-persistence-jsonl'
   config:
-    root: !!js process.env.DSH_SESSION_ROOT
+    root: !!js process.env.FATHOM_SESSION_ROOT
     compression: 'none'
 - id: code-runtime
-  name: '@pentest-harness/dsh-code-runtime-worker-thread'
+  name: '@fathom/code-runtime-worker-thread'
 - id: subagents
-  name: '@pentest-harness/dsh-subagent'
+  name: '@fathom/subagent'
 - id: subagent-spawn-in-process
-  name: '@pentest-harness/dsh-subagent-spawn-in-process'
+  name: '@fathom/subagent-spawn-in-process'
   config:
     providerName: spawn
 - id: subagent-tool
-  name: '@pentest-harness/dsh-tool-subagent'
+  name: '@fathom/tool-subagent'
   config:
     provider: spawn
 - id: workflow-engine
-  name: '@pentest-harness/dsh-workflow-worker-thread'
+  name: '@fathom/workflow-worker-thread'
   config:
     provider: spawn
 - id: workflow-tool
-  name: '@pentest-harness/dsh-tool-workflow'
+  name: '@fathom/tool-workflow'
 - id: cordis-host-runner
-  name: '@pentest-harness/dsh-cordis-host-runner'
+  name: '@fathom/cordis-host-runner'
 - id: cordis-tool
-  name: '@pentest-harness/dsh-tool-cordis'
+  name: '@fathom/tool-cordis'
 """
 FS_SEARCH_CORDIS = """\
 - id: sdk-jsonrpc-server
-  name: '@pentest-harness/dsh-sdk-jsonrpc-server'
+  name: '@fathom/sdk-jsonrpc-server'
 - id: agent-core
-  name: '@pentest-harness/dsh-agent-spine-demo'
+  name: '@fathom/agent-spine-demo'
   config:
     workspaceContext: false
     skills:
@@ -134,14 +134,14 @@ FS_SEARCH_CORDIS = """\
     toolBash: false
     toolJobs: false
 - id: sessions
-  name: '@pentest-harness/dsh-session-persistence-jsonl'
+  name: '@fathom/session-persistence-jsonl'
   config:
-    root: !!js process.env.DSH_SESSION_ROOT
+    root: !!js process.env.FATHOM_SESSION_ROOT
     compression: 'none'
 - id: subprocess
-  name: '@pentest-harness/dsh-subprocess-local'
+  name: '@fathom/subprocess-local'
 - id: fs-search
-  name: '@pentest-harness/dsh-tool-fs-search'
+  name: '@fathom/tool-fs-search'
   config:
     sampleOverCapGlobResults: false
 """
@@ -228,11 +228,11 @@ def mcp_cordis(server_script: Path) -> str:
     return json.dumps([
         {
             "id": "sdk-jsonrpc-server",
-            "name": "@pentest-harness/dsh-sdk-jsonrpc-server",
+            "name": "@fathom/sdk-jsonrpc-server",
         },
         {
             "id": "agent-core",
-            "name": "@pentest-harness/dsh-agent-spine-demo",
+            "name": "@fathom/agent-spine-demo",
             "config": {
                 "workspaceContext": False,
                 "skills": {"enabled": False},
@@ -241,12 +241,12 @@ def mcp_cordis(server_script: Path) -> str:
         },
         {
             "id": "sessions",
-            "name": "@pentest-harness/dsh-session-persistence-jsonl",
+            "name": "@fathom/session-persistence-jsonl",
             "config": {"root": "./sessions", "compression": "none"},
         },
         {
             "id": "mcp-fixture",
-            "name": "@pentest-harness/dsh-mcp-client",
+            "name": "@fathom/mcp-client",
             "config": {
                 "serverName": "fixture",
                 "transport": "stdio",
@@ -718,12 +718,12 @@ def main() -> None:
 
 
 def smoke_sdk_default(base_url: str) -> None:
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-default-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-default-") as temporary:
         root = Path(temporary).resolve()
         sessions = root / "sessions"
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -738,14 +738,14 @@ def smoke_sdk_default(base_url: str) -> None:
 
 
 def smoke_sdk_custom(base_url: str, executable: Path) -> None:
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-custom-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-custom-") as temporary:
         root = Path(temporary).resolve()
         sessions = root / "sessions"
         cordis = root / "cordis.yml"
         cordis.write_text(CUSTOM_CORDIS)
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -767,16 +767,16 @@ def smoke_sdk_custom(base_url: str, executable: Path) -> None:
 
 def smoke_sdk_minimal(base_url: str, executable: Path, update_snapshots: bool) -> None:
     """Exercise the checked-in minimal composition through the packaged executable."""
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
     # One mock model serves every scenario of a run, so the snapshot takes this turn's slice.
     first_request = len(MockModelHandler.requests)
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-minimal-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-minimal-") as temporary:
         root = Path(temporary).resolve()
         editor_path = root / "created.txt"
         prompt = f"{MINIMAL_PROMPT}\n{MINIMAL_EDITOR_PATH_PREFIX}{editor_path}"
         sessions = root / "sessions"
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -804,15 +804,15 @@ def smoke_sdk_minimal(base_url: str, executable: Path, update_snapshots: bool) -
 
 def smoke_sdk_fs_search(base_url: str, executable: Path) -> None:
     """Exercise real grep and glob spawns through the packaged executable."""
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-fs-search-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-fs-search-") as temporary:
         root = Path(temporary).resolve()
         (root / "needle.txt").write_text(f"{FS_SEARCH_MARKER}\n")
         sessions = root / "sessions"
         cordis = root / "cordis.yml"
         cordis.write_text(FS_SEARCH_CORDIS)
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -831,9 +831,9 @@ def smoke_sdk_fs_search(base_url: str, executable: Path) -> None:
 
 def smoke_sdk_mcp(base_url: str, executable: Path | None) -> None:
     """Discover and call an external stdio MCP tool through the packaged client."""
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-mcp-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-mcp-") as temporary:
         root = Path(temporary).resolve()
         sessions = root / "sessions"
         server_script = root / "mcp_server.py"
@@ -841,7 +841,7 @@ def smoke_sdk_mcp(base_url: str, executable: Path | None) -> None:
         cordis = root / "cordis.yml"
         cordis.write_text(mcp_cordis(server_script))
         discovery_log = server_script.with_suffix(".log")
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -866,14 +866,14 @@ def smoke_sdk_mcp(base_url: str, executable: Path | None) -> None:
 
 def smoke_sdk_snapshot(base_url: str, executable: Path, update_snapshots: bool) -> None:
     """Drive and compare the advanced SDK/executable behavioral snapshot."""
-    from pentest_harness import PentestHarness
+    from fathom import Fathom
 
-    with tempfile.TemporaryDirectory(prefix="dsh-sdk-snapshot-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-sdk-snapshot-") as temporary:
         root = Path(temporary).resolve()
         sessions = root / "sessions"
         cordis = root / "cordis.yml"
         cordis.write_text(CUSTOM_CORDIS)
-        with PentestHarness(
+        with Fathom(
             provider="acme-official",
             model="smoke-model",
             cwd=str(root),
@@ -910,16 +910,16 @@ def smoke_sdk_snapshot(base_url: str, executable: Path, update_snapshots: bool) 
 
 
 def smoke_direct(base_url: str, executable: Path) -> None:
-    with tempfile.TemporaryDirectory(prefix="dsh-direct-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="fathom-direct-") as temporary:
         root = Path(temporary).resolve()
         sessions = root / "sessions"
         cordis = root / "cordis.yml"
         cordis.write_text(CUSTOM_CORDIS)
         environment = {
             **os.environ,
-            "DSH_CORDIS_CONFIG": str(cordis),
-            "DSH_SESSION_ROOT": str(sessions),
-            "DSH_CWD": str(root),
+            "FATHOM_CORDIS_CONFIG": str(cordis),
+            "FATHOM_SESSION_ROOT": str(sessions),
+            "FATHOM_CWD": str(root),
             "ACME_API_KEY": "sk-keyless-smoke",
             "ACME_BASE_URL": base_url,
         }

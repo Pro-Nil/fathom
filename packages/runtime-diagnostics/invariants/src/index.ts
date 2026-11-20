@@ -3,13 +3,13 @@
  * Every workspace package registers checks from a `./invariant` companion;
  * ordinary package entrypoints stay independent of diagnostics.
  *
- * @module @pentest-harness/dsh-invariants
+ * @module @fathom/invariants
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Inject } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type Schema from '@pentest-harness/schemastery'
+import { Context, Service } from '@fathom/cordis'
+import type { Inject } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type Schema from '@fathom/schemastery'
 
 /** Runtime invariant selection configured on the service plugin. */
 export interface Config {
@@ -65,7 +65,7 @@ export class InvariantError extends Error {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     invariants: InvariantRegistry
   }

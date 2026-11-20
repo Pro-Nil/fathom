@@ -11,8 +11,8 @@ import { describe, expect, it, vi } from 'vitest'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   DynamicCordisClientSource, DynamicCordisHostHalfResult, DynamicCordisResolveAck,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
 import { CordisRunOrchestrator } from '../src/client/orchestrator.ts'
 import type { CordisUserRunRequest } from '../src/client/orchestrator.ts'
 import type { DynamicCordisLoadResult, DynamicCordisPackageRunner } from '../src/client/runtime.ts'

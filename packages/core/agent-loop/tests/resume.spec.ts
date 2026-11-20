@@ -1,25 +1,25 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId, SessionPreparation } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId, SessionPreparation } from '@fathom/session'
+import type { SessionEvent, SessionHeader } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import AgentLoop from '@fathom/agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
 
 const dirs: string[] = []
 afterEach(async () => { for (const d of dirs.splice(0)) await rm(d, { recursive: true, force: true }) })
 
 async function persistentHarness(adapter: MockAdapter): Promise<{ ctx: Context; root: string }> {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-resume-'))
+  const root = await mkdtemp(join(tmpdir(), 'fathom-resume-'))
   dirs.push(root)
   return { ctx: await mountPersistentHarness(root, adapter), root }
 }

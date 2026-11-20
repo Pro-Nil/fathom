@@ -9,25 +9,25 @@
  * `ver` mismatch discards the row instead of migrating it. Design
  * authority: the session-projection RFC
  * (.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md).
- * @module @pentest-harness/dsh-session-projection-cache
+ * @module @fathom/session-projection-cache
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { snapshotJsonValue } from '@fathom/session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@fathom/session'
 // Empty type import: applies the package's cordis Context merge
 // (`ctx.sessionPersistence`), which this service reads on the cold path.
-import type {} from '@pentest-harness/dsh-session-persistence'
-import type { ProjectionCheckpoint, ProjectionSnapshot } from '@pentest-harness/dsh-session-projection'
-import type { KvTable } from '@pentest-harness/dsh-storage-domain'
+import type {} from '@fathom/session-persistence'
+import type { ProjectionCheckpoint, ProjectionSnapshot } from '@fathom/session-projection'
+import type { KvTable } from '@fathom/storage-domain'
 import { projectionCacheDomainSpec } from './spec.ts'
 import type { CheckpointIdentity, CheckpointRecord } from './spec.ts'
 
 export { checkpointIdentity, checkpointRecord, checkpointRow, projectionCacheDomainSpec } from './spec.ts'
 export type { CheckpointIdentity, CheckpointRecord } from './spec.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionProjectionCache: SessionProjectionCache
   }

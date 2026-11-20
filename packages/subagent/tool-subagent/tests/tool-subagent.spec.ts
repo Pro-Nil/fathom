@@ -2,30 +2,30 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { CallId } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import { assembleContextFor, type Agent } from '@pentest-harness/dsh-agent'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentStartRequest } from '@pentest-harness/dsh-subagent'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as SubagentSpawn from '@pentest-harness/dsh-subagent-spawn-in-process'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { CallId } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import { assembleContextFor, type Agent } from '@fathom/agent'
+import AgentRegistry from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SubagentRuntime from '@fathom/subagent'
+import type { SubagentStartRequest } from '@fathom/subagent'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as SubagentSpawn from '@fathom/subagent-spawn-in-process'
+import * as ToolTasks from '@fathom/tool-jobs'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as mock from './scripted-provider.ts'
 import * as tool from '../src/index.ts'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 
 const testToolSignal = new AbortController().signal
 
 /**
- * Drives the REAL plugin body: mounts `dsh-tool-subagent` on a real
+ * Drives the REAL plugin body: mounts `fathom-tool-subagent` on a real
  * `ToolRuntime` + `SubagentRuntime`, with a package-local scripted child
  * boundary, and invokes the registered `subagent` tool through
  * `ctx.tools.execute`. Everything downstream of the child boundary is the
@@ -67,7 +67,7 @@ function text(result: { content: { type: string; text?: string }[] }): string {
   return result.content.filter(b => b.type === 'text').map(b => b.text).join('')
 }
 
-describe('dsh-tool-subagent', () => {
+describe('fathom-tool-subagent', () => {
   it('rejects continuable background policy when the provider cannot prepare continuable children', async () => {
     let failure: unknown
     try {
@@ -773,7 +773,7 @@ describe('dsh-tool-subagent', () => {
   })
 })
 
-describe('dsh-tool-subagent background mode', () => {
+describe('fathom-tool-subagent background mode', () => {
   /** A live parent with a dedicated scope fiber for structural task cleanup. */
   function ownerAgent(ctx: Context, sessionId: string, inject: (...args: unknown[]) => void = () => {}): Agent {
     const scopeFiber = ctx.plugin(() => {})
@@ -902,7 +902,7 @@ describe('dsh-tool-subagent background mode', () => {
     const ctx = await setup({ provider: 'mock' })
     const result = await callSubagent(ctx, { description: 'd', prompt: 'p', run_in_background: true })
     expect(result.isError).toBe(true)
-    expect(text(result)).toContain('background jobs unavailable: load @pentest-harness/dsh-jobs')
+    expect(text(result)).toContain('background jobs unavailable: load @fathom/jobs')
   })
 
   it('skips background startup when the tool signal is already aborted', async () => {
@@ -1074,7 +1074,7 @@ describe('dsh-tool-subagent background mode', () => {
 
 })
 
-describe('dsh-tool-subagent continuable background mode', () => {
+describe('fathom-tool-subagent continuable background mode', () => {
   const roots: string[] = []
   afterEach(() => {
     for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true })
@@ -1084,7 +1084,7 @@ describe('dsh-tool-subagent continuable background mode', () => {
   async function continuableSetup() {
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx)
-    const root = mkdtempSync(path.join(tmpdir(), 'dsh-tool-subagent-continuable-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'fathom-tool-subagent-continuable-'))
     roots.push(root)
     await ctx.plugin(JsonlSessionPersistence, { root })
     await ctx.plugin(AgentLoop, { agents: [] })

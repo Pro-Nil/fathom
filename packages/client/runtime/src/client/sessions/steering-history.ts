@@ -1,7 +1,7 @@
 /** Reconstruct durable steering identity from the event-sourced agent inbox. */
 
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type { InboxTarget } from '@pentest-harness/dsh-agent/types'
+import type { SessionEvent } from '@fathom/session/types'
+import type { InboxTarget } from '@fathom/agent/types'
 
 /** Minimal pending identity retained while replaying durable inbox splices. */
 interface PendingIdentity {

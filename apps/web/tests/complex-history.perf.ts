@@ -9,22 +9,22 @@ import { performance } from 'node:perf_hooks'
 import type { Browser, CDPSession, Locator, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
+import type { StreamChunk } from '@fathom/llm'
 import {
   CallId,
   createAssistantMessage,
   createToolResultMessage,
   createUserMessage,
-} from '@pentest-harness/dsh-llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@pentest-harness/dsh-llm-replay'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+} from '@fathom/llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@fathom/llm-replay'
+import type { SessionEvent } from '@fathom/session'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 // Carries the session/title event declaration into the fixture builder.
-import type {} from '@pentest-harness/dsh-session-title'
+import type {} from '@fathom/session-title'
 import {
   launchWebScaffold,
   seedSession,
@@ -600,18 +600,18 @@ async function startMutationProbe(page: Page): Promise<void> {
       childList: true,
       subtree: true,
     })
-    Reflect.set(globalThis, '__dshPerfMutationProbe', probe)
+    Reflect.set(globalThis, '__fathomPerfMutationProbe', probe)
   })
 }
 
 async function stopMutationProbe(page: Page): Promise<MutationProbeResult> {
   return page.evaluate(() => {
-    const probe = Reflect.get(globalThis, '__dshPerfMutationProbe') as
+    const probe = Reflect.get(globalThis, '__fathomPerfMutationProbe') as
       | { batches: number; records: number; observer: MutationObserver }
       | undefined
     if (probe === undefined) throw new Error('stream mutation probe was not started')
     probe.observer.disconnect()
-    Reflect.deleteProperty(globalThis, '__dshPerfMutationProbe')
+    Reflect.deleteProperty(globalThis, '__fathomPerfMutationProbe')
     return { batches: probe.batches, records: probe.records }
   })
 }
@@ -682,11 +682,11 @@ async function startUserRenderProbe(
       childList: true,
       subtree: true,
     })
-    Reflect.set(globalThis, '__dshPerfUserRenderProbe', probe)
+    Reflect.set(globalThis, '__fathomPerfUserRenderProbe', probe)
   }, marker)
   await send.evaluate((button) => {
     button.addEventListener('click', (event) => {
-      const probe = Reflect.get(globalThis, '__dshPerfUserRenderProbe') as
+      const probe = Reflect.get(globalThis, '__fathomPerfUserRenderProbe') as
         | { sendAt?: number; trustedClick?: boolean; pollForMarker?: () => void }
         | undefined
       if (probe?.pollForMarker === undefined) throw new Error('user render probe was not started')
@@ -708,14 +708,14 @@ async function stopUserRenderProbe(
 ): Promise<UserRenderProbeResult> {
   try {
     await page.waitForFunction(() => {
-      const probe = Reflect.get(globalThis, '__dshPerfUserRenderProbe') as
+      const probe = Reflect.get(globalThis, '__fathomPerfUserRenderProbe') as
         | { paintAt?: number }
         | undefined
       return probe?.paintAt !== undefined
     }, undefined, { timeout: 15_000 })
   } catch (error) {
     const diagnostic = await page.evaluate((expectedMarker) => {
-      const probe = Reflect.get(globalThis, '__dshPerfUserRenderProbe') as
+      const probe = Reflect.get(globalThis, '__fathomPerfUserRenderProbe') as
         | {
           sendAt?: number
           domAt?: number
@@ -748,7 +748,7 @@ async function stopUserRenderProbe(
     throw new Error(`user render probe timed out: ${JSON.stringify(diagnostic)}`, { cause: error })
   }
   return page.evaluate(() => {
-    const probe = Reflect.get(globalThis, '__dshPerfUserRenderProbe') as
+    const probe = Reflect.get(globalThis, '__fathomPerfUserRenderProbe') as
       | {
         sendAt?: number
         domAt?: number
@@ -758,7 +758,7 @@ async function stopUserRenderProbe(
         records: number
       }
       | undefined
-    Reflect.deleteProperty(globalThis, '__dshPerfUserRenderProbe')
+    Reflect.deleteProperty(globalThis, '__fathomPerfUserRenderProbe')
     if (
       probe?.trustedClick !== true
       || probe.sendAt === undefined
@@ -827,7 +827,7 @@ async function launchPerformanceWorld(
     if (options.replay === undefined) {
       scaffold = await launchWebScaffold()
     } else {
-      replayDir = await mkdtemp(join(tmpdir(), 'dsh-web-perf-replay-'))
+      replayDir = await mkdtemp(join(tmpdir(), 'fathom-web-perf-replay-'))
       const replayOverride = join(replayDir, 'replay.override.json')
       await writeFile(replayOverride, JSON.stringify(options.replay))
       scaffold = await launchWebScaffold({

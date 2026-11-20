@@ -7,9 +7,9 @@
  */
 import type {
   IApiClient, ModelCatalogFailure, ModelProviderGroup, ModelSelection, SessionId, SessionModels,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/api-remotes/client'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
 
 /** Directory snapshot both entries render from. */
 export interface ModelDirectoryState {

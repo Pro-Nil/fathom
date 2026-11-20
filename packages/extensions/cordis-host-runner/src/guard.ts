@@ -10,16 +10,16 @@
  * VM-realm schemas and canonical values are rebuilt as host objects, while rendered content and
  * presentation metadata are shape-checked before entering the registry. Common JSON-Schema spellings are normalized when they
  * have one meaning; invalid vocabulary fails during registration with a teaching error.
- * @module @pentest-harness/dsh-cordis-host-runner/guard
+ * @module @fathom/cordis-host-runner/guard
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { Plugin } from '@pentest-harness/cordis'
-import { scopeOf } from '@pentest-harness/dsh-scope'
-import { assertSupportedJsonSchema, defineTool } from '@pentest-harness/dsh-tools'
-import type { ToolDefinition } from '@pentest-harness/dsh-tools'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JsonValue } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import type { Plugin } from '@fathom/cordis'
+import { scopeOf } from '@fathom/scope'
+import { assertSupportedJsonSchema, defineTool } from '@fathom/tools'
+import type { ToolDefinition } from '@fathom/tools'
+import type { ContentBlock } from '@fathom/llm'
+import type { JsonValue } from '@fathom/session'
 
 const DYNAMIC_TOOL = Symbol('cordis-host-runner.dynamic-tool')
 const SCHEMA_TYPES = new Set<unknown>(['string', 'number', 'integer', 'boolean', 'null', 'object', 'array', 'json'])
@@ -744,7 +744,7 @@ function sandboxContext(ctx: Context, reportFailure: (error: Error) => void): Co
   }
   const get = (name: string): unknown => readService(name, false)
   // The browser half builds the same façade over its own Context
-  // (`@pentest-harness/dsh-cordis-client-runner`, whose CTX_VERBS names this one its
+  // (`@fathom/cordis-client-runner`, whose CTX_VERBS names this one its
   // twin), and the sameness is the point: a package author meets ONE contract on
   // both halves. Folding them together is not available — the two halves compile
   // in separate programs where `Context` merges different service keys — so the

@@ -1,9 +1,9 @@
 /** Agent Teams service façade over roster, mailbox, task, and runtime lifecycle owners. */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type {} from '@pentest-harness/dsh-session-persistence'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import type {} from '@fathom/session-persistence'
 import { TeamActivity } from './activity.ts'
 import { errorMessage, TeamError } from './error.ts'
 import { TeamJournal } from './journal.ts'
@@ -32,7 +32,7 @@ export { TeamId, TeamMessageId, TeamTaskId } from './types.ts'
 export { TeamError } from './error.ts'
 export { foldTeam } from './fold.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     agentTeams: TeamService
   }

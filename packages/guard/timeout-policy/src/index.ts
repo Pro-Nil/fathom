@@ -3,17 +3,17 @@
  * promises to honor `exec.signal`; this wrapper arms that deadline and maps its
  * own expiry to `TOOL_TIMEOUT` without racing or abandoning the tool promise.
  *
- * FIXME: settle the intended `@pentest-harness/dsh-timeout-guard` rename before the
+ * FIXME: settle the intended `@fathom/timeout-guard` rename before the
  * first tagged release — suggestion only, aligning the name with its `guard/`
  * home; decide at resolution time
  * ([regrouping Agent Note](../../../../.agents/notes/implemented/architecture/2026-07-29-package-regrouping.md)).
  *
- * @module @pentest-harness/dsh-tool-call-timeout-policy
+ * @module @fathom/tool-call-timeout-policy
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { deadline, timeoutOf } from '@pentest-harness/dsh-timeout'
-import type { ToolExecutionResult } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { deadline, timeoutOf } from '@fathom/timeout'
+import type { ToolExecutionResult } from '@fathom/tools'
 
 /**
  * The code owned by this plugin, used BOTH as the internal {@link deadline}

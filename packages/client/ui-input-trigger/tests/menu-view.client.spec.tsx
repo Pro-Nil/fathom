@@ -9,11 +9,11 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { en } from '../src/client/locales.ts'
-import type { MenuState, TriggerHit } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import type { MenuState, TriggerHit } from '@fathom/client-ui-input-trigger/client'
 import { MenuView } from '../src/client/MenuView.tsx'
 
 const hit: TriggerHit = {

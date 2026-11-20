@@ -3,22 +3,22 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import TerminalSessionService from '@pentest-harness/dsh-terminal'
-import SandboxProvider from '@pentest-harness/dsh-sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@pentest-harness/dsh-sandbox'
-import SandboxPolicyService from '@pentest-harness/dsh-sandbox-policy'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as TerminalLocal from '@pentest-harness/dsh-terminal-bash'
-import * as ToolPty from '@pentest-harness/dsh-tool-terminal'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import { CallId } from '@fathom/llm'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import TerminalSessionService from '@fathom/terminal'
+import SandboxProvider from '@fathom/sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@fathom/sandbox'
+import SandboxPolicyService from '@fathom/sandbox-policy'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as TerminalLocal from '@fathom/terminal-bash'
+import * as ToolPty from '@fathom/tool-terminal'
 
 let root: string | undefined
 let context: Context | undefined
@@ -61,20 +61,20 @@ const suite = process.platform === 'linux' || process.platform === 'darwin' ? de
 
 suite('terminal real Loader composition through cordis.yml', () => {
   it('boots cordis.yml and preserves shell state across real tool calls', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-pty-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'fathom-pty-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-agent'",
-      "- name: '@pentest-harness/dsh-system-prompt'",
-      "- name: '@pentest-harness/dsh-tools'",
-      "- name: '@pentest-harness/dsh-terminal'",
-      "- name: '@pentest-harness/dsh-test-sandbox'",
-      "- name: '@pentest-harness/dsh-sandbox-policy'",
+      "- name: '@fathom/agent'",
+      "- name: '@fathom/system-prompt'",
+      "- name: '@fathom/tools'",
+      "- name: '@fathom/terminal'",
+      "- name: '@fathom/test-sandbox'",
+      "- name: '@fathom/sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
       `    workspaceRoot: ${JSON.stringify(root)}`,
-      "- name: '@pentest-harness/dsh-subprocess-local'",
-      "- name: '@pentest-harness/dsh-terminal-bash'",
+      "- name: '@fathom/subprocess-local'",
+      "- name: '@fathom/terminal-bash'",
       '  config:',
       '    pollIntervalMs: 10',
       '    exactProbeAfterMs: 20',
@@ -82,7 +82,7 @@ suite('terminal real Loader composition through cordis.yml', () => {
       '    handoffGraceMs: 250',
       '    timeoutMs: 2000',
       '    disposeGraceMs: 500',
-      "- name: '@pentest-harness/dsh-tool-terminal'",
+      "- name: '@fathom/tool-terminal'",
       '',
     ].join('\n'))
 
@@ -91,15 +91,15 @@ suite('terminal real Loader composition through cordis.yml', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@pentest-harness/dsh-agent', AgentRegistry],
-      ['@pentest-harness/dsh-system-prompt', SystemPrompt],
-      ['@pentest-harness/dsh-tools', ToolRuntime],
-      ['@pentest-harness/dsh-terminal', TerminalSessionService],
-      ['@pentest-harness/dsh-test-sandbox', PassthroughSandbox],
-      ['@pentest-harness/dsh-sandbox-policy', SandboxPolicyService],
-      ['@pentest-harness/dsh-subprocess-local', LocalSubprocessRuntime],
-      ['@pentest-harness/dsh-terminal-bash', TerminalLocal],
-      ['@pentest-harness/dsh-tool-terminal', ToolPty],
+      ['@fathom/agent', AgentRegistry],
+      ['@fathom/system-prompt', SystemPrompt],
+      ['@fathom/tools', ToolRuntime],
+      ['@fathom/terminal', TerminalSessionService],
+      ['@fathom/test-sandbox', PassthroughSandbox],
+      ['@fathom/sandbox-policy', SandboxPolicyService],
+      ['@fathom/subprocess-local', LocalSubprocessRuntime],
+      ['@fathom/terminal-bash', TerminalLocal],
+      ['@fathom/tool-terminal', ToolPty],
     ])
     context.loader.internal = {
       version: 'v2',

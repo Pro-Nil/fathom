@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { DEFAULT_SEARCH_URL, SharedBrowser } from '@pentest-harness/dsh-browser'
+import { DEFAULT_SEARCH_URL, SharedBrowser } from '@fathom/browser'
 import { encryptChromiumLinuxValue, parseCsv, parsePasswordCsv } from '../src/passwords.ts'
 
 describe('parseCsv', () => {
@@ -39,7 +39,7 @@ describe('encryptChromiumLinuxValue', () => {
 // Real Chromium: import into a throwaway profile, reopen, and check the
 // browser's own password manager lists the entries.
 describe.runIf(process.platform === 'win32' || process.platform === 'linux')('SharedBrowser.importPasswords (real Chromium)', () => {
-  const profileDir = mkdtempSync(join(tmpdir(), 'dsh-browser-pw-'))
+  const profileDir = mkdtempSync(join(tmpdir(), 'fathom-browser-pw-'))
   const browser = new SharedBrowser({ channel: 'chromium', headless: true, profileDir, width: 900, height: 700, searchUrl: DEFAULT_SEARCH_URL })
   afterAll(async () => {
     await browser.dispose()

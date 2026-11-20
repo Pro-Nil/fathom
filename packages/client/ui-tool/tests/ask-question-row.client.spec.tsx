@@ -9,12 +9,12 @@
  */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import type { ToolResultNode } from '@fathom/client-runtime/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 // Export discipline: packages/client/AGENTS.md.
 import { AskQuestionRow, askQuestionToolview } from '../src/client/tool/toolviews/ask-question-row.tsx'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 

@@ -2,29 +2,29 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime, { createUserMessage, CallId, HarnessError  } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@pentest-harness/dsh-tools'
-import type { ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import LlmRuntime, { createUserMessage, CallId, HarnessError  } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@fathom/tools'
+import type { ToolExecutionResult } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import { WorkerThreadCodeRuntime } from '@pentest-harness/dsh-code-runtime-worker-thread'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
-import * as WorkspaceContext from '@pentest-harness/dsh-agent-instructions'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
-import CordisHostRunner from '@pentest-harness/dsh-cordis-host-runner'
-import * as ToolCordis from '@pentest-harness/dsh-tool-cordis'
+import AgentLoop from '@fathom/agent-loop'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import * as BashEnvPlugin from '@fathom/shell-env'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as ToolBash from '@fathom/tool-bash'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import { WorkerThreadCodeRuntime } from '@fathom/code-runtime-worker-thread'
+import LocalFileSystem from '@fathom/fs-local'
+import * as ToolFs from '@fathom/tool-fs'
+import * as WorkspaceContext from '@fathom/agent-instructions'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as ToolTasks from '@fathom/tool-jobs'
+import CordisHostRunner from '@fathom/cordis-host-runner'
+import * as ToolCordis from '@fathom/tool-cordis'
 
 /** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
 function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
@@ -202,7 +202,7 @@ describe('Code Mode typed values: keyless real-worker contracts', () => {
   })
 
   it('returns a background job id, settles the outer run, and polls that id to completion', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-background-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-code-mode-background-'))
     ctx = await backgroundCodeModeHarness(workdir)
 
     const jobId = completion(await runCode(ctx, `
@@ -225,7 +225,7 @@ describe('Code Mode typed values: keyless real-worker contracts', () => {
   }, 15_000)
 
   it('pre-abort spawns nothing; post-publication abort leaves job_kill as the cancellation owner', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-task-cancel-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-code-mode-task-cancel-'))
     ctx = await backgroundCodeModeHarness(workdir)
 
     const pre = new AbortController()
@@ -262,7 +262,7 @@ describe('Code Mode typed values: keyless real-worker contracts', () => {
   }, 15_000)
 
   it('keeps foreground bash coupled to the outer signal', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-foreground-cancel-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-code-mode-foreground-cancel-'))
     ctx = await backgroundCodeModeHarness(workdir)
     const controller = new AbortController()
     const startedAt = Date.now()
@@ -366,7 +366,7 @@ function waitForIdle(harness: Context, agent: Agent): Promise<void> {
 
 describe.skipIf(!process.env.ACME_API_KEY)('Code Mode: real model writes a program over real tools', () => {
   it('collapses the wire tool list to [run_code], bridges sub-calls, and returns curated output', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-code-mode-e2e-'))
     ctx = await codeModeHarness(workdir)
     const agent = ctx.agentLoop.create(SessionId('e2e-code-mode'), { provider: 'acme-official', model: 'acme-v4-flash' })
 
@@ -411,7 +411,7 @@ describe.skipIf(!process.env.ACME_API_KEY)('Code Mode: real model writes a progr
   }, 180_000)
 
   it('projects nested workspace instructions discovered by an fs sub-call', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-code-mode-workspace-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-code-mode-workspace-e2e-'))
     await mkdir(join(workdir, '.git'), { recursive: true })
     await mkdir(join(workdir, 'pkg/deep'), { recursive: true })
     await writeFile(join(workdir, 'pkg/AGENTS.md'), `If asked for the Code Mode workspace handshake, reply with exactly ${WORKSPACE_PROBE} and nothing else.\n`)

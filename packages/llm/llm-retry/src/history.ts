@@ -1,6 +1,6 @@
-/** Durable request-route lookup for one open model step. @module @pentest-harness/dsh-llm-retry/history */
+/** Durable request-route lookup for one open model step. @module @fathom/llm-retry/history */
 
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 
 /**
  * Find the provider in force for one currently open step.

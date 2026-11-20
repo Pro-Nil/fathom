@@ -1,13 +1,13 @@
 # Keyless twin of subagent-result-diagnostic.cordis.yml: keep the same test
 # provider/tool and replace only the external model adapter.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               providers:
                 - id: acme-official
@@ -18,12 +18,12 @@
           - id: subagent-result-diagnostic
             name: './tests/fixtures/subagent-result-diagnostic.ts'
           - id: tool-subagent-codex
-            name: '@pentest-harness/dsh-tool-subagent'
+            name: '@fathom/tool-subagent'
             config:
               provider: snapshot-diagnostic
               toolName: subagent_codex
               backgroundMode: one-shot
               maxDepth: provider-managed
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true

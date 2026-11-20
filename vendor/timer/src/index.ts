@@ -1,6 +1,6 @@
-import { Context, Service } from '@pentest-harness/cordis'
+import { Context, Service } from '@fathom/cordis'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context extends Pick<TimerService, 'interval' | 'timeout' | 'throttle' | 'debounce' | 'setTimeout' | 'setInterval'> {
     timer: TimerService
   }

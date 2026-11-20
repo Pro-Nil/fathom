@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
 import { apply, inject } from '../src/client/index.ts'
 import { OfficialBrandMark, OfficialBrandName } from '../src/client/Brand.tsx'
 
@@ -35,14 +35,14 @@ describe('official browser-brand plugin', () => {
   })
 
   it('leaves every slot empty outside the official build profile', async () => {
-    vi.stubEnv('DSH_CLIENT_BUILD_PROFILE', 'local')
+    vi.stubEnv('FATHOM_CLIENT_BUILD_PROFILE', 'local')
     const subject = await bench()
     await subject.ctx.plugin({ inject: [...inject], apply }).await()
     for (const hole of HOLES) expect(subject.slots.entries(hole)).toHaveLength(0)
   })
 
   it('fills declarations before or after apply and removes every occupant on teardown', async () => {
-    vi.stubEnv('DSH_CLIENT_BUILD_PROFILE', 'official')
+    vi.stubEnv('FATHOM_CLIENT_BUILD_PROFILE', 'official')
     const before = await bench()
     const fiber = before.ctx.plugin({ inject: [...inject], apply })
     await fiber.await()
@@ -69,7 +69,7 @@ describe('official browser-brand plugin', () => {
     // The name is set type, not artwork: no image, and the full product name.
     const name = render(<OfficialBrandName />)
     expect(name.container.querySelector('svg')).toBeNull()
-    expect(name.container.textContent).toBe('PentestHarness')
+    expect(name.container.textContent).toBe('Fathom')
     name.unmount()
 
     // The mark is the line-drawn glyph in the surrounding ink, never the raster logo.

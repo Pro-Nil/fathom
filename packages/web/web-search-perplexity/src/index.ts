@@ -1,16 +1,16 @@
 /**
- * `@pentest-harness/dsh-web-search-perplexity`: registers a Perplexity-backed
+ * `@fathom/web-search-perplexity`: registers a Perplexity-backed
  * `WebSearchProvider` with `ctx.web`. A function/namespace plugin (NOT a
  * default-export service): it registers INTO the seam's provider registry, like
- * `@pentest-harness/dsh-llm-acme` registers an adapter into `ctx.llm`.
+ * `@fathom/llm-acme` registers an adapter into `ctx.llm`.
  *
- * @module @pentest-harness/dsh-web-search-perplexity
+ * @module @fathom/web-search-perplexity
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { launchEnvironmentOf } from '@pentest-harness/dsh-launch-environment'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-web'
+import type { Context } from '@fathom/cordis'
+import { launchEnvironmentOf } from '@fathom/launch-environment'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/web'
 import { PerplexitySearchProvider, PERPLEXITY_DEFAULT_BASE_URL, PERPLEXITY_DEFAULT_MAX_TOKENS, PERPLEXITY_DEFAULT_MODEL } from './provider.ts'
 
 export {

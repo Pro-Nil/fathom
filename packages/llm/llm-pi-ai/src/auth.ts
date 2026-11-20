@@ -5,20 +5,20 @@
  * name nothing from this library, so another adapter family can arrive with a
  * different auth model and share the same two seams.
  *
- * @module dsh-llm-pi-ai/auth
+ * @module fathom-llm-pi-ai/auth
  */
 
 import { homedir } from 'node:os'
 import { access } from 'node:fs/promises'
 import { resolve as resolvePath } from 'node:path'
 import type { AuthContext, Credential, CredentialInfo, CredentialStore } from '@earendil-works/pi-ai'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import {
   credentialKey, credentialKeyId, credentialKeyScope, credentialRef, isCredentialKeySegment, isCredentialRefName,
-} from '@pentest-harness/dsh-credentials'
-import type { CredentialKey, CredentialProvider, CredentialRecord } from '@pentest-harness/dsh-credentials'
-import { launchEnvironmentOf } from '@pentest-harness/dsh-launch-environment'
-import { LlmError } from '@pentest-harness/dsh-llm'
+} from '@fathom/credentials'
+import type { CredentialKey, CredentialProvider, CredentialRecord } from '@fathom/credentials'
+import { launchEnvironmentOf } from '@fathom/launch-environment'
+import { LlmError } from '@fathom/llm'
 
 /**
  * The record scope every credential this adapter family stores is written
@@ -90,7 +90,7 @@ function writableStore(ctx: Context): CredentialProvider {
   if (credentials === undefined) {
     throw new LlmError(
       'llm-pi-ai: this composition mounts no credentials service, so there is nowhere to store the'
-      + ' credential a sign-in produces; mount one (dsh-credentials-local) to sign in',
+      + ' credential a sign-in produces; mount one (fathom-credentials-local) to sign in',
       'NO_CREDENTIAL_STORE',
     )
   }

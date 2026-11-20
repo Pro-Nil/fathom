@@ -8,18 +8,18 @@
  *
  * Namespace plugin (named exports, no default export). Lifecycle is effect-scoped: disposal
  * unregisters from `ctx.lsp` and tears down every live server.
- * @module @pentest-harness/dsh-lsp-stdio
+ * @module @fathom/lsp-stdio
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { LspError, LspProviderId } from '@pentest-harness/dsh-lsp'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { LspError, LspProviderId } from '@fathom/lsp'
 import type {
   LspProvider,
   LspProviderQuery,
   LspQueryResult,
-} from '@pentest-harness/dsh-lsp'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+} from '@fathom/lsp'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import { abortable, abortError } from './abort.ts'
 import { canonicalizeWorkspace, readHostSource } from './host.ts'
 import type { HostWorkspace } from './host.ts'

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import InvariantService, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import InvariantService, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId } from '@fathom/session'
 import * as TeamInvariant from '../src/invariant.ts'
 import { TeamId, TeamTaskId } from '../src/types.ts'
 
@@ -38,7 +38,7 @@ describe('Agent Teams stream invariant', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-experimental-agent-team',
+      packageName: '@fathom/experimental-agent-team',
     }))
     expect(invalid.events).toEqual([])
   })
@@ -63,7 +63,7 @@ describe('Agent Teams stream invariant', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-experimental-agent-team',
+      packageName: '@fathom/experimental-agent-team',
     }))
     expect(session.events).toEqual([])
   })

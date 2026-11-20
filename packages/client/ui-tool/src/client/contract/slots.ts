@@ -1,11 +1,11 @@
 /** Tool UI slot declarations and their composed component props. */
-import type { HostDescriptionSource } from '@pentest-harness/dsh-client-connection/client'
-import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
-import type { ToolCallBlock } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type {} from '@pentest-harness/dsh-client-locale/client'
+import type { HostDescriptionSource } from '@fathom/client-connection/client'
+import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@fathom/client-ui-slots'
+import type { ToolCallBlock } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-ui-conversation/client'
+import type {} from '@fathom/client-locale/client'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     /**
      * Keyed atomic Tool call view, dispatched by the wire Tool name. Register

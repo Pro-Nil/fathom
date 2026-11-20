@@ -1,8 +1,8 @@
-import type { Context } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/dsh-agent'
-import { CompactionId, compactCheckpointSource } from '@pentest-harness/dsh-compaction'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type {} from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import type {} from '@fathom/agent'
+import { CompactionId, compactCheckpointSource } from '@fathom/compaction'
+import { createUserMessage } from '@fathom/llm'
+import type {} from '@fathom/tools'
 
 export const name = 'workspace-context-compaction'
 

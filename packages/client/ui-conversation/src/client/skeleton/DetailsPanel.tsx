@@ -7,9 +7,9 @@
 // session snapshot — no data of its own.
 
 import { Fragment } from 'react'
-import { CodeBlock } from '@pentest-harness/dsh-client-ui-primitives'
-import { shallowEqual } from '@pentest-harness/dsh-client-runtime/client'
-import type { ConversationSnapshot, RunningToolCall, ToolCallBlock, ToolResultNode } from '@pentest-harness/dsh-client-runtime/client'
+import { CodeBlock } from '@fathom/client-ui-primitives'
+import { shallowEqual } from '@fathom/client-runtime/client'
+import type { ConversationSnapshot, RunningToolCall, ToolCallBlock, ToolResultNode } from '@fathom/client-runtime/client'
 import type { DetailsSlotProps } from '../contract/slots.ts'
 import { findToolCall } from '../chat/tool-node-reader.ts'
 import css from './DetailsPanel.module.css'

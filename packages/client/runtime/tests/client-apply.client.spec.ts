@@ -3,12 +3,12 @@
  * connection handle, stream-loop sink wiring into the object layer, and the
  * fiber-scoped loop teardown.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { ConnectionHandle } from '@pentest-harness/dsh-api-remotes/client'
-import type { ConnectionSinks } from '@pentest-harness/dsh-api-remotes/client'
-import { SESSION_SEARCH_RESULT_LIMIT } from '@pentest-harness/dsh-host-apiproxy/api'
-import TypertRegistry from '@pentest-harness/dsh-typert-registry'
+import type { ConnectionHandle } from '@fathom/api-remotes/client'
+import type { ConnectionSinks } from '@fathom/api-remotes/client'
+import { SESSION_SEARCH_RESULT_LIMIT } from '@fathom/host-apiproxy/api'
+import TypertRegistry from '@fathom/typert-registry'
 import * as RuntimeClient from '../src/client/index.ts'
 import type { ConversationNodeDefinition } from '../src/client/contract/conversation.ts'
 import { Session } from '../src/client/sessions/session.ts'

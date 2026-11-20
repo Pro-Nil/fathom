@@ -10,9 +10,9 @@
  * trace and does not count toward the empty line.
  */
 
-import type { SettingsDescribeFace } from '@pentest-harness/dsh-client-ui-settings/client'
-import type { StoredEntry } from '@pentest-harness/dsh-client-ui-slots'
-import { createSnapshotStore, type SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import type { SettingsDescribeFace } from '@fathom/client-ui-settings/client'
+import type { StoredEntry } from '@fathom/client-ui-slots'
+import { createSnapshotStore, type SnapshotStore } from '@fathom/client-runtime/client'
 
 /** What the section renders. */
 export interface ConfigurablePluginsTabState {

@@ -10,12 +10,12 @@
  * preset decides the tool schemas and prompt sections the model sees.
  *
  * Reconstruction reads {@link resolveSessionPreset}, never the header alone.
- * @module @pentest-harness/dsh-agent-presets/session
+ * @module @fathom/agent-presets/session
  */
 
-import type { SessionEvent, SessionHeader } from '@pentest-harness/dsh-session'
+import type { SessionEvent, SessionHeader } from '@fathom/session'
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /**
      * The session's agent preset was chosen after creation, while the session

@@ -1,5 +1,5 @@
-import { defineProperty, isNullable } from '@pentest-harness/cosmokit'
-import type { Dict } from '@pentest-harness/cosmokit'
+import { defineProperty, isNullable } from '@fathom/cosmokit'
+import type { Dict } from '@fathom/cosmokit'
 import { Context } from './context.ts'
 import { getTraceable, symbols, withProps } from './utils.ts'
 import { Fiber, FiberState } from './fiber.ts'

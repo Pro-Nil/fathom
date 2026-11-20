@@ -95,19 +95,19 @@ function checkManifest(
   if (!manifest.files?.includes('lib/invariant.js')) {
     addViolation(violations, owner.manifestPath, 'files must publish lib/invariant.js')
   }
-  if (owner.packageName === '@pentest-harness/dsh-invariants') return
-  if (manifest.peerDependencies?.['@pentest-harness/dsh-invariants'] !== 'workspace:^') {
+  if (owner.packageName === '@fathom/invariants') return
+  if (manifest.peerDependencies?.['@fathom/invariants'] !== 'workspace:^') {
     addViolation(
       violations,
       owner.manifestPath,
-      '@pentest-harness/dsh-invariants must be a workspace:^ peerDependency',
+      '@fathom/invariants must be a workspace:^ peerDependency',
     )
   }
-  if (manifest.devDependencies?.['@pentest-harness/dsh-invariants'] !== 'workspace:^') {
+  if (manifest.devDependencies?.['@fathom/invariants'] !== 'workspace:^') {
     addViolation(
       violations,
       owner.manifestPath,
-      '@pentest-harness/dsh-invariants must also be a workspace:^ devDependency',
+      '@fathom/invariants must also be a workspace:^ devDependency',
     )
   }
 }
@@ -118,7 +118,7 @@ function checkBuild(
   violations: PackageInvariantViolation[],
 ): void {
   const tsconfigPath = `${owner.dir}/tsconfig.json`
-  if (owner.packageName !== '@pentest-harness/dsh-invariants'
+  if (owner.packageName !== '@fathom/invariants'
     && !projectReferencesInvariants(root, owner.dir, tsconfigPath)) {
     addViolation(
       violations,

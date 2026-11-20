@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
-import { Modal } from '@pentest-harness/dsh-client-ui-primitives'
+import { Modal } from '@fathom/client-ui-primitives'
 import css from './OnboardingModal.module.css'
 
 const ignoreImplicitDismiss = (): void => {}

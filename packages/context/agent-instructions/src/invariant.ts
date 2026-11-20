@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-agent-instructions`.
- * @module @pentest-harness/dsh-agent-instructions/invariant
+ * Package-owned invariant companion for `@fathom/agent-instructions`.
+ * @module @fathom/agent-instructions/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-agent-instructions'
+const PACKAGE_NAME = '@fathom/agent-instructions'
 
 /** Cordis companion plugin name. */
 export const name = 'workspace-context-invariant'

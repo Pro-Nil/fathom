@@ -1,10 +1,10 @@
 /** Request-header canonicalization, equality, snapshot folding, and format rejection. */
 
 import { describe, expect, it } from 'vitest'
-import { Session, SessionId, canonicalHeader, foldRequestHeader, headerEquals } from '@pentest-harness/dsh-session'
-import type { EpochHeader, SessionEvent } from '@pentest-harness/dsh-session'
-import { createUserMessage, ReasoningEffortId } from '@pentest-harness/dsh-llm'
-import type { ToolSchema } from '@pentest-harness/dsh-llm'
+import { Session, SessionId, canonicalHeader, foldRequestHeader, headerEquals } from '@fathom/session'
+import type { EpochHeader, SessionEvent } from '@fathom/session'
+import { createUserMessage, ReasoningEffortId } from '@fathom/llm'
+import type { ToolSchema } from '@fathom/llm'
 
 const CONFIG = { provider: 'mock', model: 'm' }
 

@@ -1,5 +1,5 @@
-import { defineProperty } from '@pentest-harness/cosmokit'
-import type { Promisify } from '@pentest-harness/cosmokit'
+import { defineProperty } from '@fathom/cosmokit'
+import type { Promisify } from '@fathom/cosmokit'
 import { Context } from './context.ts'
 import { Fiber, FiberState } from './fiber.ts'
 import { DisposableList, symbols } from './utils.ts'

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import { ApprovalRequestId } from '@pentest-harness/dsh-user-approval'
-import * as ApprovalInvariant from '@pentest-harness/dsh-user-approval/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import { ApprovalRequestId } from '@fathom/user-approval'
+import * as ApprovalInvariant from '@fathom/user-approval/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

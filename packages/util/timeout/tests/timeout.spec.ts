@@ -6,7 +6,7 @@ import {
   MAX_TIMER_DELAY_MS,
   timeoutOf,
   TimeoutReason,
-} from '@pentest-harness/dsh-timeout'
+} from '@fathom/timeout'
 
 describe('TimeoutReason', () => {
   it('is an Error carrying the code and elapsed ms', () => {

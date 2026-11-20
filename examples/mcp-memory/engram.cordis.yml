@@ -2,7 +2,7 @@
 # first; storage and project selection remain Engram-owned.
 - insert:
     - id: memory-engram
-      name: '@pentest-harness/dsh-mcp-client'
+      name: '@fathom/mcp-client'
       config:
         serverName: engram
         transport: stdio

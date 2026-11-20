@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-workflow-worker-thread`.
- * @module @pentest-harness/dsh-workflow-worker-thread/invariant
+ * Package-owned invariant companion for `@fathom/workflow-worker-thread`.
+ * @module @fathom/workflow-worker-thread/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-workflow-worker-thread'
+const PACKAGE_NAME = '@fathom/workflow-worker-thread'
 
 /** Cordis companion plugin name. */
 export const name = 'workflow-worker-thread-invariant'

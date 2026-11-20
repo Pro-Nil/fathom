@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { PromptAssembly } from '@pentest-harness/dsh-system-prompt'
-import * as SystemPromptInvariant from '@pentest-harness/dsh-system-prompt/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import type { PromptAssembly } from '@fathom/system-prompt'
+import * as SystemPromptInvariant from '@fathom/system-prompt/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

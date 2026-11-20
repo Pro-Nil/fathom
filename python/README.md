@@ -1,13 +1,13 @@
-# Pentest Harness Python SDK
+# Fathom Python SDK
 
-Python packages for driving Pentest Harness as a subprocess. The client SDK communicates with the bundled runtime over newline-delimited JSON-RPC on stdio.
+Python packages for driving Fathom as a subprocess. The client SDK communicates with the bundled runtime over newline-delimited JSON-RPC on stdio.
 
 ## Packages
 
 | Directory | Dist / module | Role |
 |---|---|---|
-| [sdk](sdk/README.md) | `pentest-harness-sdk` / `pentest_harness` | High-level turns API and lower-level JSON-RPC client |
-| [sdk-runtime](sdk-runtime/README.md) | `pentest-harness-runtime-bin` / `pentest_harness_runtime` | Bundled runtime binaries and default agent configuration |
+| [sdk](sdk/README.md) | `fathom-sdk` / `fathom` | High-level turns API and lower-level JSON-RPC client |
+| [sdk-runtime](sdk-runtime/README.md) | `fathom-runtime-bin` / `fathom_runtime` | Bundled runtime binaries and default agent configuration |
 
 ## Behavior
 

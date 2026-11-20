@@ -1,5 +1,5 @@
 /**
- * Real-load-path guard for @pentest-harness/dsh-tool-fs-search. `tool-fs-search` is
+ * Real-load-path guard for @fathom/tool-fs-search. `tool-fs-search` is
  * a NAMESPACE plugin with `inject` — so a stray `export default apply` would
  * make the cordis Loader's `unwrapExports` (`exports.default ?? exports`)
  * collapse the module to the bare `apply` function, DROPPING `inject`. The
@@ -15,14 +15,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as toolFsSearch from '@pentest-harness/dsh-tool-fs-search'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as toolFsSearch from '@fathom/tool-fs-search'
 
-describe('dsh-tool-fs-search real-load-path guard', () => {
+describe('fathom-tool-fs-search real-load-path guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {
     expect('default' in toolFsSearch).toBe(false)
 

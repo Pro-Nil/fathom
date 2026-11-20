@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
+import type { UserMessage } from '@fathom/llm'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,

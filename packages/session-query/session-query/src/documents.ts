@@ -1,7 +1,7 @@
 /** Shared event metadata and semantic-document projection. */
 
-import { foldSurface } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
+import { foldSurface } from '@fathom/session'
+import type { SessionEvent, SessionId } from '@fathom/session'
 import type { SessionEventRecord, SessionEventSearchDocument, SessionEventSurface } from './types.ts'
 import { SessionQueryError } from './config.ts'
 import { extractSessionEventText } from './extraction.ts'

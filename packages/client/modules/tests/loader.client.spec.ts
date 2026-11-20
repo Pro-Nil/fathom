@@ -7,16 +7,16 @@
  * default transport hook, and the loud failure modes (duplicate
  * registration, cycles, table misses, double boot).
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   apply, createClientModuleSystem, parseBootManifest,
   type BootModuleRow, type ClientBundleRegistration, type ClientModuleCreateOptions,
-  type ClientModuleLoader, type ClientModuleLoaderTarget, type DshWindow,
+  type ClientModuleLoader, type ClientModuleLoaderTarget, type FathomWindow,
 } from '../src/client/index.ts'
 
-const MODULES_ID = '@pentest-harness/dsh-client-modules'
-const win = globalThis as DshWindow
+const MODULES_ID = '@fathom/client-modules'
+const win = globalThis as FathomWindow
 const bootstrapExports = { apply, createClientModuleSystem }
 
 type Factory = ClientBundleRegistration['factory']

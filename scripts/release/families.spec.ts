@@ -27,7 +27,7 @@ function write(path: string, content: string): void {
 }
 
 function buildFixture(environment: Record<string, string>): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-release-build-'))
+  const root = mkdtempSync(join(tmpdir(), 'fathom-release-build-'))
   roots.push(root)
   write(join(root, 'apps/web/dist/index.html'), '<main></main>')
   write(join(root, 'packages/client/example/lib/client.js'), 'module.exports = {}\n')
@@ -41,38 +41,38 @@ afterEach(() => {
 })
 
 describe('release families', () => {
-  it('excludes private experimental packages from the dsh release', () => {
-    const members = releaseFamily('dsh').members(resolve(import.meta.dirname, '../..'))
+  it('excludes private experimental packages from the fathom release', () => {
+    const members = releaseFamily('fathom').members(resolve(import.meta.dirname, '../..'))
 
     expect(members.some(member => member.directory.startsWith('packages/experimental/'))).toBe(false)
-    expect(members.map(member => member.name)).not.toContain('@pentest-harness/dsh-experimental-agent-team')
+    expect(members.map(member => member.name)).not.toContain('@fathom/experimental-agent-team')
   })
 
-  it('bumps private dsh packages without adding release tags', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-release-version-'))
+  it('bumps private fathom packages without adding release tags', () => {
+    const root = mkdtempSync(join(tmpdir(), 'fathom-release-version-'))
     roots.push(root)
     write(join(root, 'package.json'), '{"version":"0.0.1"}\n')
     write(join(root, 'packages/experimental/prototype/package.json'), '{"version":"0.0.1","private":true}\n')
     write(join(root, 'packages/core/unselected/package.json'), '{"version":"0.0.1"}\n')
 
-    const dsh = releaseFamily('dsh')
-    const published = member('packages/core/published', '@pentest-harness/dsh-published')
-    const { planned } = planShared(dsh, root, [published], '0.0.2')
+    const fathom = releaseFamily('fathom')
+    const published = member('packages/core/published', '@fathom/published')
+    const { planned } = planShared(fathom, root, [published], '0.0.2')
 
     expect(planned.map(entry => ({ path: entry.manifestPath, tag: entry.tag }))).toEqual([
       { path: 'package.json', tag: undefined },
-      { path: 'packages/core/published/package.json', tag: 'dsh-v0.0.2' },
+      { path: 'packages/core/published/package.json', tag: 'fathom-v0.0.2' },
       { path: 'packages/experimental/prototype/package.json', tag: undefined },
     ])
   })
 
-  it('names one tag for the whole dsh family and one per vendored package', () => {
-    const dsh = releaseFamily('dsh')
+  it('names one tag for the whole fathom family and one per vendored package', () => {
+    const fathom = releaseFamily('fathom')
     const vendor = releaseFamily('vendor')
-    const cli = member('apps/cli', '@pentest-harness/dsh')
-    const cordis = { ...member('vendor/cordis', '@pentest-harness/cordis'), version: '4.0.1' }
+    const cli = member('apps/cli', '@fathom/cli')
+    const cordis = { ...member('vendor/cordis', '@fathom/cordis'), version: '4.0.1' }
 
-    expect(dsh.tagFor(cli)).toBe('dsh-v0.0.1')
+    expect(fathom.tagFor(cli)).toBe('fathom-v0.0.1')
     expect(vendor.tagFor(cordis)).toBe('vendor-cordis-v4.0.1')
     // The prefix is constructed, not recovered from a tag: a version with a
     // hyphen would defeat any suffix-stripping.
@@ -81,167 +81,167 @@ describe('release families', () => {
   })
 
   it('rejects a family whose members disagree on the shared version', () => {
-    const dsh = releaseFamily('dsh')
-    const members = [member('apps/cli', '@pentest-harness/dsh'), { ...member('apps/web', '@pentest-harness/dsh-web-frontend'), version: '0.0.2' }]
+    const fathom = releaseFamily('fathom')
+    const members = [member('apps/cli', '@fathom/cli'), { ...member('apps/web', '@fathom/web-frontend'), version: '0.0.2' }]
 
-    expect(() => { dsh.verifyVersions(members) }).toThrow(/must share one version/)
-    expect(() => { dsh.verifyVersions([members[0]!]) }).not.toThrow()
+    expect(() => { fathom.verifyVersions(members) }).toThrow(/must share one version/)
+    expect(() => { fathom.verifyVersions([members[0]!]) }).not.toThrow()
   })
 
   it('accepts independent vendored versions and rejects an unpublishable one', () => {
     const vendor = releaseFamily('vendor')
     const members = [
-      { ...member('vendor/cordis', '@pentest-harness/cordis'), version: '4.0.1' },
-      { ...member('vendor/cosmokit', '@pentest-harness/cosmokit'), version: '1.8.2' },
+      { ...member('vendor/cordis', '@fathom/cordis'), version: '4.0.1' },
+      { ...member('vendor/cosmokit', '@fathom/cosmokit'), version: '1.8.2' },
     ]
 
     expect(() => { vendor.verifyVersions(members) }).not.toThrow()
     expect(() => { vendor.verifyVersions([{ ...members[0]!, version: 'latest' }]) }).toThrow(/unpublishable version/)
   })
 
-  it('requires a current official client build only for dsh artifacts', () => {
-    const dsh = releaseFamily('dsh')
+  it('requires a current official client build only for fathom artifacts', () => {
+    const fathom = releaseFamily('fathom')
     const vendor = releaseFamily('vendor')
     const officialEnvironment = officialClientBuildEnvironment(resolve(import.meta.dirname, '../..'))
-    vi.stubEnv('DSH_CLIENT_COMMIT_HASH', officialEnvironment.DSH_CLIENT_COMMIT_HASH)
+    vi.stubEnv('FATHOM_CLIENT_COMMIT_HASH', officialEnvironment.FATHOM_CLIENT_COMMIT_HASH)
     const official = buildFixture(officialEnvironment)
     const defaultBuild = buildFixture({})
 
-    expect(() => { dsh.verifyBuildArtifacts(official) }).not.toThrow()
-    expect(() => { dsh.verifyBuildArtifacts(defaultBuild) }).toThrow(/DSH_CLIENT_TITLE/)
-    expect(() => { dsh.verifyBuildArtifacts(join(defaultBuild, 'missing')) }).toThrow(/record.*missing/)
+    expect(() => { fathom.verifyBuildArtifacts(official) }).not.toThrow()
+    expect(() => { fathom.verifyBuildArtifacts(defaultBuild) }).toThrow(/FATHOM_CLIENT_TITLE/)
+    expect(() => { fathom.verifyBuildArtifacts(join(defaultBuild, 'missing')) }).toThrow(/record.*missing/)
     expect(() => { vendor.verifyBuildArtifacts(join(defaultBuild, 'missing')) }).not.toThrow()
 
     write(join(official, 'packages/client/example/lib/client.js'), 'module.exports = { changed: true }\n')
-    expect(() => { dsh.verifyBuildArtifacts(official) }).toThrow(/artifacts differ/)
+    expect(() => { fathom.verifyBuildArtifacts(official) }).toThrow(/artifacts differ/)
   })
 
   it('publishes a dependency before its consumer, and orders ties by name', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/consumer', '@pentest-harness/dsh-consumer', { dependencies: { '@pentest-harness/dsh-library': 'workspace:^' } }),
-      member('packages/a/library', '@pentest-harness/dsh-library'),
-      member('packages/a/zebra', '@pentest-harness/dsh-zebra'),
+      member('packages/a/consumer', '@fathom/consumer', { dependencies: { '@fathom/library': 'workspace:^' } }),
+      member('packages/a/library', '@fathom/library'),
+      member('packages/a/zebra', '@fathom/zebra'),
     ]
 
-    expect(dsh.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@pentest-harness/dsh-library',
-      '@pentest-harness/dsh-consumer',
-      '@pentest-harness/dsh-zebra',
+    expect(fathom.publishOrder(members).order.map(entry => entry.name)).toEqual([
+      '@fathom/library',
+      '@fathom/consumer',
+      '@fathom/zebra',
     ])
   })
 
   it('reports a runtime dependency cycle instead of emitting an arbitrary order', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/left', '@pentest-harness/dsh-left', { dependencies: { '@pentest-harness/dsh-right': 'workspace:^' } }),
-      member('packages/a/right', '@pentest-harness/dsh-right', { dependencies: { '@pentest-harness/dsh-left': 'workspace:^' } }),
+      member('packages/a/left', '@fathom/left', { dependencies: { '@fathom/right': 'workspace:^' } }),
+      member('packages/a/right', '@fathom/right', { dependencies: { '@fathom/left': 'workspace:^' } }),
     ]
 
-    expect(() => { dsh.publishOrder(members) }).toThrow(/dependency cycle/)
+    expect(() => { fathom.publishOrder(members) }).toThrow(/dependency cycle/)
   })
 
   it('publishes a peer before its consumer', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/consumer', '@pentest-harness/dsh-consumer', { peerDependencies: { '@pentest-harness/dsh-zebra': 'workspace:^' } }),
-      member('packages/a/zebra', '@pentest-harness/dsh-zebra'),
+      member('packages/a/consumer', '@fathom/consumer', { peerDependencies: { '@fathom/zebra': 'workspace:^' } }),
+      member('packages/a/zebra', '@fathom/zebra'),
     ]
 
     // Name order alone would place the consumer first; the peer edge moves it.
-    expect(dsh.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@pentest-harness/dsh-zebra',
-      '@pentest-harness/dsh-consumer',
+    expect(fathom.publishOrder(members).order.map(entry => entry.name)).toEqual([
+      '@fathom/zebra',
+      '@fathom/consumer',
     ])
   })
 
   it('orders around a peer cycle rather than refusing to publish, and reports the edge it dropped', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/left', '@pentest-harness/dsh-left', { peerDependencies: { '@pentest-harness/dsh-right': 'workspace:^' } }),
-      member('packages/a/right', '@pentest-harness/dsh-right', { peerDependencies: { '@pentest-harness/dsh-left': 'workspace:^' } }),
+      member('packages/a/left', '@fathom/left', { peerDependencies: { '@fathom/right': 'workspace:^' } }),
+      member('packages/a/right', '@fathom/right', { peerDependencies: { '@fathom/left': 'workspace:^' } }),
     ]
 
     // Sibling packages declare each other as peers, and npm treats an unmet peer
     // as a warning, so this pair has to publish rather than fail the release.
-    const plan = dsh.publishOrder(members)
+    const plan = fathom.publishOrder(members)
     expect(plan.order.map(entry => entry.name)).toEqual([
-      '@pentest-harness/dsh-right',
-      '@pentest-harness/dsh-left',
+      '@fathom/right',
+      '@fathom/left',
     ])
     // One of the two edges has to give, and which one it is belongs in the log.
     expect(plan.droppedPeerEdges).toEqual([
-      { consumer: '@pentest-harness/dsh-right', peer: '@pentest-harness/dsh-left' },
+      { consumer: '@fathom/right', peer: '@fathom/left' },
     ])
   })
 
   it('honours an install edge even when a peer cycle surrounds it', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/base', '@pentest-harness/dsh-base', { peerDependencies: { '@pentest-harness/dsh-consumer': 'workspace:^' } }),
-      member('packages/a/consumer', '@pentest-harness/dsh-consumer', {
-        dependencies: { '@pentest-harness/dsh-base': 'workspace:^' },
-        peerDependencies: { '@pentest-harness/dsh-base': 'workspace:^' },
+      member('packages/a/base', '@fathom/base', { peerDependencies: { '@fathom/consumer': 'workspace:^' } }),
+      member('packages/a/consumer', '@fathom/consumer', {
+        dependencies: { '@fathom/base': 'workspace:^' },
+        peerDependencies: { '@fathom/base': 'workspace:^' },
       }),
     ]
 
     // The install edge is absolute: base publishes first, and the peer edge that
     // would reverse it is the one dropped.
-    const plan = dsh.publishOrder(members)
+    const plan = fathom.publishOrder(members)
     expect(plan.order.map(entry => entry.name)).toEqual([
-      '@pentest-harness/dsh-base',
-      '@pentest-harness/dsh-consumer',
+      '@fathom/base',
+      '@fathom/consumer',
     ])
     expect(plan.droppedPeerEdges).toEqual([
-      { consumer: '@pentest-harness/dsh-base', peer: '@pentest-harness/dsh-consumer' },
+      { consumer: '@fathom/base', peer: '@fathom/consumer' },
     ])
   })
 
   it('refuses an order that would publish a consumer before a dependency it installs', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/alpha', '@pentest-harness/dsh-alpha', { peerDependencies: { '@pentest-harness/dsh-bravo': 'workspace:^' } }),
-      member('packages/a/bravo', '@pentest-harness/dsh-bravo', { peerDependencies: { '@pentest-harness/dsh-charlie': 'workspace:^' } }),
-      member('packages/a/charlie', '@pentest-harness/dsh-charlie', { dependencies: { '@pentest-harness/dsh-alpha': 'workspace:^' } }),
+      member('packages/a/alpha', '@fathom/alpha', { peerDependencies: { '@fathom/bravo': 'workspace:^' } }),
+      member('packages/a/bravo', '@fathom/bravo', { peerDependencies: { '@fathom/charlie': 'workspace:^' } }),
+      member('packages/a/charlie', '@fathom/charlie', { dependencies: { '@fathom/alpha': 'workspace:^' } }),
     ]
 
     // A cycle of two peer edges closed by one install edge: dropping a peer edge
     // would order this, and the traversal drops the install edge instead. That
     // order would publish charlie before the alpha it installs, so it is refused
     // here rather than published.
-    expect(() => { dsh.publishOrder(members) })
-      .toThrow(/no publish order honours @pentest-harness\/dsh-charlie -> @pentest-harness\/dsh-alpha/)
+    expect(() => { fathom.publishOrder(members) })
+      .toThrow(/no publish order honours @fathom\/charlie -> @fathom\/alpha/)
   })
 
   it('ignores devDependencies when ordering', () => {
-    const dsh = releaseFamily('dsh')
+    const fathom = releaseFamily('fathom')
     const members = [
-      member('packages/a/alpha', '@pentest-harness/dsh-alpha', { devDependencies: { '@pentest-harness/dsh-zebra': 'workspace:^' } }),
-      member('packages/a/zebra', '@pentest-harness/dsh-zebra'),
+      member('packages/a/alpha', '@fathom/alpha', { devDependencies: { '@fathom/zebra': 'workspace:^' } }),
+      member('packages/a/zebra', '@fathom/zebra'),
     ]
 
     // A dev dependency is absent from the published package, so it must not move
     // the consumer behind it.
-    expect(dsh.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@pentest-harness/dsh-alpha',
-      '@pentest-harness/dsh-zebra',
+    expect(fathom.publishOrder(members).order.map(entry => entry.name)).toEqual([
+      '@fathom/alpha',
+      '@fathom/zebra',
     ])
   })
 
-  it('applies the harness payload policy to dsh and keeps upstream payloads for vendored packages', () => {
-    const dsh = releaseFamily('dsh')
+  it('applies the harness payload policy to fathom and keeps upstream payloads for vendored packages', () => {
+    const fathom = releaseFamily('fathom')
     const vendor = releaseFamily('vendor')
-    const harness = member('packages/a/library', '@pentest-harness/dsh-library')
-    const vendored = member('vendor/cordis', '@pentest-harness/cordis')
+    const harness = member('packages/a/library', '@fathom/library')
+    const vendored = member('vendor/cordis', '@fathom/cordis')
 
-    expect(() => { dsh.validatePayload(harness, ['package/lib/index.js', 'package/src/index.ts']) })
+    expect(() => { fathom.validatePayload(harness, ['package/lib/index.js', 'package/src/index.ts']) })
       .toThrow(/publishes source file/)
     expect(() => { vendor.validatePayload(vendored, ['package/lib/index.js', 'package/src/index.ts']) }).not.toThrow()
     expect(() => { vendor.validatePayload(vendored, []) }).toThrow(/empty tarball/)
   })
 
   it('drives the installed entry only for the family that publishes one', () => {
-    expect(releaseFamily('dsh').installedEntry).toEqual({ packageName: '@pentest-harness/dsh', binPath: 'lib/bin.js' })
+    expect(releaseFamily('fathom').installedEntry).toEqual({ packageName: '@fathom/cli', binPath: 'lib/bin.js' })
     expect(releaseFamily('vendor').installedEntry).toBeUndefined()
   })
 
@@ -296,10 +296,10 @@ describe('version precedence', () => {
 })
 
 describe('payload change judgement', () => {
-  const sourceShipping = member('vendor/cosmokit', '@pentest-harness/cosmokit', {
+  const sourceShipping = member('vendor/cosmokit', '@fathom/cosmokit', {
     files: ['lib/index.js', 'lib/types/**/*.d.ts', 'src'],
   })
-  const buildOutputOnly = member('vendor/cordis', '@pentest-harness/cordis', {
+  const buildOutputOnly = member('vendor/cordis', '@fathom/cordis', {
     files: ['lib/index.js', 'lib/types/**/*.d.ts', 'bin.js'],
   })
 
@@ -324,7 +324,7 @@ describe('payload change judgement', () => {
     // unnecessary patch bump, while under-reporting fails the next publish on a
     // version whose bytes moved.
     expect(reachesPayload(sourceShipping, 'vendor/cosmokit/README.i18n.yaml')).toBe(true)
-    expect(reachesPayload(member('packages/a/library', '@pentest-harness/dsh-library', { files: ['lib/index.js'] }),
+    expect(reachesPayload(member('packages/a/library', '@fathom/library', { files: ['lib/index.js'] }),
       'packages/a/library/tests/library.spec.ts')).toBe(false)
   })
 })

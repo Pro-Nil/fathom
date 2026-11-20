@@ -1,12 +1,12 @@
 /**
  * Shared path resolution and regular-file validation for model-facing read tools.
- * @module @pentest-harness/dsh-tool-fs/src/read-target
+ * @module @fathom/tool-fs/src/read-target
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { FsError } from '@pentest-harness/dsh-fs'
-import type { FsInfo, FsTarget } from '@pentest-harness/dsh-fs'
-import type { ToolExecution } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import { FsError } from '@fathom/fs'
+import type { FsInfo, FsTarget } from '@fathom/fs'
+import type { ToolExecution } from '@fathom/tools'
 import { sessionResolveOptions } from './session-cwd.ts'
 
 /**

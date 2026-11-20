@@ -1,25 +1,25 @@
 /**
  * Shared route, framing, timeout, assembly, and validation policy for
  * model-backed session-title providers.
- * @module @pentest-harness/dsh-session-title-llm
+ * @module @fathom/session-title-llm
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { createUserMessage, BlockAssembler, deepFreeze } from '@pentest-harness/dsh-llm'
-import type { FinishReason, GenerateOptions, Message } from '@pentest-harness/dsh-llm'
-import { deadline, MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { createUserMessage, BlockAssembler, deepFreeze } from '@fathom/llm'
+import type { FinishReason, GenerateOptions, Message } from '@fathom/llm'
+import { deadline, MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import {
   normalizeSessionTitle,
   SessionTitleProviderId,
-} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-title'
 import type {
   SessionTitleAutomaticMode,
   SessionTitleModelProvenance,
   SessionTitleProviderRequest,
   SessionTitleProviderResult,
   SessionTitleUserMessage,
-} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-title'
 
 /** Exact model-visible request recorded before one auxiliary title dispatch. */
 export interface SessionTitleLlmRequestEventData {
@@ -37,7 +37,7 @@ export interface SessionTitleLlmRequestEventData {
   readonly maxTokens: number
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     /** Log-only pre-dispatch record of one session-title model request. */
     'session/title-llm-request': SessionTitleLlmRequestEventData
@@ -245,7 +245,7 @@ export async function generateSessionTitleWithLlm(
   const route = resolveRoute(config, request)
   const messages: Message[] = [createUserMessage({
     content: [{ type: 'text', text: framedInput }],
-    source: { kind: 'plugin', plugin: 'dsh-session-title-llm' },
+    source: { kind: 'plugin', plugin: 'fathom-session-title-llm' },
   })]
   const system = systemPrompt(config)
   using callDeadline = deadline(request.signal, config.timeoutMs, SESSION_TITLE_TIMEOUT_CODE)

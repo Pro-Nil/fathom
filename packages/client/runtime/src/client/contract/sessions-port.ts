@@ -7,7 +7,7 @@
  * dependency.
  */
 
-import type { SessionId, WorkspaceId } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionId, WorkspaceId } from '@fathom/api-remotes/client'
 import type { ObservableSnapshot } from './store.ts'
 
 /** Session-list row facts sibling domains read: recency, blank-reuse eligibility, and its cwd canon. */

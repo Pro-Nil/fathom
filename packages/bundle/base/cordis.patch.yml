@@ -1,4 +1,4 @@
-# The dsh-base bundle patch: the shared core of every dsh profile, applied as
+# The fathom-base bundle patch: the shared core of every fathom profile, applied as
 # ONE insert over the empty profile root. Later bundle patches and the user's
 # profile cordis.patch.yml address these rows by id, with the last write
 # winning per row.
@@ -14,37 +14,37 @@
 
 - insert:
     - id: timer
-      name: '@pentest-harness/cordis-plugin-timer'
+      name: '@fathom/cordis-plugin-timer'
 
     - id: hmr
-      name: '@pentest-harness/cordis-plugin-hmr'
+      name: '@fathom/cordis-plugin-hmr'
       config:
         root: ['.']
 
     - id: llm
-      name: '@pentest-harness/dsh-llm'
+      name: '@fathom/llm'
 
     - id: session
-      name: '@pentest-harness/dsh-session'
+      name: '@fathom/session'
 
     - id: typert
-      name: '@pentest-harness/dsh-typert-registry'
+      name: '@fathom/typert-registry'
 
     - id: typert-loader
-      name: '@pentest-harness/dsh-typert-loader'
+      name: '@fathom/typert-loader'
 
     - id: typert-gateway
-      name: '@pentest-harness/dsh-api-gateway'
+      name: '@fathom/api-gateway'
 
     - id: session-title
-      name: '@pentest-harness/dsh-session-title'
+      name: '@fathom/session-title'
       config:
         fallbackMaxWords: 5
         fallbackMaxBytes: 40
         maxTitleBytes: 80
 
     - id: session-title-llm
-      name: '@pentest-harness/dsh-session-title-first-prompt-llm'
+      name: '@fathom/session-title-first-prompt-llm'
       config:
         targetWords: 5
         targetCjkCharacters: 10
@@ -56,16 +56,16 @@
     # title (`<workspace>/sessions/<title>/`); the shell and file tools start
     # there. Editable under Settings → Plugins.
     - id: session-folders
-      name: '@pentest-harness/dsh-session-folders'
+      name: '@fathom/session-folders'
       config:
         folder: sessions
         settings: true
 
     - id: user-questions
-      name: '@pentest-harness/dsh-user-questions'
+      name: '@fathom/user-questions'
 
     - id: agent
-      name: '@pentest-harness/dsh-agent'
+      name: '@fathom/agent'
 
     # The transport-independent default for Agents created by entry points.
     # Settings may supply a saved selection (the Models page and the composer's
@@ -73,29 +73,29 @@
     # ships configured, so this placeholder only routes once an `openai` profile
     # exists in the `llm-pi-ai:` settings section.
     - id: agent-default-model
-      name: '@pentest-harness/dsh-agent-default-model'
+      name: '@fathom/agent-default-model'
       config:
         provider: openai
         model: gpt-5.5
 
     - id: jobs
-      name: '@pentest-harness/dsh-jobs-local'
+      name: '@fathom/jobs-local'
 
     - id: llm-retry
-      name: '@pentest-harness/dsh-llm-retry'
+      name: '@fathom/llm-retry'
 
-    # User-settings document (`$DSH_HOME/settings.yaml`, hot-reloaded): a
+    # User-settings document (`$FATHOM_HOME/settings.yaml`, hot-reloaded): a
     # `llm-pi-ai:` section there overrides the adapter entry
     # below without a restart, and is what the web Models page writes.
     - id: settings
-      name: '@pentest-harness/dsh-settings-file'
+      name: '@fathom/settings-file'
 
     # Credential sources: inherited environment over the managed
-    # `$DSH_HOME/.credentials.yaml`, with project and user `.env` fallbacks.
+    # `$FATHOM_HOME/.credentials.yaml`, with project and user `.env` fallbacks.
     # Adapters resolve references per request; the Models page writes only the
     # managed document, which is never materialized into the process environment.
     - id: credentials
-      name: '@pentest-harness/dsh-credentials-local'
+      name: '@fathom/credentials-local'
 
     # The pi-ai multi-provider twin, mounted dormant: zero routes (and no extra
     # models in the picker) until a `llm-pi-ai:` settings section supplies provider
@@ -105,18 +105,18 @@
     # adapters exist is composition; which providers run is the user's settings
     # document.
     - id: llm-pi-ai
-      name: '@pentest-harness/dsh-llm-pi-ai'
+      name: '@fathom/llm-pi-ai'
 
     - id: session-persistence-jsonl
-      name: '@pentest-harness/dsh-session-persistence-jsonl'
+      name: '@fathom/session-persistence-jsonl'
       config:
-        root: !!js dshHomePath('sessions')
+        root: !!js fathomHomePath('sessions')
 
     # Durable image bytes live outside the append-only session log. Messages
     # keep content-addressed references that this shared backend resolves for
     # provider requests and authorized history reads.
     - id: attachment-local
-      name: '@pentest-harness/dsh-attachment-local'
+      name: '@fathom/attachment-local'
 
     # Full-text session search is opt-in. `openAt: never` keeps
     # ctx.sessionQuery mounted — exact reads, titles, and lineage traces
@@ -127,7 +127,7 @@
     # `first-search` or `startup` in a later patch layer (profile
     # cordis.patch.yml or a --patch overlay), typically with a durable `path`.
     - id: session-query-sqlite
-      name: '@pentest-harness/dsh-session-query-sqlite'
+      name: '@fathom/session-query-sqlite'
       config:
         path: ':memory:'
         openAt: never
@@ -136,17 +136,17 @@
     # through its registered units, so the `list_agents` surface below fails
     # loud without it; web layers reuse this same mount for list rows.
     - id: session-projection
-      name: '@pentest-harness/dsh-session-projection'
+      name: '@fathom/session-projection'
 
-    # Session telemetry is mounted but disabled by default. DSH_TELEMETRY_MODE
+    # Session telemetry is mounted but disabled by default. FATHOM_TELEMETRY_MODE
     # explicitly opts into FULL or FEEDBACK_ONLY reporting; uploading mirrors
     # session-log records onto OTLP/HTTP logs with no session-telemetry/record redaction
     # rule, so exports are the raw captured copy. The deployment stance, env
     # seams, and follow-ups are pinned in the default-off Agent Note.
-    # DSH_TELEMETRY_OTLP_URL overrides the production endpoint. A non-empty
-    # DSH_TELEMETRY_DISABLED — any value, including '0'/'false' — opts the
+    # FATHOM_TELEMETRY_OTLP_URL overrides the production endpoint. A non-empty
+    # FATHOM_TELEMETRY_DISABLED — any value, including '0'/'false' — opts the
     # process out (the launchers patch the row disabled; config cannot disable
-    # a row). Exports carry the harness home's anonymous user id ($DSH_HOME/.anonymous-user-id,
+    # a row). Exports carry the harness home's anonymous user id ($FATHOM_HOME/.anonymous-user-id,
     # random UUID; delete the file to reset the identity) as the Resource's
     # user.id. The exporter/processor values normally bound the shutdown drain
     # to ~1s against an unreachable collector: exporter.timeoutMillis is both
@@ -158,12 +158,12 @@
     # promise never settles. Every CLI exit path drains it by disposing the root
     # on SIGINT/SIGTERM.
     - id: session-telemetry-otel
-      name: '@pentest-harness/dsh-session-telemetry-otel'
+      name: '@fathom/session-telemetry-otel'
       config:
-        mode: !!js process.env.DSH_TELEMETRY_MODE || 'DISABLED'
+        mode: !!js process.env.FATHOM_TELEMETRY_MODE || 'DISABLED'
         shutdownTimeoutMillis: 3000
         exporter:
-          url: !!js process.env.DSH_TELEMETRY_OTLP_URL ?? 'http://127.0.0.1:4318/v1/logs'
+          url: !!js process.env.FATHOM_TELEMETRY_OTLP_URL ?? 'http://127.0.0.1:4318/v1/logs'
           compression: gzip
           timeoutMillis: 1000
         processor:
@@ -173,37 +173,37 @@
           exportTimeoutMillis: 1500
 
     - id: subprocess
-      name: '@pentest-harness/dsh-subprocess-local'
+      name: '@fathom/subprocess-local'
 
     # Every shipped CLI mode starts with the same file-effect boundary.
     # The environment remains an explicit deployment override; otherwise fresh
     # sessions pin workspace-write + ask through the permission service below.
     - id: sandbox
-      name: '@pentest-harness/dsh-sandbox-local'
+      name: '@fathom/sandbox-local'
 
     - id: sandbox-policy
-      name: '@pentest-harness/dsh-sandbox-policy'
+      name: '@fathom/sandbox-policy'
       config:
-        mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'
+        mode: !!js process.env.FATHOM_PERMISSION_MODE ?? 'workspace-write'
         workspaceRoot: !!js process.cwd()
 
     - id: bash-sandbox
-      name: '@pentest-harness/dsh-bash-sandbox'
+      name: '@fathom/bash-sandbox'
       disabled: !!js process.platform === 'win32'
       config:
         timeoutMs: 60000
 
     - id: pwsh-sandbox
-      name: '@pentest-harness/dsh-pwsh-sandbox'
+      name: '@fathom/pwsh-sandbox'
       disabled: !!js process.platform !== 'win32'
 
     - id: approval
-      name: '@pentest-harness/dsh-user-approval'
+      name: '@fathom/user-approval'
       config:
-        policy: !!js "(process.env.DSH_PERMISSION_MODE ?? 'workspace-write') === 'danger-full-access' ? 'never' : 'ask'"
+        policy: !!js "(process.env.FATHOM_PERMISSION_MODE ?? 'workspace-write') === 'danger-full-access' ? 'never' : 'ask'"
 
     - id: permission
-      name: '@pentest-harness/dsh-permission-presets'
+      name: '@fathom/permission-presets'
       config:
         presets:
           read-only:
@@ -217,65 +217,65 @@
             approval: never
 
     - id: shell-env
-      name: '@pentest-harness/dsh-shell-env'
+      name: '@fathom/shell-env'
 
     - id: tool-bash
-      name: '@pentest-harness/dsh-tool-bash'
+      name: '@fathom/tool-bash'
       disabled: !!js process.platform === 'win32'
 
     - id: tool-pwsh
-      name: '@pentest-harness/dsh-tool-pwsh'
+      name: '@fathom/tool-pwsh'
       disabled: !!js process.platform !== 'win32'
 
     - id: tool-jobs
-      name: '@pentest-harness/dsh-tool-jobs'
+      name: '@fathom/tool-jobs'
 
     - id: fs-observation-policy
-      name: '@pentest-harness/dsh-fs-observation-policy'
+      name: '@fathom/fs-observation-policy'
 
     - id: tool-fs
-      name: '@pentest-harness/dsh-tool-fs'
+      name: '@fathom/tool-fs'
 
     - id: tool-fs-search
-      name: '@pentest-harness/dsh-tool-fs-search'
+      name: '@fathom/tool-fs-search'
       config:
         sampleOverCapGlobResults: false
 
     - id: agent-instructions
-      name: '@pentest-harness/dsh-agent-instructions'
+      name: '@fathom/agent-instructions'
       config:
         maxBytes: 65536
 
     - id: skill
-      name: '@pentest-harness/dsh-skill'
+      name: '@fathom/skill'
 
     - id: skill-filesystem
-      name: '@pentest-harness/dsh-skill-filesystem'
+      name: '@fathom/skill-filesystem'
 
     - id: skill-badge
-      name: '@pentest-harness/dsh-skill-badge'
+      name: '@fathom/skill-badge'
       disabled: true
 
     - id: tool-skill
-      name: '@pentest-harness/dsh-tool-skill'
+      name: '@fathom/tool-skill'
 
     - id: commands
-      name: '@pentest-harness/dsh-commands'
+      name: '@fathom/commands'
 
     - id: command-feedback
-      name: '@pentest-harness/dsh-command-feedback'
+      name: '@fathom/command-feedback'
 
     - id: goal
-      name: '@pentest-harness/dsh-goal'
+      name: '@fathom/goal'
 
     - id: goal-round-driver
-      name: '@pentest-harness/dsh-goal-round-driver'
+      name: '@fathom/goal-round-driver'
 
     - id: command-goal
-      name: '@pentest-harness/dsh-command-goal'
+      name: '@fathom/command-goal'
 
     - id: plan-mode
-      name: '@pentest-harness/dsh-plan-mode'
+      name: '@fathom/plan-mode'
       config:
         section: |
               You are in plan mode. Stay in plan mode until exit_plan_mode succeeds or the user switches the session mode. Imperative language to implement changes means plan the implementation, not execute it. A user's conversational agreement — including an answer confirming something you asked — approves nothing and does not end plan mode; fold the confirmed decision into the plan and submit it through exit_plan_mode.
@@ -291,39 +291,39 @@
               When ready, call exit_plan_mode with the complete plan markdown, starting with a # title. Make exit_plan_mode the only and final tool call in that assistant response: it presents the plan for approval, and implementation begins only in a later step after approval. Do not paste the final plan as a plain reply or ask "should I proceed?" through prose or ask_user_question. If review rejects it, incorporate the feedback and present again. If the review channel is unavailable or aborted, stay in plan mode and ask the user to switch modes manually; do not proceed with implementation.
 
     - id: token-meter
-      name: '@pentest-harness/dsh-token-meter'
+      name: '@fathom/token-meter'
 
     - id: compaction-basic
-      name: '@pentest-harness/dsh-compaction-basic'
+      name: '@fathom/compaction-basic'
 
     # Human `/compact`: one useful reduction below the automatic threshold. Backend
     # independent, so it follows whichever compaction service this leaf mounts.
     - id: command-compact
-      name: '@pentest-harness/dsh-command-compact'
+      name: '@fathom/command-compact'
 
     - id: subagent
-      name: '@pentest-harness/dsh-subagent'
+      name: '@fathom/subagent'
 
     - id: subagent-spawn-in-process
-      name: '@pentest-harness/dsh-subagent-spawn-in-process'
+      name: '@fathom/subagent-spawn-in-process'
       config:
         providerName: spawn
 
     - id: subagent-fork-in-process
-      name: '@pentest-harness/dsh-subagent-fork-in-process'
+      name: '@fathom/subagent-fork-in-process'
       config:
         providerName: fork
 
     # Continuable background children are selected per delegation tool. The
     # separately loaded follow-up tool registers the one global `send_message`.
     - id: tool-subagent-control
-      name: '@pentest-harness/dsh-tool-subagent-control'
+      name: '@fathom/tool-subagent-control'
 
     - id: tool-subagent-list-agents
-      name: '@pentest-harness/dsh-tool-subagent-control/list-agents'
+      name: '@fathom/tool-subagent-control/list-agents'
 
     - id: tool-subagent
-      name: '@pentest-harness/dsh-tool-subagent'
+      name: '@fathom/tool-subagent'
       config:
         provider: spawn
         toolName: subagent
@@ -334,7 +334,7 @@
     # fork children install neither, keeping the parent's request prefix.
     # See .agents/notes/implemented/architecture/2026-08-10-fork-children-stay-one-shot.md.
     - id: tool-subagent-fork
-      name: '@pentest-harness/dsh-tool-subagent'
+      name: '@fathom/tool-subagent'
       config:
         provider: fork
         toolName: subagent_fork
@@ -342,69 +342,69 @@
 
     # Optional direct-child return channel; absent from roots and one-shot agents.
     - id: tool-subagent-report
-      name: '@pentest-harness/dsh-tool-subagent-report'
+      name: '@fathom/tool-subagent-report'
 
     - id: workflow-worker-thread
-      name: '@pentest-harness/dsh-workflow-worker-thread'
+      name: '@fathom/workflow-worker-thread'
       config:
         provider: spawn
 
     - id: tool-workflow
-      name: '@pentest-harness/dsh-tool-workflow'
+      name: '@fathom/tool-workflow'
 
     - id: timeout-policy
-      name: '@pentest-harness/dsh-tool-call-timeout-policy'
+      name: '@fathom/tool-call-timeout-policy'
 
     - id: spill-local
-      name: '@pentest-harness/dsh-spill-local'
+      name: '@fathom/spill-local'
 
     # Results over ~3K tokens go to a session file the model can grep/read by
     # range, instead of being re-sent with every later request.
     - id: spill-policy
-      name: '@pentest-harness/dsh-spill-policy'
+      name: '@fathom/spill-policy'
       config:
         maxInlineBytes: 12000
         settings: true
 
     # Durability checkpoints before each model request and top-level dispatch.
     - id: session-checkpoint-policy
-      name: '@pentest-harness/dsh-session-checkpoint-policy'
+      name: '@fathom/session-checkpoint-policy'
 
     # Compacts oversized tool results before the broader conversation compactor
     # runs, preserving the model-visible result within the configured budget.
     - id: tool-result-pruner
-      name: '@pentest-harness/dsh-compaction-tool-result-pruner'
+      name: '@fathom/compaction-tool-result-pruner'
       config:
         thresholdChars: 3000
         headChars: 1500
         tailChars: 500
 
     - id: tool-todo
-      name: '@pentest-harness/dsh-tool-todo'
+      name: '@fathom/tool-todo'
       config:
         allowParallelInProgress: true
 
     # Persisted same-session goals reach the model and the slash menu here; the
     # domain, driver, and `/goal` command are above.
     - id: tool-goal
-      name: '@pentest-harness/dsh-tool-goal'
+      name: '@fathom/tool-goal'
 
     # Fresh-agent Ralph iteration over a build-time-fixed script.
     - id: tool-ralph
-      name: '@pentest-harness/dsh-tool-ralph'
+      name: '@fathom/tool-ralph'
       config:
         subagentProvider: spawn
         maxRounds: 64
 
     - id: tool-str-replace-editor
-      name: '@pentest-harness/dsh-tool-str-replace-editor'
+      name: '@fathom/tool-str-replace-editor'
       config:
         maxOutputChars: 16000
 
     # Consecutive-repeat reminders on the tool chain, plus failure-loop
     # reminders when calls keep failing with varied arguments.
     - id: repeat-tool-reminder
-      name: '@pentest-harness/dsh-repeat-tool-reminder'
+      name: '@fathom/repeat-tool-reminder'
       config:
         thresholds: [3, 5, 8]
         argumentsPreviewChars: 500
@@ -417,7 +417,7 @@
     # protection and the model would choose the request target. Searches get 60s
     # while the provider-neutral tool default remains 30s.
     - id: web
-      name: '@pentest-harness/dsh-web'
+      name: '@fathom/web'
       config:
         # Google first; when it is unavailable or refuses (CAPTCHA, rate
         # limit) the seam falls back through google-api, bing, duckduckgo, exa and
@@ -427,16 +427,16 @@
         settings: true
 
     - id: web-search-duckduckgo
-      name: '@pentest-harness/dsh-web-search-duckduckgo'
+      name: '@fathom/web-search-duckduckgo'
 
     # Keyless Google through a hidden page of the shared browser (needs the
     # browser plugin, mounted by the pentest mode), plus the Programmable
     # Search API once GOOGLE_API_KEY and GOOGLE_CSE_ID are stored.
     - id: web-search-google
-      name: '@pentest-harness/dsh-web-search-google'
+      name: '@fathom/web-search-google'
 
     - id: tool-web
-      name: '@pentest-harness/dsh-tool-web'
+      name: '@fathom/tool-web'
       config:
         fetch: false
         searchTimeoutMs: 60000
@@ -446,23 +446,23 @@
     # The tool registry. Presentation mode is a deployment choice; omitting it here
     # keeps the schema default (native).
     - id: tools
-      name: '@pentest-harness/dsh-tools'
+      name: '@fathom/tools'
 
     # The deployment persona is a deployment choice; plan-mode and tool plugins own
     # their own prompt sections.
     - id: system-prompt
-      name: '@pentest-harness/dsh-system-prompt'
+      name: '@fathom/system-prompt'
       config:
         persona: ''
 
     # Agents created at startup. The base stays empty; raw overlays may create
     # agents, while Web creates sessions on client request.
     - id: agent-loop
-      name: '@pentest-harness/dsh-agent-loop'
+      name: '@fathom/agent-loop'
       config:
         agents: []
 
     # The sandboxed filesystem provider. `cwd` defaults to `process.cwd()`; an
     # overlay can pin another workspace.
     - id: fs-sandbox
-      name: '@pentest-harness/dsh-fs-sandbox'
+      name: '@fathom/fs-sandbox'

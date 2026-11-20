@@ -1,12 +1,12 @@
 import type {
   ChatConversationViewNode, ConversationLocation, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-session/types'
+} from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/session/types'
 import type {
   ToolWorkflowAgentEndData, ToolWorkflowAgentStartData,
-} from '@pentest-harness/dsh-tool-workflow/types'
-import type { WorkflowAgentOutcome, WorkflowStopReason } from '@pentest-harness/dsh-workflow/types'
+} from '@fathom/tool-workflow/types'
+import type { WorkflowAgentOutcome, WorkflowStopReason } from '@fathom/workflow/types'
 
 /** Status shown for a workflow, phase, or member. */
 export type WorkflowRunStatus = 'running' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
@@ -34,7 +34,7 @@ export interface WorkflowRunChatData {
   readonly phases: readonly WorkflowRunPhaseData[]
 }
 
-declare module '@pentest-harness/dsh-client-ui-conversation/client' {
+declare module '@fathom/client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Durable top-level workflow run and all members that actually started. */
     'workflow-run': WorkflowRunChatData

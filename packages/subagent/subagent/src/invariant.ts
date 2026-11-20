@@ -1,10 +1,10 @@
-/** Package-owned subagent registry and lifecycle invariants. @module @pentest-harness/dsh-subagent/invariant */
+/** Package-owned subagent registry and lifecycle invariants. @module @fathom/subagent/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { SubagentProvider, SubagentRunEndInfo, SubagentRunInfo } from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-subagent'
+const PACKAGE_NAME = '@fathom/subagent'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-invariant'

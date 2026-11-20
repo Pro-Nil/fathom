@@ -7,17 +7,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import ApprovalService from '@pentest-harness/dsh-user-approval'
-import type { ApprovalRequestId } from '@pentest-harness/dsh-user-approval'
-import type { ApiProxy, MuxFrame, RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import type { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId as mintRpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
+import { Context } from '@fathom/cordis'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import UserQuestionService from '@fathom/user-questions'
+import ApprovalService from '@fathom/user-approval'
+import type { ApprovalRequestId } from '@fathom/user-approval'
+import type { ApiProxy, MuxFrame, RpcRequest } from '@fathom/host-apiproxy/api'
+import type { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId as mintRpcId } from '@fathom/host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 async function harness(): Promise<{ ctx: Context; api: ApiProxy }> {

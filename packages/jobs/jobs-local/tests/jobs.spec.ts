@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { bindScopeParent, createScope, scopeOf } from '@pentest-harness/dsh-scope'
-import type { ScopeKey } from '@pentest-harness/dsh-scope'
-import { JobId } from '@pentest-harness/dsh-jobs'
-import type { JobHooks, JobKind, JobOutcome, JobSnapshot, JobStart } from '@pentest-harness/dsh-jobs'
-import LocalJobRegistry, { type Config as JobsConfig } from '@pentest-harness/dsh-jobs-local'
+import { Context } from '@fathom/cordis'
+import { Session, SessionId } from '@fathom/session'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import { bindScopeParent, createScope, scopeOf } from '@fathom/scope'
+import type { ScopeKey } from '@fathom/scope'
+import { JobId } from '@fathom/jobs'
+import type { JobHooks, JobKind, JobOutcome, JobSnapshot, JobStart } from '@fathom/jobs'
+import LocalJobRegistry, { type Config as JobsConfig } from '@fathom/jobs-local'
 
-declare module '@pentest-harness/dsh-jobs' {
+declare module '@fathom/jobs' {
   interface JobKindMap {
     workflow: 'workflow'
   }
@@ -119,7 +119,7 @@ describe('LocalJobRegistry.start', () => {
     const ctx = new Context()
     await ctx.plugin(LocalJobRegistry)
     expect(() => ctx.jobs.start(producer().spec))
-      .toThrow('background jobs unavailable: no job controller serves this agent (load @pentest-harness/dsh-tool-jobs in its composition)')
+      .toThrow('background jobs unavailable: no job controller serves this agent (load @fathom/tool-jobs in its composition)')
   })
 
   it('refuses an owner whose own composition attaches no controller', async () => {

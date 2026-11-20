@@ -1,16 +1,16 @@
 /**
  * Durable session skill catalog and model-facing `skill` loader tool.
  *
- * @module @pentest-harness/dsh-tool-skill
+ * @module @fathom/tool-skill
  */
 
 import { createHash } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { defineTool } from '@fathom/tools'
+import { createUserMessage } from '@fathom/llm'
+import type { UserMessage } from '@fathom/session'
 import {
   escapeText,
   isModelInvocable,
@@ -19,7 +19,7 @@ import {
   renderSkillContent,
   type SkillInvocationSource,
   type SkillSummary,
-} from '@pentest-harness/dsh-skill'
+} from '@fathom/skill'
 
 export const name = 'tool-skill'
 export const inject = ['agents', 'tools', 'skills']
@@ -40,7 +40,7 @@ export interface SkillCatalogSource {
   readonly entries: readonly { readonly name: string; readonly description: string }[]
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     'skill-catalog': SkillCatalogSource
   }

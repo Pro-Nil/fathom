@@ -1,9 +1,9 @@
 /**
  * Bounded per-session write batching for the shared persistence coordinator.
- * @module @pentest-harness/dsh-session-persistence/write-behind
+ * @module @fathom/session-persistence/write-behind
  */
 
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 
 /** Dependencies and scheduling policy for one live session's write controller. */
 export interface SessionWriteBehindOptions {

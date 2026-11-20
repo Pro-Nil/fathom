@@ -1,10 +1,10 @@
 import { writeFile } from 'node:fs/promises'
-import { Context } from '@pentest-harness/cordis'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { createUserMessage, CallId, type GenerateOptions, LlmAdapter, type StreamChunk  } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import { Context } from '@fathom/cordis'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { createUserMessage, CallId, type GenerateOptions, LlmAdapter, type StreamChunk  } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import * as checkpointPolicy from '../../src/index.ts'
 
 function waitForCrash(): Promise<never> {

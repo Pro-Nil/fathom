@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
+import type { SessionEvent } from '@fathom/session/types'
 import { ConversationNodeAssembler } from '../src/client/sessions/conversation-assembler.ts'
 import type {
   ConversationEventInput, ConversationMatch, ConversationNodeContext,

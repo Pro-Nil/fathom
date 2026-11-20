@@ -1,7 +1,7 @@
 /** Session-local ownership index for Package business views on `cordis_run` cards. */
 
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
-import type { HostObservable } from '@pentest-harness/dsh-client-ui-slots'
+import type { SessionId } from '@fathom/client-connection/client'
+import type { HostObservable } from '@fathom/client-ui-slots'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
 } from './events.ts'

@@ -8,17 +8,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import type { JobOutcome } from '@pentest-harness/dsh-jobs'
-import type { MuxFrame, RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session } from '@fathom/session'
+import UserQuestionService from '@fathom/user-questions'
+import LocalJobRegistry from '@fathom/jobs-local'
+import type { JobOutcome } from '@fathom/jobs'
+import type { MuxFrame, RpcRequest } from '@fathom/host-apiproxy/api'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 type JobFrame = Extract<MuxFrame, { type: 'session/jobs' }>
 

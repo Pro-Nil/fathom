@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import WebRuntime, {
   WebError,
   type WebFetchProvider,
@@ -7,7 +7,7 @@ import WebRuntime, {
   type WebSearchProvider,
   type WebSearchRequest,
   type WebSearchResult,
-} from '@pentest-harness/dsh-web'
+} from '@fathom/web'
 
 /** A scripted search provider for contract tests. */
 function makeSearchProvider(

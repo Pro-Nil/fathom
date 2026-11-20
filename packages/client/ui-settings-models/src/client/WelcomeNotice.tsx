@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { InjectFace, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
-import { Button } from '@pentest-harness/dsh-client-ui-primitives'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import type { InjectFace, PropsRuntime } from '@fathom/client-ui-slots'
+import { Button } from '@fathom/client-ui-primitives'
 import type { WelcomeNoticeState, WelcomeNoticeStore } from './welcome-store.ts'
 import type { en } from './locales.ts'
 import { OnboardingModal } from './OnboardingModal.tsx'

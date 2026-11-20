@@ -1,18 +1,18 @@
 /**
  * Harness request-history conversion into pi-ai's Context vocabulary.
  *
- * @module dsh-llm-pi-ai/context
+ * @module fathom-llm-pi-ai/context
  */
 
-import { CallId, contentHasImage, LlmError, offloadRequestImagesWithPolicy, requestImageHandleText } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, GenerateOptions, Message } from '@pentest-harness/dsh-llm'
+import { CallId, contentHasImage, LlmError, offloadRequestImagesWithPolicy, requestImageHandleText } from '@fathom/llm'
+import type { ContentBlock, GenerateOptions, Message } from '@fathom/llm'
 import type {
   AttachmentId,
   AttachmentStore,
   ImageAttachmentRef,
   ImageRequestPolicy,
   RequestImageAttachment,
-} from '@pentest-harness/dsh-attachment'
+} from '@fathom/attachment'
 import type { Context as PiContext, ImageContent, Message as PiMessage, TextContent, Tool as PiTool } from '@earendil-works/pi-ai'
 import { toPiAssistant } from './replay.ts'
 import { DEFAULT_REQUEST_IMAGE_MAX_BYTES, DEFAULT_REQUEST_IMAGE_PIXEL_BUDGET } from './config.ts'

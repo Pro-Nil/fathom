@@ -1,4 +1,4 @@
-# `@pentest-harness/dsh-llm-mock-server`
+# `@fathom/llm-mock-server`
 
 A scriptable OpenAI-compatible HTTP/SSE server for exercising real LLM adapters, the agent loop, and recovery policy without a provider key. It accepts `POST /chat/completions` and `POST /v1/chat/completions`; each accepted request consumes one configured behavior in arrival order. Invalid methods, paths, bearer tokens, and JSON do not consume the script.
 
@@ -21,7 +21,7 @@ Point the shipping pi-ai adapter at the server; it appends `/chat/completions` t
 ```sh
 ACME_BASE_URL=http://127.0.0.1:8000/v1 \
 ACME_API_KEY=mock-key \
-pnpm dsh --profile headless "test provider recovery"
+pnpm fathom --profile headless "test provider recovery"
 ```
 
 The repository script writes JSONL to stdout: a `ready` record carries the `/v1` base URL and random seed, followed by request/result records that name both the scripted behavior and the concrete selected behavior. The private support package exposes no installable binary.

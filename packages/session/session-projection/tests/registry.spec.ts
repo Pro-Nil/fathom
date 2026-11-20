@@ -8,14 +8,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { z } from 'zod'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import SessionProjectionRegistry from '@pentest-harness/dsh-session-projection'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
+import SessionStore from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
+import SessionProjectionRegistry from '@fathom/session-projection'
+import type { ProjectionDefinition } from '@fathom/session-projection'
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     'test/marks': MarksState
     'test/count': number
@@ -26,7 +26,7 @@ declare module '@pentest-harness/dsh-session-projection/types' {
   }
 }
 
-declare module '@pentest-harness/dsh-session/types' {
+declare module '@fathom/session/types' {
   interface SessionEventMap {
     'test/mark': { marks: string[] }
   }

@@ -3,11 +3,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, waitFor, within } from '@testing-library/react'
 import { useState } from 'react'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import type { ISession, SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@pentest-harness/dsh-client-test-runtime'
-import { apply, inject, type EmptyWorkspaceOwnerProps } from '@pentest-harness/dsh-client-ui-conversation/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import type { ISession, SessionId } from '@fathom/client-runtime/client'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@fathom/client-test-runtime'
+import { apply, inject, type EmptyWorkspaceOwnerProps } from '@fathom/client-ui-conversation/client'
 
 usePinnedBrowserLanguages('zh-CN')
 

@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ModelSelection } from '@pentest-harness/dsh-api-remotes/client'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import type { ModelSelection } from '@fathom/api-remotes/client'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
 import type { ComponentProps } from 'react'
 import type { ModelDirectoryState } from '../src/client/directory.ts'
 import { ModelSelect } from '../src/client/ModelSelect.tsx'
 import { en } from '../src/client/locales.ts'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 
 // The seat's key domain is model ∪ common; the stub mirrors the real lookup
 // chain: package dictionary, then common vocabulary, then the key.

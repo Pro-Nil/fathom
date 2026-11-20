@@ -10,16 +10,16 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import { createUserMessage, LlmAdapter } from '@pentest-harness/dsh-llm'
-import type { GenerateOptions, StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import { createUserMessage, LlmAdapter } from '@fathom/llm'
+import type { GenerateOptions, StreamChunk } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
 
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import AgentLoop from '@fathom/agent-loop'
 import fc from 'fast-check'
 
 /** A never-exhausting adapter: every model call returns the same short reply. */

@@ -1,7 +1,7 @@
 /**
  * SQLite storage primitives: transactional append-batch packing, physical
  * reads, schema validation, revisions, repair, and lifecycle closure.
- * @module @pentest-harness/dsh-session-persistence-sqlite/store
+ * @module @fathom/session-persistence-sqlite/store
  */
 
 import { randomUUID } from 'node:crypto'
@@ -13,7 +13,7 @@ import {
   type SessionEvent,
   type SessionHeader,
   type SessionId,
-} from '@pentest-harness/dsh-session'
+} from '@fathom/session'
 import {
   SessionPersistenceRevision,
   type PersistenceBackend,
@@ -21,7 +21,7 @@ import {
   type SessionPersistenceSnapshot,
   type StoredPrefix,
   type StoredSuffix,
-} from '@pentest-harness/dsh-session-persistence'
+} from '@fathom/session-persistence'
 import {
   MAX_PACKED_ROW_MEMBERS,
   packChunkRuns,

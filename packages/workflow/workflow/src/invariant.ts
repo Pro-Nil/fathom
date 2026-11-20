@@ -1,7 +1,7 @@
-/** Package-owned workflow lifecycle invariants. @module @pentest-harness/dsh-workflow/invariant */
+/** Package-owned workflow lifecycle invariants. @module @fathom/workflow/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
@@ -9,7 +9,7 @@ import type {
   WorkflowRunInfo,
 } from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-workflow'
+const PACKAGE_NAME = '@fathom/workflow'
 
 /** Cordis companion plugin name. */
 export const name = 'workflow-invariant'

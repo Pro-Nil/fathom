@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import {
   AnonymousEntries,
   createScope,
@@ -8,7 +8,7 @@ import {
   type Scope,
   type ScopeKey,
   type ScopeLayer,
-} from '@pentest-harness/dsh-scope'
+} from '@fathom/scope'
 
 class TestLayer implements ScopeLayer {
   readonly named: NamedEntries<number>

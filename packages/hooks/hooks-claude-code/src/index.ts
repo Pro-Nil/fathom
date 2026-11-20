@@ -2,22 +2,22 @@
  * Bridge for unmodified Claude Code command hooks on harness interception
  * extension points. It supports SessionStart, prompt/tool pre/post, Stop, and subagent
  * start/stop. It owns Claude payloads, environment, substitution, and decision
- * mapping; shared execution and parsing live in `dsh-hook-protocol`.
+ * mapping; shared execution and parsing live in `fathom-hook-protocol`.
  * `updatedInput` is logged and warned but not honored. Bespoke behavior should
  * use typed native plugins on the same extension points; see the
  * [hook-bridges Agent Note](../../../../.agents/notes/implemented/feature/2026-06-30-hook-bridges.md).
- * @module @pentest-harness/dsh-hooks-claude-code
+ * @module @fathom/hooks-claude-code
  */
 
 import { readFileSync } from 'node:fs'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent, PreStepDecision } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, MessageSource } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-persistence'
-import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent, PreStepDecision } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { ContentBlock, MessageSource } from '@fathom/llm'
+import type { UserMessage } from '@fathom/session'
+import type {} from '@fathom/session-persistence'
+import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@fathom/tools'
 import {
   appendHookInvoked,
   appendHookResult,
@@ -30,10 +30,10 @@ import {
   type HookOutput,
   type MatcherGroup,
   type MergedHookOutcome,
-} from '@pentest-harness/dsh-hook-protocol'
+} from '@fathom/hook-protocol'
 // Pulls in the declaration-merged subagent events and the identity pairing their
 // start/end edges.
-import type { SubagentRunId } from '@pentest-harness/dsh-subagent'
+import type { SubagentRunId } from '@fathom/subagent'
 import { parseClaudeCodeConfig, type ClaudeCodeHookConfig } from './config.ts'
 
 export const name = 'hooks-claude-code'

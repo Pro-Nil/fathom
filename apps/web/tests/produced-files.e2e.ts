@@ -7,9 +7,9 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed, vi } from 'vitest'
-import { CallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@pentest-harness/dsh-llm'
-import { SESSION_FORMAT_VERSION, Session, SessionId } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-session-title'
+import { CallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@fathom/llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId } from '@fathom/session'
+import type {} from '@fathom/session-title'
 import {
   launchWebScaffold, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
 } from './scaffold.ts'

@@ -1,7 +1,7 @@
 /** One-shot session-lineage and event-relationship tracing helpers. */
 
-import { foldSurface, isSurfaceEvent, snapshotSessionEvent } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionId, SurfaceEvent, SurfaceEventType } from '@pentest-harness/dsh-session'
+import { foldSurface, isSurfaceEvent, snapshotSessionEvent } from '@fathom/session'
+import type { SessionEvent, SessionId, SurfaceEvent, SurfaceEventType } from '@fathom/session'
 import { SessionQueryError } from './config.ts'
 import type {
   SessionEventRecord,

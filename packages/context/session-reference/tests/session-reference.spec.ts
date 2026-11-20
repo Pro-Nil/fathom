@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { agentEvents, type Agent } from '@pentest-harness/dsh-agent'
-import { CompactionId, compactCheckpointSource } from '@pentest-harness/dsh-compaction'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
-import SessionQueryEngine from '@pentest-harness/dsh-session-query'
+import { Context } from '@fathom/cordis'
+import { agentEvents, type Agent } from '@fathom/agent'
+import { CompactionId, compactCheckpointSource } from '@fathom/compaction'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@fathom/llm'
+import SessionStore, { Session, SessionId } from '@fathom/session'
+import SessionQueryEngine from '@fathom/session-query'
 import SessionReferenceResolver, {
   decodeSessionReferenceUri,
   encodeSessionReferenceUri,
@@ -12,7 +12,7 @@ import SessionReferenceResolver, {
   parseSessionReferenceText,
   type Config,
   type SessionReferenceErrorCode,
-} from '@pentest-harness/dsh-session-reference'
+} from '@fathom/session-reference'
 import { stringifyTagSafeJson } from '../src/serialization.ts'
 
 class TestSessionQueryEngine extends SessionQueryEngine {
@@ -218,23 +218,23 @@ describe('session reference URI and inline mentions', () => {
       { sessionId, label: sessionId },
     ])
 
-    expect(parseSessionReferenceText('what is a dsh-session: URI?')).toEqual({
-      text: 'what is a dsh-session: URI?',
+    expect(parseSessionReferenceText('what is a fathom-session: URI?')).toEqual({
+      text: 'what is a fathom-session: URI?',
       references: [],
     })
-    expect(parseSessionReferenceText('see dsh-session:%%%')).toEqual({
-      text: 'see dsh-session:%%%',
+    expect(parseSessionReferenceText('see fathom-session:%%%')).toEqual({
+      text: 'see fathom-session:%%%',
       references: [],
     })
   })
 
   it('rejects malformed explicit references and base64url-shaped bare candidates', () => {
     expect(() => decodeSessionReferenceUri('https://example.test')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
-    expect(() => parseSessionReferenceText('see dsh-session:IiJ')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
-    expect(() => parseSessionReferenceText('@[bad](dsh-session:%%%)')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
-    const nonString = `dsh-session:${Buffer.from(JSON.stringify({ id: 'x' })).toString('base64url')}`
+    expect(() => parseSessionReferenceText('see fathom-session:IiJ')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
+    expect(() => parseSessionReferenceText('@[bad](fathom-session:%%%)')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
+    const nonString = `fathom-session:${Buffer.from(JSON.stringify({ id: 'x' })).toString('base64url')}`
     expect(() => decodeSessionReferenceUri(nonString)).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
-    expect(() => decodeSessionReferenceUri('dsh-session:IiJ')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
+    expect(() => decodeSessionReferenceUri('fathom-session:IiJ')).toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
   })
 })
 
@@ -357,7 +357,7 @@ describe('session reference discovery and preparation', () => {
     const target = ctx.sessions.create(SessionId('target'))
     const agent = fakeAgent(target)
     const malformed = createUserMessage({
-      content: [{ type: 'text', text: '@[bad](dsh-session:not-canonical)' }],
+      content: [{ type: 'text', text: '@[bad](fathom-session:not-canonical)' }],
       source: { kind: 'user' },
     })
     const readSurface = vi.spyOn(ctx.sessionQuery, 'readSurface')

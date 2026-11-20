@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-command-compact
+# @fathom/command-compact
 
 Human-facing `/compact` control over [`ctx.compaction`](../compaction/README.md). The plugin registers one global command through [`ctx.commands`](../../interaction/commands/README.md), so every composed command adapter discovers and executes it without a model turn. The [queued manual compaction Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-queued-manual-compaction.md) owns the admission, lock, and durability decisions.
 
@@ -32,14 +32,14 @@ The producer injects `commands` and `compact`. Mount the command registry, one b
 
 ```yaml
 - id: commands
-  name: '@pentest-harness/dsh-commands'
+  name: '@fathom/commands'
 - id: compaction-basic
-  name: '@pentest-harness/dsh-compaction-basic'
+  name: '@fathom/compaction-basic'
 - id: command-compact
-  name: '@pentest-harness/dsh-command-compact'
+  name: '@fathom/command-compact'
 ```
 
-The shipped `dsh` base mounts it beside `compaction-basic`, and the Web client provides the command adapter. Automation surfaces that compose no command adapter keep automatic compaction only.
+The shipped `fathom` base mounts it beside `compaction-basic`, and the Web client provides the command adapter. Automation surfaces that compose no command adapter keep automatic compaction only.
 
 ## Model Experience
 

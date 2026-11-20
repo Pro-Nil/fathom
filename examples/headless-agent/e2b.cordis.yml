@@ -8,41 +8,41 @@
 # falls back to /home/user/workspace while Bash and PTY keep targeting the
 # host path, so every tool call fails with a remote spawn error.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./advanced.cordis.yml
     patches:
       - id: subprocess
-        name: '@pentest-harness/dsh-subprocess-local'
+        name: '@fathom/subprocess-local'
         disabled: true
       - id: fs-local
-        name: '@pentest-harness/dsh-fs-local'
+        name: '@fathom/fs-local'
         disabled: true
       - insert:
           - id: e2b
-            name: '@pentest-harness/dsh-e2b'
+            name: '@fathom/e2b'
             config:
               cwd: !!js process.cwd()
               timeoutMs: 300000
           - id: subprocess-e2b
-            name: '@pentest-harness/dsh-subprocess-e2b'
+            name: '@fathom/subprocess-e2b'
           - id: fs-e2b
-            name: '@pentest-harness/dsh-fs-e2b'
+            name: '@fathom/fs-e2b'
           - id: sandbox-policy
-            name: '@pentest-harness/dsh-sandbox-policy'
+            name: '@fathom/sandbox-policy'
             config:
               mode: danger-full-access
               workspaceRoot: !!js process.cwd()
           - id: pty
-            name: '@pentest-harness/dsh-terminal'
+            name: '@fathom/terminal'
           - id: terminal-bash
-            name: '@pentest-harness/dsh-terminal-bash'
+            name: '@fathom/terminal-bash'
           - id: tool-terminal
-            name: '@pentest-harness/dsh-tool-terminal'
+            name: '@fathom/tool-terminal'
           - id: lsp
-            name: '@pentest-harness/dsh-lsp'
+            name: '@fathom/lsp'
           - id: lsp-stdio
-            name: '@pentest-harness/dsh-lsp-stdio'
+            name: '@fathom/lsp-stdio'
             config:
               servers:
                 typescript:
@@ -54,4 +54,4 @@
                     .js: javascript
                     .jsx: javascriptreact
           - id: tool-lsp
-            name: '@pentest-harness/dsh-tool-lsp'
+            name: '@fathom/tool-lsp'

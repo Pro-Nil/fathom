@@ -3,11 +3,11 @@
  * record of the child's declared composition before its first request, so a
  * later cold resume can reconstruct it from its own log.
  *
- * @module @pentest-harness/dsh-subagent/descriptor-seed
+ * @module @fathom/subagent/descriptor-seed
  */
 
-import { Session } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
+import { Session } from '@fathom/session'
+import type { SessionEvent, SessionId } from '@fathom/session'
 import type { SubagentDescriptorData } from './descriptor.ts'
 
 /**

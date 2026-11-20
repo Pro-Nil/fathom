@@ -1,5 +1,5 @@
-import type { SessionEvent } from '@pentest-harness/dsh-session/types'
-import type {} from '@pentest-harness/dsh-tools/types'
+import type { SessionEvent } from '@fathom/session/types'
+import type {} from '@fathom/tools/types'
 import type {
   ConversationNode, RunningToolCall, ToolCallBlock, ToolResultNode,
 } from './conversation.ts'

@@ -1,13 +1,13 @@
 {
-  "name": "@pentest-harness/dsh-tool-fs",
-  "description": "Model-facing filesystem tools (read, write, edit) over the Pentest Harness filesystem seam (ctx.fs)",
+  "name": "@fathom/tool-fs",
+  "description": "Model-facing filesystem tools (read, write, edit) over the Fathom filesystem seam (ctx.fs)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/fs/tool-fs"
   },
   "type": "module",
@@ -33,40 +33,40 @@
   "license": "MIT",
   "dependencies": {
     "diff": "^9.0.0",
-    "@pentest-harness/schemastery": "workspace:^"
+    "@fathom/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@pentest-harness/dsh-attachment": "workspace:^",
-    "@pentest-harness/dsh-fs": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-sandbox": "workspace:^",
-    "@pentest-harness/dsh-sandbox-policy": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-system-prompt": "workspace:^",
-    "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/dsh-user-approval": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-session-folders": "workspace:^"
+    "@fathom/attachment": "workspace:^",
+    "@fathom/fs": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/sandbox": "workspace:^",
+    "@fathom/sandbox-policy": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/system-prompt": "workspace:^",
+    "@fathom/tools": "workspace:^",
+    "@fathom/user-approval": "workspace:^",
+    "@fathom/cordis": "workspace:^",
+    "@fathom/session-folders": "workspace:^"
   },
   "devDependencies": {
-    "@pentest-harness/cordis": "workspace:^",
-    "@pentest-harness/dsh-agent": "workspace:^",
-    "@pentest-harness/dsh-agent-loop": "workspace:^",
-    "@pentest-harness/dsh-agent-loop-testkit": "workspace:^",
-    "@pentest-harness/dsh-attachment": "workspace:^",
-    "@pentest-harness/dsh-fs": "workspace:^",
-    "@pentest-harness/dsh-fs-local": "workspace:^",
-    "@pentest-harness/dsh-fs-observation-policy": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-llm-pi-ai": "workspace:^",
-    "@pentest-harness/dsh-sandbox": "workspace:^",
-    "@pentest-harness/dsh-sandbox-policy": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/dsh-session-folders": "workspace:^",
-    "@pentest-harness/dsh-system-prompt": "workspace:^",
-    "@pentest-harness/dsh-tools": "workspace:^",
-    "@pentest-harness/dsh-user-approval": "workspace:^"
+    "@fathom/cordis": "workspace:^",
+    "@fathom/agent": "workspace:^",
+    "@fathom/agent-loop": "workspace:^",
+    "@fathom/agent-loop-testkit": "workspace:^",
+    "@fathom/attachment": "workspace:^",
+    "@fathom/fs": "workspace:^",
+    "@fathom/fs-local": "workspace:^",
+    "@fathom/fs-observation-policy": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/llm-pi-ai": "workspace:^",
+    "@fathom/sandbox": "workspace:^",
+    "@fathom/sandbox-policy": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/session-folders": "workspace:^",
+    "@fathom/system-prompt": "workspace:^",
+    "@fathom/tools": "workspace:^",
+    "@fathom/user-approval": "workspace:^"
   }
 }

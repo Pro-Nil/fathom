@@ -4,11 +4,11 @@
  * No account, key or payment is involved. It parses each organic result's
  * link, title and snippet, unwraps DuckDuckGo's `/l/?uddg=` redirect links,
  * skips sponsored results, and returns no generated answer.
- * @module @pentest-harness/dsh-web-search-duckduckgo/provider
+ * @module @fathom/web-search-duckduckgo/provider
  */
 
-import { WebError } from '@pentest-harness/dsh-web'
-import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@pentest-harness/dsh-web'
+import { WebError } from '@fathom/web'
+import type { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from '@fathom/web'
 
 /** Stable id this provider registers under. */
 export const DUCKDUCKGO_PROVIDER_ID = 'duckduckgo'

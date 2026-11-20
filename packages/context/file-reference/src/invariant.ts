@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-file-reference`.
- * @module @pentest-harness/dsh-file-reference/invariant
+ * Package-owned invariant companion for `@fathom/file-reference`.
+ * @module @fathom/file-reference/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-file-reference'
+const PACKAGE_NAME = '@fathom/file-reference'
 
 /** Cordis companion plugin name. */
 export const name = 'file-reference-invariant'

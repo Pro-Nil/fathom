@@ -1,13 +1,13 @@
 /** Direct one-shot Agent driving, durable aggregation, flushing, and exit mapping. */
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@pentest-harness/dsh-agent'
-import AgentDefaultModelConfig from '@pentest-harness/dsh-agent-default-model'
-import { createAssistantMessage } from '@pentest-harness/dsh-llm'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session, UserMessage } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { Inbox } from '@fathom/agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@fathom/agent'
+import AgentDefaultModelConfig from '@fathom/agent-default-model'
+import { createAssistantMessage } from '@fathom/llm'
+import SessionStore from '@fathom/session'
+import type { Session, UserMessage } from '@fathom/session'
 import { apply, Config, internals } from '../src/index.ts'
 
 const originalInternals = { ...internals }
@@ -167,7 +167,7 @@ describe('headless runner', () => {
     expect(await test.run()).toMatchObject({
       code: 1,
       out: '\n',
-      err: 'dsh: SERVER: provider unavailable\n',
+      err: 'fathom: SERVER: provider unavailable\n',
     })
     await test.ctx.fiber.dispose()
   })
@@ -191,7 +191,7 @@ describe('headless runner', () => {
     ctx.provide('agents', { create: () => Promise.reject(new Error('factory exploded')) } as never)
     apply(ctx, { task: 't' })
     expect(await exited).toBe(1)
-    expect(err).toBe('dsh: factory exploded\n')
+    expect(err).toBe('fathom: factory exploded\n')
     await ctx.fiber.dispose()
   })
 
@@ -213,7 +213,7 @@ describe('headless runner', () => {
     ctx.provide('agents', { create: () => rejected } as never)
     apply(ctx, { task: 't' })
     expect(await exited).toBe(1)
-    expect(err).toBe('dsh: factory exploded\n')
+    expect(err).toBe('fathom: factory exploded\n')
     await ctx.fiber.dispose()
   })
 

@@ -1,8 +1,8 @@
-/** Content-block structure helpers. @module @pentest-harness/dsh-llm/content */
+/** Content-block structure helpers. @module @fathom/llm/content */
 
 import type { ContentBlock } from './types.ts'
 import type { Message } from './message.ts'
-import type { ImageAttachmentRef, RequestImageAttachment } from '@pentest-harness/dsh-attachment'
+import type { ImageAttachmentRef, RequestImageAttachment } from '@fathom/attachment'
 
 /** Model-facing stand-in for an image removed to fit a provider request bound. */
 export const OFFLOADED_IMAGE_TEXT

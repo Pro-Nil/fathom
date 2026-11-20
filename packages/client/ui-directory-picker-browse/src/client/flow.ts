@@ -5,10 +5,10 @@
  */
 import { createElement } from 'react'
 import type { ReactElement } from 'react'
-import type { DirectoryListing } from '@pentest-harness/dsh-client-runtime/client'
-import type { Translate } from '@pentest-harness/dsh-client-locale/client'
+import type { DirectoryListing } from '@fathom/client-runtime/client'
+import type { Translate } from '@fathom/client-locale/client'
 // Type-only: the owner contract of the directory-flow holes.
-import type { DirectoryFlowOwnerProps } from '@pentest-harness/dsh-client-ui-workspace/client'
+import type { DirectoryFlowOwnerProps } from '@fathom/client-ui-workspace/client'
 import { DirectoryBrowser } from './DirectoryBrowser.tsx'
 
 /** Injected face: the browse wire calls and copy the dialog drives (bound in apply's closure). */

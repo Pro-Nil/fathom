@@ -1,16 +1,16 @@
 /**
  * Default model selection for an Agent without a session-specific selection.
  *
- * @module @pentest-harness/dsh-agent-default-model
+ * @module @fathom/agent-default-model
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { ModelSelection } from '@pentest-harness/dsh-agent'
-import { ReasoningEffortId } from '@pentest-harness/dsh-llm'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { ModelSelection } from '@fathom/agent'
+import { ReasoningEffortId } from '@fathom/llm'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Default model selection for Agents created without an explicit model. */
     agentDefaultModel: AgentDefaultModelConfig

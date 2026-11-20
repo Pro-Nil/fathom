@@ -1,6 +1,6 @@
 /**
  * Showcase integration: the real `web_fetch` tool + the real spill stack
- * (`dsh-spill-local` backend + `dsh-spill-policy`), exercised through
+ * (`fathom-spill-local` backend + `fathom-spill-policy`), exercised through
  * `ctx.tools.execute()`. Proves the Agent Note's default local-backend path — a large
  * formatted fetch result is automatically retained and spilled with NO
  * tool-specific spill code, and the model-facing text changes ONLY by the
@@ -13,19 +13,19 @@ import { AddressInfo } from 'node:net'
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import type { ToolExecution } from '@pentest-harness/dsh-tools'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import type { ToolExecution } from '@fathom/tools'
 
 const testToolSignal = new AbortController().signal
-import WebRuntime from '@pentest-harness/dsh-web'
-import * as WebFetchLocal from '@pentest-harness/dsh-web-fetch-http'
-import LocalSpillStore from '@pentest-harness/dsh-spill-local'
-import * as SpillPolicy from '@pentest-harness/dsh-spill-policy'
-import * as ToolWeb from '@pentest-harness/dsh-tool-web'
+import WebRuntime from '@fathom/web'
+import * as WebFetchLocal from '@fathom/web-fetch-http'
+import LocalSpillStore from '@fathom/spill-local'
+import * as SpillPolicy from '@fathom/spill-policy'
+import * as ToolWeb from '@fathom/tool-web'
 
 type Handler = (req: IncomingMessage, res: ServerResponse) => void
 
@@ -43,7 +43,7 @@ beforeEach(async () => {
   server = createServer((req, res) => { handler(req, res) })
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
   base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`
-  spillRoot = mkdtempSync(join(tmpdir(), 'dsh-spill-web-'))
+  spillRoot = mkdtempSync(join(tmpdir(), 'fathom-spill-web-'))
 
   ctx = new Context()
   await ctx.plugin(SystemPrompt)

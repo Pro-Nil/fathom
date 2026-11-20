@@ -3,10 +3,10 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import Include from '@pentest-harness/cordis-plugin-include'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
+import { Context } from '@fathom/cordis'
+import Include from '@fathom/cordis-plugin-include'
+import Loader from '@fathom/cordis-plugin-loader'
+import LocalJobRegistry from '@fathom/jobs-local'
 
 let root: string | undefined
 let context: Context | undefined
@@ -20,10 +20,10 @@ afterEach(async () => {
 
 describe('jobs-local through a real Loader composition', () => {
   it('applies the provider-owned admission config from a Cordis row', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-jobs-local-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'fathom-jobs-local-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@pentest-harness/dsh-jobs-local'",
+      "- name: '@fathom/jobs-local'",
       '  config:',
       '    maxConcurrentJobsPerOwner: 1',
       '',
@@ -36,7 +36,7 @@ describe('jobs-local through a real Loader composition', () => {
     context.loader.internal = {
       version: 'v2',
       async import(specifier: string) {
-        if (specifier === '@pentest-harness/dsh-jobs-local') return LocalJobRegistry
+        if (specifier === '@fathom/jobs-local') return LocalJobRegistry
         throw new Error(`unexpected Loader import: ${specifier}`)
       },
     } as unknown as NonNullable<typeof context.loader.internal>

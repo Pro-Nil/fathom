@@ -14,6 +14,6 @@ export default defineConfig({
   dts: false,
   clean: false,
   deps: {
-    alwaysBundle: ['@pentest-harness/cordis-plugin-include'],
+    alwaysBundle: ['@fathom/cordis-plugin-include'],
   },
 })

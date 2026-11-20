@@ -3,11 +3,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SubagentRuntime from '@pentest-harness/dsh-subagent'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import { resolveExampleLaunch } from '@pentest-harness/dsh-loader-smoke'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import SubagentRuntime from '@fathom/subagent'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import { resolveExampleLaunch } from '@fathom/loader-smoke'
 import * as acp from '../src/index.ts'
 
 /**
@@ -21,7 +21,7 @@ const binScript = fileURLToPath(new URL('../../../examples/acp-demo/src/bin.ts',
 const exampleConfig = fileURLToPath(new URL('../../../../examples/acp-agent/cordis.yml', import.meta.url))
 const repoTsconfig = fileURLToPath(new URL('../../../../tsconfig.json', import.meta.url))
 
-// How to launch the child acp-agent (src via tsx / lib via plain node, per DSH_EXAMPLE_MODE).
+// How to launch the child acp-agent (src via tsx / lib via plain node, per FATHOM_EXAMPLE_MODE).
 // The subprocess seam scrubs ambient creds while spec.env merges after it, so the model key is
 // forwarded explicitly; TSX_TSCONFIG_PATH is added by the resolver in src mode only.
 const childLaunch = resolveExampleLaunch({
@@ -31,7 +31,7 @@ const childLaunch = resolveExampleLaunch({
   env: {
     ...process.env.ACME_API_KEY !== undefined ? { ACME_API_KEY: process.env.ACME_API_KEY } : {},
     ...process.env.ACME_BASE_URL !== undefined ? { ACME_BASE_URL: process.env.ACME_BASE_URL } : {},
-    DSH_PERMISSION_MODE: 'danger-full-access',
+    FATHOM_PERMISSION_MODE: 'danger-full-access',
   },
 })
 
@@ -50,7 +50,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.ACME_API_KEY)('ACP backend with-key e2e (drive our own acp-agent)', () => {
   it('drives the real acp-agent example process to answer a prompt', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-subagent-acp-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-subagent-acp-e2e-'))
     ctx = new Context()
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(LocalSubprocessRuntime)
@@ -80,7 +80,7 @@ describe.skipIf(!process.env.ACME_API_KEY)('ACP backend with-key e2e (drive our 
   }, 180_000)
 
   it('drives the child to do real file work via its own bash tool', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-subagent-acp-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'fathom-subagent-acp-e2e-'))
     ctx = new Context()
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(LocalSubprocessRuntime)

@@ -3,16 +3,16 @@
  * continuable in-process child's unpublished context. Roots, one-shot children,
  * remote providers, and agentless executions never see the registration.
  *
- * @module @pentest-harness/dsh-tool-subagent-report
+ * @module @fathom/tool-subagent-report
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SubagentReportDelivery } from '@pentest-harness/dsh-subagent'
-import type {} from '@pentest-harness/dsh-system-prompt'
-import { defineTool } from '@pentest-harness/dsh-tools'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import type { ContentBlock } from '@fathom/llm'
+import type { SubagentReportDelivery } from '@fathom/subagent'
+import type {} from '@fathom/system-prompt'
+import { defineTool } from '@fathom/tools'
 
 export const name = 'tool-subagent-report'
 // The contribution registers only through childCtx.tools and

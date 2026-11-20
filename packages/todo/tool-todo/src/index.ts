@@ -2,17 +2,17 @@
  * Model-facing whole-list replacement. Each call appends a `todo/write` snapshot to the calling
  * agent's session; replay is last-write-wins, and UIs render from session events. A non-agent
  * caller has no owning list and is rejected. Named exports preserve loader injection metadata.
- * @module @pentest-harness/dsh-tool-todo
+ * @module @fathom/tool-todo
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { TodoItem } from '@pentest-harness/dsh-session'
+import { defineTool } from '@fathom/tools'
+import type { TodoItem } from '@fathom/session'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@pentest-harness/dsh-session-projection'
+import type {} from '@fathom/session-projection'
 // The `todos` projection-key declaration lives in src/types.ts (its one home);
 // this re-export projects the type face onto the package root AND keeps the
 // module edge in the emitted index.d.ts, so aggregate programs consuming the

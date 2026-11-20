@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-user-questions`.
- * @module @pentest-harness/dsh-user-questions/invariant
+ * Package-owned invariant companion for `@fathom/user-questions`.
+ * @module @fathom/user-questions/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-user-questions'
+const PACKAGE_NAME = '@fathom/user-questions'
 
 /** Cordis companion plugin name. */
 export const name = 'user-questions-invariant'

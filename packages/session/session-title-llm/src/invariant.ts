@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-title-llm`.
- * @module @pentest-harness/dsh-session-title-llm/invariant
+ * Package-owned invariant companion for `@fathom/session-title-llm`.
+ * @module @fathom/session-title-llm/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-title-llm'
+const PACKAGE_NAME = '@fathom/session-title-llm'
 
 /** Cordis companion plugin name. */
 export const name = 'session-title-llm-invariant'

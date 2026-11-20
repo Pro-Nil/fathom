@@ -1,4 +1,4 @@
-import { Service } from '@pentest-harness/cordis'
+import { Service } from '@fathom/cordis'
 
 /** Shared lifecycle and stable-entry storage for one Conversation Definition registry. */
 export abstract class ConversationDefinitionRegistry<Definition> extends Service {

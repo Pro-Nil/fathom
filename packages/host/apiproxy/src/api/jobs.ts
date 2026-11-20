@@ -4,7 +4,7 @@
  * per push.
  */
 
-import type { JobId } from '@pentest-harness/dsh-jobs/brand'
+import type { JobId } from '@fathom/jobs/brand'
 
 /**
  * One background job as the client sees it.

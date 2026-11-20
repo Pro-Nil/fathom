@@ -1,18 +1,18 @@
 /**
  * Persistent shell PTY backend over the subprocess terminal primitive, shared
  * sandbox policy, bounded output, and provider-owned session cleanup.
- * @module @pentest-harness/dsh-terminal-bash
+ * @module @fathom/terminal-bash
  */
 
-import { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import { TerminalBackendCleanupError } from '@pentest-harness/dsh-terminal'
-import type { TerminalBackend, TerminalBackendSpawnSpec } from '@pentest-harness/dsh-terminal'
-import type { SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import type { SandboxExecutionPolicy } from '@pentest-harness/dsh-sandbox'
-import { effectiveSandboxMode } from '@pentest-harness/dsh-sandbox-policy'
-import { ENCODING_PREAMBLE } from '@pentest-harness/dsh-pwsh-local'
+import { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import type { Session, SessionEvent } from '@fathom/session'
+import { TerminalBackendCleanupError } from '@fathom/terminal'
+import type { TerminalBackend, TerminalBackendSpawnSpec } from '@fathom/terminal'
+import type { SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@fathom/subprocess'
+import type { SandboxExecutionPolicy } from '@fathom/sandbox'
+import { effectiveSandboxMode } from '@fathom/sandbox-policy'
+import { ENCODING_PREAMBLE } from '@fathom/pwsh-local'
 import { type Config, type ResolvedConfig, resolveConfig, type ShellDialect, validateConfig } from './config.ts'
 import { LocalPtySession } from './session.ts'
 import { CONTROLLED_PROMPT } from './sanitize.ts'
@@ -60,9 +60,9 @@ function childEnvironment(spec: TerminalBackendSpawnSpec, dialect: ShellDialect)
     TERM: 'dumb',
     PAGER: 'cat',
     GIT_PAGER: 'cat',
-    DSH_SHELL: '1',
-    DSH_SESSION_ID: spec.owner.id,
-    DSH_PTY_SESSION_ID: spec.sessionId,
+    FATHOM_SHELL: '1',
+    FATHOM_SESSION_ID: spec.owner.id,
+    FATHOM_PTY_SESSION_ID: spec.sessionId,
   }
   if (dialect === 'pwsh') {
     // pwsh ignores PS1/PROMPT_COMMAND; its prompt is installed by the startup

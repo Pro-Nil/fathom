@@ -1,17 +1,17 @@
 /**
  * Single replay-aware token-meter service for request and surface pressure.
  *
- * @module @pentest-harness/dsh-token-meter
+ * @module @fathom/token-meter
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { BlockAssembler, deepFreeze } from '@pentest-harness/dsh-llm'
-import type { Message, TokenUsage } from '@pentest-harness/dsh-llm'
-import type { EpochHeader, Session, SessionEvent } from '@pentest-harness/dsh-session'
-import { canonicalHeader, headerEquals, isSurfaceEvent } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { BlockAssembler, deepFreeze } from '@fathom/llm'
+import type { Message, TokenUsage } from '@fathom/llm'
+import type { EpochHeader, Session, SessionEvent } from '@fathom/session'
+import { canonicalHeader, headerEquals, isSurfaceEvent } from '@fathom/session'
 // Type-only: resolves the optional projection registry Context declaration.
-import type {} from '@pentest-harness/dsh-session-projection'
+import type {} from '@fathom/session-projection'
 import type {
   TokenMeasurement,
   TokenMeasurementBaseline,
@@ -64,7 +64,7 @@ function validateConfigKeys(config: TokenMeterConfig): void {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     tokenMeter: TokenMeter
   }

@@ -1,19 +1,19 @@
 /**
  * Concrete session-query service with SQLite FTS5 over the live-preferred corpus.
  *
- * @module @pentest-harness/dsh-session-query-sqlite
+ * @module @fathom/session-query-sqlite
  */
 
 import { createHash, randomUUID } from 'node:crypto'
 import type { DatabaseSync } from 'node:sqlite'
-import { Context, Service, type Fiber } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import type SessionPersistence from '@pentest-harness/dsh-session-persistence'
+import { Context, Service, type Fiber } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@fathom/session'
+import type SessionPersistence from '@fathom/session-persistence'
 import type {
   SessionPersistenceRevision,
   SessionPersistenceSnapshot,
-} from '@pentest-harness/dsh-session-persistence'
+} from '@fathom/session-persistence'
 import SessionQueryEngine, {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   SESSION_QUERY_READ_WINDOW_MAX,
@@ -21,7 +21,7 @@ import SessionQueryEngine, {
   SessionSearchCursor,
   assertSessionHeadersCompatible,
   buildSessionEventSearchDocuments,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 import type {
   Config as SessionQueryConfig,
   SessionEventSearchDocument,
@@ -33,7 +33,7 @@ import type {
   SessionSearchCursor as SessionSearchCursorValue,
   SessionSearchPage,
   SessionSearchRequest,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 import {
   type JournalMode,
   openSearchDatabase,
@@ -65,7 +65,7 @@ export {
 /** Boot-context slot for a launcher-owned absolute path to this process's derived query index. */
 export const SESSION_QUERY_SQLITE_PATH_KEY = 'launcherSessionQueryPath'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Launcher-owned absolute path to this process's disposable derived query index. */
     launcherSessionQueryPath?: string

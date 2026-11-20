@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SystemPrompt, { PromptAssembly, TOOL_ORDER_REST } from '@pentest-harness/dsh-system-prompt'
-import type { ToolSchema } from '@pentest-harness/dsh-llm'
+import { Context } from '@fathom/cordis'
+import SystemPrompt, { PromptAssembly, TOOL_ORDER_REST } from '@fathom/system-prompt'
+import type { ToolSchema } from '@fathom/llm'
 
 function tool(name: string, description = name): ToolSchema {
   return { name, description, parameters: { type: 'object', properties: {} } }

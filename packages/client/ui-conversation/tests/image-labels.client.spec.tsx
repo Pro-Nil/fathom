@@ -3,9 +3,9 @@
 
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { AttachmentId } from '@pentest-harness/dsh-attachment'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { AttachmentId } from '@fathom/attachment'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { AssistantMarkdown } from '../src/client/chat/AssistantMarkdown.tsx'
 import type { RenderMessageImages } from '../src/client/contract/slots.ts'
 import { attachmentErrorText, imageSizeText } from '../src/client/image-labels.ts'

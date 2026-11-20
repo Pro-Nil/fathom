@@ -1,11 +1,11 @@
 /**
  * Service Definition for the workflow capability seam. Service Providers execute orchestration scripts;
  * observe-only lifecycle events never expose run control.
- * @module @pentest-harness/dsh-workflow
+ * @module @fathom/workflow
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
+import { Context, Service } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
@@ -28,7 +28,7 @@ export type {
 } from './types.ts'
 export type { WorkflowRun, WorkflowStartRequest } from './runtime-types.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     workflowEngine: WorkflowEngine
   }

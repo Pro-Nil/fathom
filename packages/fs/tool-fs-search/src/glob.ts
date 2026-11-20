@@ -6,15 +6,15 @@
  * argument validation, argv construction, result parsing, inline sampling,
  * and formatting; process concerns (spawn execution, tree termination,
  * environment scrubbing, output capture) stay behind `ctx.subprocess`.
- * @module @pentest-harness/dsh-tool-fs-search/glob
+ * @module @fathom/tool-fs-search/glob
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { sep } from 'node:path'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, SearchResultView, ToolResult } from '@pentest-harness/dsh-tools'
-import type { SpillRef } from '@pentest-harness/dsh-spill'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, SearchResultView, ToolResult } from '@fathom/tools'
+import type { SpillRef } from '@fathom/spill'
+import type {} from '@fathom/system-prompt'
 import { runRipgrep, toWorkdirRelative, trySaveFormattedResult } from './search-core.ts'
 import { globSearchMeta, searchViewFromMeta } from './presentation.ts'
 import { acceptedDirectCallValue } from './direct-call.ts'

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tool-call-timeout-policy`.
- * @module @pentest-harness/dsh-tool-call-timeout-policy/invariant
+ * Package-owned invariant companion for `@fathom/tool-call-timeout-policy`.
+ * @module @fathom/tool-call-timeout-policy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-call-timeout-policy'
+const PACKAGE_NAME = '@fathom/tool-call-timeout-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'timeout-policy-invariant'

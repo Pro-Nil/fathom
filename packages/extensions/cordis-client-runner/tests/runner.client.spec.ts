@@ -11,15 +11,15 @@
  */
 /* oxlint-disable typescript/no-unsafe-assignment -- Vitest asymmetric matchers are typed as any. */
 
-import { Context } from '@pentest-harness/cordis'
-import type { Loader } from '@pentest-harness/cordis-plugin-loader'
+import { Context } from '@fathom/cordis'
+import type { Loader } from '@fathom/cordis-plugin-loader'
 import { describe, expect, it, vi } from 'vitest'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
-} from '@pentest-harness/dsh-api-remotes/client'
-import type { SessionId } from '@pentest-harness/dsh-client-connection/client'
-import type { ClientModuleSystem } from '@pentest-harness/dsh-client-modules/client'
-import { SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/api-remotes/client'
+import type { SessionId } from '@fathom/client-connection/client'
+import type { ClientModuleSystem } from '@fathom/client-modules/client'
+import { SlotRegistry } from '@fathom/client-runtime/client'
 import { DYNAMIC_CLIENT_REDIRECTS } from '../src/client/evaluator.ts'
 import { DynamicCordisPackageRunner } from '../src/client/runtime.ts'
 import type { DynamicCordisClientHalf, DynamicCordisRenderFailure } from '../src/client/runtime.ts'

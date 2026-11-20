@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-web-search-exa`.
- * @module @pentest-harness/dsh-web-search-exa/invariant
+ * Package-owned invariant companion for `@fathom/web-search-exa`.
+ * @module @fathom/web-search-exa/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-web-search-exa'
+const PACKAGE_NAME = '@fathom/web-search-exa'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-exa-invariant'

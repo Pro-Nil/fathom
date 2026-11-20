@@ -6,10 +6,10 @@ import { realpath } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
-import { Context } from '@pentest-harness/cordis'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import { deadline } from '@pentest-harness/dsh-timeout'
-import { canonicalizeWorkspace, readHostSource } from '@pentest-harness/dsh-lsp-stdio'
+import { Context } from '@fathom/cordis'
+import LocalFileSystem from '@fathom/fs-local'
+import { deadline } from '@fathom/timeout'
+import { canonicalizeWorkspace, readHostSource } from '@fathom/lsp-stdio'
 
 const execFileAsync = promisify(execFile)
 

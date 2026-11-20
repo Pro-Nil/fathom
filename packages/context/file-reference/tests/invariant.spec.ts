@@ -1,6 +1,6 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantService from '@pentest-harness/dsh-invariants'
+import InvariantService from '@fathom/invariants'
 import * as FileReferenceInvariant from '../src/invariant.ts'
 
 describe('invariant companion', () => {

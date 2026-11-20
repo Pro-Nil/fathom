@@ -2,12 +2,12 @@
  * Service Definition for the same-world process-confinement capability seam: wrap exact subprocess argv under a
  * host-path file policy. Containers, microVMs, and remote execution replace the
  * surrounding capability seam instead; this service shares the host kernel and filesystem.
- * @module @pentest-harness/dsh-sandbox
+ * @module @fathom/sandbox
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { SessionId } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import { HarnessError } from '@fathom/llm'
+import type { SessionId } from '@fathom/session'
 
 export {
   ESCALATION_TARGETS,
@@ -42,7 +42,7 @@ export interface SandboxExecutionPolicy {
   /** Absolute root directory `workspace-write` may write under. */
   workspaceRoot: string
   /**
-   * Opaque identity of the calling session (the branded `dsh-session`
+   * Opaque identity of the calling session (the branded `fathom-session`
    * SessionId). Backends key per-session state off it (e.g. windows-acl gives
    * each live session/workspace pair a random private temp directory and SID,
    * while the workspace SID and standing grant remain per-workspace); absent
@@ -143,7 +143,7 @@ export class SandboxUnavailableError extends HarnessError {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sandbox: SandboxProvider
   }

@@ -9,21 +9,21 @@
  * per-item nulls. Every returned promise has a rejection consumer so dropped script promises cannot
  * kill the worker. A cancelled script that never settles emits nothing; the host force-settles the
  * run within grace and terminates the thread.
- * @module @pentest-harness/dsh-workflow-worker-thread/runtime
+ * @module @fathom/workflow-worker-thread/runtime
  */
 
 import * as vm from 'node:vm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { assertObjectJsonSchema, JsonSchemaError } from '@pentest-harness/dsh-tools'
-import type { ObjectJsonSchema } from '@pentest-harness/dsh-tools'
-import { isFatalWorkflowError, WorkflowError } from '@pentest-harness/dsh-workflow'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import { assertObjectJsonSchema, JsonSchemaError } from '@fathom/tools'
+import type { ObjectJsonSchema } from '@fathom/tools'
+import { isFatalWorkflowError, WorkflowError } from '@fathom/workflow'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
   WorkflowMeta,
   WorkflowResult,
-} from '@pentest-harness/dsh-workflow'
+} from '@fathom/workflow'
 import { materializeFromRealm, MaterializeError, renderThrown } from './realm.ts'
 import type { ChildHandle, ChildPort, WorkerLimits } from './types.ts'
 

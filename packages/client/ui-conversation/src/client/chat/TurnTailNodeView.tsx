@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import type { PropsRenderSlots } from '@pentest-harness/dsh-client-ui-slots'
-import { Button } from '@pentest-harness/dsh-client-ui-primitives'
+import type { PropsRenderSlots } from '@fathom/client-ui-slots'
+import { Button } from '@fathom/client-ui-primitives'
 import type { ChatNodeViewProps, TurnTailOwnerProps } from '../contract/slots.ts'
 import { MessageIconActions } from './MessageIconActions.tsx'
 import { assistantText } from './turn-assistant.ts'

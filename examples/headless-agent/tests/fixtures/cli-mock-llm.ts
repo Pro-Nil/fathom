@@ -1,4 +1,4 @@
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import {
   CallId,
   LlmAdapter,
@@ -6,7 +6,7 @@ import {
   type GenerateOptions,
   type LlmResolvedModelInfo,
   type StreamChunk,
-} from '@pentest-harness/dsh-llm'
+} from '@fathom/llm'
 
 const HIGH = ReasoningEffortId('high')
 const OFF = ReasoningEffortId('off')
@@ -29,7 +29,7 @@ class CliMockAdapter extends LlmAdapter {
   }
 
   async * stream(options: GenerateOptions): AsyncIterable<StreamChunk> {
-    if (process.env.DSH_CLI_MOCK_FAILURE === '1') {
+    if (process.env.FATHOM_CLI_MOCK_FAILURE === '1') {
       yield { type: 'finish', reason: { kind: 'error', failure: { code: 'SERVER', message: 'CLI mock provider failed' } } }
       return
     }

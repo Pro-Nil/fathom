@@ -18,8 +18,8 @@ import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
 import {
   SESSION_FORMAT_VERSION, SessionId as sessionId, type SessionEvent, type SessionId,
-} from '@pentest-harness/dsh-session'
-import { snapshotSubagentDescriptor } from '@pentest-harness/dsh-subagent'
+} from '@fathom/session'
+import { snapshotSubagentDescriptor } from '@fathom/subagent'
 import {
   captureStableAria, compareOrRefreshGolden, launchWebScaffold, seedSession, watchConsole,
   webSnapshotMode, type WebScaffold,

@@ -5,17 +5,17 @@
 import { mkdtempSync, rmSync, statSync, unlinkSync, utimesSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { WebBootGraph, ClientModuleRegistry } from '@pentest-harness/dsh-client-modules'
-import type { WebRoute, WebServer } from '@pentest-harness/dsh-host-webserver'
+import type { WebBootGraph, ClientModuleRegistry } from '@fathom/client-modules'
+import type { WebRoute, WebServer } from '@fathom/host-webserver'
 import { apply, Config, EVENTS_ENDPOINT, inject } from '../src/index.ts'
 
 const POLL_MS = 20
 
 let dir: string
 
-beforeEach(() => { dir = mkdtempSync(join(tmpdir(), 'dsh-hmr-')) })
+beforeEach(() => { dir = mkdtempSync(join(tmpdir(), 'fathom-hmr-')) })
 afterEach(() => { rmSync(dir, { recursive: true, force: true }) })
 
 /**

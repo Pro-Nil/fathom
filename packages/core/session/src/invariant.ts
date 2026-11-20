@@ -1,18 +1,18 @@
 /**
  * Package-owned relational invariants for the session event log. Load this
- * companion beside `@pentest-harness/dsh-invariants` to enable the checks.
+ * companion beside `@fathom/invariants` to enable the checks.
  *
- * @module @pentest-harness/dsh-session/invariant
+ * @module @fathom/session/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { assertNever } from '@pentest-harness/dsh-llm'
-import type { CallId } from '@pentest-harness/dsh-llm'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import { assertNever } from '@fathom/llm'
+import type { CallId } from '@fathom/llm'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
+import type { Session, SessionEvent } from '@fathom/session'
 import { TOOL_NOT_STARTED } from './repair.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session'
+const PACKAGE_NAME = '@fathom/session'
 
 /** Cordis companion plugin name. */
 export const name = 'session-invariant'

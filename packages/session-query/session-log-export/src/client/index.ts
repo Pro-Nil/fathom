@@ -1,21 +1,21 @@
 /** Browser plugin owning Session export download state and its shared modal. */
 
-import type { ClientContext, SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-locale/client'
-import type {} from '@pentest-harness/dsh-client-ui-commands/client'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
+import type { ClientContext, SessionId } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-locale/client'
+import type {} from '@fathom/client-ui-commands/client'
+import type {} from '@fathom/client-ui-conversation/client'
 import { SessionLogDownloadController } from './controller.ts'
 import type { SessionLogDownloadDialogInjected } from './Dialog.tsx'
 import { SessionLogDownloadHeaderAction } from './HeaderAction.tsx'
 import { en, NS, type SessionLogDownloadKey } from './locales.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionLogDownload: SessionLogDownloadController
   }
 }
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     'session-log-download': SessionLogDownloadKey
   }

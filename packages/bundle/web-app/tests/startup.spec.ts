@@ -7,10 +7,10 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import { internals, provideCmdline } from '@pentest-harness/dsh-cmdline'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import { internals, provideCmdline } from '@fathom/cmdline'
 import { afterEach, describe, expect, it } from 'vitest'
 import { apply, WEB_STARTUP_SERVICE, type WebStartupValues } from '../src/startup.ts'
 
@@ -38,7 +38,7 @@ async function bootProvider(args: string[]): Promise<{
   values: WebStartupValues | undefined
   observed: Observed
 }> {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-web-startup-'))
+  const dir = mkdtempSync(join(tmpdir(), 'fathom-web-startup-'))
   const observed: Observed = { exits: [], out: '' }
   writeFileSync(join(dir, 'reader.mjs'), `
 export function apply(_ctx, config) { globalThis.__webStartupObserved.readerConfig = config }
@@ -118,7 +118,7 @@ describe('web command-line provider', () => {
 
   it('prints its own help and leaves the consumer pending', async () => {
     const { values, observed } = await bootProvider(['--help'])
-    expect(observed.out).toContain('dsh --profile web')
+    expect(observed.out).toContain('fathom --profile web')
     expect(observed.out).toContain('--no-open')
     expect(observed.out).toContain('--trusted-host')
     expect(values).toBeUndefined()

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-atomic-write`.
- * @module @pentest-harness/dsh-atomic-write/invariant
+ * Package-owned invariant companion for `@fathom/atomic-write`.
+ * @module @fathom/atomic-write/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-atomic-write'
+const PACKAGE_NAME = '@fathom/atomic-write'
 
 /** Cordis companion plugin name. */
 export const name = 'atomic-write-invariant'

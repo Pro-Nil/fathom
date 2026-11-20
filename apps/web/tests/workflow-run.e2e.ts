@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { Session, SessionEvent, SessionId } from '@pentest-harness/dsh-session'
+import type { Session, SessionEvent, SessionId } from '@fathom/session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   fixtureUserPrompts, launchWebScaffold, watchConsole, webSnapshotMode,

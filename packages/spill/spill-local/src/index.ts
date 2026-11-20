@@ -1,18 +1,18 @@
 /**
  * `LocalSpillStore`: the host-filesystem implementation of the
- * `@pentest-harness/dsh-spill` storage seam. Persists a tool's oversized text to a
+ * `@fathom/spill` storage seam. Persists a tool's oversized text to a
  * private, session-scoped file (see `./store.ts` for the traversal-safe naming
  * and exclusive owner-only write) and returns a path locator plus local
  * read/grep retrieval guidance.
  *
- * @module @pentest-harness/dsh-spill-local
+ * @module @fathom/spill-local
  */
 
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { resolve } from 'node:path'
-import z from '@pentest-harness/schemastery'
-import { SpillLocator, SpillStore } from '@pentest-harness/dsh-spill'
-import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
+import z from '@fathom/schemastery'
+import { SpillLocator, SpillStore } from '@fathom/spill'
+import type { SaveTextSpill, SpillRef } from '@fathom/spill'
 import { privateRoot, saveTextFile } from './store.ts'
 
 export { encodeSegment, privateRoot, saveTextFile, sessionDir } from './store.ts'

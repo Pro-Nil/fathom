@@ -1,22 +1,22 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
-import * as WorkspaceContext from '@pentest-harness/dsh-agent-instructions'
+import { Context } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
+import * as WorkspaceContext from '@fathom/agent-instructions'
 import { candidateScopeKey } from '../src/render.ts'
-import LocalFileSystem from '@pentest-harness/dsh-fs-local'
-import * as ToolFs from '@pentest-harness/dsh-tool-fs'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import LocalFileSystem from '@fathom/fs-local'
+import * as ToolFs from '@fathom/tool-fs'
+import type { SessionEvent } from '@fathom/session'
 
 /** Live e2e route: any OpenAI-compatible endpoint named by ACME_BASE_URL and ACME_API_KEY. */
 function acmeRoute(models: readonly Record<string, unknown>[] = [{ id: 'acme-v4-flash' }, { id: 'acme-v4-pro' }]): never {
@@ -48,7 +48,7 @@ afterEach(async () => {
 })
 
 async function harness(): Promise<{ ctx: Context; agent: Agent }> {
-  workdir = await mkdtemp(join(tmpdir(), 'dsh-workspace-context-e2e-'))
+  workdir = await mkdtemp(join(tmpdir(), 'fathom-workspace-context-e2e-'))
   await mkdir(join(workdir, '.git'), { recursive: true })
   await writeFile(join(workdir, 'AGENTS.md'), `If the user asks for the workspace context handshake, reply with exactly this string and nothing else: ${PROBE}.\n`)
   ctx = new Context()

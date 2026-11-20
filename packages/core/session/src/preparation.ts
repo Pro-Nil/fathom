@@ -1,6 +1,6 @@
 /**
  * Ownership of one unpublished Session before registry publication.
- * @module @pentest-harness/dsh-session/preparation
+ * @module @fathom/session/preparation
  */
 
 import type { Session } from './index.ts'

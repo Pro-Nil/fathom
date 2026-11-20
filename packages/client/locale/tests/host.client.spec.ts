@@ -1,9 +1,9 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@pentest-harness/dsh-settings'
+import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@fathom/settings'
 import {
   LOCALE_SETTINGS_NAMESPACE, apply,
-} from '@pentest-harness/dsh-client-locale'
+} from '@fathom/client-locale'
 
 class MemorySettings extends SettingsProvider {
   readonly writable = true

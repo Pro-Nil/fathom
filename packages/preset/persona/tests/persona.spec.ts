@@ -1,9 +1,9 @@
-import { Context } from '@pentest-harness/cordis'
-import SystemPrompt, { renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import { createScope, type ScopeKey } from '@pentest-harness/dsh-scope'
+import { Context } from '@fathom/cordis'
+import SystemPrompt, { renderPrompt } from '@fathom/system-prompt'
+import { createScope, type ScopeKey } from '@fathom/scope'
 import { describe, expect, it } from 'vitest'
-import * as Persona from '@pentest-harness/dsh-persona'
-import { PERSONA_SECTION } from '@pentest-harness/dsh-persona'
+import * as Persona from '@fathom/persona'
+import { PERSONA_SECTION } from '@fathom/persona'
 
 async function harness(deploymentPersona: string): Promise<Context> {
   const ctx = new Context()

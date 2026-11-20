@@ -2,8 +2,8 @@
 
 import type {
   IApiClient, RpcResult, WorkspaceView,
-} from '@pentest-harness/dsh-api-remotes/client'
-import { transportError } from '@pentest-harness/dsh-host-apiproxy/api'
+} from '@fathom/api-remotes/client'
+import { transportError } from '@fathom/host-apiproxy/api'
 import type { ObservableSnapshot } from '../contract/store.ts'
 import { Notifier } from '../sessions/notifier.ts'
 

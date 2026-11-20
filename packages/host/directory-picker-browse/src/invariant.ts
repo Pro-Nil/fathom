@@ -1,12 +1,12 @@
 /**
  * Package-owned invariant companion for the browse directory-picker backend.
- * @module @pentest-harness/dsh-host-directory-picker-browse/invariant
+ * @module @fathom/host-directory-picker-browse/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-host-directory-picker-browse'
+const PACKAGE_NAME = '@fathom/host-directory-picker-browse'
 
 /** Cordis companion plugin name. */
 export const name = 'host-directory-picker-browse-invariant'

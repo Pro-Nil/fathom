@@ -117,7 +117,7 @@
   const GAP = 6
   const icon = (d, extra) => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + d + '</svg>'
   const ICONS = {
-    mark: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.5 19 5v6c0 4.9-2.8 8.6-7 10.5C7.8 19.6 5 15.9 5 11V5l7-2.5Z"/><circle cx="12" cy="11" r="3.4"/><circle cx="12" cy="11" r="1.1" fill="#3b82f6" stroke="none"/></svg>',
+    mark: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M9.9 3.4a2.1 2.1 0 1 0 4.2 0a2.1 2.1 0 1 0 -4.2 0Z" fill="#2DD4BF"/><path d="M18.269 6.733A7.100 7.100 0 0 1 5.731 6.733A1.100 1.100 0 0 1 7.674 5.700A4.900 4.900 0 0 0 16.326 5.700A1.100 1.100 0 0 1 18.269 6.733Z" fill="#2DD4BF"/><path d="M17.312 13.825A11.700 11.700 0 0 1 6.688 13.825A1.100 1.100 0 0 1 7.687 11.865A9.500 9.500 0 0 0 16.313 11.865A1.100 1.100 0 0 1 17.312 13.825Z" fill="#2DD4BF" fill-opacity="0.72"/><path d="M15.528 19.314A16.300 16.300 0 0 1 8.472 19.314A1.100 1.100 0 0 1 8.948 17.166A14.100 14.100 0 0 0 15.052 17.166A1.100 1.100 0 0 1 15.528 19.314Z" fill="#2DD4BF" fill-opacity="0.45"/></svg>',
     reload: icon('<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'),
     external: icon('<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/>'),
     more: icon('<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>', ' stroke-width="2.4"'),
@@ -185,7 +185,7 @@
     const what = update.behind > 0
       ? 'downloads ' + update.behind + ' new commit' + (update.behind === 1 ? '' : 's') + (update.upstream ? ' from ' + update.upstream : '') + ', installs and builds them'
       : 'builds the new code in your checkout'
-    if (window.confirm('Update Pentest Harness?\n\nThis ' + what + ' while you keep working, then restarts the harness. Turns still running stop at the restart; your sessions stay.')) {
+    if (window.confirm('Update Fathom?\n\nThis ' + what + ' while you keep working, then restarts the harness. Turns still running stop at the restart; your sessions stay.')) {
       post({ kind: 'window', action: 'update' })
     }
   }
@@ -200,7 +200,7 @@
     bar.id = 'ph-titlebar'
     bar.innerHTML =
       '<span class="ph-mark">' + ICONS.mark + '</span>' +
-      '<span class="ph-title"><span class="ph-session"></span><span class="ph-sep">·</span><span class="ph-app">Pentest Harness</span></span>' +
+      '<span class="ph-title"><span class="ph-session"></span><span class="ph-sep">·</span><span class="ph-app">Fathom</span></span>' +
       '<span class="ph-space"></span>' +
       '<button class="ph-update" data-action="update" hidden><span class="ph-update-dot"></span><span class="ph-update-text">Update</span></button>' +
       '<span class="ph-pill ph-waiting" hidden></span>' +
@@ -223,7 +223,7 @@
       else post({ kind: 'window', action: button.dataset.action })
     })
     renderChrome()
-    // The harness keeps document.title as "<session> — Pentest Harness"; the
+    // The harness keeps document.title as "<session> — Fathom"; the
     // bar mirrors it (and never writes it back).
     new MutationObserver(renderTitle).observe(document.head, { subtree: true, childList: true, characterData: true })
     renderTitle()
@@ -234,8 +234,8 @@
     const bar = document.getElementById('ph-titlebar')
     if (!bar) return
     const isApp = !!document.getElementById('root')
-    const session = document.title.replace(/\s*[—·-]\s*Pentest Harness\s*$/, '').trim()
-    const text = !isApp ? 'Starting' : session.length > 0 && session !== 'Pentest Harness' ? session : 'New session'
+    const session = document.title.replace(/\s*[—·-]\s*Fathom\s*$/, '').trim()
+    const text = !isApp ? 'Starting' : session.length > 0 && session !== 'Fathom' ? session : 'New session'
     const node = bar.querySelector('.ph-session')
     if (node.textContent !== text) node.textContent = text
     if (isApp && document.title !== lastTitle) {

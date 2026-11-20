@@ -1,10 +1,10 @@
-/** Package-owned LLM stream-protocol invariants. @module @pentest-harness/dsh-llm/invariant */
+/** Package-owned LLM stream-protocol invariants. @module @fathom/llm/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import type { ContentBlockType, StreamChunk } from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-llm'
+const PACKAGE_NAME = '@fathom/llm'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-invariant'

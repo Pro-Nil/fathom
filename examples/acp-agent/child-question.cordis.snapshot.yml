@@ -2,15 +2,15 @@
 # seam, model-facing tool, and tripwire provider while replacing Acme with
 # per-session replay.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - id: sandbox
-        name: '@pentest-harness/dsh-sandbox-local'
+        name: '@fathom/sandbox-local'
         config:
           runnerCommand:
             - bash
@@ -20,11 +20,11 @@
           runnerFailureSignatures:
             - 'passthrough-runner: profile rejected'
       - id: acp-agent
-        name: '@pentest-harness/dsh-acp-demo'
+        name: '@fathom/acp-demo'
         config:
           provider: acme-official
           model: acme-v4-flash
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceRoot: !!js process.env.FATHOM_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
             maxBytes: 65536
@@ -34,7 +34,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'
             config:
               providers:
                 - id: acme-official
@@ -43,8 +43,8 @@
                     - id: acme-v4-flash
                     - id: acme-v4-pro
           - id: user-questions
-            name: '@pentest-harness/dsh-user-questions'
+            name: '@fathom/user-questions'
           - id: tool-ask-user
-            name: '@pentest-harness/dsh-tool-ask-user'
+            name: '@fathom/tool-ask-user'
           - id: child-question-tripwire
             name: './tests/fixtures/child-question-tripwire.ts'

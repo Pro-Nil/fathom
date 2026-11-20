@@ -1,8 +1,8 @@
 /** Host loader entry for the browser implementation exported from `./client`. */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { settingsNamespace } from '@fathom/settings'
 
 /** Durable settings namespace for product-wide GUI onboarding facts. */
 const ONBOARDING_SETTINGS_NAMESPACE = 'ui-onboarding'

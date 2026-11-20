@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import type { JobView } from '@pentest-harness/dsh-client-runtime/client'
-import { IconChevronDownOutline14, StateDot, useDismissOnOutsidePointer, type StateDotState } from '@pentest-harness/dsh-client-ui-primitives'
-import type { PropsLocale, PropsRuntime, TranslateNS } from '@pentest-harness/dsh-client-ui-slots'
+import type { JobView } from '@fathom/client-runtime/client'
+import { IconChevronDownOutline14, StateDot, useDismissOnOutsidePointer, type StateDotState } from '@fathom/client-ui-primitives'
+import type { PropsLocale, PropsRuntime, TranslateNS } from '@fathom/client-ui-slots'
 import { NS } from './locales.ts'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
+import type {} from '@fathom/client-ui-conversation/client'
 import css from './JobListAction.module.css'
 
 /** Outcome of a stop request: `null` when accepted, otherwise the reason it failed. */

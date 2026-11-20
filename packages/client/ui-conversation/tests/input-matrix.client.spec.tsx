@@ -7,14 +7,14 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ClientContext, ConversationSnapshot, SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { SubmitImageAttachment, SubmitOutcome } from '@pentest-harness/dsh-client-ui-input-trigger/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+} from '@fathom/client-runtime/client'
+import type { ClientContext, ConversationSnapshot, SessionId } from '@fathom/client-runtime/client'
+import type { SubmitImageAttachment, SubmitOutcome } from '@fathom/client-ui-input-trigger/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type { DraftAttachmentId } from '../src/client/input/contract.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'

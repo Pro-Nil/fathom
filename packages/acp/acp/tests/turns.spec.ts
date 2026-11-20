@@ -1,7 +1,7 @@
-import { createUserMessage, type StreamChunk } from '@pentest-harness/dsh-llm'
+import { createUserMessage, type StreamChunk } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { SessionId } from '@fathom/session'
 import {
   errorResponse,
   makeBridgeHarness,

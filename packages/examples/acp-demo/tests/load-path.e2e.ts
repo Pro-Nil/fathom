@@ -32,7 +32,7 @@ const repoTsconfig = fileURLToPath(new URL('../../../../tsconfig.json', import.m
 // session-query consumer/policies, inlined so the package test owns its fixture.
 const CORDIS_YML = `
 - id: llm-pi-ai
-  name: '@pentest-harness/dsh-llm-pi-ai'
+  name: '@fathom/llm-pi-ai'
   config:
     providers:
       acme-official:
@@ -43,24 +43,24 @@ const CORDIS_YML = `
         models:
           - id: acme-v4-flash
 - id: subprocess
-  name: '@pentest-harness/dsh-subprocess-local'
+  name: '@fathom/subprocess-local'
 - id: bash
-  name: '@pentest-harness/dsh-bash-local'
+  name: '@fathom/bash-local'
 - id: acp-agent
-  name: '@pentest-harness/dsh-acp-demo'
+  name: '@fathom/acp-demo'
   config:
     provider: acme-official
     model: acme-v4-flash
     persona: 'You are a test agent.'
     workspaceContext: false
 - id: tool-session-query
-  name: '@pentest-harness/dsh-tool-session-query'
+  name: '@fathom/tool-session-query'
 - id: timeout-policy
-  name: '@pentest-harness/dsh-tool-call-timeout-policy'
+  name: '@fathom/tool-call-timeout-policy'
 - id: spill-local
-  name: '@pentest-harness/dsh-spill-local'
+  name: '@fathom/spill-local'
 - id: spill-policy
-  name: '@pentest-harness/dsh-spill-policy'
+  name: '@fathom/spill-policy'
   config:
     maxInlineBytes: 50000
 `
@@ -98,8 +98,8 @@ async function boot(): Promise<Spawned & { cwd: string }> {
         TSX_TSCONFIG_PATH: repoTsconfig,
         // Key-present check only; no prompt is sent, so the model is never called.
         ACME_API_KEY: process.env.ACME_API_KEY ?? 'keyless-acp-agent-smoke',
-        DSH_HOME: join(cwd, '.dsh'),
-        DSH_AGENTS_HOME: join(cwd, '.agents'),
+        FATHOM_HOME: join(cwd, '.fathom'),
+        FATHOM_AGENTS_HOME: join(cwd, '.agents'),
       },
       stdio: ['pipe', 'pipe', 'pipe'],
     },
@@ -124,7 +124,7 @@ async function boot(): Promise<Spawned & { cwd: string }> {
   return { ...spawned, cwd }
 }
 
-describe('dsh-acp-demo real-load-path smoke (bin + Loader, keyless)', () => {
+describe('fathom-acp-demo real-load-path smoke (bin + Loader, keyless)', () => {
   it('boots via its bin and exposes only fresh text sessions', async () => {
     const { client, cwd, stderr } = await boot()
     // initialize: a broken export shape (collapsed bridge plugin, dropped inject)

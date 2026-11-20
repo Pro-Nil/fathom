@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { jsonSchemaToTs, renderToolsSdk } from '@pentest-harness/dsh-tools/src/ts-types.ts'
-import type { ToolSdkSchema } from '@pentest-harness/dsh-tools/src/ts-types.ts'
-import { parameterSchemaSpecToJsonSchema } from '@pentest-harness/dsh-tools'
+import { jsonSchemaToTs, renderToolsSdk } from '@fathom/tools/src/ts-types.ts'
+import type { ToolSdkSchema } from '@fathom/tools/src/ts-types.ts'
+import { parameterSchemaSpecToJsonSchema } from '@fathom/tools'
 
 describe('jsonSchemaToTs', () => {
   it('maps every unified schema construct', () => {

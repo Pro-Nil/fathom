@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-subagent-fork-in-process
+# @fathom/subagent-fork-in-process
 
 The fork provider creates an in-process child seeded with the parent's completed conversation turns. It shares all run mechanics with spawn; the session seed is the only behavioral difference.
 
@@ -21,7 +21,7 @@ Fork advertises `{ outputSchema: true, depthLimit: true, toolFilter: true, perso
 | Key | Meaning |
 |---|---|
 | `providerName` | Registry name on `ctx.subagents` (default `fork`). |
-See [`dsh-subagent-spawn-in-process`](../subagent-spawn-in-process/README.md) for the run lifecycle, model inheritance, and depth tracking — all shared.
+See [`fathom-subagent-spawn-in-process`](../subagent-spawn-in-process/README.md) for the run lifecycle, model inheritance, and depth tracking — all shared.
 
 ## Model Experience
 
@@ -43,7 +43,7 @@ The child may reuse the inherited byte-identical prefix under the same provider 
 
 #### What the model sees
 
-The parent receives only the child's own final output through `dsh-tool-subagent`, not the inherited prefix or intermediate work.
+The parent receives only the child's own final output through `fathom-tool-subagent`, not the inherited prefix or intermediate work.
 
 #### Token effect
 

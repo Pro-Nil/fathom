@@ -1,20 +1,20 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import LocalJobRegistry from '@pentest-harness/dsh-jobs-local'
-import * as ToolTasks from '@pentest-harness/dsh-tool-jobs'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as ToolBash from '@pentest-harness/dsh-tool-bash'
-import * as BashEnvPlugin from '@pentest-harness/dsh-shell-env'
+import { SessionId, type SessionEvent } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import LocalJobRegistry from '@fathom/jobs-local'
+import * as ToolTasks from '@fathom/tool-jobs'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as ToolBash from '@fathom/tool-bash'
+import * as BashEnvPlugin from '@fathom/shell-env'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 /**
@@ -23,7 +23,7 @@ import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent
  * (tool/call + tool/result session events, the generic `ctx.jobs` runtime,
  * agent.inject completion notices).
  */
-async function harness(adapter: MockAdapter, sessionRoot?: string, dshHome?: string) {
+async function harness(adapter: MockAdapter, sessionRoot?: string, fathomHome?: string) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
   if (sessionRoot !== undefined) {
@@ -33,7 +33,7 @@ async function harness(adapter: MockAdapter, sessionRoot?: string, dshHome?: str
   await ctx.plugin(LocalJobRegistry)
   await ctx.plugin(ToolTasks)
   await ctx.plugin(LocalSubprocessRuntime)
-  await ctx.plugin(BashEnvPlugin, dshHome === undefined ? {} : { dshHome })
+  await ctx.plugin(BashEnvPlugin, fathomHome === undefined ? {} : { fathomHome })
   await ctx.plugin(LocalBashExecutor, { timeoutMs: 10_000 })
   await ctx.plugin(ToolBash)
   ctx.llm.registerAdapter(['mock'], adapter)
@@ -94,18 +94,18 @@ async function pollUntil(predicate: () => boolean, timeoutMs = 5_000): Promise<v
 
 describe('bash tool through the agent loop', () => {
   it('first-turn bash receives session identity before the lazy JSONL file materializes', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-bash-session-env-'))
+    const root = mkdtempSync(join(tmpdir(), 'fathom-bash-session-env-'))
     dirs.push(root)
-    const dshHome = join(root, 'dsh-home')
-    vi.stubEnv('DSH_STALE_PARENT', 'stale')
+    const fathomHome = join(root, 'fathom-home')
+    vi.stubEnv('FATHOM_STALE_PARENT', 'stale')
     const adapter = new MockAdapter([
       toolCallResponse('call-1', 'bash', {
-        command: 'printf \'%s\\n%s\\n%s\\n%s\\n%s\\n\' "$DSH_HOME" "$DSH_SHELL" "$DSH_SESSION_ID" "$DSH_SESSION_JSONL" "${DSH_STALE_PARENT-unset}"; if [ -e "$DSH_SESSION_JSONL" ]; then printf \'present\\n\'; else printf \'absent\\n\'; fi',
+        command: 'printf \'%s\\n%s\\n%s\\n%s\\n%s\\n\' "$FATHOM_HOME" "$FATHOM_SHELL" "$FATHOM_SESSION_ID" "$FATHOM_SESSION_JSONL" "${FATHOM_STALE_PARENT-unset}"; if [ -e "$FATHOM_SESSION_JSONL" ]; then printf \'present\\n\'; else printf \'absent\\n\'; fi',
         description: 'inspect session environment',
       }),
       textResponse('Session environment inspected.'),
     ])
-    const ctx = await harness(adapter, root, dshHome)
+    const ctx = await harness(adapter, root, fathomHome)
     const handle = await ctx.agents.create({
       sessionId: SessionId('session-env-id'),
       agentOptions: { provider: 'mock', model: 'mock' },
@@ -118,7 +118,7 @@ describe('bash tool through the agent loop', () => {
     await waitForIdle(ctx, agent)
 
     const result = findEvent(events(agent), 'tool/result')
-    expect(resultText(result)).toBe(`${dshHome}\n1\nsession-env-id\n${location?.path}\nunset\nabsent\n`)
+    expect(resultText(result)).toBe(`${fathomHome}\n1\nsession-env-id\n${location?.path}\nunset\nabsent\n`)
     await ctx.sessions.flush(agent.session)
     expect(existsSync(location!.path)).toBe(true)
     const header = JSON.parse(readFileSync(location!.path, 'utf8').split('\n')[0]!) as { type: string; id: string }
@@ -181,7 +181,7 @@ describe('bash tool through the agent loop', () => {
     // claim, which folds the notice into a turn whose scripted reply is final:
     // the turn then closes with an empty next-step inbox and the collection
     // entries are never reached.
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-bg-'))
+    const dir = mkdtempSync(join(tmpdir(), 'fathom-bg-'))
     dirs.push(dir)
     const sentinel = join(dir, 'release')
     // The job id is deterministic (a fresh LocalJobRegistry counts per kind from 1),

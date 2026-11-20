@@ -2,11 +2,11 @@ import { mkdtempSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSy
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import { Context, Service } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
 import SessionFolders, {
   MARKER_FILE, isInside, slugify, toolWorkdir, validateFolder,
-} from '@pentest-harness/dsh-session-folders'
+} from '@fathom/session-folders'
 
 const dirs: string[] = []
 function workspace(): string {

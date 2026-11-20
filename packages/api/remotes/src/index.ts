@@ -1,18 +1,18 @@
 /** Host BFF entry and Loader shell for the Remote contribution assembly. */
 
-import type { TypertForwardableEvent } from '@pentest-harness/dsh-typert-protocol'
+import type { TypertForwardableEvent } from '@fathom/typert-protocol'
 import { API_REMOTE_FORWARDED_EVENTS } from './remote-events.ts'
 
 // The owner packages' client-safe `./types` exports carry the cordis `Events`
 // declarations for every allowlisted event. Pulling them into this face is what
 // makes the shape assertion below judge real signatures rather than an empty
 // event vocabulary.
-import type {} from '@pentest-harness/dsh-commands/types'
-import type {} from '@pentest-harness/dsh-cordis-host-runner/types'
-import type {} from '@pentest-harness/dsh-credentials/types'
-import type {} from '@pentest-harness/dsh-llm/types'
-import type {} from '@pentest-harness/dsh-agent-presets/types'
-import type {} from '@pentest-harness/dsh-settings/types'
+import type {} from '@fathom/commands/types'
+import type {} from '@fathom/cordis-host-runner/types'
+import type {} from '@fathom/credentials/types'
+import type {} from '@fathom/llm/types'
+import type {} from '@fathom/agent-presets/types'
+import type {} from '@fathom/settings/types'
 
 export {
   ApiRemoteSessionNotFound,

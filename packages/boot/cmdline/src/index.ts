@@ -1,5 +1,5 @@
 /**
- * @pentest-harness/dsh-cmdline — the command line a dsh launcher hands to the app
+ * @fathom/cmdline — the command line a fathom launcher hands to the app
  * it boots.
  *
  * The launcher parses only its own flags (`--profile`, `--patch`, the config
@@ -13,15 +13,15 @@
  * can inject that service and read it from lazily resolved config —
  * `port: !!js ctx.webStartup.port ?? 3080` — so a flag beats the value written
  * beside it. No row has launcher-level command-line status.
- * @module @pentest-harness/dsh-cmdline
+ * @module @fathom/cmdline
  */
 
 import type { Command } from 'commander'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 
 /**
  * The invocation's inner arguments: everything after the launcher's own flags,
- * verbatim and in argv order. `dsh --profile tui --resume abc` yields
+ * verbatim and in argv order. `fathom --profile tui --resume abc` yields
  * `['--resume', 'abc']`.
  */
 export interface CmdlineArgs {
@@ -41,7 +41,7 @@ export interface AppExit {
   (code: number): void
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** The invocation's inner arguments; provided by a launcher before the tree mounts. */
     cmdlineArgs?: CmdlineArgs

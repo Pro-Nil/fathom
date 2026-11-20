@@ -3,16 +3,16 @@
  * an escapable vm context on a fresh worker and bridges `agent()` calls to host
  * subagents. The thread prevents synchronous script work from blocking the host
  * and permits forced termination, but it is containment rather than a security boundary.
- * @module @pentest-harness/dsh-workflow-worker-thread
+ * @module @fathom/workflow-worker-thread
  */
 
 import { randomUUID } from 'node:crypto'
 import { availableParallelism } from 'node:os'
 import * as vm from 'node:vm'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import WorkflowEngine, { WorkflowError, WorkflowRunId } from '@pentest-harness/dsh-workflow'
-import type { WorkflowRun, WorkflowRunInfo, WorkflowStartRequest } from '@pentest-harness/dsh-workflow'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import WorkflowEngine, { WorkflowError, WorkflowRunId } from '@fathom/workflow'
+import type { WorkflowRun, WorkflowRunInfo, WorkflowStartRequest } from '@fathom/workflow'
 import { WorkerRun } from './host.ts'
 import { validateMeta } from './meta.ts'
 import type { WorkerInit, WorkerLimits } from './types.ts'

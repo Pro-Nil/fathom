@@ -1,14 +1,14 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { Context, type Fiber } from '@pentest-harness/cordis'
+import { createUserMessage } from '@fathom/llm'
+import { Context, type Fiber } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import SessionStore, { Session, SessionId } from '@pentest-harness/dsh-session'
+import SessionStore, { Session, SessionId } from '@fathom/session'
 import SessionTitleService, {
   SessionTitleProviderId,
   type Config,
   type SessionTitleProvider,
   type SessionTitleProviderRequest,
   type SessionTitleProviderResult,
-} from '@pentest-harness/dsh-session-title'
+} from '@fathom/session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

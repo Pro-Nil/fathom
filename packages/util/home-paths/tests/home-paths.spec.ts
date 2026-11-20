@@ -3,61 +3,64 @@ import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  DEFAULT_DSH_HOME_DISPLAY,
-  DSH_HOME_DIR_NAME,
+  DEFAULT_FATHOM_HOME_DISPLAY,
+  FATHOM_HOME_DIR_NAME,
+  LEGACY_HOME_DIR_NAME,
   canonicalizeWatchPath,
-  defaultDshHome,
-  dshHomeDisplay,
-  dshHomePath,
+  defaultFathomHome,
+  fathomHomeDisplay,
+  fathomHomePath,
   expandHomePath,
-  resolveDshHome,
-} from '@pentest-harness/dsh-home-paths'
+  resolveFathomHome,
+} from '@fathom/home-paths'
 
 afterEach(() => {
   vi.unstubAllEnvs()
 })
 
-describe('dsh path helpers', () => {
-  it('owns the shared default DSH home directory name', () => {
-    expect(DSH_HOME_DIR_NAME).toBe('.dsh')
-    expect(DEFAULT_DSH_HOME_DISPLAY).toBe('~/.dsh')
-    expect(defaultDshHome()).toBe(join(homedir(), '.dsh'))
+describe('fathom path helpers', () => {
+  it('owns the shared default FATHOM home directory name', () => {
+    expect(FATHOM_HOME_DIR_NAME).toBe('.fathom')
+    expect(DEFAULT_FATHOM_HOME_DISPLAY).toBe('~/.fathom')
+    // A machine that still has a pre-rename home serves it until it is
+    // migrated (see legacy-migration.spec.ts); either way it sits under the OS home.
+    expect([join(homedir(), '.fathom'), join(homedir(), LEGACY_HOME_DIR_NAME)]).toContain(defaultFathomHome())
   })
 
   it('expands tilde paths without changing non-tilde paths', () => {
     expect(expandHomePath('~')).toBe(homedir())
-    expect(expandHomePath('~/.dsh')).toBe(join(homedir(), '.dsh'))
-    expect(expandHomePath('~\\.dsh')).toBe(join(homedir(), '.dsh'))
-    expect(expandHomePath('/tmp/.dsh')).toBe('/tmp/.dsh')
-    expect(expandHomePath('~other/.dsh')).toBe('~other/.dsh')
+    expect(expandHomePath('~/.fathom')).toBe(join(homedir(), '.fathom'))
+    expect(expandHomePath('~\\.fathom')).toBe(join(homedir(), '.fathom'))
+    expect(expandHomePath('/tmp/.fathom')).toBe('/tmp/.fathom')
+    expect(expandHomePath('~other/.fathom')).toBe('~other/.fathom')
   })
 
-  it('resolves explicit path before DSH_HOME and the default', () => {
-    const envHome = join(homedir(), 'env-dsh')
+  it('resolves explicit path before FATHOM_HOME and the default', () => {
+    const envHome = join(homedir(), 'env-fathom')
 
-    expect(resolveDshHome('/tmp/explicit-dsh', { DSH_HOME: '~/env-dsh' })).toBe(resolve('/tmp/explicit-dsh'))
-    expect(resolveDshHome(undefined, { DSH_HOME: '~/env-dsh' })).toBe(envHome)
-    expect(resolveDshHome(undefined, {})).toBe(defaultDshHome())
+    expect(resolveFathomHome('/tmp/explicit-fathom', { FATHOM_HOME: '~/env-fathom' })).toBe(resolve('/tmp/explicit-fathom'))
+    expect(resolveFathomHome(undefined, { FATHOM_HOME: '~/env-fathom' })).toBe(envHome)
+    expect(resolveFathomHome(undefined, {})).toBe(defaultFathomHome())
   })
 
-  it('treats an empty or whitespace-only DSH_HOME as unset', () => {
-    expect(resolveDshHome(undefined, { DSH_HOME: '' })).toBe(defaultDshHome())
-    expect(resolveDshHome(undefined, { DSH_HOME: '   ' })).toBe(defaultDshHome())
+  it('treats an empty or whitespace-only FATHOM_HOME as unset', () => {
+    expect(resolveFathomHome(undefined, { FATHOM_HOME: '' })).toBe(defaultFathomHome())
+    expect(resolveFathomHome(undefined, { FATHOM_HOME: '   ' })).toBe(defaultFathomHome())
   })
 
-  it('joins child segments onto the resolved DSH_HOME', () => {
-    vi.stubEnv('DSH_HOME', '~/env-dsh')
-    expect(dshHomePath()).toBe(join(homedir(), 'env-dsh'))
-    expect(dshHomePath('storages', 'cache')).toBe(join(homedir(), 'env-dsh', 'storages', 'cache'))
+  it('joins child segments onto the resolved FATHOM_HOME', () => {
+    vi.stubEnv('FATHOM_HOME', '~/env-fathom')
+    expect(fathomHomePath()).toBe(join(homedir(), 'env-fathom'))
+    expect(fathomHomePath('storages', 'cache')).toBe(join(homedir(), 'env-fathom', 'storages', 'cache'))
   })
 
   it('labels a resolved home by whether it is the default root', () => {
-    expect(dshHomeDisplay(resolve(defaultDshHome()))).toBe('~/.dsh')
-    expect(dshHomeDisplay('/some/other/root')).toBe('$DSH_HOME')
+    expect(fathomHomeDisplay(resolve(join(homedir(), '.fathom')))).toBe('~/.fathom')
+    expect(fathomHomeDisplay('/some/other/root')).toBe('$FATHOM_HOME')
   })
 
   it('canonicalizes a watcher ancestor while preserving a missing suffix', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-watch-path-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-watch-path-'))
     const target = join(root, 'target')
     const alias = join(root, 'alias')
     try {

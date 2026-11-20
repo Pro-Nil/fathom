@@ -15,16 +15,16 @@
  * reads session state once at each operation boundary; executors and providers
  * remain session-free.
  *
- * @module @pentest-harness/dsh-sandbox-policy
+ * @module @fathom/sandbox-policy
  */
 
 import { resolve as resolvePath } from 'node:path'
-import { Context, Service } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-agent'
-import { canonicalPath, type SandboxExecutionPolicy, type SandboxMode } from '@pentest-harness/dsh-sandbox'
-import type { Session } from '@pentest-harness/dsh-session'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import { Context, Service } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/agent'
+import { canonicalPath, type SandboxExecutionPolicy, type SandboxMode } from '@fathom/sandbox'
+import type { Session } from '@fathom/session'
+import type {} from '@fathom/system-prompt'
 import { effectiveSandboxMode } from './session-mode.ts'
 
 export { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from './session-mode.ts'
@@ -38,11 +38,11 @@ function resolveWorkspaceRoot(path: string): string {
 function renderPolicyContext(policy: SandboxExecutionPolicy): string {
   switch (policy.mode) {
     case 'read-only':
-      return 'Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.'
+      return 'Current FATHOM file policy: read-only. Any available operation enforced by the FATHOM file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.'
     case 'workspace-write':
-      return `Current DSH file policy: workspace-write. Any available operation enforced by the DSH file sandbox may modify files under the session workspace: ${JSON.stringify(policy.workspaceRoot)}. Some platform temporary areas may also be writable.`
+      return `Current FATHOM file policy: workspace-write. Any available operation enforced by the FATHOM file sandbox may modify files under the session workspace: ${JSON.stringify(policy.workspaceRoot)}. Some platform temporary areas may also be writable.`
     case 'danger-full-access':
-      return 'Current DSH file policy: danger-full-access. The DSH file sandbox does not restrict file modifications by available operations.'
+      return 'Current FATHOM file policy: danger-full-access. The FATHOM file sandbox does not restrict file modifications by available operations.'
     /* v8 ignore next 4 -- SandboxMode is a typed same-process closed union; this branch is only the static exhaustiveness guard. */
     default: {
       const mode: never = policy.mode
@@ -51,7 +51,7 @@ function renderPolicyContext(policy: SandboxExecutionPolicy): string {
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sandboxPolicy: SandboxPolicyService
   }

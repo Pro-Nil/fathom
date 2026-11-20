@@ -3,9 +3,9 @@
  * @module subagent-settlement-fence
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type {} from '@pentest-harness/dsh-agent-loop'
-import type {} from '@pentest-harness/dsh-subagent'
+import type { Context } from '@fathom/cordis'
+import type {} from '@fathom/agent-loop'
+import type {} from '@fathom/subagent'
 
 /** Fixture plugin name. */
 export const name = 'subagent-settlement-fence'

@@ -1,8 +1,8 @@
 /**
- * Generated scoped-event routing-subject resolvers for dsh-scope invariants.
+ * Generated scoped-event routing-subject resolvers for fathom-scope invariants.
  * Do not edit by hand; run `pnpm run gen-scoped-events`.
  *
- * @module @pentest-harness/dsh-scope/scoped-events.generated
+ * @module @fathom/scope/scoped-events.generated
  */
 
 type ScopedSubjectResolver = (args: readonly unknown[]) => unknown

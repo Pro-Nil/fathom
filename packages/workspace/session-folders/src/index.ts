@@ -11,31 +11,31 @@
  * the agent can still reach the rest of the workspace by path.
  *
  * The folder is chosen the first time a tool needs it, once the session has a
- * title, and is then pinned: a `.dsh-session` marker inside it records the
+ * title, and is then pinned: a `.fathom-session` marker inside it records the
  * owning session id, so a renamed session or a restarted harness keeps using
  * the same folder. A subagent or fork shares its parent's folder. Sessions that
  * existed before this service started and have no marker keep working in the
  * workspace root, so an engagement already under way does not move mid-run.
- * @module @pentest-harness/dsh-session-folders
+ * @module @fathom/session-folders
  */
 
 import { mkdir, readdir, readFile, realpath, stat, writeFile } from 'node:fs/promises'
 import { join, relative, isAbsolute } from 'node:path'
-import { Service } from '@pentest-harness/cordis'
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { Session, SessionId } from '@pentest-harness/dsh-session'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import { Service } from '@fathom/cordis'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { Agent } from '@fathom/agent'
+import type { Session, SessionId } from '@fathom/session'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 // Type-only: the optional title and prompt services this one reads through `ctx.get`.
-import type {} from '@pentest-harness/dsh-session-title'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type {} from '@fathom/session-title'
+import type {} from '@fathom/system-prompt'
 
 /** Cordis plugin name. */
 export const name = 'session-folders'
 
 /** File inside a session folder that records which session owns it. */
-export const MARKER_FILE = '.dsh-session'
+export const MARKER_FILE = '.fathom-session'
 
 /** Settings namespace the Plugins settings page edits. */
 export const SESSION_FOLDERS_SETTINGS_NAMESPACE = settingsNamespace('session-folders')
@@ -66,7 +66,7 @@ export const SESSION_FOLDERS_SETTINGS_SCHEMA: z<SessionFolderSettings> = z.objec
   folder: z.string().default(DEFAULT_FOLDER),
 })
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     sessionFolders: SessionFolders
   }

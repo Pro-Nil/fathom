@@ -1,6 +1,6 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import InvariantRegistry from '@fathom/invariants'
 import * as PluginsInvariant from '../src/invariant.ts'
 
 describe('ui-settings-plugin-inventory invariant companion', () => {

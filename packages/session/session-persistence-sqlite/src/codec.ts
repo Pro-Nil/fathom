@@ -1,11 +1,11 @@
 /**
  * Schema-17 physical chunk-row codec. This package owns the durable tags,
  * validation, and row-size limits independently from other persistence formats.
- * @module @pentest-harness/dsh-session-persistence-sqlite/codec
+ * @module @fathom/session-persistence-sqlite/codec
  */
 
-import type { StreamChunk } from '@pentest-harness/dsh-llm'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { StreamChunk } from '@fathom/llm'
+import type { SessionEvent } from '@fathom/session'
 
 /* jscpd:ignore-start -- schema 17 deliberately owns a frozen physical codec;
  * importing or sharing the JSONL codec would let that format mutate this database interpreter. */

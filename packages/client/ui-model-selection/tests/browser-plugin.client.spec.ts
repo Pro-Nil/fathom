@@ -8,14 +8,14 @@
  * (and the reverse), the one-shared-state contract of the dual entry.
  * Scope disposal drops the directory (HMR safety).
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import { createScope } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
-import { TestRemote } from '@pentest-harness/dsh-client-test-runtime'
-import type { ModelSelection } from '@pentest-harness/dsh-api-remotes/client'
-import type { CommandContribution, SelectOption } from '@pentest-harness/dsh-client-ui-commands/client'
+import { createScope } from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
+import { TestRemote } from '@fathom/client-test-runtime'
+import type { ModelSelection } from '@fathom/api-remotes/client'
+import type { CommandContribution, SelectOption } from '@fathom/client-ui-commands/client'
 import type { ModelSelectInjected } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
 import { en } from '../src/client/locales.ts'

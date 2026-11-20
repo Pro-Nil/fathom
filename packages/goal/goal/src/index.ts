@@ -1,20 +1,20 @@
 /**
  * Same-session goal domain: event-sourced state, compare-and-set mutations,
  * and process-local continuation activation.
- * @module @pentest-harness/dsh-goal
+ * @module @fathom/goal
  */
 
 import { randomUUID } from 'node:crypto'
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import { agentEvents } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import { TypertRemoteService, Remote } from '@pentest-harness/dsh-typert-protocol'
+import { agentEvents } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import type { Session, SessionEvent } from '@fathom/session'
+import { TypertRemoteService, Remote } from '@fathom/typert-protocol'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@pentest-harness/dsh-session-projection'
+import type {} from '@fathom/session-projection'
 import {
   applyGoalEvent,
   decodeGoalChange,
@@ -56,7 +56,7 @@ export type * from './domain.ts'
 export { GOAL_CHANGE_VERSION, GoalError, GoalId } from './runtime.ts'
 export { decodeGoalChange, foldGoal, goalChangeRef } from './fold.ts'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     goals: GoalService
   }

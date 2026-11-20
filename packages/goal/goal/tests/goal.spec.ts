@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry, { agentEvents, Inbox } from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage, HarnessError } from '@pentest-harness/dsh-llm'
-import SessionStore, { Session, SessionId, type UserMessage } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import AgentRegistry, { agentEvents, Inbox } from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage, HarnessError } from '@fathom/llm'
+import SessionStore, { Session, SessionId, type UserMessage } from '@fathom/session'
 import GoalService, {
   GoalError,
   GoalId,
   decodeGoalChange,
   foldGoal,
-} from '@pentest-harness/dsh-goal'
-import type { GoalChangeMeta, GoalRef, GoalSnapshotChangeMeta } from '@pentest-harness/dsh-goal'
+} from '@fathom/goal'
+import type { GoalChangeMeta, GoalRef, GoalSnapshotChangeMeta } from '@fathom/goal'
 
 interface StubAgent {
   agent: Agent
@@ -53,7 +53,7 @@ function stubAgentForSession(session: Session): StubAgent {
 }
 
 /** Build a registry-compatible agent around a fresh session. */
-function stubAgent(rawId: string, seed?: readonly import('@pentest-harness/dsh-session').SessionEvent[]): StubAgent {
+function stubAgent(rawId: string, seed?: readonly import('@fathom/session').SessionEvent[]): StubAgent {
   return stubAgentForSession(Session.create(SessionId(rawId), seed))
 }
 

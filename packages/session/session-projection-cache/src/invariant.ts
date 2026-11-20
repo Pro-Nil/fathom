@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-session-projection-cache`.
- * @module @pentest-harness/dsh-session-projection-cache/invariant
+ * Package-owned invariant companion for `@fathom/session-projection-cache`.
+ * @module @fathom/session-projection-cache/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-session-projection-cache'
+const PACKAGE_NAME = '@fathom/session-projection-cache'
 
 /** Cordis companion plugin name. */
 export const name = 'session-projection-cache-invariant'

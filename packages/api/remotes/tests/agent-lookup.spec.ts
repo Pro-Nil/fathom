@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@pentest-harness/dsh-session'
-import { createApiRemoteAgentResolver } from '@pentest-harness/dsh-api-remotes'
-import { TypertLookupFailure } from '@pentest-harness/dsh-typert-protocol'
-import TypertRegistry from '@pentest-harness/dsh-typert-registry'
+import { Context } from '@fathom/cordis'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@fathom/session'
+import { createApiRemoteAgentResolver } from '@fathom/api-remotes'
+import { TypertLookupFailure } from '@fathom/typert-protocol'
+import TypertRegistry from '@fathom/typert-registry'
 
 const sid = (value: string): SessionId => value as SessionId
 

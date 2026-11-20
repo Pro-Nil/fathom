@@ -11,10 +11,10 @@ import { describe, expect, it, vi } from 'vitest'
 import { act, render } from '@testing-library/react'
 import {
   SlotCore, StaleAuthorizationError, type PropsRenderSlots, type SlotRendererHost,
-} from '@pentest-harness/dsh-client-ui-slots'
+} from '@fathom/client-ui-slots'
 import { createSlotRenderer } from '../src/client/scoped-slots.tsx'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     // No 'root' merge: the aggregate client program already carries runtime's
     // authoritative 'root' declaration (a private merge would TS2717-collide);

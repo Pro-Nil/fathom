@@ -3,12 +3,12 @@
  * invokes the official Agent SDK in the delegating Session's workspace and
  * places the SDK-spawned real CLI under the shared subprocess owner.
  *
- * @module @pentest-harness/dsh-subagent-claude-code
+ * @module @fathom/subagent-claude-code
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 import {
   assertPositiveFinite,
   NO_START_CAPABILITIES,
@@ -16,7 +16,7 @@ import {
   type ResolvedSubagentStartRequest,
   type SubagentCapabilities,
   type SubagentProvider,
-} from '@pentest-harness/dsh-subagent'
+} from '@fathom/subagent'
 import {
   CLAUDE_CODE_PERMISSION_MODES,
   DEFAULT_CLAUDE_CODE_PERMISSION_MODE,

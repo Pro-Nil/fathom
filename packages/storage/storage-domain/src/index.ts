@@ -4,12 +4,12 @@
  * layer — consumers depend on this package and never touch backends directly.
  * Plugin `Config` is schemastery; record schemas inside domain specs are zod
  * (see `src/spec.ts` for the split rationale).
- * @module @pentest-harness/dsh-storage-domain
+ * @module @fathom/storage-domain
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { storageBackendServiceKey } from '@pentest-harness/dsh-storage'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { storageBackendServiceKey } from '@fathom/storage'
 import { DomainError } from './error.ts'
 import { descriptorOf } from './spec.ts'
 import type { DomainSpec } from './spec.ts'
@@ -26,13 +26,13 @@ export type {
 export type { DomainChanged } from './events.ts'
 export type { Domain, DomainGlobal, DomainGlobalHandleOf, KvTable } from './domain.ts'
 
-declare module '@pentest-harness/dsh-storage' {
+declare module '@fathom/storage' {
   interface StorageForms {
     domain: DomainFacility
   }
 }
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     storageDomain: DomainFacility
   }

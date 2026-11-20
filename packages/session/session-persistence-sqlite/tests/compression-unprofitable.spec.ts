@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { SessionEvent } from '@fathom/session'
 
 vi.mock('node:zlib', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:zlib')>()

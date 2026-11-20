@@ -12,7 +12,7 @@ import type {
   RequestView,
   ToolCallBlock,
   ToolResultNode,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   TrajectoryCellProps,
   TrajectorySourceBlock,

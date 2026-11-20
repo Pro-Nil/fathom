@@ -5,9 +5,9 @@
  * (beside Session log); on the new-session screen, which has no header, the
  * same button floats at the top right.
  */
-import type { ClientContext } from '@pentest-harness/dsh-client-runtime/client'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type {} from '@pentest-harness/dsh-client-ui-layout/client'
+import type { ClientContext } from '@fathom/client-runtime/client'
+import type {} from '@fathom/client-ui-conversation/client'
+import type {} from '@fathom/client-ui-layout/client'
 import { BrowserHeaderButton, BrowserPanel, BrowserToggle } from './BrowserPanel.tsx'
 import type { BrowserHeaderInjected } from './BrowserPanel.tsx'
 

@@ -1,5 +1,5 @@
 /**
- * Real-load-path guard for @pentest-harness/dsh-mcp-client. `mcp-client` is a
+ * Real-load-path guard for @fathom/mcp-client. `mcp-client` is a
  * NAMESPACE plugin with `inject` — so a stray `export default apply` would
  * make the cordis Loader's `unwrapExports` (`exports.default ?? exports`)
  * collapse the module to the bare `apply` function, DROPPING `inject`. The
@@ -11,10 +11,10 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import * as mcpClient from '@pentest-harness/dsh-mcp-client'
+import Loader from '@fathom/cordis-plugin-loader'
+import * as mcpClient from '@fathom/mcp-client'
 
-describe('dsh-mcp-client real-load-path guard', () => {
+describe('fathom-mcp-client real-load-path guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {
     expect('default' in mcpClient).toBe(false)
 

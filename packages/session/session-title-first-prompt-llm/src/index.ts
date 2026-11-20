@@ -1,12 +1,12 @@
 /** First-human-message model provider for `ctx.sessionTitle`. */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
 import {
   registerSessionTitleLlmProvider,
   SessionTitleLlmConfigFields,
-} from '@pentest-harness/dsh-session-title-llm'
-import type { SessionTitleLlmConfig } from '@pentest-harness/dsh-session-title-llm'
+} from '@fathom/session-title-llm'
+import type { SessionTitleLlmConfig } from '@fathom/session-title-llm'
 
 export const name = 'session-title-first-prompt-llm'
 export const inject = ['sessionTitle', 'llm', 'sessions']

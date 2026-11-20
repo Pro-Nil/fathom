@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-host-apiproxy`.
- * @module @pentest-harness/dsh-host-apiproxy/invariant
+ * Package-owned invariant companion for `@fathom/host-apiproxy`.
+ * @module @fathom/host-apiproxy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-host-apiproxy'
+const PACKAGE_NAME = '@fathom/host-apiproxy'
 
 /** Cordis companion plugin name. */
 export const name = 'host-apiproxy-invariant'

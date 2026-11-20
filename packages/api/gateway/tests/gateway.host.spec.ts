@@ -1,10 +1,10 @@
 import { createServer } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { describe, expect, it } from 'vitest'
-import { Context, Service, symbols } from '@pentest-harness/cordis'
+import { Context, Service, symbols } from '@fathom/cordis'
 import { z } from 'zod'
-import { apply as applyConnection, inject as connectionInject } from '@pentest-harness/dsh-client-connection'
-import type { WebServer, WebRoute } from '@pentest-harness/dsh-host-webserver'
+import { apply as applyConnection, inject as connectionInject } from '@fathom/client-connection'
+import type { WebServer, WebRoute } from '@fathom/host-webserver'
 import {
   bindTypertRemote,
   Remote,
@@ -14,9 +14,9 @@ import {
   type TypertContext,
   type TypertLookup,
   type TypertLookupProvider,
-} from '@pentest-harness/dsh-typert-protocol'
-import TypertRegistry, { type TypertContribution } from '@pentest-harness/dsh-typert-registry'
-import TypertGatewayService, { TypertGatewayError } from '@pentest-harness/dsh-api-gateway'
+} from '@fathom/typert-protocol'
+import TypertRegistry, { type TypertContribution } from '@fathom/typert-registry'
+import TypertGatewayService, { TypertGatewayError } from '@fathom/api-gateway'
 
 interface FixtureAgent {
   readonly id: string
@@ -26,7 +26,7 @@ interface MarkedContext extends Context {
   readonly fixtureScope?: string
 }
 
-declare module '@pentest-harness/dsh-typert-protocol' {
+declare module '@fathom/typert-protocol' {
   interface TypertLookupMap {
     gatewayFixture: TypertLookup<FixtureAgent, string>
     gatewayFixtureAlias: TypertLookup<FixtureAgent, string>

@@ -1,12 +1,12 @@
-import { MessageId, createUserMessage, createMessage } from '@pentest-harness/dsh-llm'
+import { MessageId, createUserMessage, createMessage } from '@fathom/llm'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { appendFile, mkdtemp, mkdir, rm, readFile, writeFile, readdir, stat, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionHeader } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import SessionStore, { SessionId } from '@fathom/session'
+import type { Session, SessionEvent, SessionHeader } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import {
   encodeSegment, eventLines, logPath, projectDir, projectKey, scanLog, sessionDir, SessionLogScanner, toHeaderLine,
 } from '../src/format.ts'
@@ -74,7 +74,7 @@ async function expectFlushCode(promise: Promise<unknown>, codes: readonly string
 }
 
 async function freshRoot(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-jsonl-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-jsonl-'))
   dirs.push(dir)
   return dir
 }
@@ -101,7 +101,7 @@ function appendClosedTurn(session: Session): void {
 
 // Run the shared backend contract against the real JSONL backend.
 runPersistenceContract('jsonl-none', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-jsonl-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-jsonl-'))
   const ctx = new Context()
   await ctx.plugin(SessionStore)
   const fiber = await ctx.plugin(JsonlSessionPersistence, { root: dir, compression: 'none' })
@@ -117,7 +117,7 @@ runPersistenceContract('jsonl-none', async () => {
 // Two mounts share this temp root to exercise reload. `corruptTail` appends a partial,
 // newline-less fragment past the committed region so coordinator repair runs on real file bytes.
 runCoordinatorContract('jsonl-none', async (): Promise<CoordinatorFixture> => {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-jsonl-coord-'))
+  const dir = await mkdtemp(join(tmpdir(), 'fathom-jsonl-coord-'))
   return {
     mount: async (ctx) => {
       const fiber = await ctx.plugin(JsonlSessionPersistence, { root: dir, compression: 'none' })
@@ -161,7 +161,7 @@ describe('JsonlSessionPersistence: format helpers', () => {
   })
 
   it('projectKey normalizes project paths into bounded readable names', () => {
-    expect(projectKey('/Users/qyj/work/pentest-harness')).toBe('--Users-qyj-work-pentest-harness--')
+    expect(projectKey('/Users/qyj/work/fathom')).toBe('--Users-qyj-work-fathom--')
     expect(projectKey('/a/b-c')).toBe(projectKey('/a-b/c'))
     expect(projectKey('C:\\work\\agent')).toBe('--C-work-agent--')
     expect(projectKey('/쟨럛/~agent')).toBe('--~C7E8~B7DB-~007Eagent--')

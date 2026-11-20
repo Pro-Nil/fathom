@@ -2,18 +2,18 @@
  * JSON-RPC methods and notifications for out-of-process harness SDKs.
  * The surrounding context owns plugins, persistence, and configured adapters.
  *
- * @module @pentest-harness/dsh-sdk-jsonrpc-server/server
+ * @module @fathom/sdk-jsonrpc-server/server
  */
 
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import { resolve } from 'node:path'
-import type { Agent, AgentHandle } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import { carrierKeyOf, type Scoped } from '@pentest-harness/dsh-scope'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type SubagentRuntime from '@pentest-harness/dsh-subagent'
-import type { SubagentRunEndInfo } from '@pentest-harness/dsh-subagent'
-import * as LlmPiAi from '@pentest-harness/dsh-llm-pi-ai'
+import type { Agent, AgentHandle } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import { carrierKeyOf, type Scoped } from '@fathom/scope'
+import { SessionId } from '@fathom/session'
+import type SubagentRuntime from '@fathom/subagent'
+import type { SubagentRunEndInfo } from '@fathom/subagent'
+import * as LlmPiAi from '@fathom/llm-pi-ai'
 import type {
   InitializeParams,
   InitializeResult,
@@ -23,7 +23,7 @@ import type {
   SessionPromptResult,
   SubagentFinishedNotification,
   SubagentStartedNotification,
-} from '@pentest-harness/dsh-sdk-protocol'
+} from '@fathom/sdk-protocol'
 
 interface SessionRecord {
   handle: AgentHandle
@@ -135,7 +135,7 @@ export class HarnessSdkJsonRpcServer {
         },
       } as never)
     }
-    return { serverInfo: { name: 'pentest-harness-sdk-runtime', version: '0.0.1' } }
+    return { serverInfo: { name: 'fathom-sdk-runtime', version: '0.0.1' } }
   }
 
   /**
@@ -210,7 +210,7 @@ export class HarnessSdkJsonRpcServer {
       case 'shutdown':
         return this.shutdown()
       default:
-        throw new Error(`unknown Pentest Harness SDK runtime method: ${method}`)
+        throw new Error(`unknown Fathom SDK runtime method: ${method}`)
     }
   }
 
@@ -233,7 +233,7 @@ export class HarnessSdkJsonRpcServer {
     // No preset composition: this server's compositions keep the model-facing
     // rows in the host plane, so this agent reads them from the global layer. A
     // deployment that configures a roster has to join one here first
-    // (@pentest-harness/dsh-agent-presets README, "Composing a child agent").
+    // (@fathom/agent-presets README, "Composing a child agent").
     const handle = await this.ctx.agents.create({
       sessionId: SessionId(sessionId),
       meta: { cwd: this.cwd },

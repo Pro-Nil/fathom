@@ -2,7 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from 'react'
 import clsx from 'clsx'
-import type { SessionId, SessionListState, SessionSummary } from '@pentest-harness/dsh-client-runtime/client'
+import type { SessionId, SessionListState, SessionSummary } from '@fathom/client-runtime/client'
 import type {
   ConversationSessionHeaderSlotProps, ConversationSessionSlotProps,
 } from '../contract/slots.ts'

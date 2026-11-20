@@ -1,8 +1,8 @@
-/** Unified JSON-value schema DSL, inference, compilation, and typed tool helper. @module dsh-tools/schema */
+/** Unified JSON-value schema DSL, inference, compilation, and typed tool helper. @module fathom-tools/schema */
 
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { JsonValue } from '@pentest-harness/dsh-session'
+import { HarnessError } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
+import type { JsonValue } from '@fathom/session'
 import type { ToolDefinition, ToolExecution, ToolExecutionResult, ToolRunContext, ToolResult } from './index.ts'
 import { assertSupportedJsonSchema, isJsonSchemaRecord, isPlainJsonArray, JsonSchemaError, validateJsonSchemaValue } from './json-schema.ts'
 import type { JsonSchemaNode, JsonSchemaScalar, ObjectJsonSchema } from './json-schema.ts'

@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-workspace`.
- * @module @pentest-harness/dsh-workspace/invariant
+ * Package-owned invariant companion for `@fathom/workspace`.
+ * @module @fathom/workspace/invariant
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import type { DomainChanged } from '@pentest-harness/dsh-storage-domain'
-import { WorkspaceId } from '@pentest-harness/dsh-workspace'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
+import type { DomainChanged } from '@fathom/storage-domain'
+import { WorkspaceId } from '@fathom/workspace'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-workspace'
+const PACKAGE_NAME = '@fathom/workspace'
 
 /** Cordis companion plugin name. */
 export const name = 'workspace-invariant'

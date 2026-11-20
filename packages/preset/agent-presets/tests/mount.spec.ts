@@ -2,24 +2,24 @@ import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import AgentRegistry, { assembleContextFor, type Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime from '@fathom/tools'
+import AgentRegistry, { assembleContextFor, type Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import AgentPresets, {
   COMPOSITION_FILE, leakedServices, livePresetMounts, mountPreset, PresetMountError, serviceForAgent,
-} from '@pentest-harness/dsh-agent-presets'
-import type { Config } from '@pentest-harness/dsh-agent-presets'
-import type {} from '@pentest-harness/dsh-agent-presets/types'
-import { bindScopeParent, createScope, scopeOf } from '@pentest-harness/dsh-scope'
+} from '@fathom/agent-presets'
+import type { Config } from '@fathom/agent-presets'
+import type {} from '@fathom/agent-presets/types'
+import { bindScopeParent, createScope, scopeOf } from '@fathom/scope'
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     /** Published by the `isolated` fixture preset behind an entry-local realm. */
     fixtureIsolatedSvc: { label: string }
@@ -86,7 +86,7 @@ beforeEach(async () => {
 
 describe('composing an agent from a preset', () => {
   it('hands an absolute plugin path to Node as a file URL', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-absolute-plugin-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-absolute-plugin-'))
     const presetDir = join(root, 'absolute')
     const plugin = join(FIXTURES, 'plugins', 'contribute.js')
     await mkdir(presetDir)
@@ -344,7 +344,7 @@ describe('the preset roster', () => {
 describe('composing from a broken preset', () => {
   /** A roster whose only user preset carries `composition`. */
   async function rosterWith(composition: string): Promise<Context> {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-broken-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-broken-'))
     await mkdir(join(root, 'damaged'))
     await writeFile(join(root, 'damaged', COMPOSITION_FILE), composition)
     return await harness({ default: 'damaged', roots: [{ path: root, trust: 'user' as const }], includeUserRoot: false })
@@ -393,7 +393,7 @@ describe('the preset file is an input, never a persistence target', () => {
     // `write()` override the Loader REWRITES the composition it read, so a
     // committed fixture would be mutated by the very run that proves the bug
     // and every later run would compare against the damaged file and pass.
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-write-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-write-'))
     const dir = join(root, 'self-disposing')
     await mkdir(dir)
     const path = join(dir, COMPOSITION_FILE)
@@ -567,7 +567,7 @@ describe('replacing a composition', () => {
   it('keeps the agent on its standing composition when a switch fails, even with the source deleted', async () => {
     // A preset root this test owns, so removing the composition mid-flight
     // cannot disturb the shipped fixtures.
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-restore-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-restore-'))
     const seeded: [string, string][] = [['first', `- id: only\n  name: ${join(FIXTURES, 'plugins', 'contribute.js')}\n  config:\n    tool: only\n`], ['broken', '- id: nope\n  name: ./does-not-exist.js\n']]
     for (const [id, body] of seeded) {
       await mkdir(join(root, id))
@@ -619,7 +619,7 @@ describe('editing a composition file', () => {
    * per-test because `livePresetMounts()` is a process-global registry.
    */
   async function editable(id: string): Promise<{ scoped: Context; path: string }> {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-preset-edit-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-preset-edit-'))
     await mkdir(join(root, id))
     const path = join(root, id, COMPOSITION_FILE)
     await writeFile(path, rowFor('before'))

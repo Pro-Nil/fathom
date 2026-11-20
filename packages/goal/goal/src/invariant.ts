@@ -1,12 +1,12 @@
-/** Package-owned durable goal-stream invariants. @module @pentest-harness/dsh-goal/invariant */
+/** Package-owned durable goal-stream invariants. @module @fathom/goal/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
+import type { Session, SessionEvent } from '@fathom/session'
 import { applyGoalEvent, emptyGoalFoldState } from './fold.ts'
 import type { GoalFoldState } from './fold.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-goal'
+const PACKAGE_NAME = '@fathom/goal'
 
 /** Cordis companion plugin name. */
 export const name = 'goal-invariant'

@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createScope, scopeOf } from '@pentest-harness/dsh-scope'
-import type { Scope, ScopeKey } from '@pentest-harness/dsh-scope'
-import SystemPrompt, { TOOL_ORDER_REST, renderContextSnapshot, renderPrompt } from '@pentest-harness/dsh-system-prompt'
-import type { Config, PromptAssembly } from '@pentest-harness/dsh-system-prompt'
+import { Context } from '@fathom/cordis'
+import { createScope, scopeOf } from '@fathom/scope'
+import type { Scope, ScopeKey } from '@fathom/scope'
+import SystemPrompt, { TOOL_ORDER_REST, renderContextSnapshot, renderPrompt } from '@fathom/system-prompt'
+import type { Config, PromptAssembly } from '@fathom/system-prompt'
 
 async function mount(config: Config = {}): Promise<Context> {
   const ctx = new Context()

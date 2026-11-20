@@ -1,15 +1,15 @@
 /**
- * `@pentest-harness/dsh-web-fetch-http`: registers an anonymous public HTTP(S)
+ * `@fathom/web-fetch-http`: registers an anonymous public HTTP(S)
  * `WebFetchProvider` with `ctx.web`. A function/namespace plugin (NOT a
  * default-export service): it registers INTO the seam's fetch registry, like the
  * search providers register into the search registry.
  *
- * @module @pentest-harness/dsh-web-fetch-http
+ * @module @fathom/web-fetch-http
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type {} from '@pentest-harness/dsh-web'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type {} from '@fathom/web'
 import { HttpFetchProvider } from './provider.ts'
 import type { HttpFetchLimits } from './provider.ts'
 
@@ -22,7 +22,7 @@ export {
 export type { HttpFetchLimits } from './provider.ts'
 
 /** Default `User-Agent`: an explicit product agent, never a browser disguise. */
-export const DEFAULT_USER_AGENT = 'pentest-harness/0.0.1 (+https://github.com/S1N6H/pentest-harness)'
+export const DEFAULT_USER_AGENT = 'fathom/0.0.1 (+https://github.com/Pro-Nil/fathom)'
 
 /** Cordis plugin name used by loader diagnostics. */
 export const name = 'web-fetch-http'

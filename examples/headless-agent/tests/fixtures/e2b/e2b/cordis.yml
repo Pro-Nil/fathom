@@ -2,36 +2,36 @@
 # e2b.cwd and sandbox-policy.workspaceRoot must name the same remote directory,
 # which is also bash-local's implicit default workdir.
 - id: e2b
-  name: '@pentest-harness/dsh-e2b'
+  name: '@fathom/e2b'
   config:
     cwd: !!js process.cwd()
     timeoutMs: 180000
 
 - id: subprocess-e2b
-  name: '@pentest-harness/dsh-subprocess-e2b'
+  name: '@fathom/subprocess-e2b'
 
 - id: bash
-  name: '@pentest-harness/dsh-bash-local'
+  name: '@fathom/bash-local'
   config:
     timeoutMs: 30000
 
 - id: fs-e2b
-  name: '@pentest-harness/dsh-fs-e2b'
+  name: '@fathom/fs-e2b'
 
 - id: agents
-  name: '@pentest-harness/dsh-agent'
+  name: '@fathom/agent'
 
 - id: sandbox-policy
-  name: '@pentest-harness/dsh-sandbox-policy'
+  name: '@fathom/sandbox-policy'
   config:
     mode: danger-full-access
     workspaceRoot: !!js process.cwd()
 
 - id: pty
-  name: '@pentest-harness/dsh-terminal'
+  name: '@fathom/terminal'
 
 - id: terminal-bash
-  name: '@pentest-harness/dsh-terminal-bash'
+  name: '@fathom/terminal-bash'
   config:
     pollIntervalMs: 25
     exactProbeAfterMs: 150
@@ -41,10 +41,10 @@
     disposeGraceMs: 1000
 
 - id: lsp
-  name: '@pentest-harness/dsh-lsp'
+  name: '@fathom/lsp'
 
 - id: lsp-stdio
-  name: '@pentest-harness/dsh-lsp-stdio'
+  name: '@fathom/lsp-stdio'
   config:
     servers:
       fixture:

@@ -1,11 +1,11 @@
 /**
  * Pure generated-artifact and runtime-registry types. The registry stores Zod
  * schemas separately from generated package reflection metadata.
- * @module @pentest-harness/dsh-typert-registry/types
+ * @module @fathom/typert-registry/types
  */
 
 import type { z } from 'zod'
-import type { InvocationDescriptor } from '@pentest-harness/dsh-typert-protocol'
+import type { InvocationDescriptor } from '@fathom/typert-protocol'
 
 /** Independently compiled side that produced a contribution. */
 export type TypertFace = 'host' | 'client'

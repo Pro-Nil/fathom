@@ -5,11 +5,11 @@
  */
 
 import { useEffect, useState } from 'react'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@pentest-harness/dsh-client-ui-slots'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@fathom/client-ui-slots'
 import {
   IconChevronDownOutline14, Menu, RiskConfirmation,
-} from '@pentest-harness/dsh-client-ui-primitives'
+} from '@fathom/client-ui-primitives'
 import type { PermissionSettingsState } from './settings-store.ts'
 import type { PermissionSettingsKey } from './locales.ts'
 import { FULL_ACCESS_PRESET } from './presentation.ts'
@@ -125,7 +125,7 @@ export function PermissionRow({ load, select, usePermission, t }: PermissionRowP
   )
 }
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Permission row copy. */
     'settings.permission': PermissionSettingsKey

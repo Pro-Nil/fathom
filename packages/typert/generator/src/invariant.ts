@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-typert-generator`.
- * @module @pentest-harness/dsh-typert-generator/invariant
+ * Package-owned invariant companion for `@fathom/typert-generator`.
+ * @module @fathom/typert-generator/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-typert-generator'
+const PACKAGE_NAME = '@fathom/typert-generator'
 
 /** Cordis companion plugin name. */
 export const name = 'typert-generator-invariant'

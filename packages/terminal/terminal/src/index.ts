@@ -1,11 +1,11 @@
 /**
  * Owner-scoped persistent PTY registry. Backends own terminal mechanics while
  * this service owns ids, publication, authorization, and awaited cleanup.
- * @module @pentest-harness/dsh-terminal
+ * @module @fathom/terminal
  */
 
-import { Context, Service } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import { Context, Service } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
 import { TerminalBackendCleanupError } from './types.ts'
 import type {
   TerminalBackend,
@@ -45,7 +45,7 @@ export { TerminalBackendCleanupError } from './types.ts'
 /** Opaque identity minted by {@link TerminalSessionService} for one live PTY session. */
 export type TerminalSessionId = TerminalSessionIdValue
 
-declare module '@pentest-harness/cordis' {
+declare module '@fathom/cordis' {
   interface Context {
     terminals: TerminalSessionService
   }

@@ -1,18 +1,18 @@
-import { createAssistantMessage, createUserMessage } from '@pentest-harness/dsh-llm'
+import { createAssistantMessage, createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@pentest-harness/cordis'
+import { Context, type Fiber } from '@fathom/cordis'
 import { DatabaseSync } from 'node:sqlite'
 import { chmod, mkdtemp, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@pentest-harness/dsh-session'
-import SessionPersistence, { SessionPersistenceRevision } from '@pentest-harness/dsh-session-persistence'
-import type { SessionPersistenceSnapshot } from '@pentest-harness/dsh-session-persistence'
-import SqliteSessionPersistence from '@pentest-harness/dsh-session-persistence-sqlite'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@fathom/session'
+import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@fathom/session'
+import SessionPersistence, { SessionPersistenceRevision } from '@fathom/session-persistence'
+import type { SessionPersistenceSnapshot } from '@fathom/session-persistence'
+import SqliteSessionPersistence from '@fathom/session-persistence-sqlite'
 import SqliteSessionQueryEngine, {
   SESSION_QUERY_SQLITE_SCHEMA_VERSION,
-} from '@pentest-harness/dsh-session-query-sqlite'
+} from '@fathom/session-query-sqlite'
 import {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   SessionQueryError,
@@ -20,7 +20,7 @@ import {
   type SessionAvailability,
   type SessionQueryErrorCode,
   type SessionSearchRequest,
-} from '@pentest-harness/dsh-session-query'
+} from '@fathom/session-query'
 
 const temporaryDirectories: string[] = []
 
@@ -31,7 +31,7 @@ afterEach(async () => {
 })
 
 async function temporaryPath(name = 'search.db'): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'dsh-session-search-'))
+  const directory = await mkdtemp(join(tmpdir(), 'fathom-session-search-'))
   temporaryDirectories.push(directory)
   return join(directory, name)
 }

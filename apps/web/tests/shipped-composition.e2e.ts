@@ -7,18 +7,18 @@ import { readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { afterEach, expect, it } from 'vitest'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { canonicalPath, writableRoots } from '@pentest-harness/dsh-sandbox'
-import { SessionId } from '@pentest-harness/dsh-session'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
+import { CallId } from '@fathom/llm'
+import { canonicalPath, writableRoots } from '@fathom/sandbox'
+import { SessionId } from '@fathom/session'
+import { settingsNamespace } from '@fathom/settings'
 // Empty type imports carry the tools/sandboxPolicy/approval Context merges.
-import type {} from '@pentest-harness/dsh-tools'
-import type {} from '@pentest-harness/dsh-sandbox-policy'
-import type {} from '@pentest-harness/dsh-user-approval'
-import type {} from '@pentest-harness/dsh-permission-presets'
-import type {} from '@pentest-harness/dsh-agent-presets'
-import type {} from '@pentest-harness/dsh-commands'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type {} from '@fathom/tools'
+import type {} from '@fathom/sandbox-policy'
+import type {} from '@fathom/user-approval'
+import type {} from '@fathom/permission-presets'
+import type {} from '@fathom/agent-presets'
+import type {} from '@fathom/commands'
+import type {} from '@fathom/system-prompt'
 import { launchWebScaffold, type WebScaffold } from './scaffold.ts'
 
 const FILE_REFERENCE_PROMPT = fileURLToPath(new URL(
@@ -60,7 +60,7 @@ const EXPECTED_TOOLS = [
 ]
 
 /**
- * `glob` and `grep` come from `dsh-tool-fs-search`, which spawns the PACKAGED
+ * `glob` and `grep` come from `fathom-tool-fs-search`, which spawns the PACKAGED
  * ripgrep binary (`@vscode/ripgrep`) through the subprocess seam, so the pair
  * is always present on every host — asserted as fixed members, not a host
  * dependency.

@@ -1,29 +1,29 @@
 /* The framework-free boot page cannot depend on theme delivery succeeding. */
 
 .boot {
-  --dsh-boot-bg: #fff;
-  --dsh-boot-label-primary: #0f1115;
-  --dsh-boot-label-secondary: #61666b;
-  --dsh-boot-label-tertiary: #81858c;
-  --dsh-boot-border: rgb(0 0 0 / 10%);
-  --dsh-boot-brand: #0f1115;
-  --dsh-boot-glow: rgb(226 122 48 / 0.55);
+  --fathom-boot-bg: #fff;
+  --fathom-boot-label-primary: #0f1115;
+  --fathom-boot-label-secondary: #61666b;
+  --fathom-boot-label-tertiary: #81858c;
+  --fathom-boot-border: rgb(0 0 0 / 10%);
+  --fathom-boot-brand: #0f1115;
+  --fathom-boot-glow: rgb(226 122 48 / 0.55);
 
   height: 100%;
   display: grid;
   place-items: center;
-  background: var(--dsw-alias-bg-base, var(--dsh-boot-bg));
+  background: var(--dsw-alias-bg-base, var(--fathom-boot-bg));
   overflow: hidden;
 }
 
 :global(body[data-ds-dark-theme]) .boot {
-  --dsh-boot-bg: #151517;
-  --dsh-boot-label-primary: #f9fafb;
-  --dsh-boot-label-secondary: #cfd3d6;
-  --dsh-boot-label-tertiary: #adb2b8;
-  --dsh-boot-border: rgb(255 255 255 / 12%);
-  --dsh-boot-brand: #f9fafb;
-  --dsh-boot-glow: rgb(240 145 77 / 0.5);
+  --fathom-boot-bg: #151517;
+  --fathom-boot-label-primary: #f9fafb;
+  --fathom-boot-label-secondary: #cfd3d6;
+  --fathom-boot-label-tertiary: #adb2b8;
+  --fathom-boot-border: rgb(255 255 255 / 12%);
+  --fathom-boot-brand: #f9fafb;
+  --fathom-boot-glow: rgb(240 145 77 / 0.5);
 }
 
 .card {
@@ -39,9 +39,9 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 145px;
-  height: 56px;
-  border-radius: 12px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   animation: glowPulse 2.2s ease-in-out infinite;
 }
 
@@ -50,7 +50,7 @@
   position: absolute;
   inset: -10px;
   border-radius: 16px;
-  background: radial-gradient(ellipse, var(--dsh-boot-glow) 0%, transparent 70%);
+  background: radial-gradient(ellipse, var(--fathom-boot-glow) 0%, transparent 70%);
   filter: blur(2px);
 }
 
@@ -75,17 +75,17 @@
 }
 
 .wordmark {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  color: var(--dsw-alias-label-primary, var(--dsh-boot-label-primary));
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--dsw-alias-label-primary, var(--fathom-boot-label-primary));
 }
 
 .hint {
   font-size: 12px;
   line-height: 18px;
-  color: var(--dsw-alias-label-tertiary, var(--dsh-boot-label-tertiary));
+  color: var(--dsw-alias-label-tertiary, var(--fathom-boot-label-tertiary));
 }
 
 .spinner {
@@ -93,7 +93,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid var(--dsw-alias-border-l2, var(--dsh-boot-border));
+  border: 2px solid var(--dsw-alias-border-l2, var(--fathom-boot-border));
   animation: spin 0.8s linear infinite;
 }
 
@@ -103,7 +103,7 @@
   inset: -2px;
   border-radius: inherit;
   background: conic-gradient(
-    var(--dsw-alias-brand-primary, var(--dsh-boot-brand)) var(--dsh-boot-arc, 72deg),
+    var(--dsw-alias-brand-primary, var(--fathom-boot-brand)) var(--fathom-boot-arc, 72deg),
     transparent 0
   );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
@@ -125,7 +125,7 @@
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
-  color: var(--dsw-alias-label-primary, var(--dsh-boot-label-primary));
+  color: var(--dsw-alias-label-primary, var(--fathom-boot-label-primary));
 }
 
 .failedItem {
@@ -143,6 +143,6 @@
   );
   font-size: 12px;
   line-height: 18px;
-  color: var(--dsw-alias-label-secondary, var(--dsh-boot-label-secondary));
+  color: var(--dsw-alias-label-secondary, var(--fathom-boot-label-secondary));
   white-space: pre-wrap;
 }

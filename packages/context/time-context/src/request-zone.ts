@@ -1,7 +1,7 @@
 /** Browser-zone derivation and model-facing policy text for one open request turn. */
 
-import { assertNever } from '@pentest-harness/dsh-llm'
-import type { UserMessage } from '@pentest-harness/dsh-llm'
+import { assertNever } from '@fathom/llm'
+import type { UserMessage } from '@fathom/llm'
 
 const IANA_TIME_ZONE = /^[A-Za-z][A-Za-z0-9_+.-]*(?:\/[A-Za-z0-9_+.-]+)+$/
 

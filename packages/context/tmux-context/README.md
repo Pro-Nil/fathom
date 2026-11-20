@@ -1,4 +1,4 @@
-# @pentest-harness/dsh-tmux-context
+# @fathom/tmux-context
 
 Opt-in durable context naming the tmux session, window, and pane this agent process runs in, plus the window's pane-tree layout. It is sampled once per turn during model-request preparation and is not part of the shipped Web/headless composition. Decision record: [the tmux-context Agent Note](../../../.agents/notes/implemented/feature/2026-07-27-tmux-location-context.md).
 
@@ -6,7 +6,7 @@ Opt-in durable context naming the tmux session, window, and pane this agent proc
 
 ```yaml
 - id: tmux-context
-  name: '@pentest-harness/dsh-tmux-context'
+  name: '@fathom/tmux-context'
   config:
     refreshIntervalMs: 60000 # optional; omit or set to 0 to inject on every changed turn
 ```

@@ -18,24 +18,24 @@
  * disposed by then, and the release that wakes the parent's own settlement
  * watcher has already run. See {@link SubagentContinuationManager.notifySettlement}.
  *
- * @module @pentest-harness/dsh-subagent
+ * @module @fathom/subagent
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
+import type { Context } from '@fathom/cordis'
 import type {
   Agent,
   AgentHandle,
   AgentOptions,
   AgentSetupCommit,
   CreateAgentOptions,
-} from '@pentest-harness/dsh-agent'
-import { boundContextSummary, createUserMessage, errorChain } from '@pentest-harness/dsh-llm'
-import type { ContentBlock, MessageId, MessageSource } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { SessionPersistence } from '@pentest-harness/dsh-session-persistence'
-import type { ToolRestriction } from '@pentest-harness/dsh-tools'
+} from '@fathom/agent'
+import { boundContextSummary, createUserMessage, errorChain } from '@fathom/llm'
+import type { ContentBlock, MessageId, MessageSource } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { SessionEvent } from '@fathom/session'
+import type { SessionPersistence } from '@fathom/session-persistence'
+import type { ToolRestriction } from '@fathom/tools'
 import { foldSubagentDescriptor, snapshotSubagentDescriptor } from './descriptor.ts'
 import type { SubagentDescriptorData } from './descriptor.ts'
 import {
@@ -89,7 +89,7 @@ export interface SubagentSettledMessageSource {
   readonly senderSessionId: SessionId
 }
 
-declare module '@pentest-harness/dsh-llm' {
+declare module '@fathom/llm' {
   interface MessageSourceMap {
     coordinator: CoordinatorMessageSource
     'subagent-report': SubagentReportMessageSource
@@ -1533,7 +1533,7 @@ export class SubagentContinuationManager {
     const persistence = this.ctx.get('sessionPersistence')
     if (persistence === undefined) {
       throw new SubagentError(
-        'continuable subagents require session persistence (load a dsh-session-persistence backend)',
+        'continuable subagents require session persistence (load a fathom-session-persistence backend)',
         'PERSISTENCE_UNAVAILABLE',
       )
     }

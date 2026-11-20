@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { type Agent } from '@pentest-harness/dsh-agent'
+import { Context } from '@fathom/cordis'
+import { type Agent } from '@fathom/agent'
 
-import { HarnessError } from '@pentest-harness/dsh-llm'
-import { carrierKeyOf } from '@pentest-harness/dsh-scope'
+import { HarnessError } from '@fathom/llm'
+import { carrierKeyOf } from '@fathom/scope'
 import SubagentRuntime, {
   foldSubagentDescriptor,
   snapshotSubagentDescriptor,
@@ -17,8 +17,8 @@ import SubagentRuntime, {
   type SubagentRun,
   type SubagentRunEndInfo,
   type SubagentStartRequest,
-} from '@pentest-harness/dsh-subagent'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
+} from '@fathom/subagent'
+import { SessionId, type SessionEvent } from '@fathom/session'
 
 function fakeParent(id = 'parent-1'): Agent {
   return { id: SessionId(id) } as unknown as Agent

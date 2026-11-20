@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-tool-ralph`.
- * @module @pentest-harness/dsh-tool-ralph/invariant
+ * Package-owned invariant companion for `@fathom/tool-ralph`.
+ * @module @fathom/tool-ralph/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-tool-ralph'
+const PACKAGE_NAME = '@fathom/tool-ralph'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-ralph-invariant'

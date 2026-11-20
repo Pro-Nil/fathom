@@ -8,15 +8,15 @@
 # disables the key-requiring Acme adapter and inserts `llm-replay` to serve
 # recorded JSONL without a key or network.
 - id: base
-  name: '@pentest-harness/cordis-plugin-include'
+  name: '@fathom/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-pi-ai
-        name: '@pentest-harness/dsh-llm-pi-ai'
+        name: '@fathom/llm-pi-ai'
         disabled: true
       - id: agent-spine
-        name: '@pentest-harness/dsh-agent-spine-demo'
+        name: '@fathom/agent-spine-demo'
         config:
           agents:
             - id: main
@@ -32,7 +32,7 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: persistence
-        name: '@pentest-harness/dsh-session-persistence-jsonl'
+        name: '@fathom/session-persistence-jsonl'
         config:
           root: './.sessions'
           # Replay fixtures are raw JSONL; the whole-config patch must restate
@@ -40,10 +40,10 @@
           compression: none
       - insert:
           - id: code-runtime
-            name: '@pentest-harness/dsh-code-runtime-worker-thread'
+            name: '@fathom/code-runtime-worker-thread'
           - id: cordis-host-runner
-            name: '@pentest-harness/dsh-cordis-host-runner'
+            name: '@fathom/cordis-host-runner'
           - id: tool-cordis
-            name: '@pentest-harness/dsh-tool-cordis'
+            name: '@fathom/tool-cordis'
           - id: llm-replay
-            name: '@pentest-harness/dsh-llm-replay'
+            name: '@fathom/llm-replay'

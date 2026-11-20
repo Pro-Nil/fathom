@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@pentest-harness/dsh-session'
-import ToolRuntime from '@pentest-harness/dsh-tools'
-import * as ToolTodo from '@pentest-harness/dsh-tool-todo'
-import * as TodoInvariant from '@pentest-harness/dsh-tool-todo/invariant'
-import InvariantRegistry from '@pentest-harness/dsh-invariants'
+import { Context } from '@fathom/cordis'
+import SessionStore, { type Session, type SessionEvent } from '@fathom/session'
+import ToolRuntime from '@fathom/tools'
+import * as ToolTodo from '@fathom/tool-todo'
+import * as TodoInvariant from '@fathom/tool-todo/invariant'
+import InvariantRegistry from '@fathom/invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

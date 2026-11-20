@@ -7,7 +7,7 @@
  * locator and retrieval guidance.
  *
  * It registers NO service and owns NO storage or preview mechanics: preview is
- * `@pentest-harness/dsh-output-retention` (`TextRetainer`), storage is `ctx.spillStore`.
+ * `@fathom/output-retention` (`TextRetainer`), storage is `ctx.spillStore`.
  * The policy only decides WHEN to spill and composes the notice.
  *
  * A second arm applies the SAME cap to the durable log: the
@@ -40,19 +40,19 @@
  * replaced content still has its replacement bounded, and value replacements
  * and `block` decisions pass through unchanged.
  *
- * @module @pentest-harness/dsh-spill-policy
+ * @module @fathom/spill-policy
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { TextRetainer, describeOmitted } from '@pentest-harness/dsh-output-retention'
-import type { Omitted } from '@pentest-harness/dsh-output-retention'
-import type { SaveTextSpill, SpillRef } from '@pentest-harness/dsh-spill'
-import type { SessionId } from '@pentest-harness/dsh-session'
-import type { CallId } from '@pentest-harness/dsh-llm'
-import type { PostToolDecision, ToolExecution } from '@pentest-harness/dsh-tools'
-import { installSettingsSection, settingsNamespace } from '@pentest-harness/dsh-settings'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { ContentBlock } from '@fathom/llm'
+import { TextRetainer, describeOmitted } from '@fathom/output-retention'
+import type { Omitted } from '@fathom/output-retention'
+import type { SaveTextSpill, SpillRef } from '@fathom/spill'
+import type { SessionId } from '@fathom/session'
+import type { CallId } from '@fathom/llm'
+import type { PostToolDecision, ToolExecution } from '@fathom/tools'
+import { installSettingsSection, settingsNamespace } from '@fathom/settings'
 import type { SpillPolicyExec } from './types.ts'
 
 export type { SpillPolicyExec } from './types.ts'

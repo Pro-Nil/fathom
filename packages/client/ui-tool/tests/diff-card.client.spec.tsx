@@ -6,24 +6,24 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@pentest-harness/dsh-client-runtime/client'
-import type { ToolCallView, ToolResultView } from '@pentest-harness/dsh-api-remotes/client'
-import type { SelectionTarget } from '@pentest-harness/dsh-client-ui-conversation/client'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+} from '@fathom/client-runtime/client'
+import type { ToolCallView, ToolResultView } from '@fathom/api-remotes/client'
+import type { SelectionTarget } from '@fathom/client-ui-conversation/client'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import { CHAT_DIFF_MAX_LINES, diffCardModel } from '../src/client/tool/models/diff-card-model.ts'
-import { createChatStore } from '@pentest-harness/dsh-client-ui-conversation/src/client/stores.ts'
+import { createChatStore } from '@fathom/client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { DetailsPanel } from '@pentest-harness/dsh-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { DetailsPanel } from '@fathom/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { FileMutationRow, fileMutationToolview } from '../src/client/tool/toolviews/file-mutation-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
-import { en } from '@pentest-harness/dsh-client-ui-conversation/src/client/locales.ts'
+import { en } from '@fathom/client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 

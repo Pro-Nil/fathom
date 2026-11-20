@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-api-gateway`.
- * @module @pentest-harness/dsh-api-gateway/invariant
+ * Package-owned invariant companion for `@fathom/api-gateway`.
+ * @module @fathom/api-gateway/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-api-gateway'
+const PACKAGE_NAME = '@fathom/api-gateway'
 
 /** Cordis companion plugin name. */
 export const name = 'api-gateway-invariant'

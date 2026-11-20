@@ -14,7 +14,7 @@
  * Every read failure degrades to no metadata. A preset whose display text is
  * missing, malformed, or unreadable still mounts: presentation is not a
  * capability, and a broken name must never become an agent that cannot start.
- * @module @pentest-harness/dsh-agent-presets/metadata
+ * @module @fathom/agent-presets/metadata
  */
 
 import { readFile } from 'node:fs/promises'

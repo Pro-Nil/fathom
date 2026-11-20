@@ -1,13 +1,13 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
-import SqliteSessionPersistence from '@pentest-harness/dsh-session-persistence-sqlite'
-import SessionTitleService, { foldSessionTitle } from '@pentest-harness/dsh-session-title'
+import SessionStore, { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
+import SqliteSessionPersistence from '@fathom/session-persistence-sqlite'
+import SessionTitleService, { foldSessionTitle } from '@fathom/session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,
@@ -52,7 +52,7 @@ async function expectPersistedTitle(ctx: Context, id: ReturnType<typeof SessionI
 
 describe('session title persistence round trips', () => {
   it('round-trips through a remounted JSONL backend', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-title-jsonl-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-title-jsonl-'))
     roots.push(root)
     const id = SessionId('title-jsonl')
     const writer = new Context()
@@ -70,7 +70,7 @@ describe('session title persistence round trips', () => {
   })
 
   it('round-trips through a remounted SQLite backend', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-title-sqlite-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-title-sqlite-'))
     roots.push(root)
     const path = join(root, 'sessions.db')
     const id = SessionId('title-sqlite')

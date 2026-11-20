@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context, Service } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { agentEvents } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { CallId } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
+import { Context, Service } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { agentEvents } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { CallId } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
 import * as toolSchedule from '../src/index.ts'
 
 class PersistenceProbe extends Service {

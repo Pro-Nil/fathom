@@ -6,16 +6,16 @@
  * classification, the model-friendly terminal environment, and the model-facing
  * stdout/stderr merge for background reads. Execution policy belongs in
  * `tools/pre-execute` or a sandboxing executor.
- * @module @pentest-harness/dsh-bash-local
+ * @module @fathom/bash-local
  */
 
-import { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@pentest-harness/dsh-shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@pentest-harness/dsh-shell'
-import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@pentest-harness/dsh-subprocess'
-import { installSettingsSection } from '@pentest-harness/dsh-settings'
-import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@pentest-harness/dsh-timeout'
+import { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@fathom/shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@fathom/shell'
+import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@fathom/subprocess'
+import { installSettingsSection } from '@fathom/settings'
+import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@fathom/timeout'
 import { resolveBashPath } from './resolve.ts'
 
 /**
@@ -179,11 +179,11 @@ export class LocalBashExecutor extends ShellExecutor {
       timeoutMs,
       stdoutMaxBytes,
       ...request.signal ? { signal: request.signal } : {},
-      // Carry stdin/ordinary env/trusted dshEnv through verbatim — optional,
+      // Carry stdin/ordinary env/trusted fathomEnv through verbatim — optional,
       // no config default. The subprocess service owns the scrub and merge order.
       ...request.stdin !== undefined ? { stdin: request.stdin } : {},
       ...request.env !== undefined ? { env: request.env } : {},
-      ...request.dshEnv !== undefined ? { dshEnv: request.dshEnv } : {},
+      ...request.fathomEnv !== undefined ? { fathomEnv: request.fathomEnv } : {},
       // Carry a sandbox policy through verbatim: this executor never
       // confines, so the field is inert here (the seam contract) — a
       // sandboxing subclass overrides resolve() to stamp its default instead.
@@ -211,10 +211,10 @@ export class LocalBashExecutor extends ShellExecutor {
       },
       graceMs: this.config.graceMs,
       signal,
-      // One explicit env map for the seam, layered so the trusted dshEnv
+      // One explicit env map for the seam, layered so the trusted fathomEnv
       // snapshot beats both the caller's env and the terminal overrides; the
       // subprocess service merges the whole map after its ambient scrub.
-      env: { ...ENV_OVERRIDES, ...spec.env, ...spec.dshEnv },
+      env: { ...ENV_OVERRIDES, ...spec.env, ...spec.fathomEnv },
     }
   }
 

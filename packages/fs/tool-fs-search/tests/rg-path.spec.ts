@@ -7,10 +7,10 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { CallId } from '@pentest-harness/dsh-llm'
-import type { ToolExecution } from '@pentest-harness/dsh-tools'
-import { resolveRgPath, runRipgrep } from '@pentest-harness/dsh-tool-fs-search'
+import { Context } from '@fathom/cordis'
+import { CallId } from '@fathom/llm'
+import type { ToolExecution } from '@fathom/tools'
+import { resolveRgPath, runRipgrep } from '@fathom/tool-fs-search'
 
 // Any access to the mocked module's surface throws — the shape a missing
 // platform package produces at module evaluation.

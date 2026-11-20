@@ -1,5 +1,5 @@
-import { Context } from '@pentest-harness/cordis'
-import type { Dict } from '@pentest-harness/cosmokit'
+import { Context } from '@fathom/cordis'
+import type { Dict } from '@fathom/cosmokit'
 import { Entry } from './entry.ts'
 
 declare module './entry.ts' {

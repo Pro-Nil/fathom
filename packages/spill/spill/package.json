@@ -1,13 +1,13 @@
 {
-  "name": "@pentest-harness/dsh-spill",
-  "description": "Abstract spill storage seam (ctx.spillStore) for the Pentest Harness — save oversized tool text and return a retrieval locator",
+  "name": "@fathom/spill",
+  "description": "Abstract spill storage seam (ctx.spillStore) for the Fathom — save oversized tool text and return a retrieval locator",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "packages/spill/spill"
   },
   "type": "module",
@@ -32,17 +32,17 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/dsh-brand": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/brand": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@pentest-harness/dsh-brand": "workspace:^",
-    "@pentest-harness/dsh-invariants": "workspace:^",
-    "@pentest-harness/dsh-llm": "workspace:^",
-    "@pentest-harness/dsh-session": "workspace:^",
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/brand": "workspace:^",
+    "@fathom/invariants": "workspace:^",
+    "@fathom/llm": "workspace:^",
+    "@fathom/session": "workspace:^",
+    "@fathom/cordis": "workspace:^"
   }
 }

@@ -11,10 +11,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import Include from '@pentest-harness/cordis-plugin-include'
-import HttpServer from '@pentest-harness/dsh-host-webserver'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import Include from '@fathom/cordis-plugin-include'
+import HttpServer from '@fathom/host-webserver'
 import * as FrontendStatic from '../src/index.ts'
 
 let root: string | undefined
@@ -29,7 +29,7 @@ afterEach(async () => {
 
 /** Write a dist fixture and a two-row cordis.yml, then boot it through the real Loader. */
 async function loadComposition(): Promise<Context> {
-  root = await mkdtemp(join(tmpdir(), 'dsh-frontend-static-'))
+  root = await mkdtemp(join(tmpdir(), 'fathom-frontend-static-'))
   const dist = join(root, 'dist')
   await mkdir(dist)
   const distIndex = join(dist, 'index.html')
@@ -40,12 +40,12 @@ async function loadComposition(): Promise<Context> {
   await mkdir(join(dist, 'empty'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@pentest-harness/dsh-host-webserver'",
+    "- name: '@fathom/host-webserver'",
     '  config:',
     "    host: '127.0.0.1'",
     '    port: 0',
     '- id: frontend',
-    "  name: '@pentest-harness/dsh-host-frontend-static'",
+    "  name: '@fathom/host-frontend-static'",
     '  config:',
     `    distIndex: '${distIndex}'`,
     '',
@@ -56,8 +56,8 @@ async function loadComposition(): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@pentest-harness/dsh-host-webserver', HttpServer],
-    ['@pentest-harness/dsh-host-frontend-static', FrontendStatic],
+    ['@fathom/host-webserver', HttpServer],
+    ['@fathom/host-frontend-static', FrontendStatic],
   ])
   context.loader.internal = {
     version: 'v2',

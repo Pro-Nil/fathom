@@ -10,10 +10,10 @@
 - text: "Run two shell commands: wait for cancellation, then write skipped.txt. {{clock}}"
 - button "Copy":
   - img
-- button "Context injection @pentest-harness/dsh-system-prompt":
+- button "Context injection @fathom/system-prompt":
   - img
   - img
-  - text: Context injection @pentest-harness/dsh-system-prompt
+  - text: Context injection @fathom/system-prompt
 - 'button "Failed Bash Error: tool call aborted" [expanded]':
   - img
   - text: "Failed Bash Error: tool call aborted"

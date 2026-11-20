@@ -1,12 +1,12 @@
 /** Durable Team mailbox admission, target-local dispatch, acknowledgement, and recovery. */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@pentest-harness/cordis'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import { SessionId } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
+import type { Context } from '@fathom/cordis'
+import type { Agent } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import type { ContentBlock } from '@fathom/llm'
+import { SessionId } from '@fathom/session'
+import type { Session, SessionEvent } from '@fathom/session'
 import { errorMessage, TeamError } from './error.ts'
 import type { TeamJournal } from './journal.ts'
 import type { TeamRuntimeLifecycle } from './lifecycle.ts'

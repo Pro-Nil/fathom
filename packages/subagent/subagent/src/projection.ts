@@ -2,12 +2,12 @@
  * Pure session projections for subagent identity (mode/label) and active-turn
  * duration.
  *
- * @module @pentest-harness/dsh-subagent/projection
+ * @module @fathom/subagent/projection
  */
 
 import { z } from 'zod'
-import type { ProjectionDefinition } from '@pentest-harness/dsh-session-projection'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import type { ProjectionDefinition } from '@fathom/session-projection'
+import type { SessionEvent } from '@fathom/session'
 import { foldSubagentDescriptor } from './descriptor.ts'
 import type { SubagentDescriptorData } from './descriptor.ts'
 import type { SubagentIdentityProjection, SubagentTimingProjection } from './projection-types.ts'
@@ -44,7 +44,7 @@ const timingStateSchema: z.ZodType<TimingState> = z.object({
   descriptorSeen: z.boolean(),
 }).strict()
 
-declare module '@pentest-harness/dsh-session-projection/types' {
+declare module '@fathom/session-projection/types' {
   interface SessionProjectionStateMap {
     subagentTiming: TimingState
     subagent: IdentityState

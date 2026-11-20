@@ -3,8 +3,8 @@
  * preference is pressed, and a click writes the preference. */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { createSnapshotStore, type SessionListState, type WorkspaceListState } from '@pentest-harness/dsh-client-runtime/client'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
+import { createSnapshotStore, type SessionListState, type WorkspaceListState } from '@fathom/client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
 import { AppearanceRow } from '../src/client/AppearanceRow.tsx'
 import type { AppearanceRowComponentProps } from '../src/client/AppearanceRow.tsx'
 import { createAppearanceRowStore } from '../src/client/settings-store.ts'

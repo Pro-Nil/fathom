@@ -1,5 +1,5 @@
 {
-  "name": "@pentest-harness/cordis-plugin-logger-console",
+  "name": "@fathom/cordis-plugin-logger-console",
   "description": "Console logger exporter for cordis",
   "version": "1.0.1",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/S1N6H/pentest-harness.git",
+    "url": "git+https://github.com/Pro-Nil/fathom.git",
     "directory": "vendor/logger-console"
   },
   "type": "module",
@@ -32,11 +32,11 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@pentest-harness/cordis": "workspace:^"
+    "@fathom/cordis": "workspace:^"
   },
   "dependencies": {
-    "@pentest-harness/cosmokit": "workspace:^",
-    "@pentest-harness/schemastery": "workspace:^",
+    "@fathom/cosmokit": "workspace:^",
+    "@fathom/schemastery": "workspace:^",
     "supports-color": "^9.4.0"
   }
 }

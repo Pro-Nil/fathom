@@ -1,10 +1,10 @@
-import { createUserMessage, createMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage, createMessage } from '@fathom/llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@pentest-harness/dsh-session'
-import type { Session, SessionEvent, SessionHeader, SessionId as SessionIdType } from '@pentest-harness/dsh-session'
-import SessionPersistence from '@pentest-harness/dsh-session-persistence'
-import { type SessionQueryErrorCode } from '@pentest-harness/dsh-session-query'
+import { Context } from '@fathom/cordis'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@fathom/session'
+import type { Session, SessionEvent, SessionHeader, SessionId as SessionIdType } from '@fathom/session'
+import SessionPersistence from '@fathom/session-persistence'
+import { type SessionQueryErrorCode } from '@fathom/session-query'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 type MutableSessionHeader = { -readonly [K in keyof SessionHeader]: SessionHeader[K] }

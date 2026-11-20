@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import InvariantRegistry, { InvariantError } from '@pentest-harness/dsh-invariants'
-import SessionStore, { SessionId, type Session } from '@pentest-harness/dsh-session'
-import { WorkflowRunId, type WorkflowRunId as WorkflowRunIdType } from '@pentest-harness/dsh-workflow/types'
+import { Context } from '@fathom/cordis'
+import InvariantRegistry, { InvariantError } from '@fathom/invariants'
+import SessionStore, { SessionId, type Session } from '@fathom/session'
+import { WorkflowRunId, type WorkflowRunId as WorkflowRunIdType } from '@fathom/workflow/types'
 import * as ToolWorkflowInvariant from '../src/invariant.ts'
 import type {} from '../src/types.ts'
 
@@ -53,7 +53,7 @@ describe('durable workflow-record invariants', () => {
       runId, seq: 1, outcome: 'completed',
     })).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@pentest-harness/dsh-tool-workflow',
+      packageName: '@fathom/tool-workflow',
     }))
     expect(session.seq).toBe(before)
     expect(() => session.append('tool-workflow/run-end', {

@@ -1,6 +1,6 @@
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId, WorkspaceId, WorkspaceView } from '@pentest-harness/dsh-api-remotes/client'
+import type { SessionId, WorkspaceId, WorkspaceView } from '@fathom/api-remotes/client'
 import { SessionRuntime } from '../src/client/sessions/service.ts'
 import { WorkspaceManager } from '../src/client/workspaces/manager.ts'
 import { DirectoryBrowseError, WorkspaceCreateError, WorkspaceRuntime, samePath } from '../src/client/workspaces/service.ts'

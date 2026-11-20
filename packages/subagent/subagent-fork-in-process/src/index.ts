@@ -4,21 +4,21 @@
  * parent's session log — so the child inherits the parent's conversation context instead of
  * starting fresh. The seed ends at the last `turn/end`: the current tool-call turn is
  * unbalanced and cannot be replayed as a valid child session.
- * @module @pentest-harness/dsh-subagent-fork-in-process
+ * @module @fathom/subagent-fork-in-process
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import z from '@pentest-harness/schemastery'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
-import type { Agent } from '@pentest-harness/dsh-agent'
+import type { Context } from '@fathom/cordis'
+import z from '@fathom/schemastery'
+import type { SessionEvent } from '@fathom/session'
+import type { Agent } from '@fathom/agent'
 import type {
   ContinuableCreateRequest,
   ContinuableCreateSpec,
   ResolvedSubagentStartRequest,
   SubagentCapabilities,
   SubagentProvider,
-} from '@pentest-harness/dsh-subagent'
-import { startInProcessRun } from '@pentest-harness/dsh-subagent-in-process-driver'
+} from '@fathom/subagent'
+import { startInProcessRun } from '@fathom/subagent-in-process-driver'
 
 export const name = 'subagent-fork-in-process'
 // `tools` is deliberately NOT injected — same rationale as subagent-spawn-in-process: the

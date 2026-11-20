@@ -1,10 +1,10 @@
-/** Package-owned filesystem event-data invariants. @module @pentest-harness/dsh-fs/invariant */
+/** Package-owned filesystem event-data invariants. @module @fathom/fs/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 import type { FsObservation, FsTarget } from './types.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-fs'
+const PACKAGE_NAME = '@fathom/fs'
 
 /** Cordis companion plugin name. */
 export const name = 'fs-invariant'

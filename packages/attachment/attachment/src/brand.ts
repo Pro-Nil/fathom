@@ -1,6 +1,6 @@
-/** Attachment identifier brand. @module @pentest-harness/dsh-attachment/brand */
+/** Attachment identifier brand. @module @fathom/attachment/brand */
 
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { Branded } from '@fathom/brand'
 
 /** Opaque content-addressed identifier for one immutable attachment object. */
 export type AttachmentId = Branded<'AttachmentId'>

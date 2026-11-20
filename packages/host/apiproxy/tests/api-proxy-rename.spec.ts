@@ -8,17 +8,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import SessionStore from '@pentest-harness/dsh-session'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@pentest-harness/dsh-agent'
-import { createUserMessage } from '@pentest-harness/dsh-llm'
-import SessionTitleService from '@pentest-harness/dsh-session-title'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import type { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import { Context } from '@fathom/cordis'
+import SessionStore from '@fathom/session'
+import AgentRegistry from '@fathom/agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@fathom/agent'
+import { createUserMessage } from '@fathom/llm'
+import SessionTitleService from '@fathom/session-title'
+import UserQuestionService from '@fathom/user-questions'
+import type { Session, SessionId } from '@fathom/session'
+import type { RpcRequest } from '@fathom/host-apiproxy/api/rpc'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

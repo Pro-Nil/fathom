@@ -16,7 +16,7 @@ export type WorkflowKey =
   | 'workflow.tools'
   | 'workflow.noTools'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The live-workflow tab strings. */
     'ui-workflow': WorkflowKey

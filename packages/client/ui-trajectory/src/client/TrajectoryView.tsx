@@ -1,12 +1,12 @@
 /** Trajectory view: compact summary over a turn-aware event ledger. */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { ConvViewProps } from '@pentest-harness/dsh-client-ui-conversation/client'
-import type { InjectFace, PropsLocale } from '@pentest-harness/dsh-client-ui-slots'
+import type { ConvViewProps } from '@fathom/client-ui-conversation/client'
+import type { InjectFace, PropsLocale } from '@fathom/client-ui-slots'
 import type {
   AssistantBlock, AssistantMessageNode, ConversationSnapshot,
   SnapshotStore,
-} from '@pentest-harness/dsh-client-runtime/client'
+} from '@fathom/client-runtime/client'
 import {
   TrajectoryTable,
   type TrajectoryRequestNumber,

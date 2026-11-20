@@ -6,14 +6,14 @@
  * continuation host in `./continuation.ts` — so this module stays the published
  * surface rather than a bag of everything type-shaped.
  *
- * @module @pentest-harness/dsh-subagent/types
+ * @module @fathom/subagent/types
  */
 
-import type { Agent, AgentOptions } from '@pentest-harness/dsh-agent'
-import type { Branded } from '@pentest-harness/dsh-brand'
-import type { ContentBlock } from '@pentest-harness/dsh-llm'
-import type { SessionEvent, SessionId } from '@pentest-harness/dsh-session'
-import type { ObjectJsonSchema, ToolRestriction } from '@pentest-harness/dsh-tools'
+import type { Agent, AgentOptions } from '@fathom/agent'
+import type { Branded } from '@fathom/brand'
+import type { ContentBlock } from '@fathom/llm'
+import type { SessionEvent, SessionId } from '@fathom/session'
+import type { ObjectJsonSchema, ToolRestriction } from '@fathom/tools'
 import type { SubagentDescriptorData } from './descriptor.ts'
 
 /** Identifies one accepted subagent run across its lifecycle event pair. */

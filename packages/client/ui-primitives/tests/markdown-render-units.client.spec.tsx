@@ -8,7 +8,7 @@ import { StrictMode } from 'react'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type * as Md from 'mdast'
-import { MarkdownText } from '@pentest-harness/dsh-client-ui-primitives'
+import { MarkdownText } from '@fathom/client-ui-primitives'
 import {
   collectReferenceTargets, createReferenceTargets, renderBlocks, renderFootnoteSection,
 } from '../src/markdown/render.tsx'

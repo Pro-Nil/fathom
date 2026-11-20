@@ -6,14 +6,14 @@
  * scope → popupFor; unknown id fails loud), both fold up on fiber disposal
  * (HMR safety), and the service satisfies the frozen CommandUiContract.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { describe, expect, it } from 'vitest'
-import { createScope, scopeOf, SlotRegistry } from '@pentest-harness/dsh-client-runtime/client'
-import type { SessionId } from '@pentest-harness/dsh-client-runtime/client'
-import type { InputTriggerSource } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+import { createScope, scopeOf, SlotRegistry } from '@fathom/client-runtime/client'
+import type { SessionId } from '@fathom/client-runtime/client'
+import type { InputTriggerSource } from '@fathom/client-ui-input-trigger/client'
 import type { CommandUiContract } from '../src/client/contract.ts'
 import type { PopupSelectInjected } from '../src/client/PopupSelectView.tsx'
-import { LocaleRuntime } from '@pentest-harness/dsh-client-locale/client'
+import { LocaleRuntime } from '@fathom/client-locale/client'
 import { apply, CommandUiRuntime, inject } from '../src/client/index.ts'
 
 const sid = (k: string): SessionId => k as SessionId

@@ -1,20 +1,20 @@
-import { CallId, createUserMessage } from '@pentest-harness/dsh-llm'
+import { CallId, createUserMessage } from '@fathom/llm'
 /**
  * Tests for the queue-aware `Agent.cancel()` primitive. The default clears
  * queued and steering work, while `keepInbox` preserves pending input for a
  * later wake after the active turn reaches quiescence. The suite
  * covers every landing window plus signal reset and `whenIdle()` quiescence.
- * @module dsh-agent-loop/tests/cancel
+ * @module fathom-agent-loop/tests/cancel
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import LlmRuntime from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId, TurnEndReason } from '@pentest-harness/dsh-session'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH } from '@pentest-harness/dsh-tools'
-import AgentRegistry, { type Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
+import { Context } from '@fathom/cordis'
+import LlmRuntime from '@fathom/llm'
+import SessionStore, { SessionId, TurnEndReason } from '@fathom/session'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH } from '@fathom/tools'
+import AgentRegistry, { type Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 function driverDone(agent: Agent): Promise<void> {
@@ -570,7 +570,7 @@ describe('Agent.cancel()', () => {
     const ctx = await harness(adapter)
     const agent = ctx.agentLoop.create(SessionId('recovery-cancel'), { provider: 'mock', model: 'mock' })
     // Cancellation lands while agent/request-error is in flight — the window
-    // dsh-llm-retry opens when its backoff waits after appending llm/retry.
+    // fathom-llm-retry opens when its backoff waits after appending llm/retry.
     ctx.on('agent/request-error', async ({ agent: subject }) => {
       if (subject === agent) subject.cancel({ kind: 'user' })
     })

@@ -1,18 +1,18 @@
-import { createUserMessage } from '@pentest-harness/dsh-llm'
+import { createUserMessage } from '@fathom/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { SessionId, type SessionEvent } from '@pentest-harness/dsh-session'
-import { defineContentToolFixture } from '@pentest-harness/dsh-tools'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { LocalBashExecutor } from '@pentest-harness/dsh-bash-local'
-import LocalSubprocessRuntime from '@pentest-harness/dsh-subprocess-local'
-import * as HooksCodex from '@pentest-harness/dsh-hooks-codex'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { SessionId, type SessionEvent } from '@fathom/session'
+import { defineContentToolFixture } from '@fathom/tools'
+import type { Agent } from '@fathom/agent'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { LocalBashExecutor } from '@fathom/bash-local'
+import LocalSubprocessRuntime from '@fathom/subprocess-local'
+import * as HooksCodex from '@fathom/hooks-codex'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 /**
@@ -25,7 +25,7 @@ const dirs: string[] = []
 afterEach(() => { for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true }) })
 
 function configDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-codex-'))
+  const dir = mkdtempSync(join(tmpdir(), 'fathom-hooks-codex-'))
   dirs.push(dir)
   return dir
 }

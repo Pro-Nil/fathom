@@ -5,15 +5,15 @@
  * merge lives here. Live per-message state arrives through the `feedback`
  * hook (the framework standard kit binds it into `useFeedback`); inject
  * carries the two mutation verbs plus the lazy loader.
- * @module @pentest-harness/dsh-client-ui-message-feedback/client/slots
+ * @module @fathom/client-ui-message-feedback/client/slots
  */
 
 import type {
   HostObservable, InjectFace, PropsLocale, PropsRuntime,
-} from '@pentest-harness/dsh-client-ui-slots'
-import type {} from '@pentest-harness/dsh-client-ui-conversation/client'
-import type { MessageId } from '@pentest-harness/dsh-client-connection/client'
-import type { MessageFeedbackRating } from '@pentest-harness/dsh-message-feedback/types'
+} from '@fathom/client-ui-slots'
+import type {} from '@fathom/client-ui-conversation/client'
+import type { MessageId } from '@fathom/client-connection/client'
+import type { MessageFeedbackRating } from '@fathom/message-feedback/types'
 // Type-only: pulls this package's LocaleNamespaceMap merge (the 'feedback' seat).
 import type {} from './locales.ts'
 import type { MessageFeedbackActionResult, MessageFeedbackView } from './controller.ts'

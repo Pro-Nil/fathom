@@ -1,14 +1,14 @@
 /**
  * Model-facing UTF-8 read. It performs one provider stat for type, routing, and observed version,
  * streams large or size-unknown files, renders a bounded window, then emits the observation.
- * @module @pentest-harness/dsh-tool-fs/src/read
+ * @module @fathom/tool-fs/src/read
  */
 
-import type { Context } from '@pentest-harness/cordis'
-import { defineTool } from '@pentest-harness/dsh-tools'
-import type { GenericCallView, ReadResultView, ToolResult } from '@pentest-harness/dsh-tools'
-import type {} from '@pentest-harness/dsh-fs'
-import type {} from '@pentest-harness/dsh-system-prompt'
+import type { Context } from '@fathom/cordis'
+import { defineTool } from '@fathom/tools'
+import type { GenericCallView, ReadResultView, ToolResult } from '@fathom/tools'
+import type {} from '@fathom/fs'
+import type {} from '@fathom/system-prompt'
 import { buildWindow, formatReadOutput, langFromPath, readMetaFromMeta } from './read-render.ts'
 import { resolveRegularReadTarget } from './read-target.ts'
 

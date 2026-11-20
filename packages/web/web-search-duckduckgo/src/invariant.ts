@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-web-search-duckduckgo`.
- * @module @pentest-harness/dsh-web-search-duckduckgo/invariant
+ * Package-owned invariant companion for `@fathom/web-search-duckduckgo`.
+ * @module @fathom/web-search-duckduckgo/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-web-search-duckduckgo'
+const PACKAGE_NAME = '@fathom/web-search-duckduckgo'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-duckduckgo-invariant'

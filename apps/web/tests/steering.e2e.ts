@@ -8,8 +8,8 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { parseSessionLog } from '@pentest-harness/dsh-llm-replay'
-import type { SessionEvent } from '@pentest-harness/dsh-session'
+import { parseSessionLog } from '@fathom/llm-replay'
+import type { SessionEvent } from '@fathom/session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

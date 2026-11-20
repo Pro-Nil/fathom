@@ -1,17 +1,17 @@
 /**
  * workspace domain contract. Wire projection of the host-side workspace
- * entity (@pentest-harness/dsh-workspace): a stable id over a directory path,
+ * entity (@fathom/workspace): a stable id over a directory path,
  * a display title, and the ordered session account. Method signatures are the
  * source of truth, same as the sessions domain.
  */
 
-import type { SessionId } from '@pentest-harness/dsh-session/types'
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { SessionId } from '@fathom/session/types'
+import type { Branded } from '@fathom/brand'
 import type { RpcRequest, RpcResponse } from './rpc.ts'
 
 /**
  * Wire-side workspace id brand. Deliberately re-declared here rather than
- * imported from dsh-workspace: api/ must stay browser-importable with zero
+ * imported from fathom-workspace: api/ must stay browser-importable with zero
  * host-package dependencies, and the brand string matches, so both sides
  * agree structurally.
  */

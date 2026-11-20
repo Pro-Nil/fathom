@@ -8,27 +8,27 @@
  * itself is not a dependency of this package; the source below is the
  * decision-table contract at the `InputTriggerSource` boundary.
  */
-import { Context } from '@pentest-harness/cordis'
+import { Context } from '@fathom/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import {
   EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS, SessionRuntime,
-} from '@pentest-harness/dsh-client-runtime/client'
-import { InputTriggerService } from '@pentest-harness/dsh-client-ui-input-trigger/client'
+} from '@fathom/client-runtime/client'
+import { InputTriggerService } from '@fathom/client-ui-input-trigger/client'
 import type {
   ClientSessionContext, CommandClaim, PickOutcome, SubmitEnvelope, SubmitImageAttachment, SubmitOutcome,
-} from '@pentest-harness/dsh-client-ui-input-trigger/client'
+} from '@fathom/client-ui-input-trigger/client'
 import { FakeApiClient, fakeRemote, ok } from '../../runtime/tests/fake-api.client.ts'
-import { makeTranslate } from '@pentest-harness/dsh-client-test-runtime'
-import { en as commonEn } from '@pentest-harness/dsh-client-locale/src/locales/en.ts'
+import { makeTranslate } from '@fathom/client-test-runtime'
+import { en as commonEn } from '@fathom/client-locale/src/locales/en.ts'
 import type { DraftAttachmentId } from '../src/client/input/contract.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
 import { en } from '../src/client/locales.ts'
-import { bindSnapshotSelector } from '@pentest-harness/dsh-client-test-runtime'
-import { createSnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { ConversationSnapshot } from '@pentest-harness/dsh-client-runtime/client'
+import { bindSnapshotSelector } from '@fathom/client-test-runtime'
+import { createSnapshotStore } from '@fathom/client-runtime/client'
+import type { ConversationSnapshot } from '@fathom/client-runtime/client'
 
 afterEach(cleanup)
 

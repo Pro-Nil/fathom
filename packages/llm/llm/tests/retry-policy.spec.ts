@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import {
   resolveRetryPolicy,
   RetryPolicySchema,
-} from '@pentest-harness/dsh-llm'
-import type { RetryPolicyConfig } from '@pentest-harness/dsh-llm'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
+} from '@fathom/llm'
+import type { RetryPolicyConfig } from '@fathom/llm'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
 
 describe('provider retry policy', () => {
   it('resolves immutable normal defaults', () => {

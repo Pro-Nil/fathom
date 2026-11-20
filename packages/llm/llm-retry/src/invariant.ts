@@ -1,14 +1,14 @@
-/** Package-owned durable retry-event invariants. @module @pentest-harness/dsh-llm-retry/invariant */
+/** Package-owned durable retry-event invariants. @module @fathom/llm-retry/invariant */
 
-import type { Context } from '@pentest-harness/cordis'
-import type { Session, SessionEvent } from '@pentest-harness/dsh-session'
-import type { LlmFailure } from '@pentest-harness/dsh-llm'
-import { MAX_TIMER_DELAY_MS } from '@pentest-harness/dsh-timeout'
-import type { InvariantFailure, InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { Session, SessionEvent } from '@fathom/session'
+import type { LlmFailure } from '@fathom/llm'
+import { MAX_TIMER_DELAY_MS } from '@fathom/timeout'
+import type { InvariantFailure, InvariantInstaller } from '@fathom/invariants'
 import { providerForOpenStep } from './history.ts'
 import type {} from './index.ts'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-llm-retry'
+const PACKAGE_NAME = '@fathom/llm-retry'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-retry-invariant'

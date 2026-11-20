@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import { createUserMessage, CallId  } from '@pentest-harness/dsh-llm'
-import { createScope } from '@pentest-harness/dsh-scope'
-import type { Scope } from '@pentest-harness/dsh-scope'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import { CodeRuntime } from '@pentest-harness/dsh-code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@pentest-harness/dsh-code-runtime'
-import ToolRuntime, { CodeRunFailedError, RUN_CODE_NAME, TOOL_ABORTED_BEFORE_DISPATCH, defineContentToolFixture, defineTool } from '@pentest-harness/dsh-tools'
-import type { Config, JsonSchemaNode, PostToolDecision, ToolExecutionResult } from '@pentest-harness/dsh-tools'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import { Session, SessionId } from '@pentest-harness/dsh-session'
-import type { JsonValue, SessionEventMap } from '@pentest-harness/dsh-session'
+import { Context } from '@fathom/cordis'
+import { createUserMessage, CallId  } from '@fathom/llm'
+import { createScope } from '@fathom/scope'
+import type { Scope } from '@fathom/scope'
+import SystemPrompt from '@fathom/system-prompt'
+import { CodeRuntime } from '@fathom/code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@fathom/code-runtime'
+import ToolRuntime, { CodeRunFailedError, RUN_CODE_NAME, TOOL_ABORTED_BEFORE_DISPATCH, defineContentToolFixture, defineTool } from '@fathom/tools'
+import type { Config, JsonSchemaNode, PostToolDecision, ToolExecutionResult } from '@fathom/tools'
+import type { Agent } from '@fathom/agent'
+import { Session, SessionId } from '@fathom/session'
+import type { JsonValue, SessionEventMap } from '@fathom/session'
 
 const testToolSignal = new AbortController().signal
 
@@ -1735,7 +1735,7 @@ describe('per-agent presentation', () => {
   })
 
   it('inherits a STANDING preset scope\'s mode down the chain, agents beside it unaffected', async () => {
-    const { bindScopeParent } = await import('@pentest-harness/dsh-scope')
+    const { bindScopeParent } = await import('@fathom/scope')
     const { ctx, systemPrompt } = await setup({ mode: 'native' })
     const calls = registerEcho(ctx)
     // The preset's standing scope declares once; the agent only PARENTS to it
@@ -1753,7 +1753,7 @@ describe('per-agent presentation', () => {
     // `native` here, so a collapse predicate reading it instead of this
     // scope's effective mode would announce [run_code] and still execute the
     // native call — the bypass, reopened for exactly the preset composition
-    // `dsh-agent-tool-presentation` produces.
+    // `fathom-agent-tool-presentation` produces.
     expect(ctx.tools.executionMode({
       signal: testToolSignal,
       callId: CallId('preset-coded-schedule'),

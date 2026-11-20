@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@pentest-harness/dsh-typert-protocol`.
- * @module @pentest-harness/dsh-typert-protocol/invariant
+ * Package-owned invariant companion for `@fathom/typert-protocol`.
+ * @module @fathom/typert-protocol/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@pentest-harness/cordis'
-import type { InvariantInstaller } from '@pentest-harness/dsh-invariants'
+import type { Context } from '@fathom/cordis'
+import type { InvariantInstaller } from '@fathom/invariants'
 
-const PACKAGE_NAME = '@pentest-harness/dsh-typert-protocol'
+const PACKAGE_NAME = '@fathom/typert-protocol'
 
 /** Cordis companion plugin name. */
 export const name = 'typert-protocol-invariant'

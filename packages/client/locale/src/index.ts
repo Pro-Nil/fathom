@@ -1,7 +1,7 @@
 /** Host registration for the browser locale preference. */
 
-import type { Context } from '@pentest-harness/cordis'
-import { settingsNamespace } from '@pentest-harness/dsh-settings'
+import type { Context } from '@fathom/cordis'
+import { settingsNamespace } from '@fathom/settings'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from './locale-settings.ts'
 
 export {

@@ -1,6 +1,6 @@
 import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
-import { snapshotJsonValue } from '@pentest-harness/dsh-session'
+import { snapshotJsonValue } from '@fathom/session'
 import { decodeWorkerJson, encodeWorkerJson, snapshotCodeJsonValue } from '../src/worker-json.ts'
 
 describe('snapshotCodeJsonValue', () => {

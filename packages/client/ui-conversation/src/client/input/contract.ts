@@ -5,12 +5,12 @@
  * conversation wiring layer alone sees the full SessionInput. InputMachine
  * (machine.ts) is package-private and never exported.
  */
-import type { ClientContext, SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
-import type { Branded } from '@pentest-harness/dsh-brand'
+import type { ClientContext, SnapshotStore } from '@fathom/client-runtime/client'
+import type { Branded } from '@fathom/brand'
 import type {
   ArbitrateKey, ArbitrateOutcome, CommandClaim, ConsumeTokenRequest, PickOutcome,
   ReferenceInsert, SubmitOutcome, TokenSpan,
-} from '@pentest-harness/dsh-client-ui-input-trigger/client'
+} from '@fathom/client-ui-input-trigger/client'
 import type { QueueRow } from '../contract/queue.ts'
 import type { InputSubmitMode } from '../contract/composer-submission.ts'
 

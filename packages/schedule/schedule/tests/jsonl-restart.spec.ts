@@ -4,12 +4,12 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentLoop from '@pentest-harness/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@pentest-harness/dsh-agent-loop-testkit'
-import { LlmAdapter, type GenerateOptions, type StreamChunk } from '@pentest-harness/dsh-llm'
-import SessionStore, { SessionId } from '@pentest-harness/dsh-session'
-import JsonlSessionPersistence from '@pentest-harness/dsh-session-persistence-jsonl'
+import { Context } from '@fathom/cordis'
+import AgentLoop from '@fathom/agent-loop'
+import { mountAgentLoopTestDependencies } from '@fathom/agent-loop-testkit'
+import { LlmAdapter, type GenerateOptions, type StreamChunk } from '@fathom/llm'
+import SessionStore, { SessionId } from '@fathom/session'
+import JsonlSessionPersistence from '@fathom/session-persistence-jsonl'
 import * as toolSchedule from '../src/index.ts'
 import {
   ScheduleId,
@@ -82,7 +82,7 @@ async function settleCurrentTasks(): Promise<void> {
 
 describe('Schedule production JSONL restart', () => {
   it('resumes one overdue reminder exactly once across fresh runtime mounts', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-schedule-jsonl-'))
+    const root = await mkdtemp(join(tmpdir(), 'fathom-schedule-jsonl-'))
     roots.push(root)
     const sessionId = SessionId('schedule-jsonl-restart')
     const first = await mountPersistence(root)

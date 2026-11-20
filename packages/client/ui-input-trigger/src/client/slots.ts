@@ -8,11 +8,11 @@
  * program picks this merge up transitively through its ui-input-trigger imports.
  */
 // Type-only edge: the SlotMap augmentation below merges into this package's interface.
-import type {} from '@pentest-harness/dsh-client-ui-slots'
-import type { SnapshotStore } from '@pentest-harness/dsh-client-runtime/client'
+import type {} from '@fathom/client-ui-slots'
+import type { SnapshotStore } from '@fathom/client-runtime/client'
 import type { MenuState } from '../core/contract.ts'
 
-declare module '@pentest-harness/dsh-client-ui-slots' {
+declare module '@fathom/client-ui-slots' {
   interface SlotMap {
     /**
      * The InputBar floating overlay anchor: MenuView (this package) and the

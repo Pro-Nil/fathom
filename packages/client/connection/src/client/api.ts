@@ -18,12 +18,12 @@ export type {
   CredentialsApi, CredentialView, ConfigurableProviderView, DiscoveredModelView, LlmApi,
   SubagentsApi, SubagentAddress, SubagentCatalog, SubagentListEntry, SubagentPromptReceipt,
   JobView,
-} from '@pentest-harness/dsh-host-apiproxy/api'
-export type { ToolCallView, ToolResultView } from '@pentest-harness/dsh-tools/presentation'
+} from '@fathom/host-apiproxy/api'
+export type { ToolCallView, ToolResultView } from '@fathom/tools/presentation'
 export type {
   RpcRequest, RpcResponse, RpcResult, RpcError, RpcErrorCode,
   ClientRequest, ServerResponse, ServerRequest, ClientResponse, RpcMessage, RpcReceipt,
-} from '@pentest-harness/dsh-host-apiproxy/api'
+} from '@fathom/host-apiproxy/api'
 // transportError lives in the apiproxy api layer (beside RpcResult, its
 // subject); re-exported here so connection consumers keep one contract
 // entry point.
@@ -31,17 +31,17 @@ export {
   RpcId,
   SESSION_SEARCH_RESULT_LIMIT,
   transportError,
-} from '@pentest-harness/dsh-host-apiproxy/api'
-export { AbstractApiClient } from '@pentest-harness/dsh-host-apiproxy/client'
-export type { IApiClient } from '@pentest-harness/dsh-host-apiproxy/client'
-export type { SessionId, SessionEvent } from '@pentest-harness/dsh-session/types'
-export type { MessageId } from '@pentest-harness/dsh-llm/brand'
-export type { ContentBlock, StreamChunk } from '@pentest-harness/dsh-llm/types'
+} from '@fathom/host-apiproxy/api'
+export { AbstractApiClient } from '@fathom/host-apiproxy/client'
+export type { IApiClient } from '@fathom/host-apiproxy/client'
+export type { SessionId, SessionEvent } from '@fathom/session/types'
+export type { MessageId } from '@fathom/llm/brand'
+export type { ContentBlock, StreamChunk } from '@fathom/llm/types'
 
 /** Successful value returned by the connection-generation host handshake. */
-export type HostDescription = import('@pentest-harness/dsh-host-apiproxy/api').ResponseValue<'host.describe'>
+export type HostDescription = import('@fathom/host-apiproxy/api').ResponseValue<'host.describe'>
 
-import type { RpcResponse, RpcResult } from '@pentest-harness/dsh-host-apiproxy/api'
+import type { RpcResponse, RpcResult } from '@fathom/host-apiproxy/api'
 
 /**
  * Unwrap a unary response: RpcResponse<T> -> RpcResult<T> (business code only

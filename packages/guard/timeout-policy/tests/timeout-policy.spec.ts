@@ -1,5 +1,5 @@
 /**
- * Unit + real-load-path coverage for @pentest-harness/dsh-tool-call-timeout-policy. The
+ * Unit + real-load-path coverage for @fathom/tool-call-timeout-policy. The
  * timeout-wins cases drive the deadline under fake timers (deterministic — no
  * wall-clock race) and use a COOPERATIVE tool that settles only when its
  * `exec.signal` aborts, mirroring how a real capability forwards the signal and
@@ -7,13 +7,13 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import Loader from '@pentest-harness/cordis-plugin-loader'
-import { CallId, HarnessError } from '@pentest-harness/dsh-llm'
-import SystemPrompt from '@pentest-harness/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED, type ToolExecutionInput, type PostToolDecision } from '@pentest-harness/dsh-tools'
-import * as timeoutPolicy from '@pentest-harness/dsh-tool-call-timeout-policy'
-import { TOOL_TIMEOUT } from '@pentest-harness/dsh-tool-call-timeout-policy'
+import { Context } from '@fathom/cordis'
+import Loader from '@fathom/cordis-plugin-loader'
+import { CallId, HarnessError } from '@fathom/llm'
+import SystemPrompt from '@fathom/system-prompt'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED, type ToolExecutionInput, type PostToolDecision } from '@fathom/tools'
+import * as timeoutPolicy from '@fathom/tool-call-timeout-policy'
+import { TOOL_TIMEOUT } from '@fathom/tool-call-timeout-policy'
 
 const testToolSignal = new AbortController().signal
 
@@ -217,7 +217,7 @@ describe('timeout-policy disposal (HMR safety)', () => {
   })
 })
 
-describe('dsh-tool-call-timeout-policy real-load-path guard', () => {
+describe('fathom-tool-call-timeout-policy real-load-path guard', () => {
   it('has no default export and keeps name/inject through unwrapExports', () => {
     expect('default' in timeoutPolicy).toBe(false)
     const loader = Object.create(Loader.prototype) as Loader

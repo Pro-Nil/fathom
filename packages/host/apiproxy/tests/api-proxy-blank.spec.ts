@@ -8,20 +8,20 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@pentest-harness/cordis'
-import AgentRegistry from '@pentest-harness/dsh-agent'
-import type { Agent } from '@pentest-harness/dsh-agent'
-import SessionStore from '@pentest-harness/dsh-session'
-import type { Session } from '@pentest-harness/dsh-session'
-import UserQuestionService from '@pentest-harness/dsh-user-questions'
-import { CommandId } from '@pentest-harness/dsh-commands/brand'
+import { Context } from '@fathom/cordis'
+import AgentRegistry from '@fathom/agent'
+import type { Agent } from '@fathom/agent'
+import SessionStore from '@fathom/session'
+import type { Session } from '@fathom/session'
+import UserQuestionService from '@fathom/user-questions'
+import { CommandId } from '@fathom/commands/brand'
 // Side-effect type imports: the knob-event SessionEventMap merges.
-import type {} from '@pentest-harness/dsh-permission-presets'
-import type {} from '@pentest-harness/dsh-sandbox-policy'
-import type {} from '@pentest-harness/dsh-user-approval'
-import type { ApiProxy, RpcRequest } from '@pentest-harness/dsh-host-apiproxy/api'
-import { RpcId } from '@pentest-harness/dsh-host-apiproxy/api/rpc'
-import { createApiProxy } from '@pentest-harness/dsh-host-apiproxy'
+import type {} from '@fathom/permission-presets'
+import type {} from '@fathom/sandbox-policy'
+import type {} from '@fathom/user-approval'
+import type { ApiProxy, RpcRequest } from '@fathom/host-apiproxy/api'
+import { RpcId } from '@fathom/host-apiproxy/api/rpc'
+import { createApiProxy } from '@fathom/host-apiproxy'
 
 let nextRpc = 1
 function request<P>(payload: P): RpcRequest<P> {
