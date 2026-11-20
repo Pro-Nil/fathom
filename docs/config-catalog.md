@@ -2617,7 +2617,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/tool-findings/src/index.ts:31`](../packages/pentest/tool-findings/src/index.ts)
+Source: [`packages/pentest/tool-findings/src/index.ts:66`](../packages/pentest/tool-findings/src/index.ts)
 
 <a id="fathomtool-fs"></a>
 
@@ -3343,6 +3343,7 @@ These load from a `cordis.yml` entry with no `config:` block; they declare no co
 - `@fathom/client-ui-deliverables` — requires `systemPrompt` ([`packages/client/ui-deliverables/src/index.ts`](../packages/client/ui-deliverables/src/index.ts))
 - `@fathom/client-ui-directory-picker-browse` ([`packages/client/ui-directory-picker-browse/src/index.ts`](../packages/client/ui-directory-picker-browse/src/index.ts))
 - `@fathom/client-ui-directory-picker-native` ([`packages/client/ui-directory-picker-native/src/index.ts`](../packages/client/ui-directory-picker-native/src/index.ts))
+- `@fathom/client-ui-findings` ([`packages/client/ui-findings/src/index.ts`](../packages/client/ui-findings/src/index.ts))
 - `@fathom/client-ui-goal` ([`packages/client/ui-goal/src/index.ts`](../packages/client/ui-goal/src/index.ts))
 - `@fathom/client-ui-input-trigger` ([`packages/client/ui-input-trigger/src/index.ts`](../packages/client/ui-input-trigger/src/index.ts))
 - `@fathom/client-ui-jobs` ([`packages/client/ui-jobs/src/index.ts`](../packages/client/ui-jobs/src/index.ts))

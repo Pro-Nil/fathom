@@ -276,6 +276,11 @@
     - id: ui-goal
       name: '@fathom/client-ui-goal'
 
+    # Findings surface: collapsible severity dashboard in the input dock over
+    # the findings session projection (read-only; the agent's tools mutate it).
+    - id: ui-findings
+      name: '@fathom/client-ui-findings'
+
     # Per-message feedback: Like/Dislike plus an optional note in the
     # assistant-message action strip, over the messageFeedback Remote.
     - id: ui-message-feedback

@@ -66,6 +66,7 @@
     "@fathom/client-ui-directory-picker-native": "workspace:^",
     "@fathom/client-ui-message-feedback": "workspace:^",
     "@fathom/client-ui-goal": "workspace:^",
+    "@fathom/client-ui-findings": "workspace:^",
     "@fathom/client-ui-layout": "workspace:^",
     "@fathom/client-ui-model-selection": "workspace:^",
     "@fathom/client-ui-settings-models": "workspace:^",

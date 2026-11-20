@@ -409,6 +409,19 @@ Source: [`packages/compaction/compaction/src/types.ts:33`](../packages/compactio
 
 Source: [`packages/feedback/command-feedback/src/index.ts:62`](../packages/feedback/command-feedback/src/index.ts)
 
+### `finding/*`
+
+<a id="findingchange--log-only"></a>
+
+#### `finding/change` — log-only
+
+```ts persistence-catalog
+/** Whole-list snapshot of the session's findings; latest write wins on replay. Log-only UI state. */
+'finding/change': { findings: Finding[] }
+```
+
+Source: [`packages/pentest/tool-findings/src/projection.ts:15`](../packages/pentest/tool-findings/src/projection.ts)
+
 ### `goal/*`
 
 <a id="goalchange--log-only"></a>
