@@ -1292,10 +1292,12 @@ Render the recorded findings into a report file in the session folder. Returns t
   "properties": {
     "format": {
       "type": "string",
-      "description": "markdown | json | both (default both).",
+      "description": "markdown | json | html (interactive dashboard) | all (default) | both (markdown+json).",
       "enum": [
         "markdown",
         "json",
+        "html",
+        "all",
         "both"
       ]
     },
