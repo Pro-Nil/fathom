@@ -7,7 +7,7 @@ Google search for the web seam (`ctx.web`). Two providers register:
 | `google` | Loads `google.com/search` in a hidden page of the harness's shared browser (same profile and cookies as the user's sign-ins), then reads the result titles, links and snippets. The page never appears in the tab list or the live view. | The `browser` plugin (mounted by the web app). No key. |
 | `google-api` | Calls the Programmable Search JSON API. | `GOOGLE_API_KEY` and `GOOGLE_CSE_ID`, stored as credentials or set in the environment. |
 
-A CAPTCHA or "unusual traffic" page, an HTTP error or a timeout is reported as a provider error. With `searchFallback` on (the shipped default), `ctx.web` then tries the next engine: Google, Google API, DuckDuckGo, Exa, Perplexity. The engine and the fallback are chosen under **Settings → Plugins → Web search** and apply to the next search.
+A CAPTCHA or "unusual traffic" page, an HTTP error or a timeout is reported as a provider error. With `searchFallback` on (the shipped default), `ctx.web` then tries the next engine: Google, Google API (only when its key is stored), Bing, DuckDuckGo, Exa, Perplexity. The engine and the fallback are chosen under **Settings → Plugins → Web search** and apply to the next search.
 
 ## Config
 

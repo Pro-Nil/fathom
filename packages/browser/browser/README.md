@@ -9,7 +9,9 @@ The agent drives it through [`fathom-tool-browser`](../tool-browser/README.md). 
 
 The Web client's [`fathom-client-ui-browser`](../../client/ui-browser/README.md) pane frames this page. Both routes accept only loopback `Host` values, refuse `Sec-Fetch-Site: cross-site`, and require any `Origin` to match the host, so another site (or a DNS-rebound page) cannot drive the signed-in browser.
 
-Address-bar and `browser_navigate` input resolve like a browser omnibox: URLs, bare hosts, IP addresses and `host:port` open directly, and any other text is searched (`searchUrl`, DuckDuckGo by default; Google answers this automated browser with an "unusual traffic" challenge). When a page opens a file picker, the live view asks the user for the file and hands it to the page, so uploads work.
+Address-bar and `browser_navigate` input resolve like a browser omnibox: URLs, bare hosts, IP addresses and `host:port` open directly, and any other text is searched: Google by default (`searchUrl`). When an engine answers with a bot challenge (Google's "unusual traffic" page, a human-verification interstitial, or a short page that is mostly a CAPTCHA widget), the next engine in `searchFallbackUrls` is tried: Bing, then DuckDuckGo. The last engine's page is kept even if it is a challenge, so the user can solve it in the live view. When a page opens a file picker, the live view asks the user for the file and hands it to the page, so uploads work.
+
+The browser does not announce automation. Playwright's default `--enable-automation` switch (which sets `navigator.webdriver`) is dropped, Blink's `AutomationControlled` feature is disabled, and in headless mode the browser's own user agent is read on first launch and reused with `HeadlessChrome` replaced by `Chrome` (one extra launch per harness process). Those tells are what made Google and Cloudflare-fronted sites challenge every request; `hideAutomation: false` restores Playwright's defaults.
 
 The live view's ⋮ menu imports saved passwords from password-export CSV files (Chrome, Brave, Edge, Firefox and most password managers can export one); several files can be chosen at once. Rows are encrypted with this browser's own storage key and written to its password store while it is briefly closed, as Chromium stores a saved password; existing entries for the same site and username are kept. Other browsers' encrypted stores are never read: modern Chrome, Brave and Edge protect them with app-bound encryption. Import is a live-view action only; no tool exposes it to the model.
 
@@ -25,7 +27,9 @@ Per tab, the session keeps the last 300 console lines (including uncaught errors
 | `profileDir` | `~/.fathom/browser/profile` | Persistent profile directory. |
 | `width` / `height` | `1280` / `800` | Initial viewport in CSS pixels. The live view resizes it to fit its pane. |
 | `liveView` | `true` | Serve `/browser/view` and `/browser/ws` when a web server is mounted. |
-| `searchUrl` | `https://duckduckgo.com/?q=%s` | Search for address-bar text that is not an address; `%s` is the encoded query. |
+| `searchUrl` | `https://www.google.com/search?q=%s` | Search for address-bar text that is not an address; `%s` is the encoded query. |
+| `searchFallbackUrls` | Bing, then DuckDuckGo | Engines tried in order when the search engine answers with a challenge page. |
+| `hideAutomation` | `true` | Drop the automation tells (webdriver flag, `AutomationControlled`, `HeadlessChrome` user agent). |
 
 ## Model Experience
 
