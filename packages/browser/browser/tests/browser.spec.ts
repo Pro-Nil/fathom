@@ -12,6 +12,7 @@ import {
   resolveAddress,
   searchQuery,
   toPlaywrightChord,
+  withoutAiOverview,
 } from '@fathom/browser'
 
 describe('normalizeUrl', () => {
@@ -26,7 +27,7 @@ describe('normalizeUrl', () => {
 })
 
 describe('resolveAddress', () => {
-  const search = (q: string) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
+  const search = (q: string) => `https://www.google.com/search?udm=14&q=${encodeURIComponent(q)}`
   it('searches text that is not an address, like a browser omnibox', () => {
     expect(resolveAddress('hh', DEFAULT_SEARCH_URL)).toBe(search('hh'))
     expect(resolveAddress('owasp top 10', DEFAULT_SEARCH_URL)).toBe(search('owasp top 10'))
@@ -71,8 +72,19 @@ describe('isTrustedViewerRequest', () => {
 
 describe('search engines', () => {
   it('defaults to Google, then Bing, then DuckDuckGo', () => {
-    expect(DEFAULT_SEARCH_URL).toBe('https://www.google.com/search?q=%s')
+    expect(DEFAULT_SEARCH_URL).toBe('https://www.google.com/search?udm=14&q=%s')
     expect(DEFAULT_SEARCH_FALLBACK_URLS).toEqual(['https://www.bing.com/search?q=%s', 'https://duckduckgo.com/?q=%s'])
+  })
+
+  it('opens Google results in the plain Web view without the AI Overview', () => {
+    expect(withoutAiOverview('https://www.google.com/search?q=xss')).toBe('https://www.google.com/search?q=xss&udm=14')
+    expect(withoutAiOverview('https://google.co.in/search?q=a+b')).toBe('https://google.co.in/search?q=a+b&udm=14')
+    expect(withoutAiOverview('https://www.google.com/search?q=x&udm=2')).toBe('https://www.google.com/search?q=x&udm=2')
+    expect(withoutAiOverview('https://www.google.com/search?q=x&tbm=isch')).toBe('https://www.google.com/search?q=x&tbm=isch')
+    expect(withoutAiOverview('https://www.google.com/maps?q=x')).toBe('https://www.google.com/maps?q=x')
+    expect(withoutAiOverview('https://example.com/search?q=x')).toBe('https://example.com/search?q=x')
+    expect(withoutAiOverview('owasp top 10')).toBe('owasp top 10')
+    expect(withoutAiOverview('back')).toBe('back')
   })
 
   it('tells searches from addresses', () => {
@@ -208,7 +220,7 @@ describe('SharedBrowser (real Chromium)', () => {
       await route.fulfill({ body: `<title>search</title>${'<p>result</p>'.repeat(5)}`, contentType: 'text/html' })
     })
     await browser.handleViewerMessage(JSON.stringify({ type: 'navigate', url: 'hh' }))
-    expect(requested).toBe('https://www.google.com/search?q=hh')
+    expect(requested).toBe('https://www.google.com/search?udm=14&q=hh')
     await page.unrouteAll()
   })
 

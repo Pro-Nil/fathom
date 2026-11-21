@@ -27,6 +27,7 @@ export {
   resolveAddress,
   searchQuery,
   toPlaywrightChord,
+  withoutAiOverview,
 } from './runtime.ts'
 export type { BrowserLaunchOptions, BrowserScope, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
 

@@ -36,8 +36,29 @@ export interface BrowserLaunchOptions {
   readonly hideAutomation?: boolean
 }
 
-/** Default address-bar search: Google, like the harness's web_search. */
-export const DEFAULT_SEARCH_URL = 'https://www.google.com/search?q=%s'
+/**
+ * Default address-bar search: Google, like the harness's web_search, in its
+ * plain "Web" view (`udm=14`), which has no AI Overview.
+ */
+export const DEFAULT_SEARCH_URL = 'https://www.google.com/search?udm=14&q=%s'
+
+/**
+ * Put a Google search URL into the plain "Web" view (`udm=14`, no AI Overview)
+ * unless it already names a view. Any other URL is returned unchanged.
+ * @param input - a URL or address-bar text.
+ */
+export function withoutAiOverview(input: string): string {
+  let url: URL
+  try {
+    url = new URL(input)
+  } catch {
+    return input
+  }
+  if (!/^(?:www\.)?google\.[a-z.]+$/iu.test(url.hostname) || url.pathname !== '/search' || url.searchParams.has('udm')) return input
+  if (url.searchParams.has('tbm')) return input
+  url.searchParams.set('udm', '14')
+  return url.toString()
+}
 
 /** Engines tried when the search engine challenges the browser: Bing, then DuckDuckGo. */
 export const DEFAULT_SEARCH_FALLBACK_URLS: readonly string[] = ['https://www.bing.com/search?q=%s', 'https://duckduckgo.com/?q=%s']

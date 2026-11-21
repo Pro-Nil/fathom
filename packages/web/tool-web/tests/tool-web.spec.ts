@@ -62,10 +62,11 @@ describe('search formatting', () => {
         { url: 'https://b.test/y' },
       ],
     })
-    expect(out).toContain('an answer')
+    expect(out).toContain('Provider summary (AI-generated, unverified — not a source; confirm it against pages you read):\nan answer')
     expect(out).toContain('[A](https://a.test/x) — about a (2026-01-01)')
     expect(out).toContain('[b.test](https://b.test/y)')
-    expect(out).toContain('Cite the relevant URLs')
+    expect(out).toContain('These are search leads, not research')
+    expect(out).toContain('cite only pages you actually read')
   })
 
   it('reports no results when there is neither content nor sources', () => {
@@ -490,6 +491,7 @@ describe('tool-web registration', () => {
     const prompt = await ctx.systemPrompt.assemble()
     const text = prompt.sections.map(s => s.text).join('\n')
     expect(text).toContain(`Use the web_search tool to discover current information on the web. The required queries array accepts 1–${WEB_SEARCH_MAX_QUERIES} non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Follow up with web_fetch when you need the full content of a specific result, and cite the relevant URLs as markdown links.`)
+    expect(text).toContain('Search results are leads, not evidence')
     expect(text).toContain('Use the web_fetch tool to retrieve the content of a specific HTTP(S) URL')
     await fiber.dispose()
   })
@@ -498,7 +500,9 @@ describe('tool-web registration', () => {
     const { fiber, ctx } = await mountTools({ config: { search: true, fetch: false } })
     const prompt = await ctx.systemPrompt.assemble()
     const text = prompt.sections.map(s => s.text).join('\n')
-    expect(text).toContain('Use the returned source snippets when available')
+    expect(text).toContain('open it with the browser tools when they are available')
+    expect(text).toContain('Never relay a search summary as if you did the research.')
+    expect(text).not.toContain('Use the returned source snippets')
     expect(text).not.toContain('web_fetch')
     await fiber.dispose()
   })

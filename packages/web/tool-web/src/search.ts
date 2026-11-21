@@ -64,6 +64,22 @@ function sourceLabel(url: string, title: string | undefined): string {
 }
 
 /**
+ * Closing line of every search result: results are leads, not research.
+ * Models otherwise answer from snippets (or a search engine's AI summary) and
+ * present that as if they had read the sources.
+ */
+export const SNIPPET_NOTICE =
+  'These are search leads, not research: titles and snippets are excerpts chosen by the search engine. Before you state a fact, '
+  + 'open the page you will cite and read it, and cite only pages you actually read, as markdown links. Never present a search '
+  + "engine's AI summary (Google AI Overview, Bing Copilot) as your own findings."
+
+/** The web_search research rule shared by both prompt variants. */
+const RESEARCH_RULE =
+  'Search results are leads, not evidence: snippets and AI-generated summaries (Google AI Overview, Bing Copilot, provider '
+  + 'answers) are often wrong or out of date. Before stating a fact, read the primary source page itself, and when the user '
+  + 'asks you to research something, say which pages you read. Never relay a search summary as if you did the research.'
+
+/**
  * Format a search result as one model-facing text block.
  *
  * @param result - the seam's search outcome.
@@ -73,7 +89,9 @@ function sourceLabel(url: string, title: string | undefined): string {
  */
 export function formatSearchOutput(result: WebSearchResult): string {
   const parts: string[] = []
-  if (result.content !== undefined && result.content.length > 0) parts.push(result.content)
+  if (result.content !== undefined && result.content.length > 0) {
+    parts.push(`Provider summary (AI-generated, unverified — not a source; confirm it against pages you read):\n${result.content}`)
+  }
 
   if (result.sources.length > 0) {
     const lines = result.sources.map((source) => {
@@ -90,7 +108,7 @@ export function formatSearchOutput(result: WebSearchResult): string {
   }
 
   if (result.truncated) parts.push(`(Showing the first ${result.sources.length} sources. Refine the query for more.)`)
-  parts.push('Cite the relevant URLs above as markdown links in your answer.')
+  parts.push(SNIPPET_NOTICE)
   return parts.join('\n\n')
 }
 
@@ -317,8 +335,8 @@ export function applyWebSearchTool(
     name: 'tool:web_search',
     order: 110,
     text: fetchEnabled
-      ? `Use the web_search tool to discover current information on the web. The required queries array accepts 1–${maxQueries} non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Follow up with web_fetch when you need the full content of a specific result, and cite the relevant URLs as markdown links.`
-      : `Use the web_search tool to discover current information on the web. The required queries array accepts 1–${maxQueries} non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Use the returned source snippets when available, and cite the relevant URLs as markdown links.`,
+      ? `Use the web_search tool to discover current information on the web. The required queries array accepts 1–${maxQueries} non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Follow up with web_fetch when you need the full content of a specific result, and cite the relevant URLs as markdown links. ${RESEARCH_RULE}`
+      : `Use the web_search tool to discover current information on the web. The required queries array accepts 1–${maxQueries} non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. To read a result, open it with the browser tools when they are available (browser_navigate, then browser_get_page_text), and cite the relevant URLs as markdown links. ${RESEARCH_RULE}`,
   })
 
   ctx.tools.register(defineTool({

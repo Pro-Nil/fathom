@@ -27,7 +27,7 @@ Per tab, the session keeps the last 300 console lines (including uncaught errors
 | `profileDir` | `~/.fathom/browser/profile` | Persistent profile directory. |
 | `width` / `height` | `1280` / `800` | Initial viewport in CSS pixels. The live view resizes it to fit its pane. |
 | `liveView` | `true` | Serve `/browser/view` and `/browser/ws` when a web server is mounted. |
-| `searchUrl` | `https://www.google.com/search?q=%s` | Search for address-bar text that is not an address; `%s` is the encoded query. |
+| `searchUrl` | `https://www.google.com/search?udm=14&q=%s` | Search for address-bar text that is not an address; `%s` is the encoded query. `udm=14` is Google's plain "Web" view, which has no AI Overview. |
 | `searchFallbackUrls` | Bing, then DuckDuckGo | Engines tried in order when the search engine answers with a challenge page. |
 | `hideAutomation` | `true` | Drop the automation tells (webdriver flag, `AutomationControlled`, `HeadlessChrome` user agent). |
 

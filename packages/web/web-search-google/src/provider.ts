@@ -112,6 +112,8 @@ export class GoogleBrowserSearchProvider implements WebSearchProvider {
     signal?.throwIfAborted()
     const url = new URL(this.options.searchURL)
     url.searchParams.set('q', request.query)
+    // The plain "Web" results view: no AI Overview, and more organic results.
+    if (!url.searchParams.has('udm')) url.searchParams.set('udm', '14')
     if (this.options.language !== '') url.searchParams.set('hl', this.options.language)
     if (request.maxResults !== undefined) url.searchParams.set('num', String(Math.min(Math.max(request.maxResults, 1), 20)))
     const scraped = await runner(async (page) => {

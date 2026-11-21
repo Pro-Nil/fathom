@@ -63,6 +63,8 @@ describe('GoogleBrowserSearchProvider', () => {
     expect(url.searchParams.get('q')).toBe('owasp top 10')
     expect(url.searchParams.get('num')).toBe('5')
     expect(url.searchParams.get('hl')).toBe('en')
+    // The plain "Web" view: no AI Overview for the model to read back.
+    expect(url.searchParams.get('udm')).toBe('14')
   })
 
   it('reports a CAPTCHA page as a provider error so the seam can fall back', async () => {

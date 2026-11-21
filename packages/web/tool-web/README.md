@@ -51,14 +51,16 @@ Search and fetch contribute the web-search and web-fetch guidance below. Search 
 ##### Web search guidance with fetch enabled
 
 ```markdown
-Use the web_search tool to discover current information on the web. The required queries array accepts 1–4 non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Follow up with web_fetch when you need the full content of a specific result, and cite the relevant URLs as markdown links.
+Use the web_search tool to discover current information on the web. The required queries array accepts 1–4 non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Follow up with web_fetch when you need the full content of a specific result, and cite the relevant URLs as markdown links. Search results are leads, not evidence: snippets and AI-generated summaries (Google AI Overview, Bing Copilot, provider answers) are often wrong or out of date. Before stating a fact, read the primary source page itself, and when the user asks you to research something, say which pages you read. Never relay a search summary as if you did the research.
 ```
 
 ##### Web search-only guidance
 
 ```markdown
-Use the web_search tool to discover current information on the web. The required queries array accepts 1–4 non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. Use the returned source snippets when available, and cite the relevant URLs as markdown links.
+Use the web_search tool to discover current information on the web. The required queries array accepts 1–4 non-empty search queries; use a one-item array for a single search. It returns an optional answer plus a list of source URLs. To read a result, open it with the browser tools when they are available (browser_navigate, then browser_get_page_text), and cite the relevant URLs as markdown links. Search results are leads, not evidence: snippets and AI-generated summaries (Google AI Overview, Bing Copilot, provider answers) are often wrong or out of date. Before stating a fact, read the primary source page itself, and when the user asks you to research something, say which pages you read. Never relay a search summary as if you did the research.
 ```
+
+Every result also labels a provider's own answer as "Provider summary (AI-generated, unverified — not a source …)" and ends with a reminder that titles and snippets are search leads: open and read the page before citing it.
 
 ##### Web fetch guidance
 
