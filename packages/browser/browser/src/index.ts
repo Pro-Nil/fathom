@@ -14,10 +14,20 @@ import z from '@fathom/schemastery'
 import type {} from '@fathom/host-webserver'
 import { fathomHomePath } from '@fathom/home-paths'
 import { WebSocketServer } from 'ws'
-import { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser } from './runtime.ts'
+import { BUNDLED_CHANNEL, DEFAULT_SEARCH_FALLBACK_URLS, DEFAULT_SEARCH_URL, SharedBrowser } from './runtime.ts'
 import { VIEWER_PAGE } from './viewer-page.ts'
 
-export { BUNDLED_CHANNEL, DEFAULT_SEARCH_URL, SharedBrowser, normalizeUrl, resolveAddress, toPlaywrightChord } from './runtime.ts'
+export {
+  BUNDLED_CHANNEL,
+  DEFAULT_SEARCH_FALLBACK_URLS,
+  DEFAULT_SEARCH_URL,
+  SharedBrowser,
+  isChallengePage,
+  normalizeUrl,
+  resolveAddress,
+  searchQuery,
+  toPlaywrightChord,
+} from './runtime.ts'
 export type { BrowserLaunchOptions, BrowserScope, BrowserTab, BrowserTarget, BrowserViewer, ConsoleEntry, MouseButton, NetworkEntry, ViewerFile } from './runtime.ts'
 
 declare module '@fathom/cordis' {
@@ -50,8 +60,17 @@ export interface BrowserRuntimeConfig {
   height?: number
   /** Serve the live view on the web server when one is mounted. Defaults to true. */
   liveView?: boolean
-  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to DuckDuckGo. */
+  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to Google. */
   searchUrl?: string
+  /** Engines tried in order when the search engine answers with a challenge. Defaults to Bing, then DuckDuckGo. */
+  searchFallbackUrls?: string[]
+  /**
+   * Drop the automation tells that make sites challenge the browser: Playwright's
+   * `--enable-automation` switch (`navigator.webdriver`), Blink's
+   * AutomationControlled feature, and the `HeadlessChrome` user-agent token in
+   * headless mode. Defaults to true.
+   */
+  hideAutomation?: boolean
 }
 
 /**
@@ -93,6 +112,8 @@ export default class BrowserRuntime extends Service {
     height: z.natural().default(800),
     liveView: z.boolean().default(true),
     searchUrl: z.string().default(DEFAULT_SEARCH_URL),
+    searchFallbackUrls: z.array(z.string()).default([...DEFAULT_SEARCH_FALLBACK_URLS]),
+    hideAutomation: z.boolean().default(true),
   })
 
   /** The live browser session shared by tools and the live view. */
@@ -108,6 +129,8 @@ export default class BrowserRuntime extends Service {
       width: config.width ?? 1280,
       height: config.height ?? 800,
       searchUrl: config.searchUrl ?? DEFAULT_SEARCH_URL,
+      searchFallbackUrls: config.searchFallbackUrls ?? DEFAULT_SEARCH_FALLBACK_URLS,
+      hideAutomation: config.hideAutomation ?? true,
     })
     ctx.effect(() => () => { void this.shared.dispose() }, 'browser: shut down the shared browser')
     if (config.liveView ?? true) {

@@ -2,7 +2,17 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { DEFAULT_SEARCH_URL, SharedBrowser, isTrustedViewerRequest, normalizeUrl, resolveAddress, toPlaywrightChord } from '@fathom/browser'
+import {
+  DEFAULT_SEARCH_FALLBACK_URLS,
+  DEFAULT_SEARCH_URL,
+  SharedBrowser,
+  isChallengePage,
+  isTrustedViewerRequest,
+  normalizeUrl,
+  resolveAddress,
+  searchQuery,
+  toPlaywrightChord,
+} from '@fathom/browser'
 
 describe('normalizeUrl', () => {
   it('adds https to bare hosts and http to loopback', () => {
@@ -16,7 +26,7 @@ describe('normalizeUrl', () => {
 })
 
 describe('resolveAddress', () => {
-  const search = (q: string) => `https://duckduckgo.com/?q=${encodeURIComponent(q)}`
+  const search = (q: string) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
   it('searches text that is not an address, like a browser omnibox', () => {
     expect(resolveAddress('hh', DEFAULT_SEARCH_URL)).toBe(search('hh'))
     expect(resolveAddress('owasp top 10', DEFAULT_SEARCH_URL)).toBe(search('owasp top 10'))
@@ -59,6 +69,32 @@ describe('isTrustedViewerRequest', () => {
   })
 })
 
+describe('search engines', () => {
+  it('defaults to Google, then Bing, then DuckDuckGo', () => {
+    expect(DEFAULT_SEARCH_URL).toBe('https://www.google.com/search?q=%s')
+    expect(DEFAULT_SEARCH_FALLBACK_URLS).toEqual(['https://www.bing.com/search?q=%s', 'https://duckduckgo.com/?q=%s'])
+  })
+
+  it('tells searches from addresses', () => {
+    expect(searchQuery('owasp top 10')).toBe('owasp top 10')
+    expect(searchQuery('xss')).toBe('xss')
+    expect(searchQuery('example.com')).toBeUndefined()
+    expect(searchQuery('localhost:3000')).toBeUndefined()
+    expect(searchQuery('https://a.test/?q=1')).toBeUndefined()
+  })
+
+  it('recognizes challenge pages without flagging long results pages', () => {
+    expect(isChallengePage('https://www.google.com/sorry/index?continue=x', '', false)).toBe(true)
+    expect(isChallengePage('https://www.google.co.in/sorry/index', 'x'.repeat(3000), false)).toBe(true)
+    expect(isChallengePage('https://x.test/', 'Our systems have detected unusual traffic from your computer network.', false)).toBe(true)
+    expect(isChallengePage('https://x.test/', 'Just a moment... Verify you are human by completing the action below.', false)).toBe(true)
+    expect(isChallengePage('https://x.test/', 'Log in', true)).toBe(true)
+    const results = `Web results ${'Cloudflare explains how to verify you are human with Turnstile. '.repeat(40)}`
+    expect(isChallengePage('https://www.google.com/search?q=turnstile', results, true)).toBe(false)
+    expect(isChallengePage('https://example.com/', 'Welcome to the shop', false)).toBe(false)
+  })
+})
+
 // Real browser: launches the harness's own Chromium headless on a throwaway profile.
 describe('SharedBrowser (real Chromium)', () => {
   const profileDir = mkdtempSync(join(tmpdir(), 'fathom-browser-test-'))
@@ -66,6 +102,24 @@ describe('SharedBrowser (real Chromium)', () => {
   afterAll(async () => {
     await browser.dispose()
     rmSync(profileDir, { recursive: true, force: true })
+  })
+
+  it('falls back to the next search engine when one answers with a challenge', async () => {
+    const challenge = `data:text/html,${encodeURIComponent('<p>Our systems have detected unusual traffic</p>')}%s`
+    const ok = `data:text/html,${encodeURIComponent('<title>engine-two</title><p>results for</p>')}%s`
+    const fallback = new SharedBrowser({
+      channel: 'chromium', headless: true, profileDir: mkdtempSync(join(tmpdir(), 'fathom-browser-fallback-')),
+      width: 800, height: 600, searchUrl: challenge, searchFallbackUrls: [ok],
+    })
+    try {
+      await fallback.navigate('find me')
+      const page = await fallback.page()
+      expect(await page.title()).toBe('engine-two')
+      expect(await page.evaluate(() => navigator.webdriver)).toBe(false)
+      expect(await page.evaluate(() => navigator.userAgent)).not.toContain('HeadlessChrome')
+    } finally {
+      await fallback.dispose()
+    }
   })
 
   it('reads a page as an AI snapshot, clicks a ref, and streams frames to a viewer', async () => {
@@ -149,12 +203,12 @@ describe('SharedBrowser (real Chromium)', () => {
   it('searches address-bar text that is not an address', async () => {
     const page = await browser.page()
     let requested = ''
-    await page.route('https://duckduckgo.com/**', async (route) => {
+    await page.route('https://www.google.com/**', async (route) => {
       requested = route.request().url()
-      await route.fulfill({ body: '<title>search</title>', contentType: 'text/html' })
+      await route.fulfill({ body: `<title>search</title>${'<p>result</p>'.repeat(5)}`, contentType: 'text/html' })
     })
     await browser.handleViewerMessage(JSON.stringify({ type: 'navigate', url: 'hh' }))
-    expect(requested).toBe('https://duckduckgo.com/?q=hh')
+    expect(requested).toBe('https://www.google.com/search?q=hh')
     await page.unrouteAll()
   })
 

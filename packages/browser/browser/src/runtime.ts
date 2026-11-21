@@ -30,13 +30,45 @@ export interface BrowserLaunchOptions {
   readonly height: number
   /** Search URL for address-bar text that is not an address; `%s` is replaced by the encoded query. */
   readonly searchUrl: string
+  /** Engines tried in order when an engine answers with a challenge page. Defaults to none. */
+  readonly searchFallbackUrls?: readonly string[]
+  /** Drop automation tells (webdriver flag, HeadlessChrome UA). Defaults to true. */
+  readonly hideAutomation?: boolean
 }
 
+/** Default address-bar search: Google, like the harness's web_search. */
+export const DEFAULT_SEARCH_URL = 'https://www.google.com/search?q=%s'
+
+/** Engines tried when the search engine challenges the browser: Bing, then DuckDuckGo. */
+export const DEFAULT_SEARCH_FALLBACK_URLS: readonly string[] = ['https://www.bing.com/search?q=%s', 'https://duckduckgo.com/?q=%s']
+
+/** Wording of human-verification interstitials (Google, Bing, Cloudflare). */
+const CHALLENGE_WORDING = new RegExp([
+  'our systems have detected unusual traffic',
+  'verify you are human',
+  'are you a robot',
+  'one last step',
+  'please solve the challenge',
+  'checking your browser',
+].join('|'), 'iu')
+
 /**
- * Default address-bar search. DuckDuckGo, like the harness's web_search: Google
- * answers this automated browser with an "unusual traffic" challenge page.
+ * Whether a loaded page is a bot challenge instead of the content asked for:
+ * Google's "unusual traffic" interstitial, Bing's and Cloudflare's
+ * human-verification pages, or a page that is mostly a CAPTCHA widget.
+ * Challenge pages are short; the wording and widget checks only count on a
+ * short page, so a results page whose snippets quote that wording is not
+ * mistaken for one.
+ * @param url - the page URL after navigation.
+ * @param text - the page's visible text (a prefix is enough).
+ * @param captchaFrame - whether a reCAPTCHA/hCaptcha/Turnstile frame is present.
  */
-export const DEFAULT_SEARCH_URL = 'https://duckduckgo.com/?q=%s'
+export function isChallengePage(url: string, text: string, captchaFrame: boolean): boolean {
+  if (/^https?:\/\/(?:www\.)?google\.[a-z.]+\/sorry\//iu.test(url)) return true
+  if (text.trim().length >= 1500) return false
+  if (captchaFrame) return true
+  return CHALLENGE_WORDING.test(text)
+}
 
 /** The Playwright channel that means "the harness's own Chromium build". */
 export const BUNDLED_CHANNEL = 'chromium'
@@ -178,6 +210,16 @@ export function resolveAddress(input: string, searchUrl: string): string {
   return searchUrl.replace('%s', encodeURIComponent(trimmed))
 }
 
+/**
+ * The search query address-bar input stands for, or undefined when it is an address.
+ * @param input - the raw address-bar text.
+ */
+export function searchQuery(input: string): string | undefined {
+  const marker = 'fathom-search:%s'
+  const resolved = resolveAddress(input, marker)
+  return resolved.startsWith('fathom-search:') ? decodeURIComponent(resolved.slice('fathom-search:'.length)) : undefined
+}
+
 /** One file the live view hands to a page's file chooser. */
 export interface ViewerFile {
   readonly name: string
@@ -204,6 +246,8 @@ export class SharedBrowser {
   private installing: Promise<void> | undefined
   /** Set while the closed profile is being written; launches wait for it. */
   private maintenance: Promise<unknown> | undefined
+  /** The browser's own user agent with the headless token removed, learned on the first headless launch. */
+  private userAgent: string | undefined
 
   constructor(private readonly options: BrowserLaunchOptions) {}
 
@@ -274,19 +318,43 @@ export class SharedBrowser {
     const headless = this.options.headless || (linux && !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY)
     // Chromium refuses to start its sandbox as root on Linux.
     const asRoot = linux && typeof process.getuid === 'function' && process.getuid() === 0
+    // Sites challenge browsers that announce automation. Playwright's default
+    // `--enable-automation` sets navigator.webdriver, and headless Chromium
+    // names itself `HeadlessChrome` in its user agent; a normal browser does
+    // neither. Google answers both with an "unusual traffic" page.
+    const hide = this.options.hideAutomation ?? true
     const context = await chromium.launchPersistentContext(this.options.profileDir, {
       ...this.options.executablePath !== undefined
         ? { executablePath: this.options.executablePath }
         : { channel: this.options.channel },
       headless,
       viewport: { width: this.options.width, height: this.options.height },
-      args: ['--no-first-run', '--no-default-browser-check', ...asRoot ? ['--no-sandbox'] : []],
+      args: [
+        '--no-first-run',
+        '--no-default-browser-check',
+        ...hide ? ['--disable-blink-features=AutomationControlled'] : [],
+        ...asRoot ? ['--no-sandbox'] : [],
+      ],
+      ...hide ? { ignoreDefaultArgs: ['--enable-automation'] } : {},
+      ...hide && headless && this.userAgent !== undefined ? { userAgent: this.userAgent } : {},
     }).catch((error: unknown) => {
       if (linux && error instanceof Error && /missing dependencies|error while loading shared libraries/iu.test(error.message)) {
         throw new Error(`the harness browser needs system libraries this Linux host lacks; run "sudo npx playwright install-deps chromium" once, then try again (${error.message.split('\n')[0] ?? ''})`, { cause: error })
       }
       throw error
     })
+    if (hide && headless && this.userAgent === undefined) {
+      // The real user agent is only known once the browser runs. Read it, and
+      // if it carries the headless token, relaunch once with that token
+      // replaced; the corrected string is reused for every later launch.
+      const probe = context.pages()[0] ?? await context.newPage()
+      const agent = await probe.evaluate(() => navigator.userAgent)
+      this.userAgent = agent.replace('HeadlessChrome/', 'Chrome/')
+      if (this.userAgent !== agent) {
+        await context.close()
+        return this.launchOnce()
+      }
+    }
     this.context = context
     context.setDefaultTimeout(ACTION_TIMEOUT_MS)
     context.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS)
@@ -553,7 +621,7 @@ export class SharedBrowser {
     }
     this.activePage = page
     this.refreshScreencast()
-    if (url !== undefined && url.trim().length > 0) await page.goto(this.address(url), { waitUntil: 'domcontentloaded' })
+    if (url !== undefined && url.trim().length > 0) await this.open(page, url, { waitUntil: 'domcontentloaded' })
     this.publishTabs()
     return state.id
   }
@@ -589,8 +657,34 @@ export class SharedBrowser {
     if (target === 'back') await page.goBack(options)
     else if (target === 'forward') await page.goForward(options)
     else if (target === 'reload') await page.reload(options)
-    else await page.goto(this.address(target), options)
+    else await this.open(page, target, options)
     this.publishTabs()
+  }
+
+  /**
+   * Load address-bar input. A search goes to the configured engine; when that
+   * engine answers with a bot challenge, the next fallback engine is tried
+   * (Google, then Bing, then DuckDuckGo by default). The last engine's page is
+   * kept even if it is a challenge, so the user can solve it in the live view.
+   */
+  private async open(page: Page, input: string, options: { waitUntil: 'domcontentloaded' }): Promise<void> {
+    const query = searchQuery(input)
+    if (query === undefined) {
+      await page.goto(this.address(input), options)
+      return
+    }
+    const engines = [this.options.searchUrl, ...this.options.searchFallbackUrls ?? []]
+    for (const [index, engine] of engines.entries()) {
+      await page.goto(engine.replace('%s', encodeURIComponent(query)), options)
+      if (index === engines.length - 1 || !await this.challenged(page)) return
+    }
+  }
+
+  /** Whether the page currently shows a bot challenge. */
+  private async challenged(page: Page): Promise<boolean> {
+    const text = await page.evaluate(() => (document.body as HTMLElement | null)?.innerText.slice(0, 4000) ?? '').catch(() => '')
+    const captchaFrame = page.frames().some(frame => /recaptcha|hcaptcha|challenges\.cloudflare\.com|turnstile/iu.test(frame.url()))
+    return isChallengePage(page.url(), text, captchaFrame)
   }
 
   /** Locator for an element ref from the latest snapshot. */
