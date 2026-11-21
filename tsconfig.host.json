@@ -245,6 +245,8 @@
     { "path": "./packages/browser/tool-browser" },
     { "path": "./packages/pentest/pentest-toolkit" },
     { "path": "./packages/pentest/tool-findings" },
+    { "path": "./packages/pentest/tool-engagement" },
+    { "path": "./packages/pentest/pentest-guard" },
     { "path": "./packages/spill/spill" },
     { "path": "./packages/spill/spill-local" },
     { "path": "./packages/spill/spill-policy" },

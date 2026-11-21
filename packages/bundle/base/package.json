@@ -97,6 +97,8 @@
     "@fathom/tool-fs": "workspace:^",
     "@fathom/tool-fs-search": "workspace:^",
     "@fathom/tool-findings": "workspace:^",
+    "@fathom/tool-engagement": "workspace:^",
+    "@fathom/pentest-guard": "workspace:^",
     "@fathom/tool-goal": "workspace:^",
     "@fathom/tool-jobs": "workspace:^",
     "@fathom/tool-pwsh": "workspace:^",

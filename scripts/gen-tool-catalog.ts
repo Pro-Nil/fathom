@@ -53,6 +53,8 @@ import TerminalSessionService from '@fathom/terminal'
 import * as ToolPty from '@fathom/tool-terminal'
 import * as ToolGoal from '@fathom/tool-goal'
 import * as ToolFindings from '@fathom/tool-findings'
+import * as ToolEngagement from '@fathom/tool-engagement'
+import * as PentestGuard from '@fathom/pentest-guard'
 import * as ToolSchedule from '@fathom/schedule'
 import Lsp from '@fathom/lsp'
 import * as ToolLsp from '@fathom/tool-lsp'
@@ -388,6 +390,32 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     note:
       'record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log.',
+  },
+  {
+    pkg: '@fathom/tool-engagement',
+    dir: 'tool-engagement',
+    source: 'packages/pentest/tool-engagement/src/index.ts',
+    requires: ['ctx.tools', 'ctx.agents', 'ctx.systemPrompt', 'a calling Agent with a session folder'],
+    writes: ['tool/call', 'the workspace asset graph, the session exploration graph and traffic/ records', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(AgentRegistry)
+      await ctx.plugin(ToolEngagement)
+    },
+    note:
+      'record_assets writes the workspace-shared .engagement/assets.json; explore and engagement_map use the per-session exploration.json; http_request records each exchange as traffic/T<n>.json in the session folder. None of it is event-sourced through the session log.',
+  },
+  {
+    pkg: '@fathom/pentest-guard',
+    dir: 'pentest-guard',
+    source: 'packages/pentest/pentest-guard/src/index.ts',
+    requires: ['ctx.tools', 'ctx.agents', 'ctx.systemPrompt', 'a calling Agent with a session folder'],
+    writes: ['tool/call', 'scope.json in the session folder', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(AgentRegistry)
+      await ctx.plugin(PentestGuard)
+    },
+    note:
+      'set_scope and show_scope manage the scope gate; the same plugin also gates shell, request and navigation calls on tools/pre-execute (scope, approval rules, noise governor) and frames suspected prompt injection on tools/post-execute.',
   },
   {
     pkg: '@fathom/schedule',
