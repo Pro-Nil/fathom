@@ -423,12 +423,21 @@ export interface BrowserRuntimeConfig {
   height?: number
   /** Serve the live view on the web server when one is mounted. Defaults to true. */
   liveView?: boolean
-  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to DuckDuckGo. */
+  /** Search URL for address-bar text that is not an address; `%s` is the encoded query. Defaults to Google. */
   searchUrl?: string
+  /** Engines tried in order when the search engine answers with a challenge. Defaults to Bing, then DuckDuckGo. */
+  searchFallbackUrls?: string[]
+  /**
+   * Drop the automation tells that make sites challenge the browser: Playwright's
+   * `--enable-automation` switch (`navigator.webdriver`), Blink's
+   * AutomationControlled feature, and the `HeadlessChrome` user-agent token in
+   * headless mode. Defaults to true.
+   */
+  hideAutomation?: boolean
 }
 ```
 
-Source: [`packages/browser/browser/src/index.ts:35`](../packages/browser/browser/src/index.ts)
+Source: [`packages/browser/browser/src/index.ts:45`](../packages/browser/browser/src/index.ts)
 
 <a id="fathomclient-connection"></a>
 
@@ -1439,6 +1448,77 @@ export interface Config {
 
 Source: [`packages/feedback/message-feedback/src/index.ts:49`](../packages/feedback/message-feedback/src/index.ts)
 
+<a id="fathompentest-guard"></a>
+
+## `@fathom/pentest-guard`
+
+Requires: `agents` · `tools` · `systemPrompt`
+
+```ts config-catalog
+/** Plugin configuration. */
+export interface Config {
+  /** Shell tools whose `command` argument is parsed (rules, scope, noise). */
+  shellTools?: string[]
+  /** Other tools whose string arguments are scanned for targets (scope gate + budget). */
+  networkTools?: string[]
+  /** Scope gate: blocks calls naming hosts outside the declared engagement scope. */
+  scope?: {
+    /** `deny` refuses out-of-scope calls, `ask` sends them to the user, `off` disables the gate. */
+    mode?: GateMode
+    /** Hosts always reachable (installs, updates). Replaces the default list when set. */
+    alwaysAllow?: string[]
+    /** Scope file name in the session folder. */
+    file?: string
+  }
+  /** Rule-based approval for high-impact shell commands. */
+  approval?: {
+    /** Rules evaluated before the defaults; set `useDefaults: false` to drop the defaults. */
+    rules?: ApprovalRule[]
+    /** Also apply the built-in rules (credential attacks, OS shells, DoS tooling). */
+    useDefaults?: boolean
+  }
+  /** Target noise governor: loud-flag lint and a per-host call budget. */
+  noise?: {
+    /** `warn` tells the model the fix, `deny` refuses loud scans, `off` disables the lint and budget. */
+    mode?: NoiseMode
+    /** Requests-per-second ceiling the lint treats as quiet. */
+    maxRate?: number
+    /** Network tool calls per host per minute before calls are spaced out; 0 disables. */
+    perHostPerMinute?: number
+    /** Longest the governor will hold one call, in milliseconds. */
+    maxDelayMs?: number
+  }
+  /** Untrusted-output framing for suspected prompt injection in target output. */
+  framing?: {
+    /** Fence and flag results that contain injection markers. */
+    enabled?: boolean
+    /** Tools whose output is target-controlled; `*` wildcards allowed. */
+    tools?: string[]
+  }
+}
+
+/** How the scope gate treats a call that names an out-of-scope target. */
+type GateMode = 'deny' | 'ask' | 'off'
+
+/** One approval rule. */
+export interface ApprovalRule {
+  /** `*`-wildcard over one normalized command segment, anchored at both ends. */
+  match: string
+  /** `allow` passes this gate, `ask` sends the call to the user, `deny` refuses it. */
+  action: RuleAction
+  /** Shown to the user (ask) or the model (deny). */
+  reason?: string
+}
+
+/** How the noise lint treats a loud scanner invocation. */
+type NoiseMode = 'warn' | 'deny' | 'off'
+
+/** What a matching rule does to the call. */
+export type RuleAction = 'allow' | 'ask' | 'deny'
+```
+
+Source: [`packages/pentest/pentest-guard/src/index.ts:44`](../packages/pentest/pentest-guard/src/index.ts)
+
 <a id="fathompentest-toolkit"></a>
 
 ## `@fathom/pentest-toolkit`
@@ -1453,7 +1533,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/pentest-toolkit/src/index.ts:41`](../packages/pentest/pentest-toolkit/src/index.ts)
+Source: [`packages/pentest/pentest-toolkit/src/index.ts:43`](../packages/pentest/pentest-toolkit/src/index.ts)
 
 <a id="fathompermission-presets"></a>
 
@@ -2601,6 +2681,26 @@ export interface Config {
 
 Source: [`packages/browser/tool-browser/src/index.ts:27`](../packages/browser/tool-browser/src/index.ts)
 
+<a id="fathomtool-engagement"></a>
+
+## `@fathom/tool-engagement`
+
+Requires: `agents` · `tools` · `systemPrompt`
+
+```ts config-catalog
+/** Plugin configuration. */
+export interface Config {
+  /** Default characters of response body returned inline by http_request. */
+  bodyPreviewChars?: number
+  /** Bytes of decoded response body kept on disk per exchange. */
+  maxStoreBytes?: number
+  /** Default request timeout. */
+  timeoutMs?: number
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts:30`](../packages/pentest/tool-engagement/src/index.ts)
+
 <a id="fathomtool-findings"></a>
 
 ## `@fathom/tool-findings`
@@ -2617,7 +2717,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/tool-findings/src/index.ts:66`](../packages/pentest/tool-findings/src/index.ts)
+Source: [`packages/pentest/tool-findings/src/index.ts:68`](../packages/pentest/tool-findings/src/index.ts)
 
 <a id="fathomtool-fs"></a>
 

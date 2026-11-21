@@ -29,6 +29,8 @@ This table connects model-visible tool names to the plugin package and service s
 | `@fathom/tool-terminal` | `terminal_close`, `terminal_list`, `terminal_open`, `terminal_read`, `terminal_send`, `terminal_signal` | `ctx.tools`, `ctx.terminals`, `ctx.systemPrompt`, `ctx.jobs at call time for run_in_background` | `tool/call`, `tool/result` | - | The six terminal tools are opt-in and complement one-shot shell/filesystem tools. `terminal_send(run_in_background: true)` registers with `ctx.jobs`; TUI, named key sequences, BEL, resize, auto-start, and cross-agent sharing are absent from the schema. |
 | `@fathom/tool-goal` | `create_goal`, `get_goal`, `update_goal` | `ctx.tools`, `ctx.agents`, `ctx.goals`, `ctx.systemPrompt`, `a calling Agent in an authorized open turn` | `tool/call`, `goal/change for mutations`, `tool/result` | - | create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds. |
 | `@fathom/tool-findings` | `list_findings`, `record_finding`, `update_finding`, `write_report` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the findings.json store and report files in the session folder`, `tool/result` | - | record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log. |
+| `@fathom/tool-engagement` | `engagement_map`, `explore`, `get_traffic`, `http_request`, `list_traffic`, `record_assets` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the workspace asset graph, the session exploration graph and traffic/ records`, `tool/result` | - | record_assets writes the workspace-shared .engagement/assets.json; explore and engagement_map use the per-session exploration.json; http_request records each exchange as traffic/T<n>.json in the session folder. None of it is event-sourced through the session log. |
+| `@fathom/pentest-guard` | `set_scope`, `show_scope` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `scope.json in the session folder`, `tool/result` | - | set_scope and show_scope manage the scope gate; the same plugin also gates shell, request and navigation calls on tools/pre-execute (scope, approval rules, noise governor) and frames suspected prompt injection on tools/post-execute. |
 | `@fathom/schedule` | `schedule_create`, `schedule_delete`, `schedule_list` | `ctx.tools`, `ctx.sessions`, `Session persistence`, `a future live root Agent` | `tool/call`, `schedule/change create or delete`, `tool/result` | - | Registered only inside live root Agent scopes created after the opt-in Schedule plugin loads. Version 1 accepts after_seconds, explicit absolute at, and bounded fixed-rate every_seconds, and discloses session-local delivery; management reads and mutations require the shared Session persistence barrier. |
 | `@fathom/tool-lsp` | `lsp` | `ctx.tools`, `ctx.lsp`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | The lsp tool keeps provider selection and language-server subprocesses behind ctx.lsp, so its model-visible schema stays stable across providers. Requires a registered provider (e.g. `@fathom/lsp-stdio`) at runtime; without one, a query returns the structured `LSP_UNAVAILABLE` error rather than changing the schema. |
 | `@fathom/tool-ralph` | `ralph` | `ctx.tools`, `ctx.workflowEngine`, `ctx.subagents`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents every fresh round)` | `tool/call`, `tool/result`, `workflow and child session events during execution` | - | A fixed foreground workflow starts one fresh structured child per round; the model selects only the immutable objective and an optional round cap. |
@@ -1162,6 +1164,10 @@ Record one confirmed or suspected vulnerability finding with its evidence. Retur
             "items": {
               "type": "string"
             }
+          },
+          "traffic_id": {
+            "type": "string",
+            "description": "Id (T<n>) of an exchange recorded by http_request; its raw request and response are bound automatically."
           }
         },
         "required": [
@@ -1266,6 +1272,10 @@ Update an existing finding by id: change its status or fields, or append evidenc
             "items": {
               "type": "string"
             }
+          },
+          "traffic_id": {
+            "type": "string",
+            "description": "Id (T<n>) of an exchange recorded by http_request; its raw request and response are bound automatically."
           }
         },
         "required": [
@@ -1316,6 +1326,327 @@ Render the recorded findings into a report file in the session folder. Returns t
 Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
 
 record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log.
+
+<a id="fathomtool-engagement"></a>
+
+## `@fathom/tool-engagement`
+
+### `engagement_map`
+
+Show the engagement map: the asset tree with test coverage per asset, goals, open intents, ruled-out lines, done work, findings, and recent facts. Read it before choosing the next line of attack.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "all_assets": {
+      "type": "boolean",
+      "description": "Include assets other sessions found that this one never touched."
+    }
+  }
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+### `explore`
+
+Record the exploration graph. action=add creates a goal, intent (a line of attack), fact, finding, or hint, optionally under a parent node and anchored to assets. action=update changes a node's status (open, active, done, dead) with an outcome, or anchors more assets. Mark ruled-out intents dead with the reason so they are never retried.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "add",
+        "update"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "description": "Node id (N<n>) for update."
+    },
+    "kind": {
+      "type": "string",
+      "description": "Node kind for add.",
+      "enum": [
+        "goal",
+        "intent",
+        "fact",
+        "finding",
+        "hint"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "What the node says (required for add)."
+    },
+    "parent": {
+      "type": "string",
+      "description": "Parent node id for add."
+    },
+    "edge": {
+      "type": "string",
+      "description": "Edge from parent; defaults by kind.",
+      "enum": [
+        "spawns",
+        "derived_from",
+        "yields",
+        "proves"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "active",
+        "done",
+        "dead"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "description": "What a finished intent produced, or why it is dead."
+    },
+    "assets": {
+      "type": "array",
+      "description": "Asset ids (A<n>) or raw values to anchor.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "finding_id": {
+      "type": "string",
+      "description": "Findings-store id (F<n>) for a finding node."
+    }
+  },
+  "required": [
+    "action"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+### `get_traffic`
+
+Read one recorded exchange: the raw request and response, a slice of the body, or only body lines matching a regex.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Traffic id, e.g. T12."
+    },
+    "offset": {
+      "type": "integer",
+      "description": "Body character offset (default 0)."
+    },
+    "length": {
+      "type": "integer",
+      "description": "Body characters to return (default 4000)."
+    },
+    "grep": {
+      "type": "string",
+      "description": "Return only response-body lines matching this regex (case-insensitive)."
+    }
+  },
+  "required": [
+    "id"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+### `http_request`
+
+Send one HTTP(S) request and record the full exchange as evidence (id T<n> in the session's traffic/ folder). TLS certificates are not verified. Returns status, headers, and a body preview; use get_traffic for more of the body.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "description": "Default GET."
+    },
+    "headers": {
+      "type": "array",
+      "description": "Header lines, e.g. \"Cookie: a=b\".",
+      "items": {
+        "type": "string"
+      }
+    },
+    "body": {
+      "type": "string",
+      "description": "Raw request body."
+    },
+    "follow_redirects": {
+      "type": "integer",
+      "description": "Redirect hops to follow (default 0)."
+    },
+    "preview_chars": {
+      "type": "integer",
+      "description": "Body characters to return inline (default 2000)."
+    },
+    "timeout_ms": {
+      "type": "integer"
+    },
+    "note": {
+      "type": "string",
+      "description": "What this request tests (kept with the record)."
+    }
+  },
+  "required": [
+    "url"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+### `list_traffic`
+
+List recorded HTTP exchanges (newest first), optionally filtered by URL substring, status, or method.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "url_contains": {
+      "type": "string"
+    },
+    "status": {
+      "type": "integer"
+    },
+    "method": {
+      "type": "string"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Default 30."
+    }
+  }
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+### `record_assets`
+
+Add discovered assets to the shared asset graph. Give raw observations — URLs, host:port, hostnames, IPs; kind, parent links (endpoint → service → host → root domain) and de-duplication are computed. Returns asset ids.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "assets": {
+      "type": "array",
+      "description": "Observations to add.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "URL, host:port[/udp], hostname, or IPv4."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Only to override inference.",
+            "enum": [
+              "domain",
+              "subdomain",
+              "ip",
+              "service",
+              "endpoint"
+            ]
+          },
+          "attrs": {
+            "type": "array",
+            "description": "Facts as key=value, e.g. tech=nginx 1.18, title=Login.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+    }
+  },
+  "required": [
+    "assets"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-engagement/src/index.ts`](../packages/pentest/tool-engagement/src/index.ts)
+
+record_assets writes the workspace-shared .engagement/assets.json; explore and engagement_map use the per-session exploration.json; http_request records each exchange as traffic/T<n>.json in the session folder. None of it is event-sourced through the session log.
+
+<a id="fathompentest-guard"></a>
+
+## `@fathom/pentest-guard`
+
+### `set_scope`
+
+Declare (or replace) the engagement scope: the targets the user authorized and any exclusions. After this, commands and requests naming hosts outside scope are blocked. Widening an existing scope asks the user.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "include": {
+      "type": "array",
+      "description": "In-scope hosts, *.wildcard domains, IPv4s, CIDRs, or URLs.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclude": {
+      "type": "array",
+      "description": "Explicitly out-of-scope entries; they win over include.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Rules of engagement: forbidden techniques, hours, rate limits."
+    }
+  },
+  "required": [
+    "include"
+  ]
+}
+```
+
+Source: [`packages/pentest/pentest-guard/src/index.ts`](../packages/pentest/pentest-guard/src/index.ts)
+
+### `show_scope`
+
+Show the declared engagement scope and rules of engagement.
+
+```json
+{
+  "type": "object",
+  "properties": {}
+}
+```
+
+Source: [`packages/pentest/pentest-guard/src/index.ts`](../packages/pentest/pentest-guard/src/index.ts)
+
+set_scope and show_scope manage the scope gate; the same plugin also gates shell, request and navigation calls on tools/pre-execute (scope, approval rules, noise governor) and frames suspected prompt injection on tools/post-execute.
 
 <a id="fathomschedule"></a>
 
