@@ -6026,6 +6026,9 @@ importers:
       '@fathom/invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@fathom/llm':
+        specifier: workspace:^
+        version: link:../../llm/llm
       '@fathom/system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt

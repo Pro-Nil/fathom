@@ -45,7 +45,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@fathom/tool-workflow` | `workflow` | `ctx.tools`, `ctx.workflowEngine`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents the script children)` | `tool/call`, `tool/result` | - | - |
 | `@fathom/tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
 | `@fathom/tool-browser` | `browser_computer`, `browser_console`, `browser_find`, `browser_form_input`, `browser_get_page_text`, `browser_javascript`, `browser_navigate`, `browser_network`, `browser_read_page`, `browser_resize`, `browser_tabs` | `ctx.tools`, `ctx.browser`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | The browser_* tools act on one shared browser that the user watches and can take over in the Web client Browser pane. |
-| `@fathom/pentest-toolkit` | `pentest_tools` | `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) how to install them (WSL or native Windows on a Windows host; native packages on a Linux host). |
+| `@fathom/pentest-toolkit` | `install_tool`, `pentest_tools` | `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | pentest_tools installs missing tools itself after asking the user once (through ctx.userQuestions) how to install them (WSL or native Windows on a Windows host; native packages on a Linux host). |
 
 <a id="fathomtool-ask-user"></a>
 
@@ -3194,6 +3194,50 @@ The browser_* tools act on one shared browser that the user watches and can take
 <a id="fathompentest-toolkit"></a>
 
 ## `@fathom/pentest-toolkit`
+
+### `install_tool`
+
+Install a tool that is not in the core toolkit, after the user approves. Give the package and its manager (apt for Ubuntu packages, pip for Python tools, go for Go modules such as github.com/lc/gau/v2/cmd/gau), the commands it provides, and why you need it. Uses the saved installation type (WSL, Windows or Linux) and makes the commands callable by name.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "manager": {
+      "type": "string",
+      "description": "apt | pip | go",
+      "enum": [
+        "apt",
+        "pip",
+        "go"
+      ]
+    },
+    "package": {
+      "type": "string",
+      "description": "Package name, or Go module path."
+    },
+    "commands": {
+      "type": "array",
+      "description": "Commands the package provides, e.g. [\"aircrack-ng\", \"airodump-ng\"].",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reason": {
+      "type": "string",
+      "description": "One sentence: what you need it for. Shown to the user."
+    }
+  },
+  "required": [
+    "manager",
+    "package",
+    "commands",
+    "reason"
+  ]
+}
+```
+
+Source: [`packages/pentest/pentest-toolkit/src/index.ts`](../packages/pentest/pentest-toolkit/src/index.ts)
 
 ### `pentest_tools`
 

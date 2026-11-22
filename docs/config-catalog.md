@@ -437,7 +437,7 @@ export interface BrowserRuntimeConfig {
 }
 ```
 
-Source: [`packages/browser/browser/src/index.ts:45`](../packages/browser/browser/src/index.ts)
+Source: [`packages/browser/browser/src/index.ts:46`](../packages/browser/browser/src/index.ts)
 
 <a id="fathomclient-connection"></a>
 
@@ -1533,7 +1533,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/pentest-toolkit/src/index.ts:43`](../packages/pentest/pentest-toolkit/src/index.ts)
+Source: [`packages/pentest/pentest-toolkit/src/index.ts:48`](../packages/pentest/pentest-toolkit/src/index.ts)
 
 <a id="fathompermission-presets"></a>
 
