@@ -928,6 +928,7 @@ flowchart TD
   pkg_mcp_client --> pkg_tools
   pkg_bounty_skills --> pkg_skill
   pkg_bounty_skills --> pkg_skill_filesystem
+  pkg_pentest_guard --> pkg_agent
   pkg_pentest_guard --> pkg_llm
   pkg_pentest_guard --> pkg_session
   pkg_pentest_guard --> pkg_session_folders
@@ -1677,7 +1678,7 @@ flowchart TD
 | [`tool-lsp`](../packages/lsp/tool-lsp) | `lsp` | [`invariants`](../packages/runtime-diagnostics/invariants), [`llm`](../packages/llm/llm), [`lsp`](../packages/lsp/lsp), [`system-prompt`](../packages/core/system-prompt), [`timeout`](../packages/util/timeout), [`tools`](../packages/core/tools) |
 | [`mcp-client`](../packages/mcp/mcp-client) | `mcp` | [`attachment`](../packages/attachment/attachment), [`invariants`](../packages/runtime-diagnostics/invariants), [`llm`](../packages/llm/llm), [`subprocess`](../packages/subprocess/subprocess), [`timeout`](../packages/util/timeout), [`tools`](../packages/core/tools) |
 | [`bounty-skills`](../packages/pentest/bounty-skills) | `pentest` | [`skill`](../packages/skill/skill), [`skill-filesystem`](../packages/skill/skill-filesystem) |
-| [`pentest-guard`](../packages/pentest/pentest-guard) | `pentest` | [`llm`](../packages/llm/llm), [`session`](../packages/core/session), [`session-folders`](../packages/workspace/session-folders), [`system-prompt`](../packages/core/system-prompt), [`tools`](../packages/core/tools), [`user-questions`](../packages/interaction/user-questions) |
+| [`pentest-guard`](../packages/pentest/pentest-guard) | `pentest` | [`agent`](../packages/core/agent), [`llm`](../packages/llm/llm), [`session`](../packages/core/session), [`session-folders`](../packages/workspace/session-folders), [`system-prompt`](../packages/core/system-prompt), [`tools`](../packages/core/tools), [`user-questions`](../packages/interaction/user-questions) |
 | [`pentest-toolkit`](../packages/pentest/pentest-toolkit) | `pentest` | [`agent`](../packages/core/agent), [`home-paths`](../packages/util/home-paths), [`invariants`](../packages/runtime-diagnostics/invariants), [`llm`](../packages/llm/llm), [`system-prompt`](../packages/core/system-prompt), [`tools`](../packages/core/tools), [`user-questions`](../packages/interaction/user-questions) |
 | [`tool-engagement`](../packages/pentest/tool-engagement) | `pentest` | [`llm`](../packages/llm/llm), [`session`](../packages/core/session), [`session-folders`](../packages/workspace/session-folders), [`system-prompt`](../packages/core/system-prompt), [`tools`](../packages/core/tools) |
 | [`tool-findings`](../packages/pentest/tool-findings) | `pentest` | [`llm`](../packages/llm/llm), [`session`](../packages/core/session), [`session-folders`](../packages/workspace/session-folders), [`session-projection`](../packages/session/session-projection), [`system-prompt`](../packages/core/system-prompt), [`tools`](../packages/core/tools) |
