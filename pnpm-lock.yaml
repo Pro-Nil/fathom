@@ -6011,6 +6011,9 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
+      '@fathom/agent':
+        specifier: workspace:^
+        version: link:../../core/agent
       '@fathom/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
