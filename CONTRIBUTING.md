@@ -1,21 +1,22 @@
 # Contributing
 
-Thank you for your interest in contributing to Fathom!
+Thanks for your interest in Fathom.
 
-We deeply believe in the power of open source communities, and that belief has shaped this project from the very beginning.
+## Reporting bugs and requesting features
 
-Fathom is still at an early stage and under active development. We are sorry that we cannot accept external pull requests at the moment. However, contributing code to this repository is far from the only way to help. There are many other ways to get involved:
+Open an [issue](https://github.com/Pro-Nil/fathom/issues) using the bug or feature template. For bugs, include your OS, Node.js version, how you run Fathom (web or desktop app), the model provider, and the steps to reproduce. **Never paste API keys, session logs from real engagements, or target details you are not allowed to share.**
 
-- Identify and report issues or bugs in GitHub Discussions:
-  - Upvote discussions that you would like to bring to the team's attention. We are a very small team and may not be able to reply to every post, but we monitor them and consider them when allocating resources.
-- Contribute to the ecosystem:
-  - Create a plugin that excites you and share it with others:
-    - Associate your GitHub project with the `fathom-plugin` topic to help others discover your plugin.
-  - Write blog posts and how-to guides about Fathom.
-  - Answer questions and help other members of the community.
+Security problems in Fathom itself (for example a scope-gate bypass or a way for target output to make the agent act) should not be described in a public issue. Open an issue that only says you have a security report, with no details, and a private channel will be arranged.
 
-Fathom is designed to be deeply customizable. We do not believe that packages in the official repository are inherently more important than packages created by the community. You may consider this repository an idea, an official showcase, and a source of inspiration, but not a mandate from us.
+## Pull requests
 
-We have already seen exciting projects emerge from the community, and we hope to see the ecosystem continue to grow in its own directions.
+For anything beyond a small fix, open an issue first so the approach can be agreed before you write code.
 
-Into the unknown.
+1. Set up a checkout with [docs/development.md](docs/development.md).
+2. Read [docs/architecture.md](docs/architecture.md) before changing anything under `packages/`, and follow the rules in [AGENTS.md](AGENTS.md).
+3. Add or update tests next to the code you change ([docs/testing.md](docs/testing.md)) and update the package README when behavior changes.
+4. Keep each commit to one logical change with a clear message.
+
+## Plugins
+
+Fathom is built so that you rarely need to change this repository: almost everything is a plugin you can add beside the built-in ones. See [your first plugin](docs/plugins/first-plugin.md). If you publish one, tag the GitHub project with the `fathom-plugin` topic so others can find it.
