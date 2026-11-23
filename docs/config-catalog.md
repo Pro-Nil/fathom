@@ -1517,7 +1517,7 @@ type NoiseMode = 'warn' | 'deny' | 'off'
 export type RuleAction = 'allow' | 'ask' | 'deny'
 ```
 
-Source: [`packages/pentest/pentest-guard/src/index.ts:44`](../packages/pentest/pentest-guard/src/index.ts)
+Source: [`packages/pentest/pentest-guard/src/index.ts:45`](../packages/pentest/pentest-guard/src/index.ts)
 
 <a id="fathompentest-toolkit"></a>
 

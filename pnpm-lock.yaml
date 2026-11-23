@@ -6007,6 +6007,9 @@ importers:
       '@fathom/tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@fathom/user-questions':
+        specifier: workspace:^
+        version: link:../../interaction/user-questions
 
   packages/pentest/pentest-toolkit:
     dependencies:

@@ -1600,7 +1600,7 @@ record_assets writes the workspace-shared .engagement/assets.json; explore and e
 
 ### `set_scope`
 
-Declare (or replace) the engagement scope: the targets the user authorized and any exclusions. After this, commands and requests naming hosts outside scope are blocked. Widening an existing scope asks the user.
+Declare the engagement scope, or add to it: the targets the user authorized and any exclusions. Entries are ADDED to an existing scope (pass only the new hosts); set replace=true only when the user gives a new scope. After this, commands and requests naming hosts outside scope are blocked. Adding to an existing scope asks the user.
 
 ```json
 {
@@ -1623,6 +1623,10 @@ Declare (or replace) the engagement scope: the targets the user authorized and a
     "notes": {
       "type": "string",
       "description": "Rules of engagement: forbidden techniques, hours, rate limits."
+    },
+    "replace": {
+      "type": "boolean",
+      "description": "Replace the whole scope instead of adding to it (only when the user gives a new scope)."
     }
   },
   "required": [
