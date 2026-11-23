@@ -28,7 +28,7 @@ This table connects model-visible tool names to the plugin package and service s
 | `@fathom/tool-fs-search` | `glob`, `grep` | `ctx.tools`, `ctx.subprocess`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | glob and grep are unconditional discovery tools that spawn the packaged ripgrep binary (`@vscode/ripgrep`) through ctx.subprocess as ordinary foreground calls (never background jobs) — no host `rg` install and no shell layer. The catalog uses `sampleOverCapGlobResults: true`; deployments must choose that behavior explicitly. Capped results save the complete formatted list through the optional ctx.spillStore backend; returned locators are follow-up-readable/searchable when the backend exposes local paths in co-located deployments. |
 | `@fathom/tool-terminal` | `terminal_close`, `terminal_list`, `terminal_open`, `terminal_read`, `terminal_send`, `terminal_signal` | `ctx.tools`, `ctx.terminals`, `ctx.systemPrompt`, `ctx.jobs at call time for run_in_background` | `tool/call`, `tool/result` | - | The six terminal tools are opt-in and complement one-shot shell/filesystem tools. `terminal_send(run_in_background: true)` registers with `ctx.jobs`; TUI, named key sequences, BEL, resize, auto-start, and cross-agent sharing are absent from the schema. |
 | `@fathom/tool-goal` | `create_goal`, `get_goal`, `update_goal` | `ctx.tools`, `ctx.agents`, `ctx.goals`, `ctx.systemPrompt`, `a calling Agent in an authorized open turn` | `tool/call`, `goal/change for mutations`, `tool/result` | - | create, edit, pause, and resume require direct-human root authority; complete and blocked also accept the exact current goal round. The default blocked lower bound is three admitted rounds. |
-| `@fathom/tool-findings` | `list_findings`, `record_finding`, `update_finding`, `write_report` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the findings.json store and report files in the session folder`, `tool/result` | - | record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log. |
+| `@fathom/tool-findings` | `list_findings`, `record_finding`, `record_validation`, `update_finding`, `validation_brief`, `write_report` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the findings.json store and report files in the session folder`, `tool/result` | - | record_finding, update_finding, list_findings and write_report persist a per-session findings store as a plain file in the session folder; the store is not event-sourced through the session log. |
 | `@fathom/tool-engagement` | `engagement_map`, `explore`, `get_traffic`, `http_request`, `list_traffic`, `record_assets` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `the workspace asset graph, the session exploration graph and traffic/ records`, `tool/result` | - | record_assets writes the workspace-shared .engagement/assets.json; explore and engagement_map use the per-session exploration.json; http_request records each exchange as traffic/T<n>.json in the session folder. None of it is event-sourced through the session log. |
 | `@fathom/pentest-guard` | `set_scope`, `show_scope` | `ctx.tools`, `ctx.agents`, `ctx.systemPrompt`, `a calling Agent with a session folder` | `tool/call`, `scope.json in the session folder`, `tool/result` | - | set_scope and show_scope manage the scope gate; the same plugin also gates shell, request and navigation calls on tools/pre-execute (scope, approval rules, noise governor) and frames suspected prompt injection on tools/post-execute. |
 | `@fathom/schedule` | `schedule_create`, `schedule_delete`, `schedule_list` | `ctx.tools`, `ctx.sessions`, `Session persistence`, `a future live root Agent` | `tool/call`, `schedule/change create or delete`, `tool/result` | - | Registered only inside live root Agent scopes created after the opt-in Schedule plugin loads. Version 1 accepts after_seconds, explicit absolute at, and bounded fixed-rate every_seconds, and discloses session-local delivery; management reads and mutations require the shared Session persistence barrier. |
@@ -1190,6 +1190,55 @@ Record one confirmed or suspected vulnerability finding with its evidence. Retur
 
 Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
 
+### `record_validation`
+
+Record an independent validation verdict for a finding (validators only: the session that found the finding is refused). reproduced needs what you observed and, for HTTP, traffic_ids; not-reproduced needs every attempt you made; inconclusive needs what blocked you.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The finding id, e.g. F1."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "reproduced",
+        "not-reproduced",
+        "inconclusive"
+      ]
+    },
+    "observed": {
+      "type": "string",
+      "description": "What you saw when you ran it."
+    },
+    "attempts": {
+      "type": "string",
+      "description": "Every attempt, one per line: what you sent and what came back."
+    },
+    "unexpected": {
+      "type": "string",
+      "description": "Any unexpected behaviour you noticed, even if unrelated."
+    },
+    "traffic_ids": {
+      "type": "array",
+      "description": "http_request exchanges behind your verdict.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "verdict"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
 ### `update_finding`
 
 Update an existing finding by id: change its status or fields, or append evidence. Omitted fields are kept; evidence is added, never removed.
@@ -1290,6 +1339,27 @@ Update an existing finding by id: change its status or fields, or append evidenc
           "summary"
         ]
       }
+    }
+  },
+  "required": [
+    "id"
+  ]
+}
+```
+
+Source: [`packages/pentest/tool-findings/src/index.ts`](../packages/pentest/tool-findings/src/index.ts)
+
+### `validation_brief`
+
+Build the blind validation task for a finding: its claims and steps only, plus the rules a validator follows. Give the returned brief, unchanged and without your own notes, to a fresh subagent.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The finding id, e.g. F1."
     }
   },
   "required": [
@@ -1613,7 +1683,7 @@ record_assets writes the workspace-shared .engagement/assets.json; explore and e
 
 ### `set_scope`
 
-Declare the engagement scope, or add to it: the targets the user authorized and any exclusions. Entries are ADDED to an existing scope (pass only the new hosts); set replace=true only when the user gives a new scope. After this, commands and requests naming hosts outside scope are blocked. Adding to an existing scope asks the user.
+Declare the engagement scope, or add to it: the targets the user authorized, exclusions, rules, behaviour the user says is intended (not a vulnerability), and functionality not to test. Entries are ADDED to an existing scope (pass only what is new); set replace=true only when the user gives a new scope. After this, commands and requests naming hosts outside scope are blocked. Adding hosts to an existing scope asks the user.
 
 ```json
 {
@@ -1621,7 +1691,7 @@ Declare the engagement scope, or add to it: the targets the user authorized and 
   "properties": {
     "include": {
       "type": "array",
-      "description": "In-scope hosts, *.wildcard domains, IPv4s, CIDRs, or URLs.",
+      "description": "In-scope hosts, *.wildcard domains, IPv4s, CIDRs, or URLs (required for the first declaration).",
       "items": {
         "type": "string"
       }
@@ -1637,14 +1707,25 @@ Declare the engagement scope, or add to it: the targets the user authorized and 
       "type": "string",
       "description": "Rules of engagement: forbidden techniques, hours, rate limits."
     },
+    "intended": {
+      "type": "array",
+      "description": "Behaviour that is by design, so not a finding by itself (e.g. \"user profiles are public\", \"admins can impersonate users\").",
+      "items": {
+        "type": "string"
+      }
+    },
+    "do_not_test": {
+      "type": "array",
+      "description": "Functionality the user says not to test (e.g. \"payment checkout\", \"account deletion\").",
+      "items": {
+        "type": "string"
+      }
+    },
     "replace": {
       "type": "boolean",
       "description": "Replace the whole scope instead of adding to it (only when the user gives a new scope)."
     }
-  },
-  "required": [
-    "include"
-  ]
+  }
 }
 ```
 
@@ -1652,7 +1733,7 @@ Source: [`packages/pentest/pentest-guard/src/index.ts`](../packages/pentest/pent
 
 ### `show_scope`
 
-Show the declared engagement scope and rules of engagement.
+Show the declared engagement scope, rules of engagement, intended behaviour and do-not-test notes.
 
 ```json
 {

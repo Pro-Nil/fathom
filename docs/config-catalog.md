@@ -2733,7 +2733,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/tool-findings/src/index.ts:70`](../packages/pentest/tool-findings/src/index.ts)
+Source: [`packages/pentest/tool-findings/src/index.ts:83`](../packages/pentest/tool-findings/src/index.ts)
 
 <a id="fathomtool-fs"></a>
 
