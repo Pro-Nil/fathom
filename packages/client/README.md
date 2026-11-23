@@ -42,6 +42,6 @@ The browser side of the fathom web GUI: shell boot, browser-host communication, 
 | [`ui-settings-models/`](ui-settings-models/README.md) | Provides model-provider configuration and provider onboarding. |
 | [`ui-settings-plugin-inventory/`](ui-settings-plugin-inventory/README.md) | Contributes the read-only Host Loader inventory tab to Plugins settings. |
 
-Each child reference owns its contract and detailed behavior. The [slot system standard](../../.agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md) and [web client architecture note](../../.agents/notes/implemented/architecture/2026-07-19-gui-web-client-architecture.md) own the cross-package composition and loading decisions.
+Each child reference owns its contract and detailed behavior. The slot system standard and web client architecture note own the cross-package composition and loading decisions.
 
-The subsystem reference is [client-modules.md](../../docs/subsystems/client-modules.md); the [slot system standard](../../.agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md) is the definitive slot model, and the [web client architecture note](../../.agents/notes/implemented/architecture/2026-07-19-gui-web-client-architecture.md) owns the loading chain and object layer.
+The subsystem reference is [client-modules.md](../../docs/subsystems/client-modules.md); the slot system standard is the definitive slot model, and the web client architecture note owns the loading chain and object layer.

@@ -1,6 +1,6 @@
 # Configure models
 
-This guide assumes you started the Web UI through the [root README](../../../README.md#run). Model changes take effect on the next request without restarting the server.
+This guide assumes you started the Web UI through the [root README](../../README.md#quick-start). Model changes take effect on the next request without restarting the server.
 
 ## Where keys live
 
@@ -18,7 +18,7 @@ Providers with native authentication need their native credentials instead. Bedr
 
 Choose **Add a custom provider** for a company gateway, self-hosted server, or provider absent from the installed catalog. Supply a lowercase Provider ID, base URL, API protocol, credential, and at least one model.
 
-![The custom provider form: Provider ID, display name, base URL, API protocol, and API key](providers-custom-form.png)
+![The custom provider form: Provider ID, display name, base URL, API protocol, and API key](../images/providers-custom-form.png)
 
 The Provider ID is permanent because requests, saved sessions, model defaults, and credential references use it. To rename a provider, add a new provider and delete the old one. The display name, base URL, protocol, credential, and models remain editable.
 
@@ -109,7 +109,7 @@ What neither sets keeps the installed catalog's value for that model, and what t
 
 Each switch belongs to the protocols that declare it, so a switch valid on one `api` may be refused on another — the message names what that protocol does offer. Like `input` above, a switch states a claim about your endpoint rather than checking it: setting one your gateway does not actually need simply sends a different request.
 
-Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `fathom-llm-pi-ai` configuration reference](../../config-catalog.md#fathomllm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
+Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `fathom-llm-pi-ai` configuration reference](../config-catalog.md#fathomllm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
 
 ## Select a model
 
@@ -130,4 +130,4 @@ If a saved default names a provider that was deleted, the composer displays **Se
 
 ## Advanced configuration
 
-The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`fathom-llm-pi-ai`](../../config-catalog.md#fathomllm-pi-ai) is the provider section this page configures. The [`fathom-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`fathom-llm-acme`](../../../packages/llm/llm-acme/README.md) references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.
+The generated [plugin configuration catalog](../config-catalog.md) lists every supported field and default for every plugin; [`fathom-llm-pi-ai`](../config-catalog.md#fathomllm-pi-ai) is the provider section this page configures. The [`fathom-llm-pi-ai`](../../packages/llm/llm-pi-ai/README.md) and `fathom-llm-acme` references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.

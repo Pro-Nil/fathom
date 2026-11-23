@@ -141,12 +141,7 @@ The first argument lists provider routes handled by the adapter. `GenerateOption
 
 ## Reference implementations
 
-The repository contains complete implementations:
-
-- `packages/llm/llm-acme/` — provider API adapter using the OpenAI-compatible format
-- `packages/llm/llm-pi-ai/` — Pi AI adapter using a different API format
-
-Compare the two shipped adapters to see the same harness contract implemented over different provider SDKs.
+The repository ships one complete implementation: `packages/llm/llm-pi-ai/`, which adapts the pi-ai library (OpenAI, Anthropic, Google, OpenAI-compatible and other protocols) to the harness contract. Read it alongside this guide.
 
 ## Error handling
 

@@ -97,8 +97,8 @@ A real agent is this composition plus more plugins: an LLM adapter, the agent lo
 
 Where to go next:
 
-- [Build a tool](../user/develop/basic/tool.md) — more of `defineTool`, including presentation and richer schemas.
-- [Three-layer capability design](../user/develop/practice/index.md) — how the harness structures replaceable capabilities.
+- [Build a tool](../plugins/tool.md) — more of `defineTool`, including presentation and richer schemas.
+- [Three-layer capability design](../plugins/capability-design.md) — how the harness structures replaceable capabilities.
 - The generated `cordis-surface` regions on the [subsystem pages](../subsystems/core.md) — everything you can inject and listen to, each on its owning page.
 - [Architecture](../architecture.md) — the system map these plugins live in.
 

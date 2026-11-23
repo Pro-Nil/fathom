@@ -13,7 +13,7 @@ authors = [{ name = "Fathom contributors" }]
 
 [project.urls]
 Homepage = "https://github.com/Pro-Nil/fathom"
-Documentation = "https://github.com/Pro-Nil/fathom/blob/master/python/sdk-runtime/README.md"
+Documentation = "https://github.com/Pro-Nil/fathom/blob/main/python/sdk-runtime/README.md"
 Issues = "https://github.com/Pro-Nil/fathom/issues"
 Source = "https://github.com/Pro-Nil/fathom"
 

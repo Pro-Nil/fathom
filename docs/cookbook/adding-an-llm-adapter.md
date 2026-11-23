@@ -34,7 +34,7 @@ Provider-specific thinking-mode toggles remain in the adapter's Config. Exact mo
 
 ## Implementation structure
 
-Keep wire types, request serialization, transport parsing, chunk translation, and the adapter class as separate responsibilities; [`llm-acme`](../../packages/llm/llm-acme/README.md) is the reference layout.
+Keep wire types, request serialization, transport parsing, chunk translation, and the adapter class as separate responsibilities; `llm-acme` is the reference layout.
 
 ## Verification
 

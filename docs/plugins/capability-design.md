@@ -1,6 +1,6 @@
 # Three-role capability design
 
-This page has two parts: a concept reference for the three-role capability pattern, followed by an advanced tutorial that builds one capability. Complete the [basic plugin path](../basic/index.md) and [services tutorial](../framework/service.md) first.
+This page has two parts: a concept reference for the three-role capability pattern, followed by an advanced tutorial that builds one capability. Complete the [basic plugin path](first-plugin.md) and [services tutorial](service.md) first.
 
 ## Concept reference
 
@@ -51,7 +51,7 @@ The Service Definition and tool remain unchanged while the provider changes.
 - The Consumer depends on the Service Definition.
 - The Service Provider and Consumer **do not depend on each other**.
 
-The [capability-seam reference](../../../capability-seams.md) owns the current built-in families and package links.
+The [capability-seam reference](../capability-seams.md) owns the current built-in families and package links.
 
 ## Tutorial: develop a three-role capability
 
@@ -150,4 +150,4 @@ export function apply(ctx: Context) {
 
 ## Next steps
 
-- [LLM adapter](./llm-adapter.md) — implement an LLM provider
+- [LLM adapter](llm-adapter.md) — implement an LLM provider

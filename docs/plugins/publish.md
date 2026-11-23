@@ -1,8 +1,8 @@
 # Package and install a plugin
 
-The previous tutorials loaded a local plugin through a `--patch` overlay. This tutorial packages it as an installable **bundle**, installs it into a **profile** with `fathom plugin add`, and explains the layer order that determines the composed configuration. It assumes the `fathom` CLI is installed. Complete [plugin configuration](./config.md) first.
+The previous tutorials loaded a local plugin through a `--patch` overlay. This tutorial packages it as an installable **bundle**, installs it into a **profile** with `fathom plugin add`, and explains the layer order that determines the composed configuration. It assumes the `fathom` CLI is installed. Complete [plugin configuration](config.md) first.
 
-To use a fresh source checkout instead, complete the [run-from-source section](../../../../README.md#run-from-source), keep this tutorial's `hello-plugin` directory at the repository root, and run the remaining `fathom ...` commands from there as `pnpm fathom ...`. See [source execution](../../../../apps/cli/reference/README.md#source-execution) for build and launcher behavior.
+To use a fresh source checkout instead, complete the [run-from-source section](../../README.md#quick-start), keep this tutorial's `hello-plugin` directory at the repository root, and run the remaining `fathom ...` commands from there as `pnpm fathom ...`. See [source execution](../../apps/cli/reference/README.md#source-execution) for build and launcher behavior.
 
 ## Two concepts, two manifests
 
@@ -120,7 +120,7 @@ App arguments are not another patch layer. A surface bundle can resolve them thr
 
 Later layers win per row, and a patch replaces a row's entire `config` value rather than deep-merging keys. Two consequences for bundle authors:
 
-- Your patch can override rows from earlier layers by `id` — the same way [the `fathom-web-app` bundle](../../../../packages/bundle/web-app/cordis.patch.yml) overrides `fathom-base` rows — but must restate every key the row needs, not just the changed one.
+- Your patch can override rows from earlier layers by `id` — the same way [the `fathom-web-app` bundle](../../packages/bundle/web-app/cordis.patch.yml) overrides `fathom-base` rows — but must restate every key the row needs, not just the changed one.
 - Users can override your rows in their profile's `cordis.patch.yml` without touching your package, so prefer configuration defaults users are likely to keep and let the schema carry the rest.
 
 In-box bundle names always resolve from the fathom installation itself; pnpm manages only out-of-tree packages, so your bundle can rely on `@fathom/base` being present and current.
@@ -134,7 +134,7 @@ A bundle that defines a runnable app mounts an ordinary provider plugin:
   name: 'fathom-hello-plugin/startup'
 ```
 
-The plugin exports `inject = ['cmdlineArgs']`, calls `parseCmdline` from [`@fathom/cmdline`](../../../../packages/boot/cmdline/README.md) with its own commander program, and provides its app-owned service from the program's action. The launcher hands every plugin the same immutable arguments after launcher flags, so app-specific flags need no launcher change and multiple plugins may parse the snapshot. The Loader row needs no launcher marker or special kind.
+The plugin exports `inject = ['cmdlineArgs']`, calls `parseCmdline` from [`@fathom/cmdline`](../../packages/boot/cmdline/README.md) with its own commander program, and provides its app-owned service from the program's action. The launcher hands every plugin the same immutable arguments after launcher flags, so app-specific flags need no launcher change and multiple plugins may parse the snapshot. The Loader row needs no launcher marker or special kind.
 
 Rows configured by those arguments inject the provider's service and read it from their own `!!js` options, with the deployment value beside it as the fallback:
 
@@ -177,5 +177,5 @@ If you would rather not ask users for the allowance, distribute built artifacts 
 
 ## Next steps
 
-- [Plugins and lifecycle](../framework/index.md) — the full plugin lifecycle
-- [CLI behavior reference](../../../../apps/cli/reference/README.md) — exact layer precedence, flags, and profile mechanics
+- [Plugins and lifecycle](framework.md) — the full plugin lifecycle
+- [CLI behavior reference](../../apps/cli/reference/README.md) — exact layer precedence, flags, and profile mechanics

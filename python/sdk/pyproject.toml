@@ -17,7 +17,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/Pro-Nil/fathom"
-Documentation = "https://github.com/Pro-Nil/fathom/blob/master/docs/user/guide/python-sdk.md"
+Documentation = "https://github.com/Pro-Nil/fathom/blob/main/docs/guide/python-sdk.md"
 Issues = "https://github.com/Pro-Nil/fathom/issues"
 Source = "https://github.com/Pro-Nil/fathom"
 

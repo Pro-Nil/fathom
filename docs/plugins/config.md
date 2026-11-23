@@ -91,7 +91,7 @@ The test is whether `cordis.yml` can change the value without a code edit.
 
 ### Fail loudly on invalid configuration
 
-Express self-contained constraints in the schema so invalid configuration fails while the plugin loads. References to services or registered resources require dependency injection; the [services tutorial](../framework/service.md) introduces that contract.
+Express self-contained constraints in the schema so invalid configuration fails while the plugin loads. References to services or registered resources require dependency injection; the [services tutorial](service.md) introduces that contract.
 
 ## Work with HMR
 
@@ -99,6 +99,6 @@ A configuration edit hot-replaces the plugin: the framework unloads the old inst
 
 ## Next steps
 
-- [Package and install a plugin](./publish.md) — ship the plugin as an installable package
-- [Plugins and lifecycle](../framework/index.md) — understand the full plugin lifecycle
-- [Services and dependencies](../framework/service.md) — provide a service to other plugins
+- [Package and install a plugin](publish.md) — ship the plugin as an installable package
+- [Plugins and lifecycle](framework.md) — understand the full plugin lifecycle
+- [Services and dependencies](service.md) — provide a service to other plugins

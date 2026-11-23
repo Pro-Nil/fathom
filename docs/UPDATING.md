@@ -134,7 +134,7 @@ pnpm build
 pnpm fathom web
 ```
 
-The web UI opens at `http://127.0.0.1:2323` (on Linux and Windows alike). Then add a model under **Settings → Models** (see the [README](../README.md#first-run--connect-any-ai-model)). Keep the terminal open while you work; `Ctrl+C` stops the harness.
+The web UI opens at `http://127.0.0.1:2323` (on Linux and Windows alike). Then add a model under **Settings → Models** (see the [README](../README.md#quick-start)). Keep the terminal open while you work; `Ctrl+C` stops the harness.
 
 ## B. First install — web + desktop app
 

@@ -138,9 +138,9 @@ This prevents a plugin from calling a service that no longer exists.
 
 ## Built-in Harness services
 
-The repository generates the service names, public methods, and source locations into each service's [subsystem page](../../../subsystems/core.md). Use those generated regions and the service's TypeScript interface while developing a plugin; do not maintain a second static list.
+The repository generates the service names, public methods, and source locations into each service's [subsystem page](../subsystems/core.md). Use those generated regions and the service's TypeScript interface while developing a plugin; do not maintain a second static list.
 
 ## Next steps
 
-- [Event system](./events.md) — communicate between plugins without tight coupling
-- [Capability layering](../practice/index.md) — use services as capability interfaces
+- [Event system](events.md) — communicate between plugins without tight coupling
+- [Capability layering](capability-design.md) — use services as capability interfaces
