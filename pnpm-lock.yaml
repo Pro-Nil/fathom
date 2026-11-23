@@ -141,6 +141,9 @@ importers:
       '@fathom/base':
         specifier: workspace:^
         version: link:../../packages/bundle/base
+      '@fathom/bounty-skills':
+        specifier: workspace:^
+        version: link:../../packages/pentest/bounty-skills
       '@fathom/client-ui-agent-preset':
         specifier: workspace:^
         version: link:../../packages/client/ui-agent-preset
@@ -1101,6 +1104,9 @@ importers:
       '@fathom/bash-sandbox':
         specifier: workspace:^
         version: link:../../shell/bash-sandbox
+      '@fathom/bounty-skills':
+        specifier: workspace:^
+        version: link:../../pentest/bounty-skills
       '@fathom/command-compact':
         specifier: workspace:^
         version: link:../../compaction/command-compact
@@ -5982,6 +5988,22 @@ importers:
       '@modelcontextprotocol/server-filesystem':
         specifier: ^2026.7.4
         version: 2026.7.10(zod@4.4.3)
+
+  packages/pentest/bounty-skills:
+    dependencies:
+      '@fathom/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+    devDependencies:
+      '@fathom/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@fathom/skill':
+        specifier: workspace:^
+        version: link:../../skill/skill
+      '@fathom/skill-filesystem':
+        specifier: workspace:^
+        version: link:../../skill/skill-filesystem
 
   packages/pentest/pentest-guard:
     dependencies:

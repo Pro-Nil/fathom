@@ -247,6 +247,7 @@
     { "path": "./packages/pentest/tool-findings" },
     { "path": "./packages/pentest/tool-engagement" },
     { "path": "./packages/pentest/pentest-guard" },
+    { "path": "./packages/pentest/bounty-skills" },
     { "path": "./packages/spill/spill" },
     { "path": "./packages/spill/spill-local" },
     { "path": "./packages/spill/spill-policy" },
