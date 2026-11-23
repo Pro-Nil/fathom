@@ -399,6 +399,22 @@ Depends on: [`LocalConfig`](#fathombash-local)
 
 Source: [`packages/shell/bash-sandbox/src/index.ts:35`](../packages/shell/bash-sandbox/src/index.ts)
 
+<a id="fathombounty-skills"></a>
+
+## `@fathom/bounty-skills`
+
+Requires: `skills`
+
+```ts config-catalog
+/** Plugin configuration. */
+export interface Config {
+  /** Provider name on ctx.skills; must differ from every other skill provider. */
+  providerName?: string
+}
+```
+
+Source: [`packages/pentest/bounty-skills/src/index.ts:20`](../packages/pentest/bounty-skills/src/index.ts)
+
 <a id="fathombrowser"></a>
 
 ## `@fathom/browser`
@@ -2717,7 +2733,7 @@ export interface Config {
 }
 ```
 
-Source: [`packages/pentest/tool-findings/src/index.ts:68`](../packages/pentest/tool-findings/src/index.ts)
+Source: [`packages/pentest/tool-findings/src/index.ts:70`](../packages/pentest/tool-findings/src/index.ts)
 
 <a id="fathomtool-fs"></a>
 

@@ -1129,9 +1129,13 @@ Record one confirmed or suspected vulnerability finding with its evidence. Retur
       "type": "string",
       "description": "Suggested fix."
     },
+    "threat_model": {
+      "type": "string",
+      "description": "Who the attacker is, what they control, which boundary they cross, who is harmed."
+    },
     "status": {
       "type": "string",
-      "description": "Defaults to unverified; use verified only with bound evidence.",
+      "description": "Defaults to unverified; verified requires threat_model, reproduction and hard evidence.",
       "enum": [
         "unverified",
         "verified",
@@ -1247,6 +1251,10 @@ Update an existing finding by id: change its status or fields, or append evidenc
       "type": "string",
       "description": "Replacement remediation."
     },
+    "threat_model": {
+      "type": "string",
+      "description": "Replacement threat model."
+    },
     "add_evidence": {
       "type": "array",
       "description": "Evidence entries to append.",
@@ -1302,18 +1310,19 @@ Render the recorded findings into a report file in the session folder. Returns t
   "properties": {
     "format": {
       "type": "string",
-      "description": "markdown | json | html (interactive dashboard) | all (default) | both (markdown+json).",
+      "description": "markdown | json | html (interactive dashboard) | all (default) | both (markdown+json) | submission (one bug bounty submission file per finding).",
       "enum": [
         "markdown",
         "json",
         "html",
         "all",
-        "both"
+        "both",
+        "submission"
       ]
     },
     "title": {
       "type": "string",
-      "description": "Report title / engagement name."
+      "description": "Report title / engagement name (the program name for submissions)."
     },
     "scope": {
       "type": "string",
@@ -1420,6 +1429,10 @@ Record the exploration graph. action=add creates a goal, intent (a line of attac
     "finding_id": {
       "type": "string",
       "description": "Findings-store id (F<n>) for a finding node."
+    },
+    "vuln_class": {
+      "type": "string",
+      "description": "Bug class an intent tests (idor, auth-bypass, business-logic, ssrf, xss, …); drives per-class coverage."
     }
   },
   "required": [
