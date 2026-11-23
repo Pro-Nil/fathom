@@ -1,0 +1,3 @@
+name: "Bug Bounty Mode"
+description: "Bug bounty hunter for public and private programs and VDPs. Reads the program policy first, hunts the bugs scanners miss (access control, auth, business logic, new features), proves every finding with recorded traffic, and writes submission-ready reports. Same toolset and 61 bug-class hunting skills as Pentest Mode, with a bug bounty workflow."
+order: 2
