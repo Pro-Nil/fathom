@@ -15,9 +15,10 @@ import type { BrowserScope, BrowserTarget, MouseButton } from '@fathom/browser'
 import { toPlaywrightChord, withoutAiOverview } from '@fathom/browser'
 import type { ContentBlock } from '@fathom/llm'
 import { defineTool } from '@fathom/tools'
-import type { GenericCallView, ToolExecution } from '@fathom/tools'
+import type { GenericCallView, ToolDefinition, ToolExecution } from '@fathom/tools'
 import type {} from '@fathom/system-prompt'
 import type { Page } from 'playwright-core'
+import { pageScript, SCRIPT_TIMEOUT_MARKER, SCRIPT_TIMEOUT_MS, scriptTimeoutMessage, untilAborted } from './abort.ts'
 import { HandoffGuard, inspectPage, MAX_FAILED_LOGINS } from './handoff.ts'
 
 /** Resolved limits for the browser tools. */
@@ -198,7 +199,17 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
 
   ctx.systemPrompt.section({ name: 'tool:browser', order: 112, text: SYSTEM_PROMPT })
 
-  ctx.tools.register(defineTool({
+  // Every browser tool settles as soon as the call is cancelled. The registry
+  // waits for a tool body to settle, and Playwright ignores exec.signal, so a
+  // stuck page operation would otherwise hold the turn and the Stop button.
+  const tools = {
+    register(tool: ToolDefinition): void {
+      const execute = tool.execute.bind(tool)
+      ctx.tools.register({ ...tool, execute: (args, exec) => untilAborted(Promise.resolve(execute(args, exec)), exec.signal) })
+    },
+  }
+
+  tools.register(defineTool({
     name: 'browser_navigate',
     description: 'Open a URL in the shared browser, or go "back" / "forward" / "reload". Bare hosts get https://; text that is not an address is searched on the web. Returns the resulting page title and URL.',
     parameters: {
@@ -217,7 +228,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(`Open ${args.url}`),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_read_page',
     description: 'Read the page as an accessibility tree. Each element shows its role, name and a ref such as [ref=e12] to pass to browser_computer or browser_form_input. Use filter "interactive" for only clickable/typable elements.',
     parameters: {
@@ -238,7 +249,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(args.filter === 'interactive' ? 'Read interactive elements' : 'Read page'),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_find',
     description: 'Find elements on the page whose role, name or text contains the query (case-insensitive). Returns up to 20 matching accessibility-tree lines with their refs.',
     parameters: {
@@ -261,7 +272,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(`Find "${args.query}"`),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_computer',
     description: 'Mouse and keyboard in the shared browser. Actions: left_click, right_click, double_click, triple_click, hover, left_click_drag (start_coordinate → coordinate), scroll (coordinate + scroll_direction), scroll_to (ref), type (text), key (space-separated chords such as "ctrl+a Backspace Enter"), screenshot, zoom (region), wait (duration seconds). Pointer actions take a ref from browser_read_page/browser_find, or viewport coordinates [x, y] in CSS pixels.',
     parameters: {
@@ -430,7 +441,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(`Browser ${args.action.replaceAll('_', ' ')}${args.ref === undefined ? '' : ` ${args.ref}`}`),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_form_input',
     description: 'Set a form control by ref: fills text inputs and textareas, selects an option (by value or label) in a select, or checks/unchecks a checkbox or radio (value true/false).',
     parameters: {
@@ -462,7 +473,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(`Fill ${args.ref}`),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_get_page_text',
     description: 'Return the readable text of the page (article or main content first, falling back to the whole body).',
     parameters: {
@@ -487,7 +498,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: () => call('Read page text'),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_javascript',
     description: 'Run JavaScript in the page and return the result as JSON. An expression is evaluated and returned (top-level await works); for several statements, use an explicit return. For inspection and debugging.',
     parameters: {
@@ -499,12 +510,23 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
       const page = await shared(exec).page(args.tab_id)
       // Scripts can click and fill too, so they wait for the handoff as well.
       await guard.beforeAction(page, false)
+      // The deadline runs inside the page, so evaluate settles there and no
+      // call is left pending in the browser after a timeout.
+      const run = async (form: 'expression' | 'statements'): Promise<unknown> => {
+        try {
+          return await page.evaluate(pageScript(args.code, form, SCRIPT_TIMEOUT_MS))
+        } catch (error) {
+          const timedOut = error instanceof Error && error.message.includes(SCRIPT_TIMEOUT_MARKER)
+          if (timedOut) throw new Error(scriptTimeoutMessage(SCRIPT_TIMEOUT_MS))
+          throw error
+        }
+      }
       let result: unknown
       try {
-        result = await page.evaluate(`(async () => (${args.code}\n))()`)
+        result = await run('expression')
       } catch (error) {
         if (!(error instanceof Error) || !/SyntaxError|Unexpected/u.test(error.message)) throw error
-        result = await page.evaluate(`(async () => {\n${args.code}\n})()`)
+        result = await run('statements')
       }
       let text: string
       try {
@@ -519,7 +541,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: () => call('Run JavaScript in the page'),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_console',
     description: 'Read console messages, uncaught errors and dialogs from a tab (most recent last).',
     parameters: {
@@ -542,7 +564,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: () => call('Read console'),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_network',
     description: 'List network requests made by a tab (method, status, type, URL; most recent last).',
     parameters: {
@@ -563,7 +585,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: () => call('Read network requests'),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_tabs',
     description: 'Manage this session\'s tabs: "list" shows your tabs (and any the user opened that no session has taken) with id, title and URL; "create" opens a tab (optionally at url) and makes it your current one; "select" makes tab_id your current tab (and the one the user sees); "close" closes tab_id. Tabs of other sessions running at the same time are not shown and cannot be used.',
     parameters: {
@@ -586,7 +608,7 @@ export function applyBrowserTools(ctx: Context, limits: BrowserToolLimits): void
     presentCall: args => call(`Tabs: ${args.action}`),
   }))
 
-  ctx.tools.register(defineTool({
+  tools.register(defineTool({
     name: 'browser_resize',
     description: 'Set the tab viewport size in CSS pixels (200–4000 each side). The Browser pane resets it to fit the pane when the user resizes the pane.',
     parameters: {
