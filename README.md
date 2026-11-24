@@ -6,7 +6,7 @@
 
 Bring any model. Fathom gives it a shell, a real browser, a pentest toolkit, scope guardrails and an evidence-first way of working, in a local web UI or a desktop app for Windows and Linux.
 
-[Quick start](#quick-start) · [Walkthrough](#a-session-from-start-to-finish) · [Features](#features) · [Configuration](#configuration) · [Documentation](#documentation)
+[Top features](#top-features) · [How it compares](#how-fathom-compares) · [Quick start](#quick-start) · [Walkthrough](#a-session-from-start-to-finish) · [Documentation](#documentation)
 
 </div>
 
@@ -16,9 +16,74 @@ Bring any model. Fathom gives it a shell, a real browser, a pentest toolkit, sco
 
 ---
 
+Fathom runs an AI agent on your own machine and points it at targets you are allowed to test: your own apps, client engagements, bug bounty programs, labs and CTFs. You describe the job in plain language; the agent plans, runs tools, records what it finds, has it independently re-verified and writes the report, while you watch every step and can stop, steer or take over at any time.
+
+## Top features
+
+| | Feature | What it means in practice |
+|:-:|---|---|
+| 1 | **Blind, independent validation** | A finding is marked *verified* only after a **different agent** reproduces it from the write-up alone. `validation_brief` hands the validator the claims, threat model and steps, never the finder's raw requests or notes, so it cannot copy the answer. `record_validation` refuses a verdict from the session that found the bug, and a "not reproduced" verdict must list the attempts behind it. Enforced in code, not left to the prompt. |
+| 2 | **Scope enforced in code** | After `set_scope`, every shell command, `http_request`, browser navigation and web fetch is checked for hosts, IPs and CIDRs before it runs, and anything outside scope is refused. Wildcards, URLs and alternate spellings of an excluded host are refused too. Widening scope asks you. Out-of-band callback services (interactsh, Burp Collaborator, webhook.site) are always allowed. |
+| 3 | **"Intended" and "do not test" are first-class** | Tell Fathom what is by design and what is off-limits once. Both are stored with the scope, shown to every subagent, and written into every validation brief, so by-design behaviour is never reported and off-limits functionality is never touched. |
+| 4 | **Evidence bound to every finding** | Each `http_request` is saved as numbered traffic (`T1`, `T2`, …) with the full request and response. Findings cite traffic IDs, and reports quote the real exchange. |
+| 5 | **You watch, steer and take over** | Every step streams into the UI as an expandable row. Send a message mid-run to steer, stop it, or answer its questions. The agent's Chromium is shared with you: take over for a CAPTCHA or a login, then hand it back. |
+| 6 | **Breadth, then depth, with subagents** | The lead splits the app into subsystems (auth, upload, sharing, payments, admin, API, integrations…) and gives each its own subagent that tests it completely, while it keeps the plan and the report. A PoC that fails twice can go to `subagent_escalate`, pinned to a stronger model you choose. |
+| 7 | **Built for long engagements** | An asset graph, an exploration graph (tried, yielded, ruled out), the findings store and a running notes ledger live in files, so they survive context compaction, resume and fork. Past sessions are searchable, so work is not repeated. |
+| 8 | **63 bug-class skills** | One `hunt-*` skill per class (IDOR, auth bypass, OAuth, SAML, JWT, SSRF, RCE, SQLi, SSTI, XXE, XSS, CSRF, CORS, GraphQL, gRPC, HTTP smuggling, LLM features…), plus method, triage and reporting. Fathom's own **patch-diff** skill finds n-days by diffing a security release, and **docker-replica** develops risky exploits on a local copy of the target's software first. |
+| 9 | **Bug Bounty Mode** | Reads the program policy first, hunts what scanners miss, and writes one submission-ready report per finding (asset, weakness, severity, steps, impact, recorded traffic, fix, redaction reminder). Unverified findings are marked as drafts. |
+| 10 | **Guardrails against noise and manipulation** | Brute force, sqlmap OS shells and Metasploit ask first; DoS tooling is denied. Loud scanner settings are flagged and requests per host are rate-capped. Target output that tries to instruct the agent is wrapped as untrusted. |
+| 11 | **A toolkit that installs itself** | 31 tools (nmap, ffuf, nuclei, sqlmap, httpx, subfinder, katana, gobuster, hydra, testssl…) installed in the background while the agent works, natively on Linux or via WSL or native builds on Windows, with SHA-256 checks. No Docker required. |
+| 12 | **Any model, your keys** | OpenAI, Anthropic, Google, Mistral, Groq, OpenRouter, Azure, Bedrock, Vertex or any OpenAI-compatible gateway, chosen per session. Keys stay in an owner-only file on your machine. |
+| 13 | **Web UI and desktop app** | A local web UI, plus a native desktop app for Windows and Linux with tray, notifications when the agent needs you, and one-click update. |
+| 14 | **Everything is a plugin** | Persona, tools, guardrails, skills, model adapters and UI panels are all plugins. Copy a mode and change it, or replace any part, without forking the core. |
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/scope-intended.png" alt="set_scope call recording an out-of-scope staging host, an intended-design note (sequential invoice IDs) and a do-not-test endpoint (/api/admin/refunds)" /></td>
+<td width="50%"><img src="docs/images/blind-validation.png" alt="The agent records three findings, builds a validation_brief for each, and spawns three fresh blind validator subagents in parallel" /></td>
+</tr>
+<tr>
+<td><sub><b>Scope, intended design and off-limits areas</b> recorded once with <code>set_scope</code>, then enforced on every call and passed to every validator.</sub></td>
+<td><sub><b>Blind validation</b>: one <code>validation_brief</code> per finding, each handed to a fresh subagent that never sees the finder's requests.</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/validator-subagents.png" alt="The subagents menu listing three finished validators: Blind-validate F1 IDOR, F2 tokens and F3 XSS" /></td>
+<td><img src="docs/images/validated-summary.png" alt="Engagement summary: scope recap, target map, and three findings all verified by independent blind validators with their traffic IDs" /></td>
+</tr>
+<tr>
+<td><sub><b>Validators run in parallel</b> as background subagents, each with its own context and token count.</sub></td>
+<td><sub><b>Only reproduced findings are verified.</b> The off-limits refunds endpoint was left untested, and the by-design sequential IDs were not reported.</sub></td>
+</tr>
+</table>
+
+## How Fathom compares
+
+Most open-source AI pentest agents are autonomous scanners: you start a run, wait, and read a report. Fathom is a workspace for a human and an agent testing together, with the rules of engagement enforced by the harness rather than trusted to the model.
+
+| | **Fathom** | [Strix](https://github.com/usestrix/strix) | [Shannon](https://github.com/KeygraphHQ/shannon) | [PentAGI](https://github.com/vxcontrol/pentagi) | [PentestGPT](https://github.com/GreyDGL/PentestGPT) | [HexStrike AI](https://github.com/0x4m4/hexstrike-ai) |
+|---|---|---|---|---|---|---|
+| Interface | Web UI + desktop app (Windows, Linux) | CLI + results viewer | CLI | Web UI | CLI | MCP server for an external AI client |
+| Steer the agent live | ✅ chat, stop, answer questions | — | — | ✅ Assistant view | ✅ interactive mode | via the AI client |
+| Take over the agent's browser | ✅ | — | — | — | — | — |
+| Scope enforced in code | ✅ blocks out-of-scope calls | — | — | — | — | — |
+| Validation of findings | ✅ blind, by a separate agent, enforced | PoC per finding | "No exploit, no report" | — | — | — |
+| Recorded traffic bound to findings | ✅ | — | — | — | — | — |
+| Intended / do-not-test rules | ✅ stored, enforced, sent to validators | — | rules of engagement in config | — | — | — |
+| Bug bounty submission reports | ✅ one per finding | — | — | — | — | — |
+| Model choice | Any provider or OpenAI-compatible endpoint | Many (LiteLLM) | Many | Many | Claude Code or Codex (autonomous mode) | Whatever the MCP client uses |
+| Needs Docker | No | Yes | Yes | Yes (Compose) | Optional | No (tools installed by hand) |
+| Tool installation | Automatic, checksummed | In sandbox image | In worker image | In sandbox image | Docker image or manual | Manual (150+ tools) |
+| Long sessions | Compaction-proof engagement files, resume, fork, search | — | Resumable workspaces | Vector memory, summarization | Resumable sessions | — |
+| License | MIT | Apache-2.0 | AGPL-3.0 | MIT | MIT | MIT |
+
+<sub>"—" means the project's README does not describe the feature, not that it is impossible. Compared against each project's README in November 2026; corrections are welcome. CAI is left out because it was archived in August 2026.</sub>
+
+**Where others are stronger today:** Strix and Shannon have dedicated white-box modes that analyze a repository before attacking (Fathom's agent can read source in its workspace, but has no separate SAST stage), and both ship CI integrations and, for Shannon, SARIF output. PentAGI has a vector memory store and an optional knowledge graph. If you need an unattended scan in a CI pipeline, one of those may fit better; if you want a controllable agent on a real engagement, that is what Fathom is built for.
+
 ## Contents
 
-- [What Fathom is](#what-fathom-is)
+- [Top features](#top-features)
+- [How Fathom compares](#how-fathom-compares)
 - [Quick start](#quick-start)
 - [A session from start to finish](#a-session-from-start-to-finish)
 - [Features](#features)
@@ -28,17 +93,6 @@ Bring any model. Fathom gives it a shell, a real browser, a pentest toolkit, sco
 - [Documentation](#documentation)
 - [Use it responsibly](#use-it-responsibly)
 - [License](#license)
-
-## What Fathom is
-
-Fathom runs an AI agent on your own machine and points it at targets you are allowed to test: your own apps, client engagements, bug bounty programs, labs and CTFs. You describe the job in plain language; the agent plans, runs tools, records what it finds and writes the report, while you watch every step and can stop, steer or take over at any time.
-
-It is built for long, real engagements, not demos:
-
-- **Evidence, not claims.** Every request the agent sends through `http_request` is saved as numbered traffic (`T1`, `T2`, …), and findings are bound to that traffic. Reports quote the real request and response.
-- **Scope is enforced, not suggested.** Once a scope is declared, commands and requests aimed at anything outside it are refused before they run.
-- **Nothing is forgotten.** Assets, tried and ruled-out attack paths, findings and notes are kept as files in the session folder, so they survive context compaction, resume and fork.
-- **Any model, keys stay local.** OpenAI, Anthropic, Google, Mistral, Groq, OpenRouter, Azure, Bedrock, Vertex, or any OpenAI-compatible gateway. Keys live in an owner-only file under `~/.fathom`, never in settings or logs.
 
 ## Quick start
 
@@ -85,7 +139,7 @@ The mode (agent preset) decides the agent's persona, workflow and tools:
 - **Pentest Mode**: an engagement workflow. Recon first, then systematic testing, every finding proved and recorded, a report at the end.
 - **Bug Bounty Mode**: reads the program policy first, hunts the classes scanners miss (access control, auth, business logic, new features), and writes submission-ready reports.
 
-Both share the same toolset and the same 61 bug-class skills. You can duplicate either one and edit it, or let the agent draft a new preset, under **Settings → Agent presets**.
+Both share the same toolset and the same 63 bug-class skills. You can duplicate either one and edit it, or let the agent draft a new preset, under **Settings → Agent presets**.
 
 The composer also sets the session's **permission level** (Read Only, Workspace Write or Full access) and its **model**.
 
@@ -111,7 +165,9 @@ Expanding a row shows exactly what was sent and received. Here the agent uses Al
 
 ### 5. A second agent checks the work
 
-The agent then starts a **validator subagent** that re-tests each finding on its own. In this run it caught an overstatement: the first write-up said the SQL injection gave admin access, but the admin token it returns is never accepted by the API. The finding went from high to medium and was rewritten. Severity in a Fathom report is what was reproduced, not what was hoped for.
+Fathom does not let the finder grade its own work. For each finding the agent calls `validation_brief`, which builds a task from the write-up alone (claims, threat model, steps, expected results, plus your intended and do-not-test notes), and hands it to a **fresh validator subagent**. The validator reproduces each claim and records its verdict with `record_validation`; the finding's own session is refused, and a "not reproduced" verdict must list the attempts behind it. Only a "reproduced" verdict lets a finding be marked verified.
+
+It works: in this run a validator caught an overstatement. The first write-up said the SQL injection gave admin access, but the admin token it returns is never accepted by the API, so the finding went from high to medium and was rewritten. Severity in a Fathom report is what was reproduced, not what was hoped for. (A second run with an intended-design note and an off-limits endpoint is shown under [Top features](#top-features).)
 
 ### 6. Report
 
@@ -132,9 +188,9 @@ Besides **Chat**, each session has a **Trajectory** tab (every model turn and to
 | | |
 |---|---|
 | **Agent presets** | Pentest Mode and Bug Bounty Mode ship built in. A preset is a full plugin composition (prompt, tools, skills, workflow), so you can copy one and change it, or build your own. |
-| **61 bug-class skills** | Method and triage, reporting, and one `hunt-*` skill per class: IDOR, auth bypass, ATO, OAuth, SAML, MFA, JWT, SSRF, RCE, SQLi, NoSQLi, SSTI, XXE, XSS, CSRF, CORS, GraphQL, gRPC, WebSocket, LLM features, framework-specific skills and more. The agent loads the one it needs. ([bounty-skills](packages/pentest/bounty-skills/README.md)) |
+| **63 bug-class skills** | Method and triage, reporting, and one `hunt-*` skill per class: IDOR, auth bypass, ATO, OAuth, SAML, MFA, JWT, SSRF, RCE, SQLi, NoSQLi, SSTI, XXE, XSS, CSRF, CORS, GraphQL, gRPC, WebSocket, LLM features, framework-specific skills and more. The agent loads the one it needs. ([bounty-skills](packages/pentest/bounty-skills/README.md)) |
 | **Engagement memory** | An asset graph of the target side; an exploration graph of what was tried, what it yielded and what is ruled out; and an engagement map that shows which asset × bug-class pairs are still untested. ([tool-engagement](packages/pentest/tool-engagement/README.md)) |
-| **Findings store** | `record_finding`, `update_finding`, `list_findings` and `write_report`, with CWE, threat model, reproduction, impact, remediation and bound traffic. ([tool-findings](packages/pentest/tool-findings/README.md)) |
+| **Findings store** | `record_finding`, `update_finding`, `list_findings`, `validation_brief`, `record_validation` and `write_report`, with CWE, threat model, reproduction, impact, remediation and bound traffic. ([tool-findings](packages/pentest/tool-findings/README.md)) |
 | **Pentest toolkit** | 31 tools installed and kept available by the harness (WSL Ubuntu, Windows native, or Linux). ([pentest-toolkit](packages/pentest/pentest-toolkit/README.md)) |
 
 ### Guardrails
